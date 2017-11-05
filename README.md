@@ -1,4 +1,4 @@
-# CLUSTA %%
+# pod
 
 ## What?
 A bash application to rapidly setup and configure a dse cluster.  

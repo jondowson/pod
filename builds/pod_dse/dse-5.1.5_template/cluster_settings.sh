@@ -23,7 +23,7 @@ DSE_INSTALL_TYPE="tar"
 
 # -----------------------------------------
 
-## [2] choose 'basic' cassandra settings
+## [2] choose 'basic' cluster-wide cassandra settings
 
 CLUSTER_NAME="My Kluster"                       # avoid special characters !!
 ENDPOINT_SNITCH="GossipingPropertyFileSnitch"   # 'GossipingPropertyFileSnitch' should be the default !!
@@ -44,36 +44,39 @@ DSE_TARBALL="${DSE_VERSION}-bin.tar.gz"
 
 ## [4] choose required folder-paths
 
-# note: leave trailing '/' for all FOLDER paths but NOT file paths !!
+# note: leave trailing '/' for all FOLDER paths but NOT file paths !!!!!!
 # note: out of the box - all paths hang off 'LOCAL_TARGET_FOLDER'
-# note: the LOCAL_TARGET_FOLDER applies to the machine running the script and will be auto-edited for remote servers
 
+# -----------------YOU-MAY-WANT-TO-CHANGE-DEFAULTS!!
+
+# the target folder is where the DSE_SOFTWARE and pod folders will be copied to 
+# note: the LOCAL_TARGET_FOLDER applies to the machine running pod and will be auto-edited for remote servers
 LOCAL_TARGET_FOLDER="/home/jd/Desktop/"
 
-# -----------------
-
-# folder with datastax binaries
-DSE_SOFTWARE="${LOCAL_TARGET_FOLDER}DSE_SOFTWARE/"
-# location of parent folder to the folder holding the dse tar
-# note: this could be the same as ${DSE_SOFTWARE}
-PACKAGES_FOLDER="${DSE_SOFTWARE}packages/"
-
-# -----------------
+# -----
 
 # where dse tarballs are unpacked to
 INSTALL_FOLDER="${LOCAL_TARGET_FOLDER}dse-installations/"
 # set parent level folders for data and log folders
 
-# -----------------
+# -----
 
 # location of logs and data folders
 PARENT_LOG_FOLDER="${INSTALL_FOLDER}${dse_version}data.logs/logs/"
 PARENT_DATA_FOLDER="${INSTALL_FOLDER}${dse_version}data.logs/data/"
 
-# -----------------
+# -----
 
-# temp folder where cassandra has write permissions
+# temp folder where java has write permissions
 TEMP_FOLDER="${INSTALL_FOLDER}tmp/"
+
+# -----------------CHANGE-WITH-CAUTION!!
+
+# the local folder with datastax/java binaries
+# note: needs to hang off '${LOCAL_TARGET_FOLDER}DSE_SOFTWARE/' !!!!!
+# i.e. you can add sub-folders - don't forget trailing '/'
+DSE_SOFTWARE="${LOCAL_TARGET_FOLDER}DSE_SOFTWARE/packages/"
+
 
 # ========================================= END !!
 
@@ -82,13 +85,13 @@ TEMP_FOLDER="${INSTALL_FOLDER}tmp/"
 
 # java
 Djava_tmp_folder="${TEMP_FOLDER}"
-java_tar_file="${PACKAGES_FOLDER}oracle-java/${JAVA_TARBALL}"
+java_tar_file="${DSE_SOFTWARE}oracle-java/${JAVA_TARBALL}"
 java_untar_folder="${INSTALL_FOLDER}oracle-java/"
 
 # -----------------
 
 # dse
-dse_tar_folder="${PACKAGES_FOLDER}dse/"
+dse_tar_folder="${DSE_SOFTWARE}dse/"
 dse_tar_file="${dse_tar_folder}${DSE_TARBALL}"
 dse_untar_config_folder="${INSTALL_FOLDER}${DSE_VERSION}/resources/dse/conf/"
 dse_untar_bin_folder="${INSTALL_FOLDER}${DSE_VERSION}/bin/"
