@@ -31,8 +31,8 @@ do
   generic_msg_colour_simple "info" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
   printf "\n%s"
 
-  generic_msg_colour_simple "info-indented" "launch:      pod remotely"                                                 && sleep "${STEP_PAUSE}"
-  ssh -o ForwardX11=no ${user}@${pubIp} "${target_folder}pod/misc/pod_dse/pod_launch_remote.sh" &                       # run in parallel
+  generic_msg_colour_simple "info-indented" "launch:      pod remotely"                                                          && sleep "${STEP_PAUSE}"
+  ssh -ttq -o "BatchMode yes" -o "ForwardX11=no" ${user}@${pubIp} "${target_folder}pod/lib/pod_dse/pod_dse_script_launch_remote.sh" &  # run in parallel
   # grab pid and capture owner in array
   pid=$!
   generic_msg_colour_simple "info-indented" "pid id:      ${yellow}${pid}${reset}"
@@ -78,10 +78,10 @@ done
 
 function task_pod_launch_remote_report(){
 
-generic_msg_colour_simple "REPORT" "STAGE SUMMARY: ${reset}Launch Pod On Each Server"                                   && sleep "${STEP_PAUSE}"
+generic_msg_colour_simple "REPORT" "STAGE SUMMARY: ${reset}Launch Pod On Each Server"                                            && sleep "${STEP_PAUSE}"
 
 if [[ ! -z $runBuild_pid_failures ]]; then
-  generic_msg_colour_simple "info-indented" "${cross} Problems executing 'pod' on servers"                              && sleep "${STEP_PAUSE}"
+  generic_msg_colour_simple "info-indented" "${cross} Problems executing 'pod' on servers"                                       && sleep "${STEP_PAUSE}"
   printf "%s\n"
   for k in "${!pod_build_launch_pid_array[@]}"
   do
@@ -94,6 +94,6 @@ if [[ ! -z $runBuild_pid_failures ]]; then
   done
   printf "%s\n"
 else
-  generic_msg_colour_simple "success" "Executed pod builds on all servers"                                              && sleep "${STEP_PAUSE}"
+  generic_msg_colour_simple "success" "Executed pod builds on all servers"                                                       && sleep "${STEP_PAUSE}"
 fi
 }

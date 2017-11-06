@@ -4,60 +4,71 @@
 # author:        jondowson
 # about:         configure dse software and distribute to all servers in cluster
 
+# ------------------------------------------
+
+## a pod has STAGES, which consist of TASK(S), which contain STEP(S).
+
+# pod_dse:
+
+# makes use of 2 user defined files
+# --> ${SERVERS_JSON}
+# --> ${BUILD_FOLDER}cluster_settings.sh
+# and a DSE version specific prepared 'resources' folder.
+# --> ${BUILD_FOLDER}resources
+
+# STAGE [1] - locally prepare 'resources' folder
+# --> will strip all non-config files from the 'resources' folder in the dse-<version> tarball.
+# --> copy to ${BUILD_FOLDER}resources.
+# --> OPTIONAL if one already exists.
+
+# STAGE [2] - loop over servers
+# --> duplicate 'pod 'project to a temporary folder and configure for each server.
+# --> copy the duplicated and configured version - the 'build' - to each server.
+
+# STAGE [3] - loop over servers
+# --> copy over the 'DSE_SOFTWARE' folder to each server.
+
+# STAGE [4] - loop over servers
+# --> remotely run 'setup_dse_remote.sh' on each server.
+
+function pod_dse(){
+
+#===========================================EDIT-ME!!
+
+## specify settings to use
+
+## script run options
+
+# send DSE_SOFTWARE folder to each server
+SEND_DSE_SOFTWARE="false"
+
+# generate new 'CONFIG_FOLDER/resources' folder - will remove any existing one !!
+REGENERATE_RESOURCES="false"
+
+# verbose messages
+VB="false"
+
+# pauses i.e. time allowed to read screen
+STAGE_PAUSE="5"   # between stages
+STEP_PAUSE="2"    # between steps within a stage
+
+#===========================================END!!
+
 ## test specified files exist
 
-# check /servers/<json> file exists
-generic_file_exists_check_abort "${servers_json_path}"
+pod_dse_check_files_exist
 
-# test DSE_SOFTWARE folder is available
-if [[ "${SEND_DSE_SOFTWARE}" == "true" ]]; then
-  generic_folder_exists_check_abort "${DSE_SOFTWARE}"
-  generic_file_exists_check_abort "${dse_tar_file}"
-  generic_file_exists_check_abort "${java_tar_file}"
-fi
-
-# test java folder is available
-if [[ "${JAVA_INSTALL_TYPE}" == ""tar"" ]]; then
-  generic_file_exists_check_abort "${java_tar_file}"
-fi  
-
-# check jq library is available
-generic_file_exists_check_abort "${jq_file_path}"
-
-# -----------------------------------------
-
-numberOfServers=$(${jq_folder}jq [.] ${servers_json_path} | tr '"' '\n' | grep 'server_' | wc -l)
-
-# -----------------------------------------
+# ------------------------------------------
 
 # STAGE [1] - prepare local 'resources' folder - the basis for the 'build(s)'
 
-if [ "${REGENERATE_RESOURCES}" == true ]; then ${podSetupFolder}misc/prepare_resources_folder.sh "${BUILD_FOLDER}" "${STAGE_PAUSE}"; fi
+if [ "${REGENERATE_RESOURCES}" == true ]; then ${pod_home_path}lib/pod_dse/pod_dse_script_prepare_resources_folder.sh "${BUILD_FOLDER}" "${STAGE_PAUSE}"; fi
 
 # -----------------------------------------
 
 ## prepare duplicate version of 'pod' project
 
-# this includes the a copy of the local resources folder
-# this duplicate folder will be configured locally and then sent to remote server(s)
-
-tmp_build_folder="${podSetupFolder}tmp/pod/"
-tmp_build_file_folder="${tmp_build_folder}builds/pod_dse/${BUILD_FOLDER}/"
-tmp_build_file_path="${tmp_build_file_folder}cluster_settings.sh"
-
-# delete any existing duplicated 'pod' folder from '/tmp'
-tmp_folder="${podSetupFolder}tmp/"
-rm -rf "${tmp_folder}"
-
-# duplicate 'pod' folder to working directory '/tmp'
-tmp_working_folder="${podSetupFolder}tmp/pod/"
-mkdir -p "${tmp_working_folder}"
-cp -r "${podSetupFolder}builds" "${tmp_working_folder}"
-cp -r "${podSetupFolder}lib" "${tmp_working_folder}"
-cp -r "${podSetupFolder}misc" "${tmp_working_folder}"
-cp -r "${podSetupFolder}servers" "${tmp_working_folder}"
-cp ${podSetupFolder}*.md "${tmp_working_folder}"
-cp ${podSetupFolder}*.sh "${tmp_working_folder}"
+pod_dse_duplicate_resources_folder
 
 #-------------------------------------------
 
@@ -76,6 +87,8 @@ declare -A pod_build_launch_pid_array
 
 ## ( STAGES { TASKS [steps] } )
 
+# STAGE [2]
+ 
 banner
 generic_msg_colour_simple "STAGE" "STAGE: Test Cluster Readiness"
 generic_msg_colour_simple "TASK"  "TASK: Testing server connectivity"
@@ -88,6 +101,8 @@ generic_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 
 # ----------
 
+# STAGE [3] 
+
 banner
 generic_msg_colour_simple "STAGE" "STAGE: Create Pod For Each Server"
 generic_msg_colour_simple "TASK"  "TASK: Configuring and sending pod "
@@ -97,6 +112,8 @@ rm -rf "${tmp_folder}"
 generic_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..." 
 
 # ----------
+
+# STAGE [4] 
 
 if [[ "${SEND_DSE_SOFTWARE}" == true ]]; then
   banner
@@ -109,6 +126,8 @@ fi
 
 # ----------
 
+# STAGE [5] 
+
 banner
 generic_msg_colour_simple "STAGE" "STAGE: Launch Pod On Each Server"
 generic_msg_colour_simple "TASK"  "TASK: Running launch script remotely"
@@ -118,7 +137,7 @@ generic_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 
 #-------------------------------------------
 
-## summary
+# Finnish Summary 
 
 banner
 generic_msg_colour_simple "STAGE" "Finished !!"                                                                        && sleep "${STEP_PAUSE}"
@@ -137,41 +156,4 @@ elif [[ "${REGENERATE_RESOURCES}" == "true" ]]  &&  [[ "${SEND_DSE_SOFTWARE}" ==
 else
   stage_count=2
 fi
-
-# calculate added pauses
-sleep_steps=$(($((STEP_PAUSE * $(grep -c '&& sleep ${STEP_PAUSE}' pod_dse.sh)))-1))
-if [[ $sleep_steps -eq -1 ]]; then sleep_steps=0; fi
-sleep_stages=$((STAGE_PAUSE * stage_count))
-total_sleep=$((sleep_steps + sleep_stages))
-
-# calculate script runtime
-script_end=$(date +%s)
-diff=$((script_end - script_start))
-actual_runtime=$((diff - total_sleep))
-
-generic_msg_colour_simple "info" "script completion time:     ${diff}"
-generic_msg_colour_simple "info" "(actual ignoring sleep):    ${actual_runtime}"
-printf "%s\n"
-
-# -----------------Final message
-
-if [[ ${os} == "Mac" ]] || [[ ${JAVA_INSTALL_TYPE} != "tar" ]]; then
-  generic_msg_colour_simple "title"     "Final tasks to complete pod"
-  generic_msg_colour_simple "info-bold" "(a) Source '.bash_profile' (or open new terminal):"
-  generic_msg_colour_simple "info"      "$ . ~/.bash_profile"
-  generic_msg_colour_simple "info-bold" "(b) Run dse:"
-  generic_msg_colour_simple "info"      "$ dse cassandra            # start dse storage"
-  generic_msg_colour_simple "info"      "$ dse cassandra -s -k -g   # start dse storage with search, analytics, graph (pick any combination)"
-elif [[ "${JAVA_INSTALL_TYPE}" == "tar" ]]; then
-  generic_msg_colour_simple "title"     "Final tasks to complete pod"
-  generic_msg_colour_simple "info-bold" "(a) Source '.bash_profile' (or open new terminal):"
-  generic_msg_colour_simple "info"      "$ . ~/.bash_profile"
-  generic_msg_colour_simple "info-bold" "(b) Add java tar to system java alternatives - you may have to alter yellow portion of path:"
-  generic_msg_colour_simple "info"      "$ sudo update-alternatives --install /usr/bin/java java ${yellow}${java_untar_folder}${white}${JAVA_VERSION}/bin/java 100"
-  generic_msg_colour_simple "info-bold" "(c) Select this java tar from list:"
-  generic_msg_colour_simple "info"      "$ sudo update-alternatives --config java"
-  generic_msg_colour_simple "info-bold" "(d) Run dse:"
-  generic_msg_colour_simple "info"      "$ dse cassandra            # start dse storage"
-  generic_msg_colour_simple "info"      "$ dse cassandra -s -k -g   # start dse storage with search, analytics, graph (pick any combination)"
-fi
-printf "%s\n"
+}

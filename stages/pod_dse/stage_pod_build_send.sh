@@ -46,7 +46,7 @@ do
   source ${tmp_build_file_path}
 
   if [ $VB == true ]; then generic_msg_colour_simple "info-indented" "editing:     'build_folder_path' in 'pod_launch_remote.sh'"; fi
-  generic_sed_string_manipulation "editAfterSubstring" "${tmp_build_folder}misc/pod_dse/pod_launch_remote.sh" "build_folder_path=" "\"${target_folder}pod/builds/pod_dse/${BUILD_FOLDER}/\""
+  generic_sed_string_manipulation "editAfterSubstring" "${tmp_build_folder}lib/pod_dse/pod_dse_script_launch_remote.sh" "build_folder_path=" "\"${target_folder}pod/builds/pod_dse/${BUILD_FOLDER}/\""
 
   if [ $VB == true ]; then generic_msg_colour_simple "info-indented" "editing:     'cassandra-env.sh'"; fi
   pod_local_configure_cassandra-env.sh

@@ -129,3 +129,5 @@ dsefs_untar_folder="${INSTALL_FOLDER}${DSE_VERSION}/resources/dsefs/"
 
 # tomcat
 tomcat_log_folder="${PARENT_LOG_FOLDER}tomcat/"
+
+# -----------------
