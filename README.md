@@ -40,20 +40,24 @@ $ ./misc/dependencies_mac.sh
     - oracle-java  
       - jdk-8uxxx-linux-i586.tar.gz  
 
-4) Duplicate the builds template, rename it and review/edit cluster settings.  
+4) Duplicate a builds template folder, rename it and then review/edit its 'cluster_settings.sh' file.
 `
 $ cp builds/pod_dse/dse-5.x.x_template.sh builds/pod_dse/dse-<version>_<name>  
-`  
+`
+`
 $ vi builds/pod_dse/dse-<version>_<name>/cluster_settings.sh    
 `  
+
 5) Create a servers definition file 'servers/<name>.json' - base it off a duplicated template.  
 `
 $ cp servers/<template>.json servers/<server_def>.json  
 `  
+
 6) Review/edit the 'pods/pod_dse' runtime settings.  
 `
 $ vi pods/pod_dse.sh  
 `  
+
 7) Finally run 'launch-pod' passing in the required parameters.  
 `
 $ ./launch-pod --pod pod_dse --servers <server_def>.json --build dse-<version>_<name>
