@@ -20,7 +20,7 @@ Quick Instructions (to work out of the box):
 
 1) git clone https://github.com/jondowson/pod  
 
-If you are on a mac - first run the dependencies script from the root folder of the repo.  
+For Macs (both running pod and in a cluster) - you will need first run the dependencies script from the root folder of the repo.  
 `  
 $ ./misc/dependencies_mac.sh
 `     
