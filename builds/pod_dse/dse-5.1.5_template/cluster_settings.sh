@@ -2,10 +2,10 @@
 
 # script_name:   cluster_settings.sh
 # author:        jondowson
-# about:         software version and path configurations for a cluster created by 'dse-setup'
+# about:         software version and path configurations for a cluster created by 'pod_dse'
 #                this file should not be renamed !!
 
-# ========================================= EDIT-ME !!
+# ========================================= OPTIONS !!
 
 ## [1] choose java and dse install types
 
@@ -72,10 +72,11 @@ TEMP_FOLDER="${INSTALL_FOLDER}tmp/"
 
 # -----------------CHANGE-WITH-CAUTION!!
 
-# the local folder with datastax/java binaries
-# note: needs to hang off '${LOCAL_TARGET_FOLDER}DSE_SOFTWARE/' !!!!!
+DSE_SOFTWARE="${LOCAL_TARGET_FOLDER}DSE_SOFTWARE/"
+# the local folder holding the datastax/java binaries
+# note: needs to hang off ${DSE_SOFTWARE} and can be same as ${DSE_SOFTWARE} !!!!!
 # i.e. you can add sub-folders - don't forget trailing '/'
-DSE_SOFTWARE="${LOCAL_TARGET_FOLDER}DSE_SOFTWARE/packages/"
+PACKAGES="${LOCAL_TARGET_FOLDER}DSE_SOFTWARE/packages/"
 
 
 # ========================================= END !!
@@ -85,13 +86,13 @@ DSE_SOFTWARE="${LOCAL_TARGET_FOLDER}DSE_SOFTWARE/packages/"
 
 # java
 Djava_tmp_folder="${TEMP_FOLDER}"
-java_tar_file="${DSE_SOFTWARE}oracle-java/${JAVA_TARBALL}"
+java_tar_file="${PACKAGES}oracle-java/${JAVA_TARBALL}"
 java_untar_folder="${INSTALL_FOLDER}oracle-java/"
 
 # -----------------
 
 # dse
-dse_tar_folder="${DSE_SOFTWARE}dse/"
+dse_tar_folder="${PACKAGES}dse/"
 dse_tar_file="${dse_tar_folder}${DSE_TARBALL}"
 dse_untar_config_folder="${INSTALL_FOLDER}${DSE_VERSION}/resources/dse/conf/"
 dse_untar_bin_folder="${INSTALL_FOLDER}${DSE_VERSION}/bin/"

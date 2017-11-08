@@ -1,0 +1,96 @@
+#!/bin/bash
+
+# script_name:   launch-pod.sh
+# author:        jondowson
+# about:         launch a chosen pod with passed in flags 
+
+# ------------------------------------------
+
+# uncomment to see full bash trace (debug)
+# set -x
+
+# timer for script duration
+pod_start=$(date +%s)
+
+# ------------------------------------------
+
+## discover pod system path and source generic scripts
+
+parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+cd ${parent_path}
+pod_home_path="$(pwd)"
+
+source lib/pod_generic/pod_generic_preperation.sh
+pod_generic_preperation_identifyOs
+pod_generic_preperation_sourceGenericLib
+
+# ------------------------------------------
+
+## define pod dependency paths
+
+# the path to the jq folder (pod dependency) 
+jq_folder="${pod_home_path}/third_party/jq-linux64/"
+# the path of the jq executable
+jq_file_path="${jq_folder}jq"
+
+# ------------------------------------------
+
+## handle flags
+
+while test $# -gt 0; do
+  case "$1" in
+    -h|--help)
+        echo help ;;
+    -p|--pod)
+        shift
+        WHICH_POD=$1
+        shift
+        ;;
+    -s|--servers)
+        shift
+        SERVERS_JSON=$1
+        shift
+        ;;
+    -b|--build)
+        shift
+        BUILD_FOLDER=$1
+        shift
+        ;;
+    *)
+        printf "%s\n" "$1 is not a recognised flag !!"
+        exit 1;
+        ;;
+  esac
+done
+
+# make sure flags are passed correctly
+pod_generic_preperation_flagRules
+
+# ------------------------------------------
+
+## source all the files required for this pod and its init script
+
+pod_generic_preperation_sourcePodLib
+pod_generic_preperation_sourcePodStages
+pod_generic_preperation_sourcePodBuilds
+source pods/${WHICH_POD}.sh 
+
+# ------------------------------------------
+
+## servers json definition file
+
+servers_json_path="${pod_home_path}/servers/${SERVERS_JSON}"
+pod_generic_misc_fileExistsCheckAbort ${servers_json_path}
+numberOfServers=$(${jq_folder}jq [.] ${servers_json_path} | tr '"' '\n' | grep 'server_' | wc -l)
+
+# ------------------------------------------
+
+## start the chosen pod
+
+${WHICH_POD}
+
+# ------------------------------------------
+
+## closing message
+
+pod_dse_display_finalMessage "${WHICH_POD}"

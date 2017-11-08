@@ -27,19 +27,19 @@ do
   rack=$(cat ${servers_json_path}          | ${jq_folder}jq '.server_'${id}'.rack'          | tr -d '"')
 
   # add trailing '/' to path if not present
-  target_folder=$(generic_add_trailing_slash "${target_folder}")
+  target_folder=$(pod_generic_misc_addTrailingSlash "${target_folder}")
 
   # ----------
 
-  generic_msg_colour_simple "info" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
+  pod_generic_display_msgColourSimple "info" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
 
   # ----------
 
-  generic_msg_colour_simple "info-indented" "sending:     DSE_SOFTWARE folder"                                          && sleep "${STEP_PAUSE}"
-  scp -q -o LogLevel=QUIET -i ${sshKey} -r ${DSE_SOFTWARE} ${user}@${pubIp}:${target_folder} &                          # run in parallel
+  pod_generic_display_msgColourSimple "info-indented" "sending:     DSE_SOFTWARE folder"                                                             && sleep "${STEP_PAUSE}"
+  scp -q -o LogLevel=QUIET -i ${sshKey} -r ${DSE_SOFTWARE} ${user}@${pubIp}:${target_folder} &                                                       # run in parallel
   # grab pid and capture owner in array
   pid=${!}
-  generic_msg_colour_simple "info-indented" "pid id:      ${yellow}${pid}${reset}"
+  pod_generic_display_msgColourSimple "info-indented" "pid id:      ${yellow}${pid}${reset}"
   pod_software_send_pid_array["${pid}"]="${tag};${pubIp}"
   DSE_pids+=" $pid"
 
@@ -55,8 +55,8 @@ done
 
 # ----------
 
-generic_msg_colour_simple "info-bold" "awaiting scp pids:${reset}"
-generic_msg_colour_simple "info" "${yellow}$DSE_pids${reset}"
+pod_generic_display_msgColourSimple "info-bold" "awaiting scp pids:${reset}"
+pod_generic_display_msgColourSimple "info" "${yellow}$DSE_pids${reset}"
 printf "\n%s"
 
 # ----------
@@ -81,22 +81,22 @@ function task_pod_software_send_report(){
 
 # display report
 
-generic_msg_colour_simple "REPORT" "STAGE SUMMARY: ${reset}Send DSE_SOFTWARE To Each Server"                            && sleep "${STEP_PAUSE}"
+pod_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Send DSE_SOFTWARE To Each Server"                                               && sleep "${STEP_PAUSE}"
 
 if [[ ! -z $DSE_SOFTWARE_pid_failures ]]; then
-  generic_msg_colour_simple "info-indented" "${cross} Problems distributing DSE_SOFTWARE to servers"                    && sleep "${STEP_PAUSE}"
+  pod_generic_display_msgColourSimple "info-indented" "${cross} Problems distributing DSE_SOFTWARE to servers"                                       && sleep "${STEP_PAUSE}"
   printf "%s\n"
   for k in "${!DSE_SOFTWARE_server_pid_array[@]}"
   do
     if [[ "${DSE_SOFTWARE_pid_failures}" == *"$k"* ]]; then
-      generic_parameter_expansion_delimeter "${pod_software_send_pid_array[$k]}" ";" "1"
+      pod_generic_misc_expansionDelimiter "${pod_software_send_pid_array[$k]}" ";" "1"
       server="$_D1_"
       ip=$_D2_
-      generic_msg_colour_simple "error-tight" "pid ${yellow}${k}${red} failed for ${yellow}${server}@${ip}${red}"
+      pod_generic_display_msgColourSimple "error-tight" "pid ${yellow}${k}${red} failed for ${yellow}${server}@${ip}${red}"
     fi
   done
   printf "%s\n"
-else
-  generic_msg_colour_simple "success" "Distributed 'DSE_SOFTWARE' to all servers"                     && sleep "${STEP_PAUSE}"
+else 
+  pod_generic_display_msgColourSimple "success" "Distributed 'DSE_SOFTWARE' to all servers"                                                          && sleep "${STEP_PAUSE}"
 fi
 }

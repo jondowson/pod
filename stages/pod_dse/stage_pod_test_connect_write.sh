@@ -26,11 +26,11 @@ do
   rack=$(cat ${servers_json_path}          | ${jq_folder}jq '.server_'${id}'.rack'          | tr -d '"')
 
   # add trailing '/' to path if not present
-  target_folder=$(generic_add_trailing_slash "${target_folder}")
-
+  target_folder=$(pod_generic_misc_addTrailingSlash "${target_folder}")
+  
 # ----------
 
-  generic_msg_colour_simple "info" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
+  pod_generic_display_msgColourSimple "info" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
 
 # ----------
 
@@ -42,18 +42,18 @@ do
       ssh -q -i ${sshKey} ${user}@${pubIp} exit
       status=${?}
       if [[ "${status}" == "0" ]]; then
-        generic_msg_colour_simple "info-indented" "ssh return code: ${green}${status}"
+        pod_generic_display_msgColourSimple "info-indented" "ssh return code: ${green}${status}"
       else
-        generic_msg_colour_simple "info-indented" "ssh return code: ${red}${status} ${white}(retry ${retry}/5)"
+        pod_generic_display_msgColourSimple "info-indented" "ssh return code: ${red}${status} ${white}(retry ${retry}/5)"
       fi
       pod_test_connect_error_array["${tag}"]="${status};${pubIp}"
       ((retry++))
     done
     printf "%s\n"
   fi  
-
 done
 }
+
 
 #-------------------------------------------
 
@@ -65,7 +65,7 @@ declare -a pod_test_connect_report_array
 count=0
 for k in "${!pod_test_connect_error_array[@]}"
 do
-  generic_parameter_expansion_delimeter ${pod_test_connect_error_array[$k]} ";" "1"
+  pod_generic_misc_expansionDelimiter ${pod_test_connect_error_array[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
     pod_test_connect_fail="true"
     pod_test_connect_report_array["${count}"]="${yellow}${k}${white} at address ${yellow}${_D2_}${white} with error code ${red}${_D1_}${reset}"
@@ -75,17 +75,17 @@ done
 
 if [[ "${pod_test_connect_fail}" == "true" ]]; then
   printf "%s\n"
-  generic_msg_colour_simple "info-bold" "--> ${red}Connection errors report:"                                           && sleep "${STEP_PAUSE}"
+  pod_generic_display_msgColourSimple "info-bold" "--> ${red}Connection errors report:"                                                    && sleep "${STEP_PAUSE}"
   printf "%s\n"
   for k in "${pod_test_connect_report_array[@]}"
   do
-    generic_msg_colour_simple "info" "${cross} ${k}"
-    printf "%s\n"
-    generic_msg_colour_simple "error" "Aborting script as not all servers are reachable"
-    exit 1;
+    pod_generic_display_msgColourSimple "info" "${cross} ${k}"
   done
+  printf "%s\n"
+  pod_generic_display_msgColourSimple "error" "Aborting script as not all servers are reachable"
+  exit 1;
 else
-  generic_msg_colour_simple "success" "Connectivity test passed for all servers"                                        && sleep "${STEP_PAUSE}"
+  pod_generic_display_msgColourSimple "success" "Connectivity test passed for all servers"                                                 && sleep "${STEP_PAUSE}"
 fi
 }
 
@@ -111,20 +111,20 @@ do
   rack=$(cat ${servers_json_path}          | ${jq_folder}jq '.server_'${id}'.rack'          | tr -d '"')
 
   # add trailing '/' to path if not present
-  target_folder=$(generic_add_trailing_slash "${target_folder}")
+  target_folder=$(pod_generic_misc_addTrailingSlash "${target_folder}")
 
 # ----------
 
-  if [ $VB == true ]; then generic_msg_colour_simple "info-indented" "editing:     'LOCAL_TARGET_FOLDER' in 'cluster_settings.sh'"; fi
-  generic_sed_string_manipulation "editAfterSubstring" "${tmp_build_file_path}"   "LOCAL_TARGET_FOLDER=" "\"${target_folder}\""
+  if [ $VB == true ]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'LOCAL_TARGET_FOLDER' in 'cluster_settings.sh'"; fi
+  pod_generic_misc_sedStringManipulation "editAfterSubstring" "${tmp_build_file_path}"   "LOCAL_TARGET_FOLDER=" "\"${target_folder}\""
   source ${tmp_build_file_path}
 
 # ----------
 
-  generic_msg_colour_simple "info" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
+  pod_generic_display_msgColourSimple "info" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
   printf "\n%s"
-  generic_msg_colour_simple "info-indented" "configuring:    bespoke server paths"                                      && sleep ${STEP_PAUSE}
-  generic_msg_colour_simple "info-indented" "writing-to:     bespoke server paths"
+  pod_generic_display_msgColourSimple "info-indented" "configuring:    bespoke server paths"                                               && sleep ${STEP_PAUSE}
+  pod_generic_display_msgColourSimple "info-indented" "writing-to:     bespoke server paths"
   printf "%s\n" "${red}"
   
   declare -a mkdir_array
@@ -165,7 +165,7 @@ do
   
   for i in "${data_file_directories_array[@]}" 
   do 
-    generic_parameter_expansion_delimeter "$i" ";" "2"; 
+    pod_generic_misc_expansionDelimiter "$i" ";" "2"; 
     writeFolder="${_D1_}"
     status="999"
     if [[ "${status}" != "0" ]]; then
@@ -184,7 +184,7 @@ do
   
   for i in "${dsefs_data_file_directories_array[@]}" 
   do 
-  generic_parameter_expansion_delimeter "$i" ";" "2"; 
+  pod_generic_misc_expansionDelimiter "$i" ";" "2"; 
   writeFolder="${_D1_}"
   status="999"
   if [[ "${status}" != "0" ]]; then
@@ -198,6 +198,8 @@ do
     done
   fi  
   done
+
+ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "[ -d ${INSTALL_FOLDER} ] && rm -rf ${INSTALL_FOLDER}" exit
 done
 }
 
@@ -210,7 +212,7 @@ declare -a pod_test_send_report_array_1
 count=0
 for k in "${!pod_test_send_error_array_1[@]}"
 do
-  generic_parameter_expansion_delimeter ${pod_test_send_error_array_1[$k]} ";" "1"
+  pod_generic_misc_expansionDelimiter ${pod_test_send_error_array_1[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
     pod_test_send_fail="true"
     pod_test_send_report_array_1["${count}"]="could not make folder: ${yellow}${k} ${white}on server ${yellow}${_D2_}${reset}"
@@ -224,7 +226,7 @@ declare -a pod_test_send_report_array_2
 count=0
 for k in "${!pod_test_send_error_array_2[@]}"
 do
-  generic_parameter_expansion_delimeter ${pod_test_send_error_array_2[$k]} ";" "1"
+  pod_generic_misc_expansionDelimiter ${pod_test_send_error_array_2[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
     pod_test_send_fail="true"
     pod_test_send_report_array_2["${count}"]="could not make folder: ${yellow}${k} ${white}on server ${yellow}${_D2_}${reset}"
@@ -238,7 +240,7 @@ declare -a pod_test_send_report_array_3
 count=0
 for k in "${!pod_test_send_error_array_3[@]}"
 do
-  generic_parameter_expansion_delimeter ${pod_test_send_error_array_3[$k]} ";" "1"
+  pod_generic_misc_expansionDelimiter ${pod_test_send_error_array_3[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
     pod_test_send_fail="true"
     pod_test_send_report_array_3["${count}"]="could not make folder: ${yellow}${k} ${white}on server ${yellow}${_D2_}${reset}"
@@ -250,27 +252,27 @@ done
 
 if [[ "${pod_test_send_fail}" == "true" ]]; then
   printf "%s\n"
-  generic_msg_colour_simple "info-bold" "--> ${red}Write-paths error report:"                                           && sleep "${STEP_PAUSE}"
+  pod_generic_display_msgColourSimple "info-bold" "--> ${red}Write-paths error report:"                                           && sleep "${STEP_PAUSE}"
   printf "%s\n"
   
   for k in "${pod_test_send_report_array_1[@]}"
   do
-    generic_msg_colour_simple "info" "${cross} ${k}"
+    pod_generic_display_msgColourSimple "info" "${cross} ${k}"
   done
   printf "%s\n"
   
   for k in "${pod_test_send_report_array_2[@]}"
   do
-    generic_msg_colour_simple "info" "${cross} ${k}"
+    pod_generic_display_msgColourSimple "info" "${cross} ${k}"
   done
   
   for k in "${pod_test_send_report_array_3[@]}"
   do
-    generic_msg_colour_simple "info" "${cross} ${k}"
+    pod_generic_display_msgColourSimple "info" "${cross} ${k}"
   done
-  generic_msg_colour_simple "error" "Aborting script as not all paths are writeable"
+  pod_generic_display_msgColourSimple "error" "Aborting script as not all paths are writeable"
   exit 1;
 else
-  generic_msg_colour_simple "success" "Write-paths test passed for all servers"                                         && sleep "${STEP_PAUSE}"
+  pod_generic_display_msgColourSimple "success" "Write-paths test passed for all servers"                                         && sleep "${STEP_PAUSE}"
 fi
 }

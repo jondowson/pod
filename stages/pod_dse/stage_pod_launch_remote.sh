@@ -24,18 +24,18 @@ do
   rack=$(cat ${servers_json_path}          | ${jq_folder}jq '.server_'${id}'.rack'          | tr -d '"')
 
   # add trailing '/' to path if not present
-  target_folder=$(generic_add_trailing_slash "${target_folder}")
+  target_folder=$(pod_generic_misc_addTrailingSlash "${target_folder}")
 
 # -----
 
-  generic_msg_colour_simple "info" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
+  pod_generic_display_msgColourSimple "info" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
   printf "\n%s"
 
-  generic_msg_colour_simple "info-indented" "launch:      pod remotely"                                                          && sleep "${STEP_PAUSE}"
-  ssh -ttq -o "BatchMode yes" -o "ForwardX11=no" ${user}@${pubIp} "${target_folder}pod/lib/pod_dse/pod_dse_script_launch_remote.sh" &  # run in parallel
+  pod_generic_display_msgColourSimple "info-indented" "launch:      pod remotely"                                                          && sleep "${STEP_PAUSE}"
+  ssh -ttq -o "BatchMode yes" -o "ForwardX11=no" ${user}@${pubIp} "${target_folder}pod/lib/pod_dse/pod_dse_script_launch_remote.sh" &                # run in parallel
   # grab pid and capture owner in array
   pid=$!
-  generic_msg_colour_simple "info-indented" "pid id:      ${yellow}${pid}${reset}"
+  pod_generic_display_msgColourSimple "info-indented" "pid id:      ${yellow}${pid}${reset}"
   pod_build_launch_pid_array["${pid}"]="${tag};${pubIp}"
   runBuild_pids+=" $pid"
 
@@ -54,8 +54,8 @@ done
 
 # -----
 
-generic_msg_colour_simple "info-bold" "awaiting ssh pids:${reset}"
-generic_msg_colour_simple "info" "${yellow}$runBuild_pids${reset}"
+pod_generic_display_msgColourSimple "info-bold" "awaiting ssh pids:${reset}"
+pod_generic_display_msgColourSimple "info" "${yellow}$runBuild_pids${reset}"
 printf "\n%s"
 
 # -----
@@ -78,22 +78,22 @@ done
 
 function task_pod_launch_remote_report(){
 
-generic_msg_colour_simple "REPORT" "STAGE SUMMARY: ${reset}Launch Pod On Each Server"                                            && sleep "${STEP_PAUSE}"
+pod_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Launch Pod On Each Server"                                            && sleep "${STEP_PAUSE}"
 
 if [[ ! -z $runBuild_pid_failures ]]; then
-  generic_msg_colour_simple "info-indented" "${cross} Problems executing 'pod' on servers"                                       && sleep "${STEP_PAUSE}"
+  pod_generic_display_msgColourSimple "info-indented" "${cross} Problems executing 'pod' on servers"                                       && sleep "${STEP_PAUSE}"
   printf "%s\n"
   for k in "${!pod_build_launch_pid_array[@]}"
   do
     if [[ "${runBuild_pid_failures}" == *"$k"* ]]; then
-      generic_parameter_expansion_delimeter "${pod_build_launch_pid_array[$k]}" ";" "1"
+      pod_generic_misc_expansionDelimiter "${pod_build_launch_pid_array[$k]}" ";" "1"
       server="$_D1_"
       ip=$_D2_
-      generic_msg_colour_simple "error-tight" "pid ${yellow}${k}${red} failed for ${yellow}${server}@${ip}${red}"
+      pod_generic_display_msgColourSimple "error-tight" "pid ${yellow}${k}${red} failed for ${yellow}${server}@${ip}${red}"
     fi
   done
   printf "%s\n"
 else
-  generic_msg_colour_simple "success" "Executed pod builds on all servers"                                                       && sleep "${STEP_PAUSE}"
+  pod_generic_display_msgColourSimple "success" "Executed pod builds on all servers"                                                       && sleep "${STEP_PAUSE}"
 fi
 }
