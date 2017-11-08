@@ -43,7 +43,7 @@ $ ./misc/dependencies_mac.sh
 4) Duplicate a builds template folder, rename it and then review/edit its 'cluster_settings.sh' file.    
 `
 $ cp builds/pod_dse/dse-5.x.x_template.sh builds/pod_dse/dse-<version>_<name>  
-`
+`  
 `
 $ vi builds/pod_dse/dse-<version>_<name>/cluster_settings.sh    
 `  
