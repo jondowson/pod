@@ -68,7 +68,7 @@ declare -A pod_test_send_error_array_1
 declare -A pod_test_send_error_array_2
 declare -A pod_test_send_error_array_3
 declare -A pod_build_send_error_array
-declare -A pod_software_send_pid_array 
+declare -A pod_software_send_pid_array
 declare -A pod_build_run_pid_array
 declare -A pod_build_launch_pid_array
 
@@ -77,13 +77,13 @@ declare -A pod_build_launch_pid_array
 ## test specified files exist
 
 pod_dse_setup_checkFilesExist
- 
+
 # ------------------------------------------
 
 ## STAGE [1]
 
 # prepare local 'resources' folder - the basis for the 'build(s)'
-if [ "${REGENERATE_RESOURCES}" == "true" ]; then 
+if [ "${REGENERATE_RESOURCES}" == "true" ]; then
   pod_dse_display_banner
   pod_generic_display_msgColourSimple "STAGE" "STAGE: Preparing 'resources' Folder"
   pod_generic_display_msgColourSimple "TASK"  "TASK: Stripping out non config files"
@@ -97,7 +97,7 @@ pod_dse_setup_duplicateResourcesFolder
 # ------------------------------------------
 
 ## STAGE [2]
- 
+
 pod_dse_display_banner
 pod_generic_display_msgColourSimple "STAGE" "STAGE: Test Cluster Readiness"
 pod_generic_display_msgColourSimple "TASK"  "TASK: Testing server connectivity"
@@ -110,7 +110,7 @@ pod_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 
 # ------------------------------------------
 
-## STAGE [3] 
+## STAGE [3]
 
 pod_dse_display_banner
 pod_generic_display_msgColourSimple "STAGE" "STAGE: Create Pod For Each Server"
@@ -118,11 +118,11 @@ pod_generic_display_msgColourSimple "TASK"  "TASK: Configuring and sending pod "
 task_pod_build_send
 task_pod_build_send_report
 rm -rf "${tmp_folder}"
-pod_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..." 
+pod_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 
 # ------------------------------------------
 
-## STAGE [4] 
+## STAGE [4]
 
 if [[ "${SEND_DSE_SOFTWARE}" == true ]]; then
   pod_dse_display_banner
@@ -130,23 +130,23 @@ if [[ "${SEND_DSE_SOFTWARE}" == true ]]; then
   pod_generic_display_msgColourSimple "TASK"  "TASK: Sending DSE_SOFTWARE in parallel"
   task_pod_software_send
   task_pod_software_send_report
-  pod_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..." 
+  pod_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 fi
 
 # ------------------------------------------
 
-## STAGE [5] 
+## STAGE [5]
 
 pod_dse_display_banner
 pod_generic_display_msgColourSimple "STAGE" "STAGE: Launch Pod On Each Server"
 pod_generic_display_msgColourSimple "TASK"  "TASK: Running launch script remotely"
 task_pod_launch_remote
 task_pod_launch_remote_report
-pod_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..." 
+pod_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 
 # ------------------------------------------
 
-## FINNISH 
+## FINNISH
 
 pod_dse_display_banner
 pod_generic_display_msgColourSimple "STAGE" "FINISHED !!"                                                                        && sleep "${STEP_PAUSE}"

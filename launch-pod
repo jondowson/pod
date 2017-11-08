@@ -2,7 +2,7 @@
 
 # script_name:   launch-pod.sh
 # author:        jondowson
-# about:         launch a chosen pod with passed in flags 
+# about:         launch a chosen pod with passed in flags
 
 # ------------------------------------------
 
@@ -28,10 +28,13 @@ pod_generic_preperation_sourceGenericLib
 
 ## define pod dependency paths
 
-# the path to the jq folder (pod dependency) 
-jq_folder="${pod_home_path}/third_party/jq-linux64/"
-# the path of the jq executable
-jq_file_path="${jq_folder}jq"
+if [[ "${os}" == "Mac" ]]; then
+  jq_folder=""
+  jq_file_path="jq"
+else
+  jq_folder="${pod_home_path}/third_party/jq-linux64/"
+  jq_file_path="${jq_folder}jq"
+fi
 
 # ------------------------------------------
 
@@ -73,7 +76,7 @@ pod_generic_preperation_flagRules
 pod_generic_preperation_sourcePodLib
 pod_generic_preperation_sourcePodStages
 pod_generic_preperation_sourcePodBuilds
-source pods/${WHICH_POD}.sh 
+source pods/${WHICH_POD}.sh
 
 # ------------------------------------------
 

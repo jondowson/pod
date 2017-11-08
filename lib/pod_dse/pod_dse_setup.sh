@@ -2,8 +2,8 @@
 
 # script_name:   pod_dse_setup.sh
 # author:        jondowson
-# about:         functions to source scripts and check files exist for 'pod_dse' 
- 
+# about:         functions to source scripts and check files exist for 'pod_dse'
+
 # ------------------------------------------
 
 function pod_dse_setup_checkFilesExist(){
@@ -23,10 +23,12 @@ fi
 # test java folder is available
 if [[ "${JAVA_INSTALL_TYPE}" == ""tar"" ]]; then
   pod_generic_misc_fileExistsCheckAbort "${java_tar_file}"
-fi  
+fi
 
 # check jq library is available
-pod_generic_misc_fileExistsCheckAbort "${jq_file_path}"
+if [[ "${os}" != "Mac" ]]; then
+  pod_generic_misc_fileExistsCheckAbort "${jq_file_path}"
+fi
 }
 
 # ------------------------------------------

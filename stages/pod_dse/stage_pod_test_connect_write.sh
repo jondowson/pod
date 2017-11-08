@@ -2,7 +2,7 @@
 
 # script_name:   stage_pod_test_connect_write.sh
 # author:        jondowson
-# about:         test connectivity and write-path availability for all servers 
+# about:         test connectivity and write-path availability for all servers
 
 #-------------------------------------------
 
@@ -27,7 +27,7 @@ do
 
   # add trailing '/' to path if not present
   target_folder=$(pod_generic_misc_addTrailingSlash "${target_folder}")
-  
+
 # ----------
 
   pod_generic_display_msgColourSimple "info" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
@@ -37,7 +37,7 @@ do
   status="999"
   if [[ "${status}" != "0" ]]; then
     retry=1
-    until [[ "${retry}" == "6" ]] || [[ "${status}" == "0" ]] 
+    until [[ "${retry}" == "6" ]] || [[ "${status}" == "0" ]]
     do
       ssh -q -i ${sshKey} ${user}@${pubIp} exit
       status=${?}
@@ -50,7 +50,7 @@ do
       ((retry++))
     done
     printf "%s\n"
-  fi  
+  fi
 done
 }
 
@@ -126,77 +126,77 @@ do
   pod_generic_display_msgColourSimple "info-indented" "configuring:    bespoke server paths"                                               && sleep ${STEP_PAUSE}
   pod_generic_display_msgColourSimple "info-indented" "writing-to:     bespoke server paths"
   printf "%s\n" "${red}"
-  
+
   declare -a mkdir_array
-  mkdir_array[0]="${target_folder}" 
-  mkdir_array[1]="${cassandra_log_folder}" 
-  mkdir_array[2]="${gremlin_log_folder}" 
-  mkdir_array[3]="${tomcat_log_folder}" 
-  mkdir_array[4]="${spark_master_log_folder}" 
-  mkdir_array[5]="${spark_worker_log_folder}" 
-  mkdir_array[6]="${commitlog_directory}" 
-  mkdir_array[7]="${cdc_raw_directory}" 
-  mkdir_array[8]="${saved_caches_directory}" 
+  mkdir_array[0]="${target_folder}"
+  mkdir_array[1]="${cassandra_log_folder}"
+  mkdir_array[2]="${gremlin_log_folder}"
+  mkdir_array[3]="${tomcat_log_folder}"
+  mkdir_array[4]="${spark_master_log_folder}"
+  mkdir_array[5]="${spark_worker_log_folder}"
+  mkdir_array[6]="${commitlog_directory}"
+  mkdir_array[7]="${cdc_raw_directory}"
+  mkdir_array[8]="${saved_caches_directory}"
   mkdir_array[9]="${hints_directory}"
-  mkdir_array[10]="${Djava_tmp_folder}" 
-  mkdir_array[11]="${dsefs_untar_folder}" 
+  mkdir_array[10]="${Djava_tmp_folder}"
+  mkdir_array[11]="${dsefs_untar_folder}"
   mkdir_array[12]="${spark_local_data}"
-  mkdir_array[13]="${spark_worker_data}" 
+  mkdir_array[13]="${spark_worker_data}"
   mkdir_array[14]="${java_untar_folder}"
 
 # ----------
-      
+
   for i in "${mkdir_array[@]}"
   do
     status="999"
     if [[ "${status}" != "0" ]]; then
       retry=0
-      until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]] 
+      until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
       do
         ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "[ ! -d ${i} ] && mkdir -p ${i} && rm -rf ${i} || mkdir ${i}dummyFolder && rm -rf ${i}dummyFolder" exit
         status=${?}
         pod_test_send_error_array_1["${i}"]="${status};${tag}"
         ((retry++))
       done
-    fi  
-  done   
+    fi
+  done
 
 # ----------
-  
-  for i in "${data_file_directories_array[@]}" 
-  do 
-    pod_generic_misc_expansionDelimiter "$i" ";" "2"; 
+
+  for i in "${data_file_directories_array[@]}"
+  do
+    pod_generic_misc_expansionDelimiter "$i" ";" "2";
     writeFolder="${_D1_}"
     status="999"
     if [[ "${status}" != "0" ]]; then
       retry=0
-      until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]] 
+      until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
       do
         ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "[ ! -d ${writeFolder} ] && mkdir -p ${writeFolder} && rm -rf ${writeFolder} || mkdir ${writeFolder}dummyFolder && rm -rf ${writeFolder}dummyFolder" exit
         status=${?}
         pod_test_send_error_array_2["${i}"]="${status};${tag}"
         ((retry++))
       done
-    fi  
-  done 
+    fi
+  done
 
 # ----------
-  
-  for i in "${dsefs_data_file_directories_array[@]}" 
-  do 
-  pod_generic_misc_expansionDelimiter "$i" ";" "2"; 
+
+  for i in "${dsefs_data_file_directories_array[@]}"
+  do
+  pod_generic_misc_expansionDelimiter "$i" ";" "2";
   writeFolder="${_D1_}"
   status="999"
   if [[ "${status}" != "0" ]]; then
     retry=0
-    until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]] 
+    until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
     do
       ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "[ ! -d ${writeFolder} ] && mkdir -p ${writeFolder} && rm -rf ${writeFolder} || mkdir ${writeFolder}dummyFolder && rm -rf ${writeFolder}dummyFolder" exit
       status=${?}
       pod_test_send_error_array_3["${i}"]="${status};${tag}"
       ((retry++))
     done
-  fi  
+  fi
   done
 
 ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "[ -d ${INSTALL_FOLDER} ] && rm -rf ${INSTALL_FOLDER}" exit
@@ -254,18 +254,18 @@ if [[ "${pod_test_send_fail}" == "true" ]]; then
   printf "%s\n"
   pod_generic_display_msgColourSimple "info-bold" "--> ${red}Write-paths error report:"                                           && sleep "${STEP_PAUSE}"
   printf "%s\n"
-  
+
   for k in "${pod_test_send_report_array_1[@]}"
   do
     pod_generic_display_msgColourSimple "info" "${cross} ${k}"
   done
   printf "%s\n"
-  
+
   for k in "${pod_test_send_report_array_2[@]}"
   do
     pod_generic_display_msgColourSimple "info" "${cross} ${k}"
   done
-  
+
   for k in "${pod_test_send_report_array_3[@]}"
   do
     pod_generic_display_msgColourSimple "info" "${cross} ${k}"

@@ -107,8 +107,10 @@ case "${1}" in
       ${cmd} "/#BOF CLEAN-${searchString}/,/#EOF CLEAN-${searchString}/d" ${file} ;;
   "deleteEverythingAfterIncludingSubstring" )
       ${cmd} "/${searchString}/,$d" ${file} ;;
-  "hashCommentOutMatchingLine" )    
-      ${cmd} -e "/${searchString}/ s/^#*/#/" -i ${file} ;;     
+  "hashCommentOutMatchingLine" )
+      ${cmd} -e "/${searchString}/ s/^#*/#/" -i ${file} ;;
+  "searchAndReplaceStringGlobal" )
+      ${cmd} -e "s,${searchString},${newValue},g" -i ${file} ;;
 esac
 }
 
