@@ -30,7 +30,7 @@
     "server_1":{
       "tag": "storage_1",
       "user": "<user>",
-      "sshKey": "/home/<user>/.ssh/id_rsa.pub",
+      "sshKey": "/home/<user>/.ssh/id_rsa",
       "target_folder": "/home/<user>/Desktop",
       "pubIp": "127.0.0.1",
       "prvIp": "127.0.0.1",
@@ -50,8 +50,8 @@
         "/home/<user>/Desktop/dse-installations/data.logs/data2"
       ],
       "dsefs_data": [
-        "/home/<user>/Desktop/dse-installations/data.logs/data/dsefs/;1.0;5368709",
-        "/home/<user>/Desktop/home/semblent/dse-installations/data.logs/data/dsefs2/;1.0;5368709"
+        "/home/<user>/Desktop/dse-installations/data.logs/data/dsefs1/;1.0;5368709",
+        "/home/<user>/Desktop/dse-installations/data.logs/data/dsefs2/;1.0;5368709"
       ]
     }
 }

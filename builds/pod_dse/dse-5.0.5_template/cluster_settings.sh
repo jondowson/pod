@@ -34,8 +34,8 @@ VNODES="8"                                      # specify a value (8,16,32) for 
 ## [3] choose software versions
 
 # note: on a Mac, Java installs cannot be managed from tars - so always ignored
-JAVA_VERSION="jre1.8.0_152"
-JAVA_TARBALL="jre-8u152-linux-x64.tar.gz"
+JAVA_VERSION="jdk1.8.0_141"
+JAVA_TARBALL="jdk-8u141-linux-i586.tar.gz"
 # -----
 DSE_VERSION="dse-5.0.5"
 DSE_TARBALL="${DSE_VERSION}-bin.tar.gz"
@@ -51,7 +51,7 @@ DSE_TARBALL="${DSE_VERSION}-bin.tar.gz"
 
 # the target folder is where the DSE_SOFTWARE and pod folders will be copied to
 # note: the LOCAL_TARGET_FOLDER applies to the machine running pod and will be auto-edited for remote servers
-LOCAL_TARGET_FOLDER="/Users/jondowson/Desktop/"
+LOCAL_TARGET_FOLDER="/home/jd/Desktop/"
 
 # -----
 

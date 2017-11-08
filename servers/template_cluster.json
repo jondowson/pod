@@ -30,7 +30,7 @@
     "server_1":{
       "tag": "storage_1",
       "user": "<user>",
-      "sshKey": "/home/<user>/.ssh/id_rsa.pub",
+      "sshKey": "/home/<user>/.ssh/id_rsa",
       "target_folder": "/home/<user>/Desktop",
       "pubIp": "172.0.0.1",
       "prvIp": "127.0.0.1",
@@ -50,14 +50,14 @@
         "/home/<user>/Desktop/dse-installations/data.logs/data2"
       ],
       "dsefs_data": [
-        "/home/<user>/Desktop/dse-installations/data.logs/data/dsefs/;1.0;5368709",
-        "/home/<user>/Desktop/dse-installations/data.logs/data2/dsefs/;1.0;5368709"
+        "/home/<user>/Desktop/dse-installations/data.logs/data/dsefs1/;1.0;5368709",
+        "/home/<user>/Desktop/dse-installations/data.logs/data/dsefs2/;1.0;5368709"
       ]
     },
     "server_2":{
       "tag": "storage_2",
       "user": "<user>",
-      "sshKey": "/home/<user>/.ssh/id_rsa.pub",
+      "sshKey": "/home/<user>/.ssh/id_rsa",
       "target_folder": "/home/<user>/Desktop",
       "pubIp": "172.0.0.2",
       "prvIp": "127.0.0.2",
@@ -77,14 +77,14 @@
         "/home/<user>/Desktop/dse-installations/data.logs/data2"
       ],
       "dsefs_data": [
-        "/home/<user>/Desktop/dse-installations/data.logs/data/dsefs/;1.0;5368709",
-        "/home/<user>/Desktop/dse-installations/data.logs/data2/dsefs/;1.0;5368709"
+        "/home/<user>/Desktop/dse-installations/data.logs/data/dsefs1/;1.0;5368709",
+        "/home/<user>/Desktop/dse-installations/data.logs/data/dsefs2/;1.0;5368709"
       ]
     },
     "server_3":{
       "tag": "storage_3",
       "user": "<user>",
-      "sshKey": "/home/<user>/.ssh/id_rsa.pub",
+      "sshKey": "/home/<user>/.ssh/id_rsa",
       "target_folder": "/home/<user>/Desktop",
       "pubIp": "172.0.0.3",
       "prvIp": "127.0.0.3",
@@ -104,14 +104,14 @@
         "/home/<user>/Desktop/dse-installations/data.logs/data2"
       ],
       "dsefs_data": [
-        "/home/<user>/Desktop/dse-installations/data.logs/data/dsefs/;1.0;5368709",
-        "/home/<user>/Desktop/dse-installations/data.logs/data2/dsefs/;1.0;5368709"
+        "/home/<user>/Desktop/dse-installations/data.logs/data/dsefs1/;1.0;5368709",
+        "/home/<user>/Desktop/dse-installations/data.logs/data/dsefs2/;1.0;5368709"
       ]
   },
   "server_4":{
     "tag": "search_analytics_1",
     "user": "<user>",
-    "sshKey": "/home/<user>/.ssh/id_rsa.pub",
+    "sshKey": "/home/<user>/.ssh/id_rsa",
     "target_folder": "/home/<user>/Desktop",
     "pubIp": "172.0.0.4",
     "prvIp": "127.0.0.4",
@@ -131,8 +131,8 @@
       "/home/<user>/Desktop/dse-installations/data.logs/data2"
     ],
     "dsefs_data": [
-      "/home/<user>/Desktop/dse-installations/data.logs/data/dsefs/;1.0;5368709",
-      "/home/<user>/Desktop/dse-installations/data.logs/data2/dsefs/;1.0;5368709"
+      "/home/<user>/Desktop/dse-installations/data.logs/data/dsefs1/;1.0;5368709",
+      "/home/<user>/Desktop/dse-installations/data.logs/data/dsefs2/;1.0;5368709"
     ]
   }
 }
