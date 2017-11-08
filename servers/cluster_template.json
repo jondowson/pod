@@ -4,7 +4,7 @@
 #             --> 'server_1','server_2', 'server_3' ...
 
 # tag:            server tag should be relevant and unique - perhaps its hostname
-# user:           account used to connect to and setup datastax on remote server 
+# user:           account used to connect to and setup datastax on remote server
 # sshKey:         full path to local copy of server authentication file
 # target_folder:  where 'DSE_SOFTWARE' + 'dse-installations' are put
 # pubIp:          specify here what will be used to connect - could be internal 'private ip'!
@@ -29,7 +29,7 @@
 {
     "server_1":{
       "tag": "storage_1",
-      "user": "datastax",
+      "user": "<user>",
       "sshKey": "/home/<user>/.ssh/id_rsa.pub",
       "target_folder": "/home/<user>/Desktop",
       "pubIp": "172.0.0.1",
@@ -37,7 +37,7 @@
       "listen_address": "prvIp",
       "seeds": "127.0.0.2,127.0.0.3",
       "token": "",
-      "dc": "dc1",      
+      "dc": "dc1",
       "rack": "rack1",
       "mode": {
         "search": "false",
@@ -52,11 +52,11 @@
       "dsefs_data": [
         "/home/<user>/Desktop/dse-installations/data.logs/data/dsefs/;1.0;5368709",
         "/home/<user>/Desktop/dse-installations/data.logs/data2/dsefs/;1.0;5368709"
-      ]    
+      ]
     },
     "server_2":{
       "tag": "storage_2",
-      "user": "datastax",
+      "user": "<user>",
       "sshKey": "/home/<user>/.ssh/id_rsa.pub",
       "target_folder": "/home/<user>/Desktop",
       "pubIp": "172.0.0.2",
@@ -64,7 +64,7 @@
       "listen_address": "prvIp",
       "seeds": "127.0.0.1,127.0.0.3",
       "token": "",
-      "dc": "dc1",      
+      "dc": "dc1",
       "rack": "rack1",
       "mode": {
         "search": "false",
@@ -79,11 +79,11 @@
       "dsefs_data": [
         "/home/<user>/Desktop/dse-installations/data.logs/data/dsefs/;1.0;5368709",
         "/home/<user>/Desktop/dse-installations/data.logs/data2/dsefs/;1.0;5368709"
-      ]    
+      ]
     },
     "server_3":{
       "tag": "storage_3",
-      "user": "datastax",
+      "user": "<user>",
       "sshKey": "/home/<user>/.ssh/id_rsa.pub",
       "target_folder": "/home/<user>/Desktop",
       "pubIp": "172.0.0.3",
@@ -91,7 +91,7 @@
       "listen_address": "prvIp",
       "seeds": "127.0.0.1,127.0.0.2",
       "token": "",
-      "dc": "dc1",      
+      "dc": "dc1",
       "rack": "rack1",
       "mode": {
         "search": "false",
@@ -106,12 +106,11 @@
       "dsefs_data": [
         "/home/<user>/Desktop/dse-installations/data.logs/data/dsefs/;1.0;5368709",
         "/home/<user>/Desktop/dse-installations/data.logs/data2/dsefs/;1.0;5368709"
-      ]    
-    },
+      ]
   },
   "server_4":{
     "tag": "search_analytics_1",
-    "user": "datastax",
+    "user": "<user>",
     "sshKey": "/home/<user>/.ssh/id_rsa.pub",
     "target_folder": "/home/<user>/Desktop",
     "pubIp": "172.0.0.4",
@@ -119,7 +118,7 @@
     "listen_address": "prvIp",
     "seeds": "127.0.0.1,127.0.0.2",
     "token": "",
-    "dc": "dc1",      
+    "dc": "dc1",
     "rack": "rack1",
     "mode": {
       "search": "true",
@@ -134,6 +133,6 @@
     "dsefs_data": [
       "/home/<user>/Desktop/dse-installations/data.logs/data/dsefs/;1.0;5368709",
       "/home/<user>/Desktop/dse-installations/data.logs/data2/dsefs/;1.0;5368709"
-    ]    
+    ]
   }
 }
