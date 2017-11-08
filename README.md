@@ -42,7 +42,7 @@ $ ./misc/dependencies_mac.sh
 
 4) Duplicate a builds template folder, rename it and then review/edit its 'cluster_settings.sh' file.    
 `
-$ cp builds/pod_dse/dse-5.x.x_template.sh builds/pod_dse/dse-x.x.x_nameIt  
+$ cp -r builds/pod_dse/dse-5.x.x_template  builds/pod_dse/dse-x.x.x_nameIt  
 `  
 `
 $ vi builds/pod_dse/dse-<version>_<name>/cluster_settings.sh    
@@ -50,7 +50,7 @@ $ vi builds/pod_dse/dse-<version>_<name>/cluster_settings.sh
 
 5) Duplicate a servers definition file 'servers/template_?.json' and the edit it.  
 `
-$ cp servers/template_?.json servers/nameIt.json  
+$ cp servers/template_?.json  servers/nameIt.json  
 `  
 `
 $ vi servers/nameIt.json  
