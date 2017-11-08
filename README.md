@@ -7,8 +7,9 @@ A work in progress !!
 
 ## About?
 From duplicated templates, define:  
--  a json defintion file for the servers in your cluster.
--  a 'cluster_settings' file that species software versions, paths and fundamental cluster-wide settings.      
+-  a json file defining the servers in your cluster.
+-  a 'cluster_settings' file that species software versions, paths and fundamental cluster-wide settings.  
+      
 Then launch pod, passing in these two files as parameters.  
 Pod will distribute, untar and configure all the software to each server in your json defintion.  
 Out of the box - this will create a folder on your desktop with all the unpacked software, data and log folders.  
