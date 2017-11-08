@@ -7,17 +7,17 @@ A work in progress !!
 
 ## About?
 From duplicated templates, define:  
--  a json file that describes the servers in your cluster.
--  a 'cluster_settings' file that species software versions, paths and fundamental cluster-wide settings.  
+-  [1] a json file that describes the servers in your cluster.
+-  [2] a build folder wth 'cluster_settings' file that species software versions, paths and fundamental cluster-wide settings.  
 
 Then launch pod, passing in these two files as parameters.  
 Pod will distribute, untar and configure all the software to each server in your json defintion.  
-Out of the box - this will create a folder on your desktop with all the unpacked software, data and log folders.  
-You can specify other locations to install software,logs etc when defining your server json and cluster_settings.
+Out of the box - this will create a folder on your desktop with all the unpacked software, data and log folders in one place.  
+You can specify other locations to install software,logs etc when defining [1] + [2].
 
 With pod you can easily create and manage multiple cluster setups (different versions/settings).  
 You can deploy these different configurations to the same machines and they will not interfere with each other.  
-As such pod is very useful in development/testing environments as well as setting up dse when opscenter is not an option.     
+As such pod is very useful in development/testing environments as well as setting up dse in production when opscenter is not an option.     
 
 ## How?
 
