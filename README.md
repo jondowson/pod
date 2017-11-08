@@ -42,16 +42,19 @@ $ ./misc/dependencies_mac.sh
 
 4) Duplicate a builds template folder, rename it and then review/edit its 'cluster_settings.sh' file.    
 `
-$ cp builds/pod_dse/dse-5.x.x_template.sh builds/pod_dse/dse-<version>_<name>  
+$ cp builds/pod_dse/dse-5.x.x_template.sh builds/pod_dse/dse-x.x.x_nameIt  
 `  
 `
 $ vi builds/pod_dse/dse-<version>_<name>/cluster_settings.sh    
 `  
 
-5) Create a servers definition file 'servers/<name>.json' - base it off a duplicated template.  
+5) Duplicate a servers definition file 'servers/template_?.json' and the edit it.  
 `
-$ cp servers/<template>.json servers/<server_def>.json  
+$ cp servers/template_?.json servers/nameIt.json  
 `  
+`
+$ vi servers/nameIt.json  
+`    
 
 6) Review/edit the 'pods/pod_dse' runtime settings.  
 `
@@ -60,5 +63,5 @@ $ vi pods/pod_dse.sh
 
 7) Finally run 'launch-pod' passing in the required parameters.  
 `
-$ ./launch-pod --pod pod_dse --servers <server_def>.json --build dse-<version>_<name>
+$ ./launch-pod --pod pod_dse --servers nameIt.json --build dse-x.x.x_nameIt
 `
