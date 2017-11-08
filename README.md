@@ -17,11 +17,11 @@ Create multiple config files for multiple setups (different versions/settings).
 
 Quick Instructions (to work out of the box):  
 
-1) git clone https://github.com/jondowson/dse-setup  
+1) git clone https://github.com/jondowson/pod  
 
 If you are on a mac - first run the dependencies script from the root folder of the repo.  
 `  
-$ ./lib/dependencies_mac.sh
+$ ./misc/dependencies_mac.sh
 `     
 
 2) Make a folder on your desktop called 'DSE_SOFTWARE'.  
@@ -34,17 +34,21 @@ $ ./lib/dependencies_mac.sh
     - oracle-java  
       - jdk-8uxxx-linux-i586.tar.gz  
 
-4) Duplicate the config template, rename it and edit to your needs.  
+4) Duplicate the config template, rename it and review/edit cluster settings.  
 `
-$ cp configs/setup_dse/config_dse5.x_template.sh configs/setup_dse/my_config.sh`  
+$ cp builds/pod_dse/config_dse-5.x.x_template.sh builds/pod_dse/dse-<version>_<name>  
 `  
-$ vi configs/setup_dse/my_config.sh    
+$ vi builds/pod_dse/dse-<version>_<name>/cluster_settings.sh    
 `  
-5) Reference 'my_config.sh' at top of 'setup_dse.sh'  
+5) Review the 'pods/pod_dse' runtime settings.  
 `
-$ vi setup_dse.sh  
+$ vi pods/pod_dse.sh  
 `  
-6) Finally run 'setup_dse.sh' and follow on-screen instructions.  
+5) Create a servers definition file 'servers/<name>.json' - base it off a duplicated template.  
 `
-$ ./setup_dse.sh
+$ cp servers/<template>.json servers/<server_def>.json  
+`  
+6) Finally run 'launch-pod' passing in the required parameters.  
+`
+$ ./launch-pod --pod pod_dse --servers <server_def>.json --build dse-<version>_<name>
 `
