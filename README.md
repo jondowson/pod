@@ -6,12 +6,13 @@ Tested on Mac, Ubuntu and Centos.
 A work in progress !!  
 
 ## About?
-Duplicate a template and in it configure cluster settings + software versions.    
-Then reference the config file in the 'setup_dse.sh' script before running it.  
-This will untar all the software and configure all the files as per your configuration file.  
+From duplicated templates, define a servers json defintion file + a cluster_settings file.    
+Then launch pod, passing in these two files as parameters.  
+Pod will distribute, untar and configure all the software to each server in your json defintion.  
 Out of the box - this will create a folder on your desktop with all the unpacked software, data and log folders.
+You can specify other locations to install software,logs etc when defining your server json and cluster_settings.
 
-Create multiple config files for multiple setups (different versions/settings).  
+With pod you can easily create multiple config files for multiple setups (different versions/settings).  
 
 ## How?
 
@@ -34,21 +35,21 @@ $ ./misc/dependencies_mac.sh
     - oracle-java  
       - jdk-8uxxx-linux-i586.tar.gz  
 
-4) Duplicate the config template, rename it and review/edit cluster settings.  
+4) Duplicate the builds template, rename it and review/edit cluster settings.  
 `
-$ cp builds/pod_dse/config_dse-5.x.x_template.sh builds/pod_dse/dse-<version>_<name>  
+$ cp builds/pod_dse/dse-5.x.x_template.sh builds/pod_dse/dse-<version>_<name>  
 `  
 $ vi builds/pod_dse/dse-<version>_<name>/cluster_settings.sh    
-`  
-5) Review the 'pods/pod_dse' runtime settings.  
-`
-$ vi pods/pod_dse.sh  
 `  
 5) Create a servers definition file 'servers/<name>.json' - base it off a duplicated template.  
 `
 $ cp servers/<template>.json servers/<server_def>.json  
 `  
-6) Finally run 'launch-pod' passing in the required parameters.  
+6) Review/edit the 'pods/pod_dse' runtime settings.  
+`
+$ vi pods/pod_dse.sh  
+`  
+7) Finally run 'launch-pod' passing in the required parameters.  
 `
 $ ./launch-pod --pod pod_dse --servers <server_def>.json --build dse-<version>_<name>
 `
