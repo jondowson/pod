@@ -40,7 +40,7 @@ $ ./misc/dependencies_mac.sh
     - oracle-java  
       - jdk-8uxxx-linux-i586.tar.gz  
 
-4) Duplicate a builds template folder, rename it and then review/edit its 'cluster_settings.sh' file.
+4) Duplicate a builds template folder, rename it and then review/edit its 'cluster_settings.sh' file.    
 `
 $ cp builds/pod_dse/dse-5.x.x_template.sh builds/pod_dse/dse-<version>_<name>  
 `
