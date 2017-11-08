@@ -22,7 +22,6 @@ mkdir -p ${spark_worker_log_folder}
 # create cassandra sstable folder(s)
 for i in "${data_file_directories_array[@]}"
 do
-  echo $i
   mkdir -p $i
 done
 mkdir -p ${commitlog_directory}
@@ -30,7 +29,7 @@ mkdir -p ${cdc_raw_directory}
 mkdir -p ${saved_caches_directory}
 mkdir -p ${hints_directory}
 mkdir -p ${Djava_tmp_folder}
- 
+
 # create dsefs folders
 mkdir -p ${dsefs_untar_folder}
 for i in "${dsefs_data_file_directories_array[@]}"
