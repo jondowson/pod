@@ -34,30 +34,34 @@ VNODES="8"                                      # specify a value (8,16,32) for 
 ## [3] choose software versions
 
 # note: on a Mac, Java installs cannot be managed from tars - so always ignored
+
+# this needs to match the name of folder in the DSE_SOFTWARE folder holding the java tarball - e.g. oracle-java, open-java, azul-zing etc
+JAVA_DISTRIBUTION="oracle-java" 
 JAVA_VERSION="jre1.8.0_152"
 JAVA_TARBALL="jre-8u152-linux-x64.tar.gz"
 # -----
-DSE_VERSION="dse-5.1.5"
+DSE_VERSION="dse-5.0.5"
 DSE_TARBALL="${DSE_VERSION}-bin.tar.gz"
 
 # -----------------------------------------
 
 ## [4] choose required folder-paths
 
+# note: use defualts or change as suits your setup
 # note: leave trailing '/' for all FOLDER paths but NOT file paths !!!!!!
 # note: out of the box - all paths hang off 'LOCAL_TARGET_FOLDER'
 
 # -----------------YOU-MAY-WANT-TO-CHANGE-DEFAULTS!!
 
-# the target folder is where the DSE_SOFTWARE and pod folders will be copied to 
+# the target folder is where the DSE_SOFTWARE and pod folders will be copied to
 # note: the LOCAL_TARGET_FOLDER applies to the machine running pod and will be auto-edited for remote servers
-LOCAL_TARGET_FOLDER="/home/jd/Desktop/"
+# note: it is the INSTALL_FOLDER below that determines where the software will be unpacked to 
+LOCAL_TARGET_FOLDER="/Users/jondowson/Desktop/"
 
 # -----
 
-# where dse tarballs are unpacked to
+# where dse tarballs are unpacked to from the LOCAL_TARGET_FOLDER
 INSTALL_FOLDER="${LOCAL_TARGET_FOLDER}dse-installations/"
-# set parent level folders for data and log folders
 
 # -----
 
@@ -72,11 +76,13 @@ TEMP_FOLDER="${INSTALL_FOLDER}tmp/"
 
 # -----------------CHANGE-WITH-CAUTION!!
 
-DSE_SOFTWARE="${LOCAL_TARGET_FOLDER}DSE_SOFTWARE/"
 # the local folder holding the datastax/java binaries
-# note: needs to hang off ${DSE_SOFTWARE} and can be same as ${DSE_SOFTWARE} !!!!!
+DSE_SOFTWARE="${LOCAL_TARGET_FOLDER}DSE_SOFTWARE/"
+
+# PACKAGES folder allows you to add subfolders under DSE_SOFTWARE
+# note: so needs to hang off ${DSE_SOFTWARE} and can be set to ${DSE_SOFTWARE} !!!!!
 # i.e. you can add sub-folders - don't forget trailing '/'
-PACKAGES="${LOCAL_TARGET_FOLDER}DSE_SOFTWARE/packages/"
+PACKAGES="${DSE_SOFTWARE}packages/"
 
 
 # ========================================= END !!
@@ -86,8 +92,8 @@ PACKAGES="${LOCAL_TARGET_FOLDER}DSE_SOFTWARE/packages/"
 
 # java
 Djava_tmp_folder="${TEMP_FOLDER}"
-java_tar_file="${PACKAGES}oracle-java/${JAVA_TARBALL}"
-java_untar_folder="${INSTALL_FOLDER}oracle-java/"
+java_tar_file="${PACKAGES}${JAVA_DISTRIBUTION}/${JAVA_TARBALL}"
+java_untar_folder="${INSTALL_FOLDER}${JAVA_DISTRIBUTION}/"
 
 # -----------------
 
