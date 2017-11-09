@@ -35,6 +35,11 @@ do
 
 # -----
 
+# establish os on remote machine
+remote_os=$(ssh -q -o Forwardx11=no ${user}@${pubIp} 'bash -s' < ${pod_home_path}/lib/pod_generic/pod_generic_script_identifyOs.sh)
+pod_generic_display_msgColourSimple   "info-indented" "detected os: ${green}${remote_os}${reset}"
+# -----
+
   pod_generic_display_msgColourSimple "info-indented" "making:      bespoke pod build"                                                               && sleep ${STEP_PAUSE}
 
   if [[ $"{VB}" == "true" ]]; then printf "%s\n"; fi
@@ -60,6 +65,8 @@ do
   pod_dse_run_local_dseSparkEnv
   if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'rackdc.properties'"; fi
   pod_dse_run_local_cassandraRackDcProperties
+  if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'pod_dse_script_launch_remote'"; fi
+  pod_dse_run_local_hashBang
 
 # -----
 

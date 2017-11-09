@@ -31,7 +31,7 @@ do
   pod_generic_display_msgColourSimple "info" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
   printf "\n%s"
 
-  pod_generic_display_msgColourSimple "info-indented" "launch:      pod remotely"                                                          && sleep "${STEP_PAUSE}"
+  pod_generic_display_msgColourSimple "info-indented" "launch:      pod remotely"                                                                    && sleep "${STEP_PAUSE}"
   ssh -ttq -o "BatchMode yes" -o "ForwardX11=no" ${user}@${pubIp} "${target_folder}pod/lib/pod_dse/pod_dse_script_launch_remote.sh" &                # run in parallel
   # grab pid and capture owner in array
   pid=$!
@@ -78,10 +78,10 @@ done
 
 function task_pod_launch_remote_report(){
 
-pod_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Launch Pod On Each Server"                                            && sleep "${STEP_PAUSE}"
+pod_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Launch Pod On Each Server"                                                      && sleep "${STEP_PAUSE}"
 
 if [[ ! -z $runBuild_pid_failures ]]; then
-  pod_generic_display_msgColourSimple "info-indented" "${cross} Problems executing 'pod' on servers"                                       && sleep "${STEP_PAUSE}"
+  pod_generic_display_msgColourSimple "info-indented" "${cross} Problems executing 'pod' on servers"                                                 && sleep "${STEP_PAUSE}"
   printf "%s\n"
   for k in "${!pod_build_launch_pid_array[@]}"
   do
@@ -94,6 +94,6 @@ if [[ ! -z $runBuild_pid_failures ]]; then
   done
   printf "%s\n"
 else
-  pod_generic_display_msgColourSimple "success" "Executed pod builds on all servers"                                                       && sleep "${STEP_PAUSE}"
+  pod_generic_display_msgColourSimple "success" "Executed pod builds on all servers"                                                                 && sleep "${STEP_PAUSE}"
 fi
 }

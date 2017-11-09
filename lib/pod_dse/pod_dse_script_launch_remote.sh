@@ -45,7 +45,7 @@ pod_home_path="$(pwd)"
 
 ## source pod_generic _ pod_dse lib scripts
 
-files="$(find ${pod_home_path}/lib/pod_generic -name "*.sh" | grep -v  "pod_generic_preperation.sh"  | grep -v  "pod_generic_display.sh")"
+files="$(find ${pod_home_path}/lib/pod_generic -name "*.sh" | grep -v  "pod_generic_preperation.sh" | grep -v "pod_generic_display.sh" | grep -v "pod_generic_script_")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done

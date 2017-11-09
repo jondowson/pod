@@ -7,7 +7,7 @@
 # ------------------------------------------
 
 # uncomment to see full bash trace (debug)
-# set -x
+#set -x
 
 # timer for script duration
 pod_start=$(date +%s)

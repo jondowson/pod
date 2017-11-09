@@ -233,3 +233,28 @@ export SPARK_WORKER_DIR=${spark_worker_data}
 export SPARK_LOCAL_DIRS=${spark_local_data}
 EOF
 }
+
+# ---------------------------------------
+
+function pod_dse_run_local_hashBang(){
+
+## ensure bash interpreter is set correctly for pod on remote os
+
+# determine what comes after #!/ at top of remote launch script
+if [[ ${remote_os} == *"Mac"* ]]; then
+  hashBang="usr/local/bin/bash"
+elif [[ ${remote_os} == "Ubuntu" ]]; then
+  hashBang="bin/bash"
+elif [[ ${remote_os} == "Centos" ]]; then
+  hashBang="bin/bash"
+elif [[ ${remote_os} == "Redhat" ]]; then
+  hashBang="bin/bash"
+else
+  os="Bad"
+  pod_generic_display_msgColourSimple "error" "OS Not Supported"
+  exit 1;
+fi
+
+pod_generic_misc_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}lib/pod_dse/pod_dse_script_launch_remote.sh" "bin/bash" "${hashBang}"
+pod_generic_misc_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}launch-pod" "bin/bash" "${hashBang}"
+}
