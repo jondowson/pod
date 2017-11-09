@@ -17,10 +17,6 @@ JAVA_INSTALL_TYPE="tar"
 # note: on a mac, dse package installs are not available - so always is read as 'tar'
 DSE_INSTALL_TYPE="tar"
 
-# TODO
-# add options 'package-internet', 'package-private'
-# (hence the above option for dse_install_type)
-
 # -----------------------------------------
 
 ## [2] choose 'basic' cluster-wide cassandra settings
@@ -47,15 +43,17 @@ DSE_TARBALL="${DSE_VERSION}-bin.tar.gz"
 
 ## [4] choose required folder-paths
 
-# note: use defualts or change as suits your setup
+# note: use defualts or change to suit
 # note: leave trailing '/' for all FOLDER paths but NOT file paths !!!!!!
 # note: out of the box - all paths hang off 'LOCAL_TARGET_FOLDER'
 
-# -----------------YOU-MAY-WANT-TO-CHANGE-DEFAULTS!!
+# -----
 
 # the target folder is where the DSE_SOFTWARE and pod folders will be copied to
-# note: the LOCAL_TARGET_FOLDER applies to the machine running pod and will be auto-edited for remote servers
-# note: it is the INSTALL_FOLDER below that determines where the software will be unpacked to 
+# note: the LOCAL_TARGET_FOLDER applies to the machine running pod
+#       and will be auto-edited before being copied to each remote server 
+#       (value based on the setting in the specified server/<file>.json)
+#       This allows, if desired, DSE_SOFTWARE and pod to be copied to different folders on different machines
 LOCAL_TARGET_FOLDER="/Users/jondowson/Desktop/"
 
 # -----
