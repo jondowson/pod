@@ -56,12 +56,7 @@ $ cp servers/template_?.json  servers/nameIt.json
 $ vi servers/nameIt.json  
 `    
 
-6) Review/edit the 'pods/pod_dse' runtime settings.  
-`
-$ vi pods/pod_dse.sh  
-`  
-
-7) Finally run 'launch-pod' passing in the required parameters.  
+6) Finally run 'launch-pod' passing in the required parameters.  
 `
 $ ./launch-pod --pod pod_dse --servers nameIt.json --build dse-x.x.x_nameIt
 `
