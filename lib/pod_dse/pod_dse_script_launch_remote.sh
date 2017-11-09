@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash
+#!/bin/bash
 
 # script_name:   pod_dse_script_launch_remote.sh
 # author:        jondowson
