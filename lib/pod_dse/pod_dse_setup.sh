@@ -51,10 +51,16 @@ rm -rf "${tmp_folder}"
 # duplicate 'pod' folder to working directory '/tmp'
 tmp_working_folder="${pod_home_path}/tmp/pod/"
 mkdir -p "${tmp_working_folder}"
-cp -r "${pod_home_path}/builds" "${tmp_working_folder}"
-cp -r "${pod_home_path}/lib" "${tmp_working_folder}"
-cp -r "${pod_home_path}/misc" "${tmp_working_folder}"
-cp -r "${pod_home_path}/servers" "${tmp_working_folder}"
-cp ${pod_home_path}/*.md "${tmp_working_folder}"
-cp ${pod_home_path}/*.sh "${tmp_working_folder}"
+
+cp -rp "${pod_home_path}/builds" "${tmp_working_folder}"
+cp -rp "${pod_home_path}/lib" "${tmp_working_folder}"
+cp -rp "${pod_home_path}/misc" "${tmp_working_folder}"
+cp -rp "${pod_home_path}/pods" "${tmp_working_folder}"
+cp -rp "${pod_home_path}/servers" "${tmp_working_folder}"
+cp -rp "${pod_home_path}/stages" "${tmp_working_folder}"
+cp -rp "${pod_home_path}/third_party" "${tmp_working_folder}"
+cp -p ${pod_home_path}/*.* "${tmp_working_folder}"
+cp -p ${pod_home_path}/launch-pod "${tmp_working_folder}"
 }
+
+# ------------------------------------------

@@ -180,7 +180,7 @@ sec=${1}
 message=${2}
 echo "${2}"
 while [ $min -ge 0 ]; do
-      while [ $sec -ge 0 ]; do
+      while [[ $sec -ge 0 ]]; do
           echo -ne "00:0$min:$sec\033[0K\r"
           sec=$((sec-1))
           sleep 1

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# script_name:   pod_dse_script_prepare_resources_folder.sh
+# script_name:   pod_dse_prepare_resources_folder.sh
 # author:        jondowson
 # about:         prepare dse 'resources' folder by removing all non-configuration files
 
@@ -10,20 +10,6 @@
 # set -x
 
 #--------------------------------------------
-
-## passed in parameters
-
-# setup_dse config folder to copy stripped resources folder to
-#_BUILD_FOLDER="${1}"
-
-# optional display setting
-#if [ -z "$2" ]; then
-#  _STAGE_PAUSE="5"
-#else
-#  _STAGE_PAUSE="${2}"
-#fi
-
-# -------------------------------------------
 
 function pod_dse_prepareResourcesFolder(){
 
@@ -103,8 +89,8 @@ array_file_extensions_to_strip[26]="kryo"
 printf "%s\n"
 printf "%s\t%s\t%s\t%s\t%s\n" "${b}Extension" "|" "No." "|" "Bytes${reset}"
 printf "%s\n" "--------------------------------------------------"
-
-before_size=$(du -sh ${source_folder_path} | awk '{ print $1 }')
+sleep 2 # for the benefit of macs - otherwise file permission errors !!
+before_size=$(du -sh "${source_folder_path}" | awk '{ print $1 }')
 
 for i in "${array_file_extensions_to_strip[@]}"
 do
@@ -126,6 +112,6 @@ printf "%s\n"
 pod_generic_display_msgColourSimple "info" "move from:    ${yellow}${source_folder_path}${reset}"
 pod_generic_display_msgColourSimple "info" "move to:      ${green}${destination_folder_path}${reset}"
 printf "%s\n"
-cp -R ${source_folder_path} ${destination_folder_path}
+cp -rp ${source_folder_path} ${destination_folder_path}
 rm -rf "${pod_home_path}tmp/"
 }

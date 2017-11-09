@@ -2,13 +2,13 @@
 
 # script_name:   stage_pod_build_send.sh
 # author:        jondowson
-# about:         for each server build and then send a configured version of pod  
+# about:         for each server build and then send a configured version of pod
 
 #-------------------------------------------
 
 function task_pod_build_send(){
 
-## for each server configure a pod build and then send it 
+## for each server configure a pod build and then send it
 
 for id in `seq 1 ${numberOfServers}`;
 do
@@ -37,34 +37,34 @@ do
 
   pod_generic_display_msgColourSimple "info-indented" "making:      bespoke pod build"                                                               && sleep ${STEP_PAUSE}
 
-  if [ $VB == true ]; then printf "%s\n"; fi
-  if [ $VB == true ]; then pod_generic_display_msgColourSimple "info-indented" "renaming:    'cassandra-topology.properties' to stop it interfering"; fi
+  if [[ $"{VB}" == "true" ]]; then printf "%s\n"; fi
+  if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "renaming:    'cassandra-topology.properties' to stop it interfering"; fi
   pod_dse_run_local_cassandraTopologyProperties
 
-  if [ $VB == true ]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'LOCAL_TARGET_FOLDER' in 'cluster_settings.sh'"; fi
+  if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'LOCAL_TARGET_FOLDER' in 'cluster_settings.sh'"; fi
   pod_generic_misc_sedStringManipulation "editAfterSubstring" "${tmp_build_file_path}"   "LOCAL_TARGET_FOLDER=" "\"${target_folder}\""
   source ${tmp_build_file_path}
 
-  if [ $VB == true ]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'build_folder_path' in 'pod_launch_remote.sh'"; fi
+  if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'build_folder_path' in 'pod_launch_remote.sh'"; fi
   pod_generic_misc_sedStringManipulation "editAfterSubstring" "${tmp_build_folder}lib/pod_dse/pod_dse_script_launch_remote.sh" "build_folder_path=" "\"${target_folder}pod/builds/pod_dse/${BUILD_FOLDER}/\""
 
-  if [ $VB == true ]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'cassandra-env.sh'"; fi
+  if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'cassandra-env.sh'"; fi
   pod_dse_run_local_cassandraEnv
-  if [ $VB == true ]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'jvm.options'"; fi
+  if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'jvm.options'"; fi
   pod_dse_run_local_jvmOptions
-  if [ $VB == true ]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'main' settings for 'cassandra.yaml'"; fi
+  if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'main' settings for 'cassandra.yaml'"; fi
   pod_dse_run_local_cassandraYaml
-  if [ $VB == true ]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'dse.yaml'"; fi
+  if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'dse.yaml'"; fi
   pod_dse_run_local_dseYaml_dsefs
-  if [ $VB == true ]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'dse-spark-env.sh'"; fi
+  if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'dse-spark-env.sh'"; fi
   pod_dse_run_local_dseSparkEnv
-  if [ $VB == true ]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'rackdc.properties'"; fi
+  if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'rackdc.properties'"; fi
   pod_dse_run_local_cassandraRackDcProperties
-  
+
 # -----
 
 
-  if [ $VB == true ]; then pod_generic_display_msgColourSimple "info-indented" "adding:       'cassandra_data_folders' in 'cluster_settings.sh'"; fi
+  if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "adding:       'cassandra_data_folders' in 'cluster_settings.sh'"; fi
 
   # calculate number of cassandra data folders specified in json
   # -3? - one for each bracket line and another 'cos the array starts at zero
@@ -90,7 +90,7 @@ done
 
 # -----
 
-  if [ $VB == true ]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'cassandra_data_folders' in 'cassandra.yaml'"; fi
+  if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'cassandra_data_folders' in 'cassandra.yaml'"; fi
   declare -a data_file_directories_array
   for j in `seq 0 ${numberOfDataFolders}`;
   do
@@ -101,7 +101,7 @@ done
 
 # -----
 
-  if [ $VB == true ]; then pod_generic_display_msgColourSimple "info-indented" "adding:       'dsefs_data_folders' in 'cluster_settings.sh'"; fi
+  if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "adding:       'dsefs_data_folders' in 'cluster_settings.sh'"; fi
 
   # calculate number of cassandra data folders specified in json
   # -3? - one for each bracket line and another 'cos the array starts at zero
@@ -122,11 +122,11 @@ cat << EOF >> "${tmp_build_file_path}"
 dsefs_data_file_directories_array[${j}]="${data_path}"
 EOF
 done
-printf "%s" "#EOF CLEAN-dse_data_arrays" >> "${tmp_build_file_path}" 
+printf "%s" "#EOF CLEAN-dse_data_arrays" >> "${tmp_build_file_path}"
 
 # -----
 
-  if [ $VB == true ]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'dsefs_data_folders' in 'dse.yaml'"; fi
+  if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'dsefs_data_folders' in 'dse.yaml'"; fi
 
   declare -a dsefs_data_file_directories_array
   for j in `seq 0 ${numberOfDataFolders}`;
@@ -139,14 +139,14 @@ printf "%s" "#EOF CLEAN-dse_data_arrays" >> "${tmp_build_file_path}"
 # -----
 
   # set node specific settings for 'seeds:' and 'listen_address:'
-  if [ $VB == true ]; then pod_generic_display_msgColourSimple "info-indented" "setting:     'seeds:' and 'listen_address:' in cassandra.yaml"; fi
+  if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "setting:     'seeds:' and 'listen_address:' in cassandra.yaml"; fi
   if [[ "${listen_address}" == "pubIp" ]]; then
     listen_address=${pubIp}
   else
     listen_address=${prvIp}
   fi
   pod_dse_run_local_cassandraYaml_nodeSpecific
-  if [ $VB == true ]; then printf "%s\n"; fi
+  if [[ $"{VB}" == "true" ]]; then printf "%s\n"; fi
 
 # -----
 
@@ -186,7 +186,7 @@ if [[ "${pod_build_send_fail}" == "true" ]]; then
   printf "%s\n"
   pod_generic_display_msgColourSimple "info-bold" "--> ${red}Write build error report:"                                                              && sleep "${STEP_PAUSE}"
   printf "%s\n"
-  
+
   for k in "${pod_build_send_report_array[@]}"
   do
     pod_generic_display_msgColourSimple "info-bold" "${cross} ${k}"                                                                                  && sleep "${STEP_PAUSE}"

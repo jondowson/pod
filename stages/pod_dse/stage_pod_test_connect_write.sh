@@ -115,7 +115,7 @@ do
 
 # ----------
 
-  if [ $VB == true ]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'LOCAL_TARGET_FOLDER' in 'cluster_settings.sh'"; fi
+  if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'LOCAL_TARGET_FOLDER' in 'cluster_settings.sh'"; fi
   pod_generic_misc_sedStringManipulation "editAfterSubstring" "${tmp_build_file_path}"   "LOCAL_TARGET_FOLDER=" "\"${target_folder}\""
   source ${tmp_build_file_path}
 

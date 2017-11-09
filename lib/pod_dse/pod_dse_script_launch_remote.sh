@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/usr/local/bin/bash
 
 # script_name:   pod_dse_script_launch_remote.sh
 # author:        jondowson
-# about:         script run on each server to install configured software  
+# about:         script run on each server to install configured software
 
 #===========================================AUTO-EDITED!!
 

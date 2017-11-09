@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/local/bin/bash
 
 # script_name:   launch-pod.sh
 # author:        jondowson
@@ -38,6 +38,16 @@ fi
 
 # ------------------------------------------
 
+## define pod defaults
+
+pod_dse_defaults
+
+# pod_dse
+#SEND_DSE_SOFTWARE="true"
+#REGENERATE_RESOURCES="false"
+
+# ------------------------------------------
+
 ## handle flags
 
 while test $# -gt 0; do
@@ -57,6 +67,16 @@ while test $# -gt 0; do
     -b|--build)
         shift
         BUILD_FOLDER=$1
+        shift
+        ;;
+    -ss|--sendsoft)
+        shift
+        SEND_DSE_SOFTWARE=$1
+        shift
+        ;;
+    -rr|--regenresources)
+        shift
+        REGENERATE_RESOURCES=$1
         shift
         ;;
     *)
