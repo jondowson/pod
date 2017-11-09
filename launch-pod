@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash
+#!/bin/bash
 
 # script_name:   launch-pod.sh
 # author:        jondowson
@@ -38,13 +38,9 @@ fi
 
 # ------------------------------------------
 
-## define pod defaults
+## define pod application defaults
 
-pod_dse_defaults
-
-# pod_dse
-#SEND_DSE_SOFTWARE="true"
-#REGENERATE_RESOURCES="false"
+pod_generic_defaults_pod_dse
 
 # ------------------------------------------
 

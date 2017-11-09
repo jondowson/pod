@@ -1,6 +1,12 @@
 #!/bin/bash
 
-function pod_dse_defaults(){
+# script_name:   pod_generic_defaults.sh
+# author:        jondowson
+# about:         default settings for each pod application
+
+# ------------------------------------------
+
+function pod_generic_defaults_pod_dse(){
 
 ## script runtime options
 
