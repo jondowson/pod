@@ -54,12 +54,12 @@ DSE_TARBALL="${DSE_VERSION}-bin.tar.gz"
 # for local setups it does not matter that you are sending the software to where it originated from
 # for remote servers, this settig will be auto-edited based on the value set in server's json file definition 
 # if desired, DSE_SOFTWARE and pod can be copied to different folders on different machines
-TARGET_FOLDER="/home/<user>/Desktop/"
+LOCAL_TARGET_FOLDER="/home/jd/Desktop/"
 
 # -----
 
 # where dse tarballs are unpacked to from the LOCAL_TARGET_FOLDER
-INSTALL_FOLDER="${TARGET_FOLDER}dse-installations/"
+INSTALL_FOLDER="${LOCAL_TARGET_FOLDER}dse-installations/"
 
 # -----
 
@@ -75,7 +75,7 @@ TEMP_FOLDER="${INSTALL_FOLDER}tmp/"
 # -----------------CHANGE-WITH-CAUTION!!
 
 # the local folder holding the datastax/java binaries
-DSE_SOFTWARE="${TARGET_FOLDER}DSE_SOFTWARE/"
+DSE_SOFTWARE="${LOCAL_TARGET_FOLDER}DSE_SOFTWARE/"
 
 # PACKAGES needs to be set but can be set to DSE_SOFTWARE
 # i.e. it allows you to add sub-folders and the default setting reflects this
