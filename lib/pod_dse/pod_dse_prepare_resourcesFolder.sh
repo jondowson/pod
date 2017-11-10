@@ -36,7 +36,7 @@ if [ -d "${destination_folder_path}" ]; then
   printf "%s\n"
   pod_generic_misc_timecount "${STAGE_PAUSE}" "<ctrl-c> to abort now.."
   rm -rf ${destination_folder_path}
-  pod_dse_display_banner
+  pod_generic_display_banner
   pod_generic_display_msgColourSimple "title" "Preparing 'resources' folder"
 fi
 
@@ -106,7 +106,7 @@ printf "%s\t\t\t%s\n\n" "${b}Folder size after:"  "$(du -sh ${source_folder_path
 # -------------------------------------------
 
 ## copy source folder to destination folder
-pod_generic_display_msgColourSimple "alert" "Move stripped 'resources' folder to 'dse-setup'"
+pod_generic_display_msgColourSimple "alert" "Move stripped 'resources' folder into the pod_dse 'build' folder"
 printf "%s\n"
 pod_generic_display_msgColourSimple "info" "move from:    ${yellow}${source_folder_path}${reset}"
 pod_generic_display_msgColourSimple "info" "move to:      ${green}${destination_folder_path}${reset}"
