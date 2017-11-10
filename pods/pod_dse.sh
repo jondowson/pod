@@ -65,7 +65,7 @@ pod_dse_setup_checkFilesExist
 destination_folder_parent_path="${pod_home_path}/builds/pod_dse/${BUILD_FOLDER}/"
 destination_folder_path="${destination_folder_parent_path}resources/"
 if [[ "${REGENERATE_RESOURCES}" == "true" ]] || [[ ! -d ${destination_folder_path} ]]; then
-  pod_dse_display_banner
+  pod_generic_display_banner
   pod_generic_display_msgColourSimple "STAGE" "STAGE: Preparing dse 'resources' Folder"
   pod_generic_display_msgColourSimple "TASK"  "TASK: Stripping out non config files"
   pod_dse_prepareResourcesFolder
@@ -79,7 +79,7 @@ pod_dse_setup_duplicateResourcesFolder
 
 ## STAGE [2]
 
-pod_dse_display_banner
+pod_generic_display_banner
 pod_generic_display_msgColourSimple "STAGE" "STAGE: Test Cluster Readiness"
 pod_generic_display_msgColourSimple "TASK"  "TASK: Testing server connectivity"
 task_pod_test_connect
@@ -93,7 +93,7 @@ pod_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 
 ## STAGE [3]
 
-pod_dse_display_banner
+pod_generic_display_banner
 pod_generic_display_msgColourSimple "STAGE" "STAGE: Create Pod For Each Server"
 pod_generic_display_msgColourSimple "TASK"  "TASK: Configuring and sending pod "
 task_pod_build_send
@@ -106,7 +106,7 @@ pod_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 ## STAGE [4]
 
 if [[ "${SEND_DSE_SOFTWARE}" == true ]]; then
-  pod_dse_display_banner
+  pod_generic_display_banner
   pod_generic_display_msgColourSimple "STAGE" "STAGE: Send DSE_SOFTWARE To Each Server"
   pod_generic_display_msgColourSimple "TASK"  "TASK: Sending DSE_SOFTWARE in parallel"
   task_pod_software_send
@@ -118,7 +118,7 @@ fi
 
 ## STAGE [5]
 
-pod_dse_display_banner
+pod_generic_display_banner
 pod_generic_display_msgColourSimple "STAGE" "STAGE: Launch Pod On Each Server"
 pod_generic_display_msgColourSimple "TASK"  "TASK: Running launch script remotely"
 task_pod_launch_remote
@@ -129,7 +129,7 @@ pod_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 
 ## FINNISH
 
-pod_dse_display_banner
+pod_generic_display_banner
 pod_generic_display_msgColourSimple "STAGE" "FINISHED !!"                                                                        && sleep "${STEP_PAUSE}"
 task_pod_build_send_report
 task_pod_launch_remote_report

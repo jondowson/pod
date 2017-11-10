@@ -20,3 +20,17 @@ VB="false"
 STAGE_PAUSE="2"   # between stages
 STEP_PAUSE="0"    # between steps within a stage
 }
+
+function pod_generic_defaults_pod_dse_rollingStartStop(){
+
+## script runtime options
+
+# send DSE_SOFTWARE folder to each server - this will take a few minutes and so you may want to do it only once
+CLUSTER_STOP_START="start"
+# generate new 'CONFIG_FOLDER/resources' folder - this will remove any existing one !!
+# verbose messages to the screen
+VB="false"
+# pauses i.e. time allowed to read screen
+STAGE_PAUSE="2"   # between stages
+STEP_PAUSE="0"    # between steps within a stage
+}
