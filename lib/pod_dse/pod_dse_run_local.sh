@@ -242,19 +242,27 @@ function pod_dse_run_local_hashBang(){
 # determine what comes after #!/ at top of remote launch script
 if [[ ${remote_os} == *"Mac"* ]]; then
   hashBang="usr/local/bin/bash"
+  pod_generic_misc_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}launch-pod" "bin/bash" "${hashBang}"
+  pod_generic_misc_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}lib/pod_dse/pod_dse_script_launch_remote.sh" "bin/bash" "${hashBang}"
+  pod_generic_misc_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}lib/pod_dse/pod_dse_run_remote.sh" "bin/bash" "${hashBang}"
 elif [[ ${remote_os} == "Ubuntu" ]]; then
   hashBang="bin/bash"
+  pod_generic_misc_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}launch-pod" "usr/local/bin/bash" "${hashBang}"
+  pod_generic_misc_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}lib/pod_dse/pod_dse_script_launch_remote.sh" "usr/local/bin/bash" "${hashBang}"
+  pod_generic_misc_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}lib/pod_dse/pod_dse_run_remote.sh" "usr/local/bin/bash" "${hashBang}"
 elif [[ ${remote_os} == "Centos" ]]; then
   hashBang="bin/bash"
+  pod_generic_misc_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}launch-pod" "usr/local/bin/bash" "${hashBang}"
+  pod_generic_misc_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}lib/pod_dse/pod_dse_script_launch_remote.sh" "usr/local/bin/bash" "${hashBang}"
+  pod_generic_misc_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}lib/pod_dse/pod_dse_run_remote.sh" "usr/local/bin/bash" "${hashBang}"
 elif [[ ${remote_os} == "Redhat" ]]; then
   hashBang="bin/bash"
+  pod_generic_misc_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}launch-pod" "usr/local/bin/bash" "${hashBang}"
+  pod_generic_misc_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}lib/pod_dse/pod_dse_script_launch_remote.sh" "usr/local/bin/bash" "${hashBang}"
+  pod_generic_misc_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}lib/pod_dse/pod_dse_run_remote.sh" "usr/local/bin/bash" "${hashBang}"
 else
   os="Bad"
   pod_generic_display_msgColourSimple "error" "OS Not Supported"
   exit 1;
 fi
-
-pod_generic_misc_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}launch-pod" "bin/bash" "${hashBang}"
-pod_generic_misc_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}lib/pod_dse/pod_dse_script_launch_remote.sh" "bin/bash" "${hashBang}"
-pod_generic_misc_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}lib/pod_dse/pod_dse_run_remote.sh" "bin/bash" "${hashBang}"
 }
