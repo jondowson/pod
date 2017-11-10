@@ -49,7 +49,7 @@ pod_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 # ------------------------------------------
 
 ## STAGE [2]
-if [[ "${CLUSTER_STOP_START}" == "start" ]]; then
+if [[ "${CLUSTER_STATE}" == "start" ]]; then
   pod_generic_display_banner
   pod_generic_display_msgColourSimple "STAGE" "STAGE: Test Cluster Readiness"
   pod_generic_display_msgColourSimple "TASK"  "TASK: Testing server connectivity"
@@ -60,7 +60,7 @@ fi
 # ------------------------------------------
 
 ## STAGE [3]
-if [[ "${CLUSTER_STOP_START}" == "stop" ]]; then
+if [[ "${CLUSTER_STATE}" == "stop" ]]; then
   pod_generic_display_banner
   pod_generic_display_msgColourSimple "STAGE" "STAGE: Stopping DSE Cluster"
   pod_generic_display_msgColourSimple "TASK"  "TASK: Stopping each server in cluster"

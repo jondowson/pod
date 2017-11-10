@@ -79,14 +79,12 @@ done
 
 if [[ "${pod_stop_dse_fail}" == "true" ]]; then
   printf "%s\n"
-  pod_generic_display_msgColourSimple "info-bold" "--> ${red}Dse stop errors report:"                                                               && sleep "${STEP_PAUSE}"
+  pod_generic_display_msgColourSimple "info-bold" "--> ${red}Dse cassandra-stop errors report:"                                                      && sleep "${STEP_PAUSE}"
   printf "%s\n"
   for k in "${pod_stop_dse_report_array[@]}"
   do
     pod_generic_display_msgColourSimple "info" "${cross} ${k}"
   done
-  printf "%s\n"
-  pod_generic_display_msgColourSimple "error" "Could not stop DSE on this server"
 else
   pod_generic_display_msgColourSimple "success" "DSE stopped for all servers"                                                                        && sleep "${STEP_PAUSE}"
 fi

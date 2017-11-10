@@ -7,7 +7,7 @@
 # ------------------------------------------
 
 # uncomment to see full bash trace (debug)
-#set -x
+# set -x
 
 # timer for script duration
 pod_start=$(date +%s)
@@ -38,10 +38,10 @@ fi
 
 # ------------------------------------------
 
-## define pod application defaults
+## include defaults for pod and any pod apps that have them
 
+pod_generic_defaults_pod
 pod_generic_defaults_pod_dse
-pod_generic_defaults_pod_dse_rollingStartStop
 
 # ------------------------------------------
 
@@ -49,8 +49,10 @@ pod_generic_defaults_pod_dse_rollingStartStop
 
 while test $# -gt 0; do
   case "$1" in
-    -h|--help)
-        echo help ;;
+    -h|--help)                          
+        pod_generic_display_banner
+        pod_generic_help_pod
+        exit 0 ;;
     -p|--pod)
         shift
         WHICH_POD=$1
@@ -76,9 +78,9 @@ while test $# -gt 0; do
         REGENERATE_RESOURCES=$1
         shift
         ;;
-    -css|--cluster-stop-start)
+    -cs|--clusterstate)
         shift
-        CLUSTER_STOP_START=$1
+        CLUSTER_STATE=$1
         shift
         ;;
     *)
@@ -88,7 +90,7 @@ while test $# -gt 0; do
   esac
 done
 
-# make sure flags are passed correctly
+# ensure flags have been passed correctly
 pod_generic_preperation_flagRules
 
 # ------------------------------------------
@@ -96,7 +98,7 @@ pod_generic_preperation_flagRules
 ## source all the files required for this pod and its init script
 pod_generic_preperation_sourcePodLib
 pod_generic_preperation_sourcePodStages
-pod_dse_preperation_sourcePodBuilds
+pod_dse_setup_sourcePodBuilds
 source pods/${WHICH_POD}.sh
 
 # ------------------------------------------

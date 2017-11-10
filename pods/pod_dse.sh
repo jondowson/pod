@@ -63,11 +63,16 @@ pod_dse_setup_checkFilesExist
 # prepare local copy of dse 'resources' folder - the basis for each distributed pod build
 destination_folder_parent_path="${pod_home_path}/builds/pod_dse/${BUILD_FOLDER}/"
 destination_folder_path="${destination_folder_parent_path}resources/"
-if [[ "${REGENERATE_RESOURCES}" == "true" ]] || [[ ! -d ${destination_folder_path} ]]; then
+if [[ "${REGENERATE_RESOURCES}" == "true" ]] || [[ "${REGENERATE_RESOURCES}" == "edit" ]] || [[ ! -d ${destination_folder_path} ]]; then
   pod_generic_display_banner
   pod_generic_display_msgColourSimple "STAGE" "STAGE: Preparing dse 'resources' Folder"
   pod_generic_display_msgColourSimple "TASK"  "TASK: Stripping out non config files"
   pod_dse_prepareResourcesFolder
+  if [[ "${REGENERATE_RESOURCES}" == "edit" ]]; then
+    pod_generic_display_msgColourSimple "STAGE" "You can now edit each dse config in the folder ${yellow}${destination_folder_path}${reset}"
+    printf "%s\n" 
+    exit 0;
+  fi
   pod_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 fi
 

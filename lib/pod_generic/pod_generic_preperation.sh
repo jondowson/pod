@@ -13,8 +13,12 @@ function pod_generic_preperation_flagRules(){
 if [[ ${WHICH_POD} == "" ]]; then printf "\n%s\n\n" "${b}${red}error: You must specify which ${yellow}pod${red} to run !! ${reset}" && exit; fi; 
 
 # pod_dse 
-if [[ ${WHICH_POD} == "pod_dse" ]] && [[ ${BUILD_FOLDER} == "" ]]; then printf "\n%s\n\n" "${b}${red}error: You must specify a build folder for ${yellow}pod_dse${red} !! ${reset}" && exit; fi;
-if [[ ${WHICH_POD} == "pod_dse" ]] && [[ ${SERVERS_JSON} == "" ]]; then printf "\n%s\n\n" "${b}${red}error: You must specify a server json definition file for ${yellow}pod_dse${red} !! ${reset}" && exit; fi;  
+if [[ ${WHICH_POD} == "pod_dse" ]] && [[ ${BUILD_FOLDER} == "" ]]; then printf "\n%s\n\n" "${b}${red}error: You must specify a build folder for ${yellow}${WHICH_POD}${red} !! ${reset}" && exit; fi;
+if [[ ${WHICH_POD} == "pod_dse" ]] && [[ ${SERVERS_JSON} == "" ]]; then printf "\n%s\n\n" "${b}${red}error: You must specify a server json definition file for ${yellow}${WHICH_POD}${red} !! ${reset}" && exit; fi;  
+
+# pod_dse_rollingStartStop 
+if [[ ${WHICH_POD} == "pod_dse_rollingStartStop" ]] && [[ ${SERVERS_JSON} == "" ]]; then printf "\n%s\n\n" "${b}${red}error: You must specify a server json definition file for ${yellow}${WHICH_POD}${red} !! ${reset}" && exit; fi;
+if [[ ${WHICH_POD} == "pod_dse_rollingStartStop" ]] && [[ ${CLUSTER_STATE} != "stop" ]] && [[ ${CLUSTER_STATE} != "start" ]]; then printf "\n%s\n\n" "${b}${red}error: You must specify --clusterstate as either stop or start for ${yellow}${WHICH_POD}${red} !! ${reset}" && exit; fi;
 }
 
 # ------------------------------------------

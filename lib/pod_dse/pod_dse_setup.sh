@@ -64,7 +64,7 @@ cp -p ${pod_home_path}/launch-pod "${tmp_working_folder}"
 
 # ------------------------------------------
 
-function pod_dse_preperation_sourcePodBuilds(){
+function pod_dse_setup_sourcePodBuilds(){
 
 ## source the pod-specific 'builds' folder to use
 
