@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# script_name: pod_generic_misc.sh
 # author: jondowson
 # about: generic bash functions usable by any script
 

@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# script_name:  dependencies_mac.sh
 # author:       jondowson
 # about:        install mac dependencies for the pod application
 

@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# script_name:   pod_dse_prepare_resources_folder.sh
 # author:        jondowson
 # about:         prepare dse 'resources' folder by removing all non-configuration files
 
@@ -89,7 +88,7 @@ array_file_extensions_to_strip[26]="kryo"
 printf "%s\n"
 printf "%s\t%s\t%s\t%s\t%s\n" "${b}Extension" "|" "No." "|" "Bytes${reset}"
 printf "%s\n" "--------------------------------------------------"
-sleep 2 # for the benefit of macs - otherwise file permission errors !!
+sleep 5 # for the benefit of macs - otherwise file permission errors !!
 before_size=$(du -sh "${source_folder_path}" | awk '{ print $1 }')
 
 for i in "${array_file_extensions_to_strip[@]}"

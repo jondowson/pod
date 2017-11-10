@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# script_name:   pod_dse.sh
 # author:        jondowson
 # about:         configure dse software and distribute to all servers in cluster
 

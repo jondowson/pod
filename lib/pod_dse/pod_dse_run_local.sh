@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# script_name:   pod_dse_run_local.sh
 # author:        jondowson
 # about:         functions executed on local server on files destined for remote servers
 

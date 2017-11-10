@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# script_name:   pod_generic_defaults.sh
 # author:        jondowson
 # about:         default settings for each pod application
 

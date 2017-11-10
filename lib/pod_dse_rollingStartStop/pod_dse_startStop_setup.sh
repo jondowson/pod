@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# script_name:   pod_dse_startStop_setup.sh
 # author:        jondowson
 # about:         functions to source scripts and check files exist for 'pod_dse_startStop'
 

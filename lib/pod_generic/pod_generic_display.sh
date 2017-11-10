@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# script_name:  pod_generic_display.sh
 # author:       jondowson
 # about:        formatting for screen output 
 

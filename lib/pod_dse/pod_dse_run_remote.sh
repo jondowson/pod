@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# script_name:   pod_dse_run_remote.sh
 # author:        jondowson
 # about:         functions executed on remote server
 

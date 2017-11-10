@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# script_name:   pod_generic_preperation.sh
 # author:        jondowson
 # about:         functions required prior to running a pod
 
@@ -86,20 +85,4 @@ files="$(find ${pod_home_path}/stages/${which_pod} -name "*.sh*")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
-}
-
-# ------------------------------------------
-
-function pod_generic_preperation_sourcePodBuilds(){
-
-## source the pod-specific 'builds' folder to use
-
-build_file_folder="${pod_home_path}/builds/${WHICH_POD}/${BUILD_FOLDER}/"
-build_file_path="${build_file_folder}cluster_settings.sh"
-
-if [[ -f ${build_file_path} ]]; then
-  source ${build_file_path}
-else
-  pod_generic_misc_fileExistsCheckAbort "${build_file_path}"
-fi
 }

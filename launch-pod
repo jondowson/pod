@@ -96,7 +96,7 @@ pod_generic_preperation_flagRules
 ## source all the files required for this pod and its init script
 pod_generic_preperation_sourcePodLib
 pod_generic_preperation_sourcePodStages
-#pod_generic_preperation_sourcePodBuilds
+pod_dse_preperation_sourcePodBuilds
 source pods/${WHICH_POD}.sh
 
 # ------------------------------------------

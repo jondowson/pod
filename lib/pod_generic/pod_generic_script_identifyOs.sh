@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# script_name:   pod_generic_script_identifyOs.sh
 # author:        jondowson
 # about:         determine os on machine
 

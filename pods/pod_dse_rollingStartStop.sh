@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# script_name:   pod_dse_startStop.sh
 # author:        jondowson
 # about:         start | stop a dse cluster based on a pod server json definition file
 

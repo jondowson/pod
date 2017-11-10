@@ -31,7 +31,7 @@ do
   printf "\n%s"
 
   pod_generic_display_msgColourSimple "info-indented" "launch:      pod remotely"                                                                    && sleep "${STEP_PAUSE}"
-  ssh -ttq -o "BatchMode yes" -o "ForwardX11=no" ${user}@${pubIp} "chmod +x ${target_folder}pod/lib/pod_dse/pod_dse_script_launch_remote.sh && ${target_folder}pod/lib/pod_dse/pod_dse_script_launch_remote.sh" &                # run in parallel
+  ssh -ttq -o "BatchMode yes" -o "ForwardX11=no" ${user}@${pubIp} "chmod -R 700 ${target_folder}pod && ${target_folder}pod/lib/pod_dse/pod_dse_script_launch_remote.sh" &                # run in parallel
   # grab pid and capture owner in array
   pid=$!
   pod_generic_display_msgColourSimple "info-indented" "pid id:      ${yellow}${pid}${reset}"

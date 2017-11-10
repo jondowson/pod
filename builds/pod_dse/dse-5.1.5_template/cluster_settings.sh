@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# script_name:   cluster_settings.sh
 # author:        jondowson
 # about:         software version and path configurations for a cluster created by 'pod_dse'
 #                this file should not be renamed !!
