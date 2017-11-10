@@ -6,7 +6,7 @@
 # tag:            server tag should be relevant and unique - perhaps its hostname
 # user:           account used to connect to and setup datastax on remote server
 # sshKey:         full path to local copy of server authentication file
-# target_folder:  where 'DSE_SOFTWARE' + 'dse-installations' are put
+# target_folder:  where 'DSE_SOFTWARE' + 'pod' are put
 # pubIp:          specify here what will be used to connect - could be internal 'private ip'!
 # prvIp:          the private address of the server (e.g. AWS internal ips)
 # listen_address  specify either pubIp or prvIp to use in cassandra.yaml (use prvIp on aws)

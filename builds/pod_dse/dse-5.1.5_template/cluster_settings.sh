@@ -28,7 +28,7 @@ VNODES="8"                                      # specify a value (8,16,32) for 
 
 ## [3] choose software versions
 
-# note: on a Mac, Java installs cannot be managed from tars - so always ignored
+# note: on a Mac, Java installs pod cannot manage installs from tars - so always ignored
 
 # this needs to match the name of folder in the DSE_SOFTWARE folder holding the java tarball - e.g. oracle-java, open-java, azul-zing etc
 JAVA_DISTRIBUTION="oracle-java" 
@@ -51,8 +51,8 @@ DSE_TARBALL="${DSE_VERSION}-bin.tar.gz"
 # the target folder is where the DSE_SOFTWARE and pod folders will be copied to on remote servers
 # out-of-the-box it is the default location as well for dse-installation folder containing the untarred and configured binaries
 # for local setups it does not matter that you are sending the software to where it originated from
-# for remote servers, this settig will be auto-edited based on the value set in server's json file definition 
-# if desired, DSE_SOFTWARE and pod can be copied to different folders on different machines
+# for remote servers, this setting will be auto-edited based on the value set in server's json file definition 
+# if desired, DSE_SOFTWARE + pod can be copied to different folders on different machines
 LOCAL_TARGET_FOLDER="/home/jd/Desktop/"
 
 # -----
