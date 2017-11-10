@@ -112,4 +112,4 @@ ${WHICH_POD}
 
 ## closing message
 
-pod_dse_display_finalMessage "${WHICH_POD}"
+pod_generic_display_finalMessage "${WHICH_POD}"

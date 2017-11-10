@@ -42,8 +42,7 @@
       "mode": {
         "search": "false",
         "analytics": "false",
-        "graph": "false",
-        "dsefs": "false"
+        "graph": "false"
       },
       "cass_data": [
         "/home/<user>/Desktop/dse-installations/data.logs/data",
@@ -69,8 +68,7 @@
       "mode": {
         "search": "false",
         "analytics": "false",
-        "graph": "false",
-        "dsefs": "false"
+        "graph": "false"
       },
       "cass_data": [
         "/home/<user>/Desktop/dse-installations/data.logs/data",
@@ -96,8 +94,7 @@
       "mode": {
         "search": "false",
         "analytics": "false",
-        "graph": "false",
-        "dsefs": "false"
+        "graph": "false"
       },
       "cass_data": [
         "/home/<user>/Desktop/dse-installations/data.logs/data",
@@ -123,8 +120,7 @@
     "mode": {
       "search": "true",
       "analytics": "true",
-      "graph": "false",
-      "dsefs": "false"
+      "graph": "false"
     },
     "cass_data": [
       "/home/<user>/Desktop/dse-installations/data.logs/data",

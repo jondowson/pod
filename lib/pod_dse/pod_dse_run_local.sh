@@ -255,6 +255,7 @@ else
   exit 1;
 fi
 
-pod_generic_misc_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}lib/pod_dse/pod_dse_script_launch_remote.sh" "bin/bash" "${hashBang}"
 pod_generic_misc_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}launch-pod" "bin/bash" "${hashBang}"
+pod_generic_misc_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}lib/pod_dse/pod_dse_script_launch_remote.sh" "bin/bash" "${hashBang}"
+pod_generic_misc_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}lib/pod_dse/pod_dse_run_remote.sh" "bin/bash" "${hashBang}"
 }

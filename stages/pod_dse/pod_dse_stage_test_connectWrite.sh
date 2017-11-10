@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# script_name:   stage_pod_test_connect_write.sh
+# script_name:   pod_dse_stage_test_connect.sh
 # author:        jondowson
-# about:         test connectivity and write-path availability for all servers
+# about:         test connectivity and write-paths for all servers in servers json definition 
 
 #-------------------------------------------
 
@@ -53,7 +53,6 @@ do
   fi
 done
 }
-
 
 #-------------------------------------------
 

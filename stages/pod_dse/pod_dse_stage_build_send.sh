@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# script_name:   stage_pod_build_send.sh
+# script_name:   pod_dse_stage_build_send.sh
 # author:        jondowson
 # about:         for each server build and then send a configured version of pod
 

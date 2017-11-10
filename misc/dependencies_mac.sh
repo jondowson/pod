@@ -109,6 +109,7 @@ fi
 
 # -----------------
 
+# update hashbang for launch-pod - so it uses brew version of bash
 pod_generic_preperation_identifyOs
 pod_generic_misc_sedStringManipulation "searchAndReplaceStringGlobal" "${podSetupFolder}/launch-pod" "bin/bash" "usr/local/bin/bash"
 
