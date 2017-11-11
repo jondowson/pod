@@ -73,7 +73,7 @@ done
 
 if [[ "${pod_test_connect_fail}" == "true" ]]; then
   printf "%s\n"
-  pod_generic_display_msgColourSimple "info-bold" "--> ${red}Connection errors report:"                                                    && sleep "${STEP_PAUSE}"
+  pod_generic_display_msgColourSimple "info-bold" "--> ${red}Connection errors report:"
   printf "%s\n"
   for k in "${pod_test_connect_report_array[@]}"
   do
@@ -83,6 +83,6 @@ if [[ "${pod_test_connect_fail}" == "true" ]]; then
   pod_generic_display_msgColourSimple "error" "Aborting script as not all servers are reachable"
   exit 1;
 else
-  pod_generic_display_msgColourSimple "success" "Connectivity test passed for all servers"                                                 && sleep "${STEP_PAUSE}"
+  pod_generic_display_msgColourSimple "success" "Connectivity test passed for all servers"                                                 
 fi
 }

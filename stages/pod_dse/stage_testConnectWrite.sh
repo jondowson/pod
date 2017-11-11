@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # author:        jondowson
-# about:         test connectivity and write-paths for all servers in servers json definition 
+# about:         test connectivity and write-paths for all servers in servers json definition
 
 #-------------------------------------------
 
@@ -73,7 +73,7 @@ done
 
 if [[ "${pod_test_connect_fail}" == "true" ]]; then
   printf "%s\n"
-  pod_generic_display_msgColourSimple "info-bold" "--> ${red}Connection errors report:"                                                    && sleep "${STEP_PAUSE}"
+  pod_generic_display_msgColourSimple "info-bold" "--> ${red}Connection errors report:"
   printf "%s\n"
   for k in "${pod_test_connect_report_array[@]}"
   do
@@ -83,7 +83,7 @@ if [[ "${pod_test_connect_fail}" == "true" ]]; then
   pod_generic_display_msgColourSimple "error" "Aborting script as not all servers are reachable"
   exit 1;
 else
-  pod_generic_display_msgColourSimple "success" "Connectivity test passed for all servers"                                                 && sleep "${STEP_PAUSE}"
+  pod_generic_display_msgColourSimple "success" "Connectivity test passed for all servers"
 fi
 }
 
@@ -121,7 +121,7 @@ do
 
   pod_generic_display_msgColourSimple "info" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
   printf "\n%s"
-  pod_generic_display_msgColourSimple "info-indented" "configuring:    bespoke server paths"                                               && sleep ${STEP_PAUSE}
+  pod_generic_display_msgColourSimple "info-indented" "configuring:    bespoke server paths"                                              
   pod_generic_display_msgColourSimple "info-indented" "writing-to:     bespoke server paths"
   printf "%s\n" "${red}"
 
@@ -250,7 +250,7 @@ done
 
 if [[ "${pod_test_send_fail}" == "true" ]]; then
   printf "%s\n"
-  pod_generic_display_msgColourSimple "info-bold" "--> ${red}Write-paths error report:"                                           && sleep "${STEP_PAUSE}"
+  pod_generic_display_msgColourSimple "info-bold" "--> ${red}Write-paths error report:"
   printf "%s\n"
 
   for k in "${pod_test_send_report_array_1[@]}"
@@ -271,6 +271,6 @@ if [[ "${pod_test_send_fail}" == "true" ]]; then
   pod_generic_display_msgColourSimple "error" "Aborting script as not all paths are writeable"
   exit 1;
 else
-  pod_generic_display_msgColourSimple "success" "Write-paths test passed for all servers"                                         && sleep "${STEP_PAUSE}"
+  pod_generic_display_msgColourSimple "success" "Write-paths test passed for all servers"
 fi
 }

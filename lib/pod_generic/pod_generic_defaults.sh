@@ -11,7 +11,6 @@ function pod_generic_defaults(){
 
 VB="false"           # verbose messages
 STAGE_PAUSE="10"     # pauses between STAGES
-STEP_PAUSE="2"       # pauses between TASK steps within a STAGE
 
 case "${WHICH_POD}" in
   pod_dse)

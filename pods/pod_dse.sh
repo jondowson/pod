@@ -70,7 +70,7 @@ if [[ "${REGENERATE_RESOURCES}" == "true" ]] || [[ "${REGENERATE_RESOURCES}" == 
   pod_dse_prepareResourcesFolder
   if [[ "${REGENERATE_RESOURCES}" == "edit" ]]; then
     pod_generic_display_msgColourSimple "STAGE" "You can now edit each dse config in the folder ${yellow}${destination_folder_path}${reset}"
-    printf "%s\n" 
+    printf "%s\n"
     exit 0;
   fi
   pod_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
@@ -134,9 +134,8 @@ pod_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 ## FINNISH
 
 pod_generic_display_banner
-pod_generic_display_msgColourSimple "STAGE" "FINISHED !!"                                                                        && sleep "${STEP_PAUSE}"
+pod_generic_display_msgColourSimple "STAGE" "FINISHED !!"                                                            
 task_pod_build_send_report
 if [[ "${SEND_DSE_SOFTWARE}" == true ]]; then task_pod_software_send_report; fi
 task_pod_launch_remote_report
-pod_generic_display_msgColourSimple "TASK" "Next Steps"                                                                          && sleep "${STEP_PAUSE}"
 }

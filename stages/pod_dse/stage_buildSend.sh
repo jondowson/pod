@@ -39,7 +39,7 @@ remote_os=$(ssh -q -o Forwardx11=no ${user}@${pubIp} 'bash -s' < ${pod_home_path
 pod_generic_display_msgColourSimple   "info-indented" "detected os: ${green}${remote_os}${reset}"
 # -----
 
-  pod_generic_display_msgColourSimple "info-indented" "making:      bespoke pod build"                                                               && sleep ${STEP_PAUSE}
+  pod_generic_display_msgColourSimple "info-indented" "making:      bespoke pod build"
 
   if [[ $"{VB}" == "true" ]]; then printf "%s\n"; fi
   if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "renaming:    'cassandra-topology.properties' to stop it interfering"; fi
@@ -172,7 +172,7 @@ function task_pod_build_send_report(){
 
 ## generate a report of all failed sends of pod build
 
-pod_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Create Pod For Each Server"                                                     && sleep "${STEP_PAUSE}"
+pod_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Create Pod For Each Server"
 
 declare -a pod_build_send_report_array
 count=0
@@ -190,17 +190,17 @@ done
 
 if [[ "${pod_build_send_fail}" == "true" ]]; then
   printf "%s\n"
-  pod_generic_display_msgColourSimple "info-bold" "--> ${red}Write build error report:"                                                              && sleep "${STEP_PAUSE}"
+  pod_generic_display_msgColourSimple "info-bold" "--> ${red}Write build error report:"
   printf "%s\n"
 
   for k in "${pod_build_send_report_array[@]}"
   do
-    pod_generic_display_msgColourSimple "info-bold" "${cross} ${k}"                                                                                  && sleep "${STEP_PAUSE}"
+    pod_generic_display_msgColourSimple "info-bold" "${cross} ${k}"
   done
   printf "%s\n"
   pod_generic_display_msgColourSimple "error" "Aborting script as not all paths are writeable"
   exit 1;
 else
-  pod_generic_display_msgColourSimple "success" "Created and distributed pod builds on all servers"                                                  && sleep "${STEP_PAUSE}"
+  pod_generic_display_msgColourSimple "success" "Created and distributed pod builds on all servers"
 fi
 }

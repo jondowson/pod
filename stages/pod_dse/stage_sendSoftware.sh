@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # author:        jondowson
-# about:         send DSE_SOFTWARE tarballs to each server to specified target folder 
+# about:         send DSE_SOFTWARE tarballs to each server to specified target folder
 
 #-------------------------------------------
 
@@ -34,7 +34,7 @@ do
 
   # ----------
 
-  pod_generic_display_msgColourSimple "info-indented" "sending:     DSE_SOFTWARE folder"                                                             && sleep "${STEP_PAUSE}"
+  pod_generic_display_msgColourSimple "info-indented" "sending:     DSE_SOFTWARE folder"
   scp -q -o LogLevel=QUIET -i ${sshKey} -r ${DSE_SOFTWARE} ${user}@${pubIp}:${target_folder} &                                                       # run in parallel
   # grab pid and capture owner in array
   pid=${!}
@@ -80,10 +80,10 @@ function task_pod_software_send_report(){
 
 # display report
 
-pod_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Send DSE_SOFTWARE To Each Server"                                               && sleep "${STEP_PAUSE}"
+pod_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Send DSE_SOFTWARE To Each Server"
 
 if [[ ! -z $DSE_SOFTWARE_pid_failures ]]; then
-  pod_generic_display_msgColourSimple "info-indented" "${cross} Problems distributing DSE_SOFTWARE to servers"                                       && sleep "${STEP_PAUSE}"
+  pod_generic_display_msgColourSimple "info-indented" "${cross} Problems distributing DSE_SOFTWARE to servers"
   printf "%s\n"
   for k in "${!DSE_SOFTWARE_server_pid_array[@]}"
   do
@@ -95,7 +95,7 @@ if [[ ! -z $DSE_SOFTWARE_pid_failures ]]; then
     fi
   done
   printf "%s\n"
-else 
-  pod_generic_display_msgColourSimple "success" "Distributed 'DSE_SOFTWARE' to all servers"                                                          && sleep "${STEP_PAUSE}"
+else
+  pod_generic_display_msgColourSimple "success" "Distributed 'DSE_SOFTWARE' to all servers"                                                          
 fi
 }

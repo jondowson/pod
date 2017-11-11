@@ -32,11 +32,11 @@ do
   pod_generic_display_msgColourSimple "info" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
 
 # ----------
-  
+
   searchFlag=$(cat ${servers_json_path}    | ${jq_folder}jq '.server_'${id}'.mode.search'    | tr -d '"')
   analyticsFlag=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.mode.analytics' | tr -d '"')
-  graphFlag=$(cat ${servers_json_path}     | ${jq_folder}jq '.server_'${id}'.mode.graph'     | tr -d '"') 
-  
+  graphFlag=$(cat ${servers_json_path}     | ${jq_folder}jq '.server_'${id}'.mode.graph'     | tr -d '"')
+
   flags=""
   if [[ "${searchFlag}" == "true" ]];     then flags="${flags} -s"; fi
   if [[ "${analyticsFlag}" == "true" ]];  then flags="${flags} -k"; fi
@@ -45,7 +45,7 @@ do
 
 # ----------
 
-  pod_generic_display_msgColourSimple "info-indented" "starting dse:      with flags ${flags}"                                                       && sleep ${STEP_PAUSE}
+  pod_generic_display_msgColourSimple "info-indented" "starting dse:      with flags ${flags}"                                                
 
 # ----------
 
@@ -89,13 +89,13 @@ done
 
 if [[ "${pod_start_dse_fail}" == "true" ]]; then
   printf "%s\n"
-  pod_generic_display_msgColourSimple "info-bold" "--> ${red}Dse cassandra start errors report:"                                                     && sleep "${STEP_PAUSE}"
+  pod_generic_display_msgColourSimple "info-bold" "--> ${red}Dse cassandra start errors report:"
   printf "%s\n"
   for k in "${pod_start_dse_report_array[@]}"
   do
     pod_generic_display_msgColourSimple "info" "${cross} ${k}"
   done
 else
-  pod_generic_display_msgColourSimple "success" "DSE started for all servers"                                                                        && sleep "${STEP_PAUSE}"
+  pod_generic_display_msgColourSimple "success" "DSE started for all servers"
 fi
 }
