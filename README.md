@@ -58,7 +58,7 @@ $ cp -r builds/pod_dse/dse-5.x.x_template  builds/pod_dse/dse-x.x.x_nameIt
 $ vi builds/pod_dse/dse-x.x.x_nameIt/cluster_settings.sh    
 `   
 
-The 'cluster_settings.sh' file contains instructions but it is here you specify paths and cluster-wide settings.    
+The 'cluster_settings.sh' file contains instructions, in brief, it captures cluster-wide settings such as cluster name as well as preferred paths.    
 
 
 5) In pod, duplicate a servers template json file, rename and edit it.  
@@ -66,8 +66,11 @@ The 'cluster_settings.sh' file contains instructions but it is here you specify 
 $ cp servers/template_x.json  servers/nameIt.json  
 `  
 `
-$ vi servers/nameIt.json  
-`    
+$ vi servers/nameIt.json    
+`     
+
+The json defintion file contains instructions, in brief, it captures server specific settings such as login credentials and ip addresses.    
+
 
 6) Finally run 'launch-pod' passing in the required parameters.  
 `
