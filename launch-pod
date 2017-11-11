@@ -53,7 +53,7 @@ fi
 ## handle flags
 
 # ensure pod flag is passed first
-if [[ "${1}" != "-p" ]] && [[ "${1}" != "--pod" ]]; then
+if [[ "${1}" != "-p" ]] && [[ "${1}" != "--pod" ]] && [[ "${1}" != "-h" ]] && [[ "${1}" != "--help" ]]; then
   printf "%s\n"
   pod_generic_display_msgColourSimple "error" "always specify the pod flag first ${yellow}-p | --pod${red}"
   printf "%s\n"
