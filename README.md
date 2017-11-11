@@ -70,9 +70,10 @@ $ vi servers/nameIt.json
 $ ./launch-pod --pod pod_dse --servers nameIt.json --build dse-x.x.x_nameIt    
 `
 
-Note: when you first run pod, it will look in your specified builds folder to see if there is 'resources' folder.    
-If there is not, it wil untar your choosen dse version tarball and copy its resourcs folder.    
-This copied resources folder is stripped of all non-config files and is then available for editing.    
-The settings you have specified in cluster_sttings.sh and your server defintions json file take precedence.    
+Note:    
+When you first run pod, it will look in your specified builds folder to see if there is 'resources' folder.    
+If there is not, it will untar your choosen dse version tarball and copy its resourcs folder there.    
+Before the copy, the folder is stripped of all non-config files and the remainder are available for editing.    
+The settings specified in 'cluster_settings.sh' and your .json defintions file take precedence.    
 But for all the settings they do not cover, you can edit manually in the resurces folder.    
-As required, at the end of the stage where the resources folder is stripped, press <ctrl-c> to exit pod and edit resources.    
+So if you need to adjust more settings, press <ctrl-c> at the end of this stage (you have 10 seconds!) to exit pod.    
