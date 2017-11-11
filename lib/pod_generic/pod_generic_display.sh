@@ -93,12 +93,15 @@ case ${which_pod} in
 
     "pod_dse" )
         if [[ ${os} == "Mac" ]] || [[ ${JAVA_INSTALL_TYPE} != "tar" ]]; then
-          pod_generic_display_msgColourSimple "title"     "Final tasks to complete pod"
+          pod_generic_display_msgColourSimple "title"     "To run dse locally:"
           pod_generic_display_msgColourSimple "info-bold" "(a) Source '.bash_profile' (or open new terminal):"
           pod_generic_display_msgColourSimple "info"      "$ . ~/.bash_profile"
           pod_generic_display_msgColourSimple "info-bold" "(b) Run dse:"
           pod_generic_display_msgColourSimple "info"      "$ dse cassandra            # start dse storage"
           pod_generic_display_msgColourSimple "info"      "$ dse cassandra -s -k -g   # start dse storage with search, analytics, graph (pick any combination)"
+          printf "%s\n"
+          pod_generic_display_msgColourSimple "title"     "To start the entire cluster:"
+          pod_generic_display_msgColourSimple "info"      "$ ./launch-pod --pod pod_dse_rollingStart --servers ${SERVERS_JSON} --clusterstate start"
         elif [[ "${JAVA_INSTALL_TYPE}" == "tar" ]]; then
           pod_generic_display_msgColourSimple "title"     "Final tasks to complete pod"
           pod_generic_display_msgColourSimple "info-bold" "(a) Source '.bash_profile' (or open new terminal):"

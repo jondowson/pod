@@ -32,10 +32,10 @@ do
   pod_generic_display_msgColourSimple "info" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
 
 # ----------
-
-  searchFlag=$(cat ${servers_json_path}    | ${jq_folder}jq '.server_'${id}'.search'    | tr -d '"')
-  analyticsFlag=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.analytics' | tr -d '"')
-  graphFlag=$(cat ${servers_json_path}     | ${jq_folder}jq '.server_'${id}'.graph'     | tr -d '"') 
+  
+  searchFlag=$(cat ${servers_json_path}    | ${jq_folder}jq '.server_'${id}'.mode.search'    | tr -d '"')
+  analyticsFlag=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.mode.analytics' | tr -d '"')
+  graphFlag=$(cat ${servers_json_path}     | ${jq_folder}jq '.server_'${id}'.mode.graph'     | tr -d '"') 
   
   flags=""
   if [[ "${searchFlag}" == "true" ]];     then flags="${flags} -s"; fi

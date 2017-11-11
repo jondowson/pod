@@ -136,17 +136,7 @@ pod_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 pod_generic_display_banner
 pod_generic_display_msgColourSimple "STAGE" "FINISHED !!"                                                                        && sleep "${STEP_PAUSE}"
 task_pod_build_send_report
+if [[ "${SEND_DSE_SOFTWARE}" == true ]]; then task_pod_software_send_report; fi
 task_pod_launch_remote_report
 pod_generic_display_msgColourSimple "TASK" "Next Steps"                                                                          && sleep "${STEP_PAUSE}"
-
-# used when calculating script timings
-if   [[ "${REGENERATE_RESOURCES}" == "true" ]]  &&  [[ "${SEND_DSE_SOFTWARE}" == "true" ]]; then
-  stage_count=5
-elif [[ "${REGENERATE_RESOURCES}" == "false" ]] &&  [[ "${SEND_DSE_SOFTWARE}" == "true" ]] ; then
-  stage_count=3
-elif [[ "${REGENERATE_RESOURCES}" == "true" ]]  &&  [[ "${SEND_DSE_SOFTWARE}" == "false" ]] ; then
-  stage_count=4
-else
-  stage_count=2
-fi
 }
