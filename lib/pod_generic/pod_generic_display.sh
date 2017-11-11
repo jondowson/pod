@@ -7,6 +7,7 @@
 
 ## Setup colors and text effects
 
+black=`tput setaf 0`
 red=`tput setaf 1`
 green=`tput setaf 2`
 yellow=`tput setaf 3`
@@ -22,7 +23,7 @@ stou=`tput smso`
 xtou=`tput rmso`
 reverse=`tput rev`
 reset=`tput sgr0`
-
+italic=$(tput sitm)
 tick="${b}${green}✓${reset}"
 cross="${b}${red}✘${reset}"
 
@@ -38,6 +39,8 @@ message="${2}"
 case ${messageType} in
     "STAGE" )
         printf "%s\n" "${b}${white}${message}${reset}" ;;
+    "STAGECOUNT" )
+        printf "\n%s\n" "${b}${white}${message}${reset}" ;;
     "TASK" )
         printf "%s\n\n" "${b}${cyan}____________________________________${reset}"
         printf "%s\n\n" "${b}${cyan}==> ${message}${reset}" ;;

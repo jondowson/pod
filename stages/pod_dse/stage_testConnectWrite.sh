@@ -5,7 +5,7 @@
 
 #-------------------------------------------
 
-function task_pod_test_connect(){
+function task_testConnectivity(){
 
 ## for each server test ssh connectivity + authorisation
 
@@ -55,7 +55,7 @@ done
 
 #-------------------------------------------
 
-function task_pod_test_connect_report(){
+function task_testConnectivity_report(){
 
 ## generate a report of all failed ssh connectivity attempts
 
@@ -89,7 +89,7 @@ fi
 
 #-------------------------------------------
 
-function task_pod_test_write(){
+function task_testWritePaths(){
 
 ## for each server test ability to write to all required dse paths (data, logs etc)
 
@@ -121,7 +121,7 @@ do
 
   pod_generic_display_msgColourSimple "info" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
   printf "\n%s"
-  pod_generic_display_msgColourSimple "info-indented" "configuring:    bespoke server paths"                                              
+  pod_generic_display_msgColourSimple "info-indented" "configuring:    bespoke server paths"
   pod_generic_display_msgColourSimple "info-indented" "writing-to:     bespoke server paths"
   printf "%s\n" "${red}"
 
@@ -203,7 +203,7 @@ done
 
 #-------------------------------------------
 
-function task_pod_test_write_report(){
+function task_testWritePaths_report(){
 
 ## generate a report of all failed write-path attempts
 declare -a pod_test_send_report_array_1
