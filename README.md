@@ -1,12 +1,9 @@
 # pod
 
-## What?
-A bash application to rapidly setup and configure a dse cluster.  
-Tested on Mac, Ubuntu and Centos.   
-A work in progress !!  
+## About 'pod'
+pod is about performing and automating tasks over many machines.    
+Tested on Mac, Ubuntu and Centos.    
 
-## About?
-pod is about performing tasks over many machines.    
 It is written in bash because sometimes thats all you can use in locked down environments (banking).    
 Effort has been made to make pod as extensible as possible with new modules (or 'pods') planned.  
 Its first two pods are specific to setting up and running a DSE cluster from tarballs.  
@@ -14,10 +11,12 @@ Its first two pods are specific to setting up and running a DSE cluster from tar
 - pod_dse_rollingStartStop:  start and stop a dse cluster gracefully.   
 
 Other dse specific pods in the pipeline:    
-- pod_dse_security  - to automate configuration of files concerned with cluster encryption.    
-- pod_dse_opscenter - to automate the setup, configuration and encryption of opscenter/agents.    
+- pod_dse_security    
+    - to automate configuration of files concerned with cluster encryption.    
+- pod_dse_opscenter    
+    - to automate the setup, configuration and encryption of opscenter/agents.    
 
-## About pod_dse  
+## About 'pod_dse'  
 
 With 'pod_dse' you can easily create and manage multiple cluster setups (different versions/settings).  
 You can deploy these different configurations to the same machines and they will not interfere with each other.  
