@@ -6,20 +6,28 @@ Tested on Mac, Ubuntu and Centos.
 A work in progress !!  
 
 ## About?
-From duplicated templates, define:  
--  [1] a json file that describes the servers in your cluster.
--  [2] a build folder wth 'cluster_settings' file that species software versions, paths and fundamental cluster-wide settings.  
+pod is about performing tasks over many machines.    
+It is written in bash because sometimes thats all you can use in locked down environments (banking).    
+Effort has been made to make pod as extensible as possible with new modules (or 'pods') planned.  
+Its first two pods are specific to setting up and running a DSE cluster from tarballs.  
+- pod_dse:                   setup, configure, distribute software to all servers in a cluster.  
+- pod_dse_rollingStartStop:  start and stop a dse cluster gracefully.   
 
-Then launch pod, passing in these two files as parameters.  
-Pod will distribute, untar and configure all the software to each server in your json defintion.  
-Out of the box - this will create a folder on your desktop with all the unpacked software, data and log folders in one place.  
-You can specify other locations to install software,logs etc when defining [1] + [2].
+Other dse specific pods in the pipeline:    
+- pod_dse_security  - to automate configuration of files concerned with cluster encryption.    
+- pod_dse_opscenter - to automate the setup, configuration and encryption of opscenter/agents.    
 
-With pod you can easily create and manage multiple cluster setups (different versions/settings).  
+## About pod_dse  
+
+With 'pod_dse' you can easily create and manage multiple cluster setups (different versions/settings).  
 You can deploy these different configurations to the same machines and they will not interfere with each other.  
-As such pod is very useful in development/testing environments as well as setting up dse in production when opscenter is not an option.     
+As such pod is very useful in development/testing environments as well as setting up dse in production when opscenter is not an option.  
 
-## How?
+Pod will distribute, untar and configure all software sent to each server as per two configuration files.    
+Out of the box - this will create a folder on your desktop with the unpacked software, data and log folders all in one place.  
+Note: you have control over where data,logs and folders are put by editing its two configuration files.    
+
+## Get started with 'pod_dse'   
 
 Quick Instructions (to work out of the box):  
 
@@ -38,19 +46,20 @@ $ ./misc/dependencies_mac.sh
     - dse
       - dse-5.x.x-bin.tar.gz  
     - oracle-java  
-      - jdk-8uxxx-linux-i586.tar.gz  
+      - jdk-8uxxx-linux-i586.tar.gz    
 
-4) Duplicate a builds template folder, rename it and then review/edit its 'cluster_settings.sh' file.    
+
+4) In pod, duplicate the builds template folder, rename it and then review/edit its 'cluster_settings.sh' file.    
 `
 $ cp -r builds/pod_dse/dse-5.x.x_template  builds/pod_dse/dse-x.x.x_nameIt  
 `  
 `
-$ vi builds/pod_dse/dse-<version>_<name>/cluster_settings.sh    
+$ vi builds/pod_dse/dse-x.x.x_nameIt/cluster_settings.sh    
 `  
 
-5) Duplicate a servers definition file 'servers/template_?.json' and the edit it.  
+5) In pod, duplicate a servers template json file, rename and edit it.  
 `
-$ cp servers/template_?.json  servers/nameIt.json  
+$ cp servers/template_x.json  servers/nameIt.json  
 `  
 `
 $ vi servers/nameIt.json  
@@ -58,5 +67,12 @@ $ vi servers/nameIt.json
 
 6) Finally run 'launch-pod' passing in the required parameters.  
 `
-$ ./launch-pod --pod pod_dse --servers nameIt.json --build dse-x.x.x_nameIt
+$ ./launch-pod --pod pod_dse --servers nameIt.json --build dse-x.x.x_nameIt    
 `
+
+Note: when you first run pod, it will look in your specified builds folder to see if there is 'resources' folder.    
+If there is not, it wil untar your choosen dse version tarball and copy its resourcs folder.    
+This copied resources folder is stripped of all non-config files and is then available for editing.    
+The settings you have specified in cluster_sttings.sh and your server defintions json file take precedence.    
+But for all the settings they do not cover, you can edit manually in the resurces folder.    
+As required, at the end of the stage where the resources folder is stripped, press <ctrl-c> to exit pod and edit resources.    
