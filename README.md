@@ -7,8 +7,10 @@ Tested on Mac, Ubuntu and Centos.
 It is written in bash because sometimes thats all you can use in locked down environments (banking).    
 Effort has been made to make pod as extensible as possible with new modules (or 'pods') planned.  
 Its first two pods are specific to setting up and running a DSE cluster from tarballs.  
-- pod_dse:                   setup, configure, distribute software to all servers in a cluster.  
-- pod_dse_rollingStartStop:  start and stop a dse cluster gracefully.   
+- pod_dse:    
+    - setup, configure, distribute software to all servers in a cluster.  
+- pod_dse_rollingStartStop:   
+    - start and stop a dse cluster gracefully.   
 
 Other dse specific pods in the pipeline:    
 - pod_dse_security    
