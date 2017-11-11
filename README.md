@@ -50,13 +50,16 @@ $ ./misc/dependencies_mac.sh
       - jdk-8uxxx-linux-i586.tar.gz    
 
 
-4) In pod, duplicate the builds template folder, rename it and then review/edit its 'cluster_settings.sh' file.    
+4) In pod, duplicate the builds/pod_dse/ template folder, rename it and then review/edit its 'cluster_settings.sh' file.    
 `
 $ cp -r builds/pod_dse/dse-5.x.x_template  builds/pod_dse/dse-x.x.x_nameIt  
 `  
 `
 $ vi builds/pod_dse/dse-x.x.x_nameIt/cluster_settings.sh    
-`  
+`   
+
+The 'cluster_settings.sh' file contains instructions but it is here you specify paths and cluster-wide settings.    
+
 
 5) In pod, duplicate a servers template json file, rename and edit it.  
 `
@@ -72,7 +75,7 @@ $ ./launch-pod --pod pod_dse --servers nameIt.json --build dse-x.x.x_nameIt
 `
 
 Note:    
-When you first run pod, it will look in your specified builds folder to see if there is 'resources' folder.    
+When you first run pod, it will look in your specified builds folder to see if there is a 'resources' folder.    
 If there is not, it will untar your choosen dse version tarball and copy its resourcs folder there.    
 Before the copy, the folder is stripped of all non-config files and the remainder are available for editing.    
 The settings specified in 'cluster_settings.sh' and your .json defintions file take precedence.    
