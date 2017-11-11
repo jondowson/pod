@@ -84,4 +84,5 @@ The folder copied into pod is stripped of all **non-config files** and the remai
 
 The settings specified in 'cluster_settings.sh' and your .json defintions cover the most important setings.    
 But for all the settings they do not cover, you can edit manually in the resources folder of your chosen build.    
-So if you need to adjust more settings, press \<ctrl-c\> at the end of this preperation stage to exit pod (you will have 10 seconds!).    
+So if required, hit **\<ctrl-c\>** at the end of this preperation stage (you will have 10 seconds!).    
+Then you can edit config files and finally re-launch pod_dse.    
