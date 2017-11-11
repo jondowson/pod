@@ -45,7 +45,7 @@ do
 
 # ----------
 
-  pod_generic_display_msgColourSimple "info-indented" "starting dse:      with flags ${flags}"                                                
+  pod_generic_display_msgColourSimple "info-indented" "starting dse:      with flags ${flags}"
 
 # ----------
 
@@ -89,13 +89,11 @@ done
 
 if [[ "${pod_start_dse_fail}" == "true" ]]; then
   printf "%s\n"
-  pod_generic_display_msgColourSimple "info-bold" "--> ${red}Dse cassandra start errors report:"
+  pod_generic_display_msgColourSimple "info-bold-indented" "${red}pod remote launch errors report:"
   printf "%s\n"
   for k in "${pod_start_dse_report_array[@]}"
   do
     pod_generic_display_msgColourSimple "info" "${cross} ${k}"
   done
-else
-  pod_generic_display_msgColourSimple "success" "DSE started for all servers"
 fi
 }

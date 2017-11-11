@@ -41,7 +41,7 @@ pod_dse_startStop_setup_checkFilesExist
 
 pod_generic_display_banner
 pod_generic_display_msgColourSimple "STAGE"      "STAGE: Test cluster readiness"
-pod_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1${white} 2 3 4 ]${reset}"
+pod_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1${white} 2 ]${reset}"
 pod_generic_display_msgColourSimple "TASK"       "TASK: Testing server connectivity"
 task_testConnectivity
 task_testConnectivity_report
