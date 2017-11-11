@@ -61,19 +61,3 @@ cp -rp "${pod_home_path}/third_party" "${tmp_working_folder}"
 cp -p ${pod_home_path}/*.* "${tmp_working_folder}"
 cp -p ${pod_home_path}/launch-pod "${tmp_working_folder}"
 }
-
-# ------------------------------------------
-
-function pod_dse_setup_sourcePodBuilds(){
-
-## source the pod-specific 'builds' folder to use
-
-build_file_folder="${pod_home_path}/builds/${WHICH_POD}/${BUILD_FOLDER}/"
-build_file_path="${build_file_folder}cluster_settings.sh"
-
-if [[ -f ${build_file_path} ]]; then
-  source ${build_file_path}
-else
-  pod_generic_misc_fileExistsCheckAbort "${build_file_path}"
-fi
-}

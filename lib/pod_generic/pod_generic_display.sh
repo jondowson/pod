@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # author:       jondowson
-# about:        formatting for screen output 
+# about:        formatting for screen output
 
 #-------------------------------------------
 
@@ -28,24 +28,6 @@ cross="${b}${red}✘${reset}"
 
 # ---------------------------------------
 
-function pod_generic_display_banner(){
-
-clear
-printf "%s"  "${b}${cyan}"
-cat << "EOF"
-                     __    _  _ 
-    ____  ____  ____/ /  _(_)(_)_  
-   / __ \/ __ \/ __  /  (_)    (_)
-  / /_/ / /_/ / /_/ /   (_)_  _(_)
- / .___/\____/\__,_/      (_)(_) 
-/_/                                                                                    
-EOF
-printf "%s\n"  "${reset}"
-}
-
-             
-# ---------------------------------------
-
 function pod_generic_display_msgColourSimple(){
 
 ## display messages based on a simple colour scheme
@@ -55,7 +37,7 @@ message="${2}"
 
 case ${messageType} in
     "STAGE" )
-        printf "%s\n" "${b}${cyan}${message}${reset}" ;;
+        printf "%s\n" "${b}${white}${message}${reset}" ;;
     "TASK" )
         printf "%s\n\n" "${b}${cyan}____________________________________${reset}"
         printf "%s\n\n" "${b}${cyan}==> ${message}${reset}" ;;
@@ -77,7 +59,7 @@ case ${messageType} in
     "info-bold-indented" )
         printf "%s\n"   "${b}${white}--> ${message} ${reset}" ;;
     "success" )
-        printf "%s\n\n" "${tick}${b}${green} ${message} !!${reset}" ;;    
+        printf "%s\n\n" "${tick}${b}${green} ${message} !!${reset}" ;;
 esac
 }
 
@@ -92,6 +74,7 @@ which_pod="${1}"
 case ${which_pod} in
 
     "pod_dse" )
+
         if [[ ${os} == "Mac" ]] || [[ ${JAVA_INSTALL_TYPE} != "tar" ]]; then
           pod_generic_display_msgColourSimple "title"     "To run dse locally:"
           pod_generic_display_msgColourSimple "info-bold" "(a) Source '.bash_profile' (or open new terminal):"
@@ -114,11 +97,42 @@ case ${which_pod} in
           pod_generic_display_msgColourSimple "info"      "$ dse cassandra            # start dse storage"
           pod_generic_display_msgColourSimple "info"      "$ dse cassandra -s -k -g   # start dse storage with search, analytics, graph (pick any combination)"
         fi
-        printf "%s\n" ;; 
-    "pod_security" )
-      pod_generic_display_msgColourSimple "title"     "Final tasks to complete pod"
-      pod_generic_display_msgColourSimple "info-bold" "Security blah blah blah" ;;
+        printf "%s\n" ;;
+
+    "pod_dse_rollingStartStop" )
+      pod_generic_display_msgColourSimple "TASK"      "To Check Status of Cluster:"
+      pod_generic_display_msgColourSimple "info-bold" "$ nodetool status"
+      printf "%s\n" ;;
+
       *)
       printf "%s\n" "" ;;
 esac
-} 
+}
+
+# ---------------------------------------
+
+pod_generic_display_timePod(){
+
+## calculate pod runtime
+
+pod_end=$(date +%s)
+diff=$((pod_end - pod_start))
+actual_runtime=$((diff - total_sleep))
+}
+
+# ---------------------------------------
+
+function pod_generic_display_banner(){
+
+clear
+printf "%s"  "${b}${cyan}"
+cat << "EOF"
+                     __    _  _
+    ____  ____  ____/ /  _(_)(_)_
+   / __ \/ __ \/ __  /  (_)    (_)
+  / /_/ / /_/ / /_/ /   (_)_  _(_)
+ / .___/\____/\__,_/      (_)(_)
+/_/
+EOF
+printf "%s\n"  "${reset}"
+}

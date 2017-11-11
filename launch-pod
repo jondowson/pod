@@ -6,10 +6,13 @@
 
 # ------------------------------------------
 
-# uncomment to see full bash trace (debug)
+## uncomment to see full bash trace (debug)
+
 # set -x
 
-# timer for script duration
+# ------------------------------------------
+
+## timer for script duration
 pod_start=$(date +%s)
 
 # ------------------------------------------
@@ -17,20 +20,29 @@ pod_start=$(date +%s)
 ## discover pod system path and source generic scripts
 
 parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
-cd ${parent_path}
+cd "${parent_path}"
 pod_home_path="$(pwd)"
 
+# ------------------------------------------
+
+## preparation: call in order
+
+# source generic preperation script
 source lib/pod_generic/pod_generic_preperation.sh
+# identify local os
 pod_generic_preperation_identifyOs
+# source all other generic, non pod specific, lib scripts
 pod_generic_preperation_sourceGenericLib
 
 # ------------------------------------------
 
 ## define pod dependency paths
 
+# Mac will directly use the brew installed version of jq
 if [[ "${os}" == "Mac" ]]; then
   jq_folder=""
   jq_file_path="jq"
+# Other linux need the path to the included jq binary
 else
   jq_folder="${pod_home_path}/third_party/jq-linux64/"
   jq_file_path="${jq_folder}jq"
@@ -38,24 +50,28 @@ fi
 
 # ------------------------------------------
 
-## include defaults for pod and any pod apps that have them
-
-pod_generic_defaults_pod
-pod_generic_defaults_pod_dse
-
-# ------------------------------------------
-
 ## handle flags
+
+# ensure pod flag is passed first
+if [[ "${1}" != "-p" ]] && [[ "${1}" != "--pod" ]]; then
+  printf "%s\n"
+  pod_generic_display_msgColourSimple "error" "always specify the pod flag first ${yellow}-p | --pod${red}"
+  printf "%s\n"
+  exit 1;
+fi
+
+# -----
 
 while test $# -gt 0; do
   case "$1" in
-    -h|--help)                          
+    -h|--help)
         pod_generic_display_banner
         pod_generic_help_pod
         exit 0 ;;
     -p|--pod)
         shift
         WHICH_POD=$1
+        pod_generic_defaults
         shift
         ;;
     -s|--servers)
@@ -84,26 +100,36 @@ while test $# -gt 0; do
         shift
         ;;
     *)
-        printf "%s\n" "$1 is not a recognised flag !!"
-        exit 1;
+      printf "%s\n"
+      pod_generic_display_msgColourSimple "error" "Not a recognised flag ${yellow}${1}${red}"
+      printf "%s\n"
+      exit 1;
         ;;
   esac
 done
+
+# -----
 
 # ensure flags have been passed correctly
 pod_generic_preperation_flagRules
 
 # ------------------------------------------
 
-## source all the files required for this pod and its init script
+## for this specific pod source all scripts from the lib and stages folders
+
 pod_generic_preperation_sourcePodLib
 pod_generic_preperation_sourcePodStages
-pod_dse_setup_sourcePodBuilds
-source pods/${WHICH_POD}.sh
 
 # ------------------------------------------
 
-## servers json definition file
+## for pods that make use of them - source all build scripts for this pod
+if [[ ${USE_BUILDS} == "true" ]]; then
+  pod_generic_preperation_sourcePodBuilds
+fi
+
+# ------------------------------------------
+
+## all pod apps make use of a servers json definition file - check it exists
 
 servers_json_path="${pod_home_path}/servers/${SERVERS_JSON}"
 pod_generic_misc_fileExistsCheckAbort ${servers_json_path}
@@ -111,22 +137,16 @@ numberOfServers=$(${jq_folder}jq [.] ${servers_json_path} | tr '"' '\n' | grep '
 
 # ------------------------------------------
 
-## start the chosen pod
+## source the specified pod's init script and run that pod
 
-${WHICH_POD}
+source pods/"${WHICH_POD}".sh
+"${WHICH_POD}"
 
 # ------------------------------------------
 
-## closing message
+## closing messages
 
 pod_generic_display_finalMessage "${WHICH_POD}"
-
-# ------------------------------------------
-
-# calculate script runtime
-pod_end=$(date +%s)
-diff=$((pod_end - pod_start))
-actual_runtime=$((diff - total_sleep))
-
-pod_generic_display_msgColourSimple "info" "script completion time:     ${diff}"
+pod_generic_display_timePod
+pod_generic_display_msgColourSimple "info" "pod took: ${diff}[s]"
 printf "%s\n"

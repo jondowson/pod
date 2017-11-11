@@ -8,15 +8,15 @@
 function pod_generic_preperation_flagRules(){
 
 ## rules for accepting flags
-  
+
 # pod_general
-if [[ ${WHICH_POD} == "" ]]; then printf "\n%s\n\n" "${b}${red}error: You must specify which ${yellow}pod${red} to run !! ${reset}" && exit; fi; 
+if [[ ${WHICH_POD} == "" ]]; then printf "\n%s\n\n" "${b}${red}error: You must specify which ${yellow}pod${red} to run !! ${reset}" && exit; fi;
 
-# pod_dse 
+# pod_dse
 if [[ ${WHICH_POD} == "pod_dse" ]] && [[ ${BUILD_FOLDER} == "" ]]; then printf "\n%s\n\n" "${b}${red}error: You must specify a build folder for ${yellow}${WHICH_POD}${red} !! ${reset}" && exit; fi;
-if [[ ${WHICH_POD} == "pod_dse" ]] && [[ ${SERVERS_JSON} == "" ]]; then printf "\n%s\n\n" "${b}${red}error: You must specify a server json definition file for ${yellow}${WHICH_POD}${red} !! ${reset}" && exit; fi;  
+if [[ ${WHICH_POD} == "pod_dse" ]] && [[ ${SERVERS_JSON} == "" ]]; then printf "\n%s\n\n" "${b}${red}error: You must specify a server json definition file for ${yellow}${WHICH_POD}${red} !! ${reset}" && exit; fi;
 
-# pod_dse_rollingStartStop 
+# pod_dse_rollingStartStop
 if [[ ${WHICH_POD} == "pod_dse_rollingStartStop" ]] && [[ ${SERVERS_JSON} == "" ]]; then printf "\n%s\n\n" "${b}${red}error: You must specify a server json definition file for ${yellow}${WHICH_POD}${red} !! ${reset}" && exit; fi;
 if [[ ${WHICH_POD} == "pod_dse_rollingStartStop" ]] && [[ ${CLUSTER_STATE} != "stop" ]] && [[ ${CLUSTER_STATE} != "start" ]]; then printf "\n%s\n\n" "${b}${red}error: You must specify --clusterstate as either stop or start for ${yellow}${WHICH_POD}${red} !! ${reset}" && exit; fi;
 }
@@ -89,4 +89,20 @@ files="$(find ${pod_home_path}/stages/${which_pod} -name "*.sh*")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
+}
+
+# ------------------------------------------
+
+function pod_generic_preperation_sourcePodBuilds(){
+
+## source the pod-specific 'builds' folder to use
+
+build_file_folder="${pod_home_path}/builds/${WHICH_POD}/${BUILD_FOLDER}/"
+build_file_path="${build_file_folder}cluster_settings.sh"
+
+if [[ -f ${build_file_path} ]]; then
+  source ${build_file_path}
+else
+  pod_generic_misc_fileExistsCheckAbort "build file path is wrong: ${build_file_path}"
+fi
 }
