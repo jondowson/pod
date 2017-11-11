@@ -1,30 +1,30 @@
 # pod
 
 ## About 'pod'
-pod is about performing and automating tasks over many machines.    
+**pod** is about automating tasks over many machines.    
 Tested on Mac, Ubuntu and Centos.    
 
 It is written in bash because sometimes thats all you can use in locked down environments (banking).    
 Effort has been made to make pod as extensible as possible with new modules (or 'pods') planned.  
 Its first two pods are specific to setting up and running a DSE cluster from **tarballs**.  
-- pod_dse:    
+- **pod_dse**:    
     - setup, configure, distribute software to all servers in a cluster.  
-- pod_dse_rollingStartStop:   
+- **pod_dse_rollingStartStop**:   
     - start and stop a dse cluster gracefully.   
 
 Other dse specific pods in the pipeline:    
-- pod_dse_security    
+- **pod_dse_security**    
     - to automate configuration of files concerned with cluster encryption.    
-- pod_dse_opscenter    
+- **pod_dse_opscenter**    
     - to automate the setup, configuration and encryption of opscenter/agents.    
 
 ## About 'pod_dse'  
 
-With 'pod_dse' you can easily create and manage multiple cluster setups (different versions/settings).  
+With **'pod_dse'** you can easily create and manage multiple cluster setups (different versions/settings).  
 You can deploy these different configurations to the same machines and they will not interfere with each other.  
 As such pod is very useful in development/testing environments as well as setting up dse in production when opscenter is not an option.  
 
-Pod will distribute, untar and configure all software sent to each server as per two pod configuration files.    
+Pod will distribute, untar and configure all software sent to each server - defined in **two** pod configuration files.    
 Out of the box - this will create a folder on your desktop with the unpacked software, data and log folders all in one place.  
 Note: you have control over where data,logs and folders are put by editing its two configuration files.    
 
@@ -40,7 +40,7 @@ $ ./misc/dependencies_mac.sh
 `     
 
 2) Make a folder on your desktop called 'DSE_SOFTWARE'.  
-3) Add the following folder structure and tar files (add multiple versions if you like).
+3) Add the following folder structure and tar files (add multiple versions per folder if you like).
 
 - DSE_SOFTWARE  
   - packages  
@@ -80,9 +80,9 @@ $ ./launch-pod --pod pod_dse --servers nameIt.json --build dse-x.x.x_nameIt
 **Note:**    
 When you first run pod, it will look in your specified builds folder to see if there is a '**resources**' folder.    
 If there is not, it will untar your choosen dse version tarball and copy its resourcs folder there.    
-The folder copied into pod is stripped of all **non-config files** and the remainder are available for editing.    
+The folder copied into pod is stripped of all **non-config files** - the remainder are then available for editing.    
 
-The settings specified in 'cluster_settings.sh' and your .json defintions cover the most important setings.    
+The settings specified in 'cluster_settings.sh' and the servers '.json' files cover the most important settings.    
 But for all the settings they do not cover, you can edit manually in the resources folder of your chosen build.    
 So if required, hit **\<ctrl-c\>** at the end of this preperation stage (you will have 10 seconds!).    
-Then you can edit config files and finally re-launch pod_dse.    
+Then you can edit config files and finally re-launch pod_dse to distribute the configured builds + software.    
