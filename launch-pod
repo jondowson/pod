@@ -73,31 +73,37 @@ while test $# -gt 0; do
         WHICH_POD=$1
         pod_generic_defaults
         shift
+        podFlag="true"
         ;;
     -s|--servers)
         shift
         SERVERS_JSON=$1
         shift
+        serversFlag="true"
         ;;
     -b|--build)
         shift
         BUILD_FOLDER=$1
         shift
+        buildFlag="true"
         ;;
     -ss|--sendsoft)
         shift
         SEND_DSE_SOFTWARE=$1
         shift
+        sendsoftFlag="true"
         ;;
     -rr|--regenresources)
         shift
         REGENERATE_RESOURCES=$1
         shift
+        regenresourcesFlag="true"
         ;;
     -cs|--clusterstate)
         shift
         CLUSTER_STATE=$1
         shift
+        clusterstateFlag="true"
         ;;
     *)
       printf "%s\n"
@@ -147,6 +153,6 @@ source pods/"${WHICH_POD}".sh
 ## closing messages
 
 pod_generic_display_finalMessage "${WHICH_POD}"
-pod_generic_display_timePod
+pod_generic_misc_timePod
 pod_generic_display_msgColourSimple "info" "pod took: ${diff}[s]"
 printf "%s\n"

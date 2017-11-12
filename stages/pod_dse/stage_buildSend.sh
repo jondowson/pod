@@ -5,7 +5,7 @@
 
 #-------------------------------------------
 
-function task_pod_build_send(){
+function task_buildSend(){
 
 ## for each server configure a pod build and then send it
 
@@ -168,7 +168,7 @@ done
 
 #-------------------------------------------
 
-function task_pod_build_send_report(){
+function task_buildSend_report(){
 
 ## generate a report of all failed sends of pod build
 

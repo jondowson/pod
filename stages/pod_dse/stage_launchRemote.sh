@@ -5,7 +5,7 @@
 
 #-------------------------------------------
 
-function task_pod_launch_remote(){
+function task_launchRemote(){
 
 for id in `seq 1 ${numberOfServers}`;
 do
@@ -75,7 +75,7 @@ done
 
 #-------------------------------------------
 
-function task_pod_launch_remote_report(){
+function task_launchRemote_report(){
 
 pod_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Launch Pod On Each Server"
 

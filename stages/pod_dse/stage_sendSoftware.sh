@@ -5,7 +5,7 @@
 
 #-------------------------------------------
 
-function task_pod_software_send(){
+function task_sendSoftware(){
 
 # resolve ${DSE_SOFTWARE} folder to local machine settings
 source ${build_file_path}
@@ -76,7 +76,7 @@ done
 
 #-------------------------------------------
 
-function task_pod_software_send_report(){
+function task_sendSoftware_report(){
 
 # display report
 

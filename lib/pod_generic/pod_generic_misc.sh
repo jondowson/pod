@@ -188,3 +188,13 @@ while [ $min -ge 0 ]; do
       min=$((min-1))
 done
 }
+
+# ---------------------------------------
+
+pod_generic_misc_timePod(){
+
+## calculate pod runtime
+
+pod_end=$(date +%s)
+diff=$((pod_end - pod_start))
+}

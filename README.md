@@ -7,11 +7,10 @@ It is written in bash because sometimes thats all you can use in locked down env
 Tested on Mac, Ubuntu and Centos.    
    
 It is extensible and new modules (or 'pods') can be added quickly that make use of pod's core capabilities.  
-Its first two 'pods' are specific to setting up and running a DSE cluster from **tarballs**.  
+Its first 'pod' makes it easy to set up and run a DSE cluster from **tarballs**.  
 - **pod_dse**:    
-    - setup, configure, distribute dse + java (optional) software to all servers in a cluster.        
-- **pod_dse_rollingStartStop**:   
-    - start and stop a dse cluster gracefully.   
+    - setup, configure and distribute dse + java (optional) software to all servers in a cluster.    
+    - perform rolling starts and stops.            
 
 Other dse specific pods are in the pipeline:    
 - **pod_dse_security**    
@@ -54,8 +53,14 @@ $ ./misc/dependencies_mac.sh
     - dse
       - dse-5.x.x-bin.tar.gz  
     - oracle-java  
-      - jdk-8uxxx-linux-i586.tar.gz    
+      - jdk-8uxxx-linux-i586.tar.gz
+    - opscenter    
+      - opscenter-6.x.x.tar.gz    
+    - datastax-agent    
+      - datastax-agent-6.x.x.tar.gz     
 
+Opscenter and agent software is not setup by pod_dse but inclusion will ensure their tarballs are distributed to each server.     
+Check online datastax documents to ensure usage of compatible versions.      
 
 4) Duplicate **builds/pod_dse/dse-5.x.x_template**, rename it and then review/edit its '**cluster_settings.sh**' file.    
 `

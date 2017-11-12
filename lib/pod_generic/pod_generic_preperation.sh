@@ -9,16 +9,33 @@ function pod_generic_preperation_flagRules(){
 
 ## rules for accepting flags
 
-# pod_general
-if [[ ${WHICH_POD} == "" ]]; then printf "\n%s\n\n" "${b}${red}error: You must specify which ${yellow}pod${red} to run !! ${reset}" && exit; fi;
+# part 1 - flag checks
+case ${WHICH_POD} in
 
-# pod_dse
-if [[ ${WHICH_POD} == "pod_dse" ]] && [[ ${BUILD_FOLDER} == "" ]]; then printf "\n%s\n\n" "${b}${red}error: You must specify a build folder for ${yellow}${WHICH_POD}${red} !! ${reset}" && exit; fi;
-if [[ ${WHICH_POD} == "pod_dse" ]] && [[ ${SERVERS_JSON} == "" ]]; then printf "\n%s\n\n" "${b}${red}error: You must specify a server json definition file for ${yellow}${WHICH_POD}${red} !! ${reset}" && exit; fi;
+  "pod_dse" )
 
-# pod_dse_rollingStartStop
-if [[ ${WHICH_POD} == "pod_dse_rollingStartStop" ]] && [[ ${SERVERS_JSON} == "" ]]; then printf "\n%s\n\n" "${b}${red}error: You must specify a server json definition file for ${yellow}${WHICH_POD}${red} !! ${reset}" && exit; fi;
-if [[ ${WHICH_POD} == "pod_dse_rollingStartStop" ]] && [[ ${CLUSTER_STATE} != "stop" ]] && [[ ${CLUSTER_STATE} != "start" ]]; then printf "\n%s\n\n" "${b}${red}error: You must specify --clusterstate as either stop or start for ${yellow}${WHICH_POD}${red} !! ${reset}" && exit; fi;
+      if [[ ${clusterstateFlag} == "true" ]]; then
+          if [[ ${buildFlag} == "true" ]] || [[ ${sendsoftFlag} == "true" ]]  || [[ ${regenresourcesFlag} == "true" ]]; then 
+            pod_generic_display_msgColourSimple "error" "You must supply the correct combination of flags - please check the help: ${yellow}./launch-pod --help${red}" && exit 1;
+          elif [[ ${serversFlag} != "true" ]]; then
+            pod_generic_display_msgColourSimple "error" "You must supply a server .json definition file - please check the help: ${yellow}./launch-pod --help${red}" && exit 1;
+          elif [[ ${CLUSTER_STATE} != "stop" ]] && [[ ${CLUSTER_STATE} != "start" ]]; then
+            pod_generic_display_msgColourSimple "error" "You must specify --clusterstate as either ${yellow}stop${red} or ${yellow}start${red}" && exit 1;
+          fi
+      else
+        if [[ ${buildFlag} != "true" ]] && [[ ${serversFlag} != "true" ]]; then 
+          printf "\n%s\n\n" "${b}${red}error: You must supply both a build folder and a server json definition file - please check the help: ${yellow}./launch-pod --help${red} !! ${reset}" && exit 1; 
+        elif [[ ${BUILD_FOLDER} == "" ]]; then 
+          pod_generic_display_msgColourSimple "error" "You must supply a value for ${yellow}--builds${red} - please check the help: ${yellow}./launch-pod --help${red}" && exit 1; 
+        elif [[ ${SERVERS_JSON} == "" ]]; then 
+          pod_generic_display_msgColourSimple "error" "You must supply a value for ${yellow}--servers${red} - please check the help: ${yellow}./launch-pod --help${red}" && exit 1; 
+        elif [[ ${regenresourcesFlag} == "true" ]] && [[ "${REGENERATE_RESOURCES}" == "" ]] || [[ ${sendsoftFlag} == "true" ]] && [[ "${SEND_DSE_SOFTWARE}" == "" ]]; then
+           pod_generic_display_msgColourSimple "error" "You must supply values for ${yellow}--regenresources${red} and ${yellow}--sendsoft${red} flags - please check the help: ${yellow}./launch-pod --help${red}" && exit 1;
+        fi
+      fi ;;
+  *)
+      printf "%s\n" "${b}${red}error: You have specified an invalid pod: ${yellow}${WHICH_POD}${red} !! ${reset}" && exit 1 ;;
+esac
 }
 
 # ------------------------------------------

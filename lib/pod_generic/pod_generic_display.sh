@@ -87,9 +87,9 @@ case ${which_pod} in
           pod_generic_display_msgColourSimple "info"      "$ dse cassandra -s -k -g   # start dse storage with search, analytics, graph (pick any combination)"
           printf "%s\n"
           pod_generic_display_msgColourSimple "TASK"      "To start the entire cluster:"
-          pod_generic_display_msgColourSimple "info"      "$ ./launch-pod --pod pod_dse_rollingStart --servers ${SERVERS_JSON} --clusterstate start"
+          pod_generic_display_msgColourSimple "info"      "$ ./launch-pod --pod pod_dse --servers ${SERVERS_JSON} --clusterstate start"
         elif [[ "${JAVA_INSTALL_TYPE}" == "tar" ]]; then
-          pod_generic_display_msgColourSimple "TASK"     "Final tasks to complete pod"
+          pod_generic_display_msgColourSimple "TASK"      "To run dse locally:"
           pod_generic_display_msgColourSimple "info-bold" "(a) Source '.bash_profile' (or open new terminal):"
           pod_generic_display_msgColourSimple "info"      "$ . ~/.bash_profile"
           pod_generic_display_msgColourSimple "info-bold" "(b) Add java tar to system java alternatives - you may have to alter yellow portion of path:"
@@ -99,6 +99,9 @@ case ${which_pod} in
           pod_generic_display_msgColourSimple "info-bold" "(d) Run dse:"
           pod_generic_display_msgColourSimple "info"      "$ dse cassandra            # start dse storage"
           pod_generic_display_msgColourSimple "info"      "$ dse cassandra -s -k -g   # start dse storage with search, analytics, graph (pick any combination)"
+          printf "%s\n"
+          pod_generic_display_msgColourSimple "TASK"      "To start the entire cluster:"
+          pod_generic_display_msgColourSimple "info"      "$ ./launch-pod --pod pod_dse --servers ${SERVERS_JSON} --clusterstate start"
         fi
         printf "%s\n" ;;
 
@@ -110,17 +113,6 @@ case ${which_pod} in
       *)
       printf "%s\n" "" ;;
 esac
-}
-
-# ---------------------------------------
-
-pod_generic_display_timePod(){
-
-## calculate pod runtime
-
-pod_end=$(date +%s)
-diff=$((pod_end - pod_start))
-actual_runtime=$((diff - total_sleep))
 }
 
 # ---------------------------------------
