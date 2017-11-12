@@ -32,6 +32,7 @@ As such **pod_dse** is very useful in development / testing environments as well
 - **simple:** settings are defined in just **two** configuration files.    
     -  one for cluster-wide settings.    
     -  one for server level settings.    
+- **control:** all dse settings can be edited.     
 
 Out of the box - pod creates a desktop folder with all configured software, data and log folders all conveniently in one place.  
     
