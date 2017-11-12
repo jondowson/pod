@@ -104,9 +104,11 @@ This copied folder is stripped of all **non-config files** - the remainder are t
 The settings specified in '**cluster_settings.sh**' and the servers '**.json**' will be edited into this copied resources folder.    
 But for all the settings they do not cover, you can manually edit any of them.    
 So if required, hit **\<ctrl-c\>** at the end of this initial stage - you will have 10 seconds!   
-Then edit any dse config file in the build's resources folder.    
+Then edit any dse config file in the build's **resources** folder.    
 
 Re-launch **pod_dse**.    
 All servers will receive a bespoke version of the resources folder + all required software.     
-A pod-launcher script will be run remotely and finish the server configuration.    
+A pod-launcher script will be run remotely and finish the server configuration.  
+You can then perform a rolling start of the cluster - see help for example.    
+   
    
