@@ -23,7 +23,7 @@ Other dse specific pods are in the pipeline:
 
 With **'pod_dse'** you can easily create and manage multiple cluster setups (different versions/settings).     
 You can deploy these different configurations to the same machines and they will not interfere with each other.  
-As such pod is very useful in development/testing environments as well as setting up dse in production when opscenter is not an option.  
+As such pod is very useful in development/testing environments as well as in production when opscenter is not an option.  
 
 Pod will distribute, untar and configure all software sent to each server - defined in **two** pod configuration files.    
 Out of the box - this will create a folder on your desktop with the unpacked software, data and log folders all in one place.  
