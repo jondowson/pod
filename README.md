@@ -24,7 +24,7 @@ With **'pod_dse'** you can easily create and manage multiple cluster setups (dif
 You can deploy these different configurations to the same machines and they will not interfere with each other.  
 As such pod is very useful in development/testing environments as well as in production when opscenter is not an option.  
 
-Pod can be run just locally or used over multiple machines.     
+pod_dse can install a dse cluster both locally and on remote machines (or both).     
 Pod will distribute, untar and configure all software sent to each server.    
 Settings are defined in **two** pod configuration files - one for cluster-wide settings and one for server level settings.    
 
@@ -32,7 +32,7 @@ Out of the box - pod creates a desktop folder with all configured software, data
     
 **Note:**     
 By using tarballs, pod does **not require root privileges** to setup a dse cluster.    
-Root access is required when using opscenter, package installs or the dse-installer to setup a dse cluster.             
+Root access is, however, required when using opscenter, package installs or the dse-installer to setup a dse cluster.             
 
 ## Get started with 'pod_dse'   
 
