@@ -28,7 +28,7 @@ As such pod is very useful in development/testing environments as well as settin
 Pod will distribute, untar and configure all software sent to each server - defined in **two** pod configuration files.    
 Out of the box - this will create a folder on your desktop with the unpacked software, data and log folders all in one place.  
 
-**Note:** there is no need to have for root privileges to setup a dse cluster using pod.      
+**Note:** to setup a dse cluster using pod **no root privileges are required**.      
 
 ## Get started with 'pod_dse'   
 
