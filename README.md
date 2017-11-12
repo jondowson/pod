@@ -29,7 +29,7 @@ Pod can be run just locally or used over multiple machines.
 Pod will distribute, untar and configure all software sent to each server.    
 Settings are defined in **two** pod configuration files - one for cluster-wide settings and one for server level settings.    
 
-Out of the box - pod will create a desktop folder with the all configured software, data and log folders all in one place.  
+Out of the box - pod will create a desktop folder with all configured software, data and log folders all conveniently in one place.  
     
 **Note:**     
 By using tarballs, pod does **not require root privileges** to setup a dse cluster.    
