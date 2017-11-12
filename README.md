@@ -25,8 +25,8 @@ You can deploy these different configurations to the same machines and they will
 As such pod is very useful in development/testing environments as well as in production when opscenter is not an option.  
 
 **Features:**    
--  flexible:   can install a dse cluster locally and/or on remote machines (or span both).     
--  complete:   will distribute, untar and configure all software sent to each server.    
+-  flexible:&nbsp;&nbsp;&nbsp;can install a dse cluster locally and/or on remote machines (or span both).     
+-  complete:&nbsp;&nbsp;&nbsp;will distribute, untar and configure all software sent to each server.    
 -  simplicity: settings are defined in just **two** configuration files.    
     -  one for cluster-wide settings.    
     -  one for server level settings.    
