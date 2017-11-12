@@ -2,7 +2,7 @@
 
 ## About 'pod'
 **pod** is about automating tasks over many machines.    
-It is written in bash because sometimes thats all you can use in locked down environments (banking). 
+It is written in bash because sometimes thats all you can use in locked down environments (banking).    
 Tested on Mac, Ubuntu and Centos.    
    
 It is extensible and new modules (or 'pods') can be added quickly that make use of pod's core capabilities.  
