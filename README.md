@@ -1,6 +1,7 @@
 # pod
 
 ## About 'pod'
+
 **pod** is about automating tasks over many machines.    
 It is written in bash because sometimes thats all you can use in locked down environments (banking).    
 Tested on Mac, Ubuntu and Centos.    
@@ -8,7 +9,7 @@ Tested on Mac, Ubuntu and Centos.
 It is extensible and new modules (or 'pods') can be added quickly that make use of pod's core capabilities.  
 Its first two 'pods' are specific to setting up and running a DSE cluster from **tarballs**.  
 - **pod_dse**:    
-    - setup, configure, distribute dse + java software to all servers in a cluster.  
+    - setup, configure, distribute dse + java (optional) software to all servers in a cluster.  
 - **pod_dse_rollingStartStop**:   
     - start and stop a dse cluster gracefully.   
 
