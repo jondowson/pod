@@ -94,8 +94,12 @@ When you first run pod, it will look in your specified builds folder to see if t
 If there is not, it will untar your choosen dse version tarball and copy its resourcs folder there.    
 This copied folder is stripped of all **non-config files** - the remainder are then available for editing.    
 
-The settings specified in '**cluster_settings.sh**' and the servers '**.json**' will edit the files in that build's resources folder.    
-But for all the settings they do not cover, you can manually edit the resources folder files.    
+The settings specified in '**cluster_settings.sh**' and the servers '**.json**' will be edited into this copied resources folder.    
+But for all the settings they do not cover, you can manually edit any of them.    
+So if required, hit **\<ctrl-c\>** at the end of this initial stage - you will have 10 seconds!   
+Then edit any dse config file in the build's resources folder.    
 
-So if required, hit **\<ctrl-c\>** at the end of this preperation stage (you will have 10 seconds!).    
-Then you can edit any dse config file before re-launching **pod_dse** to distribute the server specific builds + software.    
+Re-launch **pod_dse**.    
+All servers will receive a bespoke version of the resources folder + all required software.     
+A pod-launcher script will be run remotely and finish the server configuration.    
+   
