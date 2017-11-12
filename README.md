@@ -94,4 +94,4 @@ The settings specified in '**cluster_settings.sh**' and the servers '**.json**' 
 But for all the settings they do not cover, you can manually edit the resources folder files.    
 
 So if required, hit **\<ctrl-c\>** at the end of this preperation stage (you will have 10 seconds!).    
-Then you can edit config files before re-launching **pod_dse** to distribute the server specific builds + software.    
+Then you can edit any dse config file before re-launching **pod_dse** to distribute the server specific builds + software.    
