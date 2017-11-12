@@ -57,14 +57,14 @@ $ ./misc/dependencies_mac.sh
       - jdk-8uxxx-linux-i586.tar.gz    
 
 
-4) In pod, duplicate the builds/pod_dse/ template folder, rename it and then review/edit its '**cluster_settings.sh**' file.    
+4) In pod, duplicate the **builds/pod_dse/dse-5.x.x_template** folder, rename it and then review/edit its '**cluster_settings.sh**' file.    
 `
-$ cp -r builds/pod_dse/dse-5.x.x_template  builds/pod_dse/dse-x.x.x_nameIt  
+$ cp -r builds/pod_dse/dse-5.x.x_template  builds/pod_dse/dse-5.x.x_nameIt  
 `  
 `
 $ vi builds/pod_dse/dse-x.x.x_nameIt/cluster_settings.sh    
 `   
-
+Rename the template file in line with dse version you intend to use.    
 The '**cluster_settings.sh**' file contains instructions, but in brief, it captures cluster-wide settings such as cluster name and write paths for logs/data.    
 
 
