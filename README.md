@@ -25,10 +25,10 @@ You can deploy these different configurations to the same machines and they will
 As such **pod_dse** is very useful in development / testing environments as well as in production if opscenter is not an option.  
 
 **Features:**    
-- available: by using tarballs, pod does **not require root privileges** to setup a dse cluster.    
-- flexible: can install a dse cluster locally and/or on remote machines (or span both).     
-- complete: will distribute, untar and configure all software sent to each server.    
-- simple: settings are defined in just **two** configuration files.    
+- **available:** by using tarballs, pod does **not require root privileges** to setup a dse cluster.    
+- **flexible:** can install a dse cluster locally and/or on remote machines (or span both).     
+- **complete:** will distribute, untar and configure all software sent to each server.    
+- **simple:** settings are defined in just **two** configuration files.    
     -  one for cluster-wide settings.    
     -  one for server level settings.    
 
