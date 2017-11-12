@@ -33,7 +33,7 @@ Out of the box - pod creates a desktop folder with all configured software, data
     
 **Note:**     
 By using tarballs, pod does **not require root privileges** to setup a dse cluster.    
-Root access is however required when using opscenter, package installs or the dse-installer.             
+Root access is required when using opscenter, package installs or the dse-installer to setup a dse cluster.             
 
 ## Get started with 'pod_dse'   
 
