@@ -24,9 +24,12 @@ With **'pod_dse'** you can easily create and manage multiple cluster setups (dif
 You can deploy these different configurations to the same machines and they will not interfere with each other.  
 As such pod is very useful in development/testing environments as well as in production when opscenter is not an option.  
 
-pod_dse can install a dse cluster both locally and on remote machines (or both).     
-Pod will distribute, untar and configure all software sent to each server.    
-Settings are defined in **two** pod configuration files - one for cluster-wide settings and one for server level settings.    
+**Features:**    
+-  flexible:   can install a dse cluster locally and/or on remote machines (or span both).     
+-  complete:   will distribute, untar and configure all software sent to each server.    
+-  simplicity: settings are defined in just **two** configuration files.    
+    -  one for cluster-wide settings.    
+    -  one for server level settings.    
 
 Out of the box - pod creates a desktop folder with all configured software, data and log folders all conveniently in one place.  
     
