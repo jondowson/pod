@@ -28,6 +28,7 @@ As such **pod_dse** is very useful in development / testing environments as well
 - **available:** by using tarballs, pod does **not require root privileges** to setup a dse cluster.    
 - **flexible:** can install a dse cluster locally and/or on remote machines (or span both).     
 - **complete:** will distribute, untar and configure all software sent to each server.    
+- **speed:** 0-cluster in minutes !!
 - **simple:** settings are defined in just **two** configuration files.    
     -  one for cluster-wide settings.    
     -  one for server level settings.    
