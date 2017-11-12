@@ -50,11 +50,11 @@ $ ./misc/dependencies_mac.sh
 2) Make a folder on your desktop called '**DSE_SOFTWARE**'.  
 3) Add the following folder structure and tar files (add multiple versions per folder if you like).
 
-- DSE_SOFTWARE  
-  - packages  
-    - dse
+- **DSE_SOFTWARE**  
+  - **packages**  
+    - **dse**
       - dse-5.x.x-bin.tar.gz  
-    - oracle-java  
+    - **oracle-java**  
       - jdk-8uxxx-linux-i586.tar.gz
     - opscenter    
       - opscenter-6.x.x.tar.gz    
