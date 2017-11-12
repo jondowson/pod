@@ -9,7 +9,7 @@ Tested on Mac, Ubuntu and Centos.
 It is extensible and new modules (or 'pods') can be added quickly that make use of pod's core capabilities.  
 Its first two 'pods' are specific to setting up and running a DSE cluster from **tarballs**.  
 - **pod_dse**:    
-    - setup, configure, distribute dse + java (optional) software to all servers in a cluster.  
+    - setup, configure, distribute dse + java (optional) software to all servers in a cluster.        
 - **pod_dse_rollingStartStop**:   
     - start and stop a dse cluster gracefully.   
 
@@ -21,14 +21,14 @@ Other dse specific pods are in the pipeline:
 
 ## About 'pod_dse'  
 
-With **'pod_dse'** you can easily create and manage multiple cluster setups (different versions/settings).  
+With **'pod_dse'** you can easily create and manage multiple cluster setups (different versions/settings).     
 You can deploy these different configurations to the same machines and they will not interfere with each other.  
 As such pod is very useful in development/testing environments as well as setting up dse in production when opscenter is not an option.  
 
 Pod will distribute, untar and configure all software sent to each server - defined in **two** pod configuration files.    
 Out of the box - this will create a folder on your desktop with the unpacked software, data and log folders all in one place.  
 
-**Note:** you have control over where data,logs and folders are put by editing its **two** configuration files.    
+**Note:** there is no need to have for root privileges to setup a dse cluster using pod.      
 
 ## Get started with 'pod_dse'   
 
