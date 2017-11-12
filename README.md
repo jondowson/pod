@@ -65,7 +65,7 @@ $ cp -r builds/pod_dse/dse-5.x.x_template  builds/pod_dse/dse-5.x.x_nameIt
 $ vi builds/pod_dse/dse-5.x.x_nameIt/cluster_settings.sh    
 `   
 
-Rename the template file in line with dse version you intend to use.    
+Rename the template file in line with the dse version you intend to use.    
 The '**cluster_settings.sh**' file contains instructions, but in brief, it captures cluster-wide settings such as cluster name and write paths for logs/data.    
 
 
