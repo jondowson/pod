@@ -66,7 +66,7 @@ $ vi builds/pod_dse/dse-5.x.x_nameIt/cluster_settings.sh
 `   
 
 Rename the template file in line with the dse version you intend to use.    
-The '**cluster_settings.sh**' file contains instructions, but in brief, it captures cluster-wide settings such as cluster name and write paths for logs/data.    
+The '**cluster_settings.sh**' file captures cluster-wide settings such as cluster name and write paths for logs/data.    
 
 
 5) Duplicate a servers template **.json** file, rename and edit it.  
@@ -77,7 +77,7 @@ $ cp servers/template_x.json  servers/nameIt.json
 $ vi servers/nameIt.json    
 `     
 
-The **.json** defintion file contains instructions, but in brief, it captures server specific settings such as login credentials and ip addresses.    
+The **.json** defintion file captures server specific settings such as login credentials and ip addresses.    
     
 6) For help run '**launch-pod**' passing '**-h**' or '**--help**'.  
 `
