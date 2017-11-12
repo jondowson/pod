@@ -12,17 +12,23 @@ function task_buildSend(){
 for id in `seq 1 ${numberOfServers}`;
 do
 
-  tag=$(cat ${servers_json_path}           | ${jq_folder}jq '.server_'${id}'.tag'           | tr -d '"')
-  user=$(cat ${servers_json_path}          | ${jq_folder}jq '.server_'${id}'.user'          | tr -d '"')
-  sshKey=$(cat ${servers_json_path}        | ${jq_folder}jq '.server_'${id}'.sshKey'        | tr -d '"')
-  target_folder=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.target_folder' | tr -d '"')
-  pubIp=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.pubIp'         | tr -d '"')
-  prvIp=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.prvIp'         | tr -d '"')
-  listen_address=$(cat ${servers_json_path}| ${jq_folder}jq '.server_'${id}'.listen_address'| tr -d '"')
-  seeds=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.seeds'         | tr -d '"')
-  token=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.token'         | tr -d '"')
-  dc=$(cat ${servers_json_path}            | ${jq_folder}jq '.server_'${id}'.dc'            | tr -d '"')
-  rack=$(cat ${servers_json_path}          | ${jq_folder}jq '.server_'${id}'.rack'          | tr -d '"')
+  tag=$(cat ${servers_json_path}           | ${jq_folder}jq '.server_'${id}'.tag'            | tr -d '"')
+  user=$(cat ${servers_json_path}          | ${jq_folder}jq '.server_'${id}'.user'           | tr -d '"')
+  sshKey=$(cat ${servers_json_path}        | ${jq_folder}jq '.server_'${id}'.sshKey'         | tr -d '"')
+  target_folder=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.target_folder'  | tr -d '"')
+  pubIp=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.pubIp'          | tr -d '"')
+  prvIp=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.prvIp'          | tr -d '"')
+  listen_address=$(cat ${servers_json_path}| ${jq_folder}jq '.server_'${id}'.listen_address' | tr -d '"')
+  seeds=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.seeds'          | tr -d '"')
+  token=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.token'          | tr -d '"')
+  dc=$(cat ${servers_json_path}            | ${jq_folder}jq '.server_'${id}'.dc'             | tr -d '"')
+  rack=$(cat ${servers_json_path}          | ${jq_folder}jq '.server_'${id}'.rack'           | tr -d '"')
+  search=$(cat ${servers_json_path}        | ${jq_folder}jq '.server_'${id}'.mode.search'    | tr -d '"')
+  analytics=$(cat ${servers_json_path}     | ${jq_folder}jq '.server_'${id}'.mode.analytics' | tr -d '"')
+  graph=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.mode.graph'     | tr -d '"')
+  dsefs=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.mode.dsefs'     | tr -d '"')
+
+# ----------
 
   # add trailing '/' to path if not present
   target_folder=$(pod_generic_misc_addTrailingSlash "${target_folder}")
@@ -58,8 +64,12 @@ pod_generic_display_msgColourSimple   "info-indented" "detected os: ${green}${re
   pod_dse_run_local_jvmOptions
   if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'main' settings for 'cassandra.yaml'"; fi
   pod_dse_run_local_cassandraYaml
-  if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'dse.yaml'"; fi
-  pod_dse_run_local_dseYaml_dsefs
+  
+  if [[ "${analytics}" == "true" ]] || [[ "${dsefs}" == "true" ]]; then
+    if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'dse.yaml'"; fi
+    pod_dse_run_local_dseYaml_dsefs
+  fi
+  
   if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'dse-spark-env.sh'"; fi
   pod_dse_run_local_dseSparkEnv
   if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'rackdc.properties'"; fi
@@ -107,11 +117,13 @@ done
 
 # -----
 
-  if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "adding:       'dsefs_data_folders' in 'cluster_settings.sh'"; fi
+  if [[ "${analytics}" == "true" ]] || [[ "${dsefs}" == "true" ]]; then
 
-  # calculate number of cassandra data folders specified in json
-  # -3? - one for each bracket line and another 'cos the array starts at zero
-  numberOfDataFolders=$(($(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.dsefs_data' | wc -l)-3))
+    if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "adding:       'dsefs_data_folders' in 'cluster_settings.sh'"; fi
+
+    # calculate number of cassandra data folders specified in json
+    # -3? - one for each bracket line and another 'cos the array starts at zero
+    numberOfDataFolders=$(($(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.dsefs_data' | wc -l)-3))
 
 # CAT/EOF cannot be indented !!
 cat << EOF >> "${tmp_build_file_path}"
@@ -129,7 +141,7 @@ dsefs_data_file_directories_array[${j}]="${data_path}"
 EOF
 done
 printf "%s" "#EOF CLEAN-dse_data_arrays" >> "${tmp_build_file_path}"
-
+  fi
 # -----
 
   if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'dsefs_data_folders' in 'dse.yaml'"; fi

@@ -18,7 +18,7 @@
 # dc:             the datacenter name - utilised if applying rack settings
 # rack:           the rack used within a dc - utilised if applying rack settings
 # mode:           set to 'true' for all DSE features turned on for this server
-#                 --> dsefs will be required if turning on analytics !!
+#                 --> dsefs will be turned on for analytics !!
 # cass_data:      always specify at least one data path for cassandra data volume(s)
 # dsefs_data:     specify at least one data path for dsefs (required if using analytics or dsefs)
 #                 --> string requires 3 semi-colon seperated values
@@ -42,7 +42,8 @@
       "mode": {
         "search": "false",
         "analytics": "false",
-        "graph": "false"
+        "graph": "false",
+        "dsefs": "false"
       },
       "cass_data": [
         "/home/<user>/Desktop/dse-installations/data.logs/data",
