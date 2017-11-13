@@ -22,7 +22,7 @@ Other dse specific pods are in the pipeline:
 
 **The latest stable version is:** 
 ```diff
-+ pod-version-1.0
++ pod-version-1.1
 ```    
 The master branch is in sync with the latest stable version.    
 
