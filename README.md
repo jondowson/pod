@@ -35,7 +35,8 @@ To change to a different version.
 $ git checkout -b <pod-version-x.x>     
 `    
 
-## About 'pod_dse'  
+## Modules for 'pod'
+### About 'pod_dse'  
 
 With **'pod_dse'** you can easily create and manage multiple cluster setups (different versions/settings).     
 You can deploy these different configurations to the same machines and they will not interfere with each other.  
