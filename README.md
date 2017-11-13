@@ -20,6 +20,12 @@ Other dse specific pods are in the pipeline:
 
 ## Versioning 'pod'
 
+**The latest stable version is:** 
+```diff
++ **pod-version-1.0**
+```    
+The master branch is in sync with the latest stable version.    
+
 To update to the latest version when on 'master' branch.      
 `
 $ git pull                            
@@ -28,12 +34,6 @@ To change to a different version.
 `    
 $ git checkout -b <pod-version-x.x>     
 `    
-The master branch is always kept in sync with the latest stable branch of pod.   
-
-**The latest stable version is:** 
-```diff
-+ **pod-version-1.0**
-```
 
 ## About 'pod_dse'  
 
