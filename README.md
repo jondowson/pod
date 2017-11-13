@@ -40,15 +40,25 @@ Out of the box - pod creates a desktop folder with all configured software, data
 
 Quick Instructions (to work out of the box):  
 
-1) git clone https://github.com/jondowson/pod  
+1) Setup passwordless access to all servers (including local machine).    
+`
+$ ssh keygen -t rsa   # hit enter to all questions
+`    
+The above step is required if you do not already have a local key setup.    
+`
+$ ssh-copy-id user@remote-machine
+`    
+This will send your key to the remote server to enable passwordless authentication.    
+
+2) git clone https://github.com/jondowson/pod  
 
 For Macs (both running pod and in a cluster) - you will need first run the dependencies script from the root folder of the repo.  
 `  
 $ ./misc/dependencies_mac.sh
 `     
 
-2) Make a folder on your desktop called '**DSE_SOFTWARE**'.  
-3) Add the following folder structure and tar files (add multiple versions per folder if you like).
+3) Make a folder on your desktop called '**DSE_SOFTWARE**'.  
+4) Add the following folder structure and tar files (add multiple versions per folder if you like).
 
 - **DSE_SOFTWARE**  
   - **packages**  
@@ -64,7 +74,7 @@ $ ./misc/dependencies_mac.sh
 Opscenter and agent software is not setup by pod_dse but inclusion will ensure their tarballs are distributed to each server.     
 Check online datastax documents to ensure usage of compatible versions.      
 
-4) Duplicate **builds/pod_dse/dse-5.x.x_template**, rename it and then review/edit its '**cluster_settings.sh**' file.    
+5) Duplicate **builds/pod_dse/dse-5.x.x_template**, rename it and then review/edit its '**cluster_settings.sh**' file.    
 `
 $ cp -r builds/pod_dse/dse-5.x.x_template  builds/pod_dse/dse-5.x.x_nameIt  
 `  
@@ -76,7 +86,7 @@ Rename the template file in line with the dse version you intend to use.
 The '**cluster_settings.sh**' file captures cluster-wide settings such as cluster name and write paths for logs/data.    
 
 
-5) Duplicate a servers template **.json** file, rename and edit it.  
+6) Duplicate a servers template **.json** file, rename and edit it.  
 `
 $ cp servers/template_x.json  servers/nameIt.json  
 `  
@@ -86,12 +96,12 @@ $ vi servers/nameIt.json
 
 The **.json** defintion file captures server specific settings such as login credentials and ip addresses.    
     
-6) For help run '**launch-pod**' passing '**-h**' or '**--help**'.  
+7) For help run '**launch-pod**' passing '**-h**' or '**--help**'.  
 `
 $ ./launch-pod --help    
 `    
     
-7) Finally run '**launch-pod**' passing in the required parameters.  
+8) Finally run '**launch-pod**' passing in the required parameters.  
 `
 $ ./launch-pod --pod pod_dse --servers nameIt.json --build dse-x.x.x_nameIt    
 `
