@@ -18,6 +18,19 @@ Other dse specific pods are in the pipeline:
 - **pod_dse_opscenter**    
     - to automate the setup, configuration and encryption of opscenter/agents.    
 
+## Versioning 'pod'
+
+The master branch is always kept in sync with the latest stable branch of pod.    
+`
+$ git pull                            # to update to the latest version when on 'master' branch
+`    
+`
+$ git checkout -b <pod-version-x.x>   # to change to a different version
+`    
+
+**The current stable version is: <span style="color:blue">pod-version-1.0</span>**
+  
+
 ## About 'pod_dse'  
 
 With **'pod_dse'** you can easily create and manage multiple cluster setups (different versions/settings).     
@@ -123,5 +136,4 @@ Re-launch **pod_dse**.
 All servers will receive a bespoke version of the resources folder + all required software.     
 A pod-launcher script will be run remotely and finish the server configuration.  
 You can then perform a rolling start of the cluster - see help for example.    
-   
-   
+        
