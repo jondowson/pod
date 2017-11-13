@@ -67,7 +67,6 @@ Quick Instructions (to work out of the box):
 `    
 $ ssh keygen -t rsa    # hit enter to all questions    
 `    
-
 The above step is required if you do not already have a local key setup.    
 
 `
