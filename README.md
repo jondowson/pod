@@ -1,6 +1,6 @@
 # pod
 
-## About 'pod'
+## pod intro
 
 **pod** is about automating tasks over many machines.    
 It is written in bash because sometimes thats all you can use in locked down environments (banking).    
@@ -18,7 +18,7 @@ Other dse specific pods are in the pipeline:
 - **pod_dse_opscenter**    
     - to automate the setup, configuration and encryption of opscenter/agents.    
 
-## Versioning 'pod'
+## pod versioning
 
 **The latest stable version is:** 
 ```diff
@@ -35,8 +35,13 @@ To change to a different version.
 $ git checkout -b <pod-version-x.x>     
 `    
 
-## Modules for 'pod'
-### About 'pod_dse'  
+## pod modules
+
+pod is meant to be extensible and its core functions enable distribution and configuration of files.    
+pod modules ('pods') are discrete projects that make use of these core functions.    
+'pods' are organised into one or more STAGES, consisting of one or more TASKS, consisting of action(s).     
+
+### module #1 'pod_dse'  
 
 With **'pod_dse'** you can easily create and manage multiple cluster setups (different versions/settings).     
 You can deploy these different configurations to the same machines and they will not interfere with each other.  
