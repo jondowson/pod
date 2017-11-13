@@ -64,8 +64,8 @@ Out of the box - pod creates a desktop folder with all configured software, data
 Quick Instructions (to work out of the box):  
 
 1) Setup passwordless access to all servers (including local machine).    
-`
-$ ssh keygen -t rsa   # hit enter to all questions
+`    
+$ ssh keygen -t rsa    # hit enter to all questions    
 `    
 
 The above step is required if you do not already have a local key setup.    
