@@ -9,7 +9,8 @@
 # target_folder:  where 'DSE_SOFTWARE' + 'pod' are put
 # pubIp:          specify here what will be used to connect - could be internal 'private ip'!
 # prvIp:          the private address of the server (e.g. AWS internal ips)
-# listen_address  specify either pubIp or prvIp to use in cassandra.yaml (use prvIp on aws)
+# listen_address  specify either the pubIp or prvIp to use in cassandra.yaml (use prvIp on aws)
+# rpc_address     specify either the pubIp or prvIp (use prvIp on aws) or use default value of localhost 
 # seeds:          used at bootstrap of node into cluster
 #                 --> take care when choosing the seeds for a node
 #                 --> order local DC seeds first, then seeds for any other DC
@@ -32,9 +33,10 @@
       "user": "<user>",
       "sshKey": "/home/<user>/.ssh/id_rsa",
       "target_folder": "/home/<user>/Desktop",
-      "pubIp": "127.0.0.1",
+      "pubIp": "172.0.0.1",
       "prvIp": "127.0.0.1",
-      "listen_address": "pubIp",
+      "listen_address": "172.0.0.1",
+      "rpc_address": "localhost",        
       "seeds": "127.0.0.1",
       "token": "",
       "dc": "dc1",

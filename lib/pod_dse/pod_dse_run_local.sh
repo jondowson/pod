@@ -121,11 +121,11 @@ function pod_dse_run_local_cassandraYaml(){
 # file to edit
 file="${tmp_build_file_folder}resources/cassandra/conf/cassandra.yaml"
 
-# ~10 cluster_name:
+# cluster_name:
 pod_generic_misc_sedStringManipulation "editAfterSubstring" "${file}" "cluster_name:" "'${CLUSTER_NAME}'"
 
-# ~25 num_tokens:
-# ~36 allocate_tokens_for_local_replication_factor: 3 (uncomment for vnodes)
+# num_tokens:
+# allocate_tokens_for_local_replication_factor: 3 (uncomment for vnodes)
 if [[ "${VNODES}" == "false" ]]; then
   pod_generic_misc_sedStringManipulation "removeHashAndLeadingWhitespace" "${file}" "initial_token:" "dummy"
   pod_generic_misc_sedStringManipulation "editAfterSubstring"             "${file}" "initial_token:" "${token}"
@@ -138,19 +138,19 @@ if [[ "${VNODES}" == "false" ]]; then
   pod_generic_misc_sedStringManipulation "hashCommentOutMatchingLine"     "${file}" "initial_token:" "dummy"
 fi
 
-# ~73 hints_directory:
+# hints_directory:
 pod_generic_misc_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "hints_directory:" "${hints_directory}"
 
-# ~197 commitlog_directory:
+# commitlog_directory:
 pod_generic_misc_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "commitlog_directory:" "${commitlog_directory}"
 
-# ~208 cdc_raw_directory:
+# cdc_raw_directory:
 pod_generic_misc_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "cdc_raw_directory:" "${cdc_raw_directory}"
 
-# ~369 saved_caches_directory:
+# saved_caches_directory:
 pod_generic_misc_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "saved_caches_directory:" "${saved_caches_directory}"
 
-# ~963 endpoint_snitch: (nearly always 'GossipingPropertyFileSnitch')
+# endpoint_snitch: (nearly always 'GossipingPropertyFileSnitch')
 pod_generic_misc_sedStringManipulation "editAfterSubstring" "${file}" "endpoint_snitch:" "${ENDPOINT_SNITCH}"
 }
 
@@ -161,14 +161,17 @@ function pod_dse_run_local_cassandraYaml_nodeSpecific(){
 # file to edit
 file="${tmp_build_file_folder}resources/cassandra/conf/cassandra.yaml"
 
-# ~425 - seeds:
+# seeds:
 IFS='%'
 dynamic_cmd="$(pod_generic_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
 unset IFS
 ${dynamic_cmd} "s?\(-[[:space:]]seeds:\s*\).*\$?\1\"${seeds}\"?"  "${file}"
 
-# ~599 listen_address:
+# listen_address:
 pod_generic_misc_sedStringManipulation "editAfterSubstring" "${file}" "listen_address:" "${listen_address}"
+
+# rpc_address:
+pod_generic_misc_sedStringManipulation "editAfterSubstring" "${file}" "rpc_address:" "${rpc_address}"
 }
 
 # ---------------------------------------

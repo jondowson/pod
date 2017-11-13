@@ -19,6 +19,7 @@ do
   pubIp=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.pubIp'          | tr -d '"')
   prvIp=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.prvIp'          | tr -d '"')
   listen_address=$(cat ${servers_json_path}| ${jq_folder}jq '.server_'${id}'.listen_address' | tr -d '"')
+  rpc_address=$(cat ${servers_json_path}   | ${jq_folder}jq '.server_'${id}'.listen_address' | tr -d '"')
   seeds=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.seeds'          | tr -d '"')
   token=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.token'          | tr -d '"')
   dc=$(cat ${servers_json_path}            | ${jq_folder}jq '.server_'${id}'.dc'             | tr -d '"')
@@ -51,8 +52,8 @@ pod_generic_display_msgColourSimple   "info-indented" "detected os: ${green}${re
   if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "renaming:    'cassandra-topology.properties' to stop it interfering"; fi
   pod_dse_run_local_cassandraTopologyProperties
 
-  if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'LOCAL_TARGET_FOLDER' in 'cluster_settings.sh'"; fi
-  pod_generic_misc_sedStringManipulation "editAfterSubstring" "${tmp_build_file_path}"   "LOCAL_TARGET_FOLDER=" "\"${target_folder}\""
+  if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'TARGET_FOLDER' in 'cluster_settings.sh'"; fi
+  pod_generic_misc_sedStringManipulation "editAfterSubstring" "${tmp_build_file_path}"   "TARGET_FOLDER=" "\"${target_folder}\""
   source ${tmp_build_file_path}
 
   if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'build_folder_path' in 'pod_launch_remote.sh'"; fi
