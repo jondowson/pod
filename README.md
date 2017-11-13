@@ -43,8 +43,8 @@ Each 'pod' is organised into one or more **STAGES**, consisting of one or more *
 
 ### pod #1 - 'pod_dse'  
 
-With **'pod_dse'** you can easily create and manage multiple dse cluster setups (different versions/settings).     
-You can deploy these different configurations to the same machines and they will not interfere with each other.  
+With **'pod_dse'** you can easily create and manage multiple dse cluster setups with varying versions / settings.     
+Different configurations can be deployed to the same machines and they will not interfere with each other.  
 As such **pod_dse** is very useful in development / testing environments as well as in production if opscenter is not an option.  
 
 **Features:**    
