@@ -1,0 +1,46 @@
+export NODEID="dse"
+export NODE_CONFIG=/etc/dse/
+
+export DSE_HOME="/usr/share/dse"
+export DSE_ENV=$NODE_CONFIG/dse-env.sh
+
+export DSE_LOG_ROOT="/var/log"
+
+export DSE_CONF=$NODE_CONFIG
+
+export CASSANDRA_CONF=$NODE_CONFIG/cassandra
+export CASSANDRA_INCLUDE=$CASSANDRA_CONF/cassandra.in.sh
+export CASSANDRA_ENV_FILE=$CASSANDRA_CONF/cassandra-env.sh
+
+export TOMCAT_CONF_DIR=$NODE_CONFIG/tomcat
+export TOMCAT_LOGS=$DSE_LOG_ROOT/tomcat
+
+export CATALINA_BASE=$NODE_CONFIG/tomcat
+
+export HADOOP_CONF_DIR=$NODE_CONFIG/hadoop
+export HADOOP_LOG_DIR=$DSE_LOG_ROOT/hadoop
+
+export HIVE_CONF_DIR=$NODE_CONFIG/hive
+export HIVE_LOG_ROOT=$DSE_LOG_ROOT
+
+export SPARK_CONF_DIR=$NODE_CONFIG/spark
+export SPARK_ENV_FILE=$SPARK_CONF_DIR/spark-env.sh
+export SPARK_LOG_DIR=$DSE_LOG_ROOT/spark
+
+export PIG_CONF_DIR=$NODE_CONFIG/pig
+export PIG_LOG_ROOT=$DSE_LOG_ROOT
+
+export SQOOP_CONF_DIR=$NODE_CONFIG/sqoop
+
+export MAHOUT_CONF_DIR=$NODE_CONFIG/mahout
+export MAHOUT_LOG_DIR=$DSE_LOG_ROOT/mahout
+
+export GREMLIN_WORKING_DIR=$NODE_CONFIG/graph/gremlin-console
+export GREMLIN_CONSOLE_CONF_DIR=$GREMLIN_WORKING_DIR/conf
+
+# These are the options for numactl as run by the cassandra script.
+# If you want to use a specific NUMA scheduling or memory placement policy for
+# this node, specify that here. If this is left commented out then a policy of
+# "--interleave=all" will be used. If you change this for one DSE multi-instance
+# node then most likely you should change it for all of them.
+#export NUMACTL_ARGS="--interleave=all"
