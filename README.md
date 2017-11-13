@@ -67,13 +67,11 @@ Quick Instructions (to work out of the box):
 `    
 $ ssh keygen -t rsa    # hit enter to all questions    
 `    
-The above step is required if you do not already have a local key setup.    
-
 `
 $ ssh-copy-id user@remote-machine
 `    
-
-This will send your key to the remote server to enable passwordless authentication.    
+The first step is required if you do not already have a local key setup.    
+This second step will send your key to the remote server to enable passwordless authentication.    
 
 2) git clone https://github.com/jondowson/pod  
 
