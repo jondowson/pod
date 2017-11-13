@@ -7,7 +7,7 @@
       "pubIp": "GBRPSR000005738",
       "prvIp": "",
       "listen_address": "GBRPSR000005738",
-      "listen_address": "GBRPSR000005738",
+      "rpc_address": "GBRPSR000005738",
       "seeds": "GBRPSR000005738,GBRPSR000005739",
       "token": "",
       "dc": "dc1",
