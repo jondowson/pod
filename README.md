@@ -78,10 +78,10 @@ Opscenter and agent software is not setup by pod_dse but inclusion will ensure t
 Check online datastax documents to ensure usage of compatible versions.      
 
 5) Duplicate **builds/pod_dse/dse-5.x.x_template**, rename it and then review/edit its '**cluster_settings.sh**' file.    
-`
+`   
 $ cp -r builds/pod_dse/dse-5.x.x_template  builds/pod_dse/dse-5.x.x_nameIt  
-`  
-`
+`     
+`   
 $ vi builds/pod_dse/dse-5.x.x_nameIt/cluster_settings.sh    
 `   
 
@@ -90,24 +90,24 @@ The '**cluster_settings.sh**' file captures cluster-wide settings such as cluste
 
 
 6) Duplicate a servers template **.json** file, rename and edit it.  
-`
+`   
 $ cp servers/template_x.json  servers/nameIt.json  
-`  
-`
+`   
+`   
 $ vi servers/nameIt.json    
-`     
+`        
 
 The **.json** defintion file captures server specific settings such as login credentials and ip addresses.    
     
 7) For help run '**launch-pod**' passing '**-h**' or '**--help**'.  
-`
+`   
 $ ./launch-pod --help    
-`    
+`       
     
 8) Finally run '**launch-pod**' passing in the required parameters.  
-`
+`   
 $ ./launch-pod --pod pod_dse --servers nameIt.json --build dse-x.x.x_nameIt    
-`
+`   
 
 **Note:**    
 When you first run pod, it will look in your specified builds folder to see if there is a '**resources**' folder.    
