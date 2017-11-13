@@ -32,12 +32,12 @@ do
 # ----------
 
   # add trailing '/' to path if not present
-  target_folder=$(pod_generic_misc_addTrailingSlash "${target_folder}")
+  target_folder=$(pod_generic_strings_addTrailingSlash "${target_folder}")
 
 # ----------
 
   if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'TARGET_FOLDER' in 'cluster_settings.sh'"; fi
-  pod_generic_misc_sedStringManipulation "editAfterSubstring" "${tmp_build_file_path}"   "TARGET_FOLDER=" "\"${target_folder}\""
+  pod_generic_strings_sedStringManipulation "editAfterSubstring" "${tmp_build_file_path}"   "TARGET_FOLDER=" "\"${target_folder}\""
   source ${tmp_build_file_path}
 
 # ----------
@@ -86,7 +86,7 @@ do
 
   for i in "${data_file_directories_array[@]}"
   do
-    pod_generic_misc_expansionDelimiter "$i" ";" "2";
+    pod_generic_strings_expansionDelimiter "$i" ";" "2";
     writeFolder="${_D1_}"
     status="999"
     if [[ "${status}" != "0" ]]; then
@@ -106,7 +106,7 @@ do
   if [[ "${analytics}" == "true" ]] || [[ "${dsefs}" == "true" ]]; then
     for i in "${dsefs_data_file_directories_array[@]}"
     do
-    pod_generic_misc_expansionDelimiter "$i" ";" "2";
+    pod_generic_strings_expansionDelimiter "$i" ";" "2";
     writeFolder="${_D1_}"
     status="999"
     if [[ "${status}" != "0" ]]; then
@@ -135,7 +135,7 @@ declare -a pod_test_send_report_array_1
 count=0
 for k in "${!pod_test_send_error_array_1[@]}"
 do
-  pod_generic_misc_expansionDelimiter ${pod_test_send_error_array_1[$k]} ";" "1"
+  pod_generic_strings_expansionDelimiter ${pod_test_send_error_array_1[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
     pod_test_send_fail="true"
     pod_test_send_report_array_1["${count}"]="could not make folder: ${yellow}${k} ${white}on server ${yellow}${_D2_}${reset}"
@@ -149,7 +149,7 @@ declare -a pod_test_send_report_array_2
 count=0
 for k in "${!pod_test_send_error_array_2[@]}"
 do
-  pod_generic_misc_expansionDelimiter ${pod_test_send_error_array_2[$k]} ";" "1"
+  pod_generic_strings_expansionDelimiter ${pod_test_send_error_array_2[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
     pod_test_send_fail="true"
     pod_test_send_report_array_2["${count}"]="could not make folder: ${yellow}${k} ${white}on server ${yellow}${_D2_}${reset}"
@@ -163,7 +163,7 @@ declare -a pod_test_send_report_array_3
 count=0
 for k in "${!pod_test_send_error_array_3[@]}"
 do
-  pod_generic_misc_expansionDelimiter ${pod_test_send_error_array_3[$k]} ";" "1"
+  pod_generic_strings_expansionDelimiter ${pod_test_send_error_array_3[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
     pod_test_send_fail="true"
     pod_test_send_report_array_3["${count}"]="could not make folder: ${yellow}${k} ${white}on server ${yellow}${_D2_}${reset}"

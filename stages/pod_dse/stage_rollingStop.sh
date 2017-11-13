@@ -32,7 +32,7 @@ do
 # ---------- 
 
   # add trailing '/' to path if not present
-  target_folder=$(pod_generic_misc_addTrailingSlash "${target_folder}")
+  target_folder=$(pod_generic_strings_addTrailingSlash "${target_folder}")
 
 # ----------
 
@@ -76,7 +76,7 @@ declare -a pod_stop_dse_report_array
 count=0
 for k in "${!pod_stop_dse_error_array[@]}"
 do
-  pod_generic_misc_expansionDelimiter ${pod_stop_dse_error_array[$k]} ";" "1"
+  pod_generic_strings_expansionDelimiter ${pod_stop_dse_error_array[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
     pod_stop_dse_fail="true"
     pod_stop_dse_report_array["${count}"]="${yellow}${k}${white} at address ${yellow}${_D2_}${white} with error code ${red}${_D1_}${reset}"

@@ -77,9 +77,12 @@ array_file_extensions_to_strip[20]="css"
 array_file_extensions_to_strip[21]="csv"
 array_file_extensions_to_strip[22]="png"
 array_file_extensions_to_strip[23]="gif"
-array_file_extensions_to_strip[24]="svg"
-array_file_extensions_to_strip[25]="jsp"
-array_file_extensions_to_strip[26]="kryo"
+array_file_extensions_to_strip[24]="jpg"
+array_file_extensions_to_strip[25]="svg"
+array_file_extensions_to_strip[26]="jsp"
+array_file_extensions_to_strip[27]="kryo"
+array_file_extensions_to_strip[28]="ico"
+array_file_extensions_to_strip[29]="war"
 
 # -------------------------------------------
 

@@ -32,7 +32,7 @@ do
 # ----------
 
   # add trailing '/' to path if not present
-  target_folder=$(pod_generic_misc_addTrailingSlash "${target_folder}")
+  target_folder=$(pod_generic_strings_addTrailingSlash "${target_folder}")
 
 # -----
 
@@ -53,11 +53,11 @@ pod_generic_display_msgColourSimple   "info-indented" "detected os: ${green}${re
   pod_dse_run_local_cassandraTopologyProperties
 
   if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'TARGET_FOLDER' in 'cluster_settings.sh'"; fi
-  pod_generic_misc_sedStringManipulation "editAfterSubstring" "${tmp_build_file_path}"   "TARGET_FOLDER=" "\"${target_folder}\""
+  pod_generic_strings_sedStringManipulation "editAfterSubstring" "${tmp_build_file_path}"   "TARGET_FOLDER=" "\"${target_folder}\""
   source ${tmp_build_file_path}
 
   if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'build_folder_path' in 'pod_launch_remote.sh'"; fi
-  pod_generic_misc_sedStringManipulation "editAfterSubstring" "${tmp_build_folder}lib/pod_dse/pod_dse_script_launch_remote.sh" "build_folder_path=" "\"${target_folder}pod/builds/pod_dse/${BUILD_FOLDER}/\""
+  pod_generic_strings_sedStringManipulation "editAfterSubstring" "${tmp_build_folder}lib/pod_dse/pod_dse_script_launch_remote.sh" "build_folder_path=" "\"${target_folder}pod/builds/pod_dse/${BUILD_FOLDER}/\""
 
   if [[ $"{VB}" == "true" ]]; then pod_generic_display_msgColourSimple "info-indented" "editing:     'cassandra-env.sh'"; fi
   pod_dse_run_local_cassandraEnv
@@ -88,7 +88,7 @@ pod_generic_display_msgColourSimple   "info-indented" "detected os: ${green}${re
   numberOfDataFolders=$(($(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.cass_data' | wc -l)-3))
 
 # remove all added data arrays from previous loop
-pod_generic_misc_sedStringManipulation "searchAndReplaceLabelledBlock" "${tmp_build_file_path}" "dse_data_arrays" ""
+pod_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" "${tmp_build_file_path}" "dse_data_arrays" ""
 
 # CAT/EOF cannot be indented !!
 cat << EOF >> "${tmp_build_file_path}"
@@ -192,7 +192,7 @@ declare -a pod_build_send_report_array
 count=0
 for k in "${!pod_build_send_error_array[@]}"
 do
-  pod_generic_misc_expansionDelimiter ${pod_build_send_error_array[$k]} ";" "1"
+  pod_generic_strings_expansionDelimiter ${pod_build_send_error_array[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
     pod_build_send_fail="true"
     pod_build_send_report_array["${count}"]="could not transfer: ${yellow}${k} ${white}on server ${yellow}${_D2_}${reset}"

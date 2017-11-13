@@ -33,7 +33,7 @@ mkdir -p ${Djava_tmp_folder}
 mkdir -p ${dsefs_untar_folder}
 for i in "${dsefs_data_file_directories_array[@]}"
 do
-  pod_generic_misc_expansionDelimiter "$i" ";" "2"
+  pod_generic_strings_expansionDelimiter "$i" ";" "2"
   mkdir -p $_D1_
 done
 
@@ -74,9 +74,9 @@ file="${HOME}/.bash_profile"
 touch ${file}
 
 # search for and remove any lines starting with:
-pod_generic_misc_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export OPSC_JVM_OPTS=" "dummy"
-pod_generic_misc_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export CASSANDRA_HOME=" "dummy"
-pod_generic_misc_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export PATH=\$PATH:\$CASSANDRA_HOME" "dummy"
+pod_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export OPSC_JVM_OPTS=" "dummy"
+pod_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export CASSANDRA_HOME=" "dummy"
+pod_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export PATH=\$PATH:\$CASSANDRA_HOME" "dummy"
 
 cat << EOF >> ${file}
 export OPSC_JVM_OPTS="-Djava.io.tmpdir=${Djava_tmp_folder}"
@@ -96,8 +96,8 @@ file="${HOME}/.bash_profile"
 touch ${file}
 
 # search for and remove any lines starting with:
-pod_generic_misc_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export JAVA_HOME=" "dummy"
-pod_generic_misc_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export PATH=\$PATH:\$JAVA_HOME" "dummy"
+pod_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export JAVA_HOME=" "dummy"
+pod_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export PATH=\$PATH:\$JAVA_HOME" "dummy"
 
 # append to end of files
 cat << EOF >> ${file}
@@ -118,7 +118,7 @@ touch ${file}
 
 # search for and remove any pre-canned blocks containing a label:
 label="source_bash_profile"
-pod_generic_misc_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
+pod_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
 
 # add line sourcing .bashrc - no need on a Mac
 cat << EOF >> ${file}

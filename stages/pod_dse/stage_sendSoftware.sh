@@ -33,7 +33,7 @@ do
 # ---------- 
 
   # add trailing '/' to path if not present
-  target_folder=$(pod_generic_misc_addTrailingSlash "${target_folder}")
+  target_folder=$(pod_generic_strings_addTrailingSlash "${target_folder}")
 
   # ----------
 
@@ -95,7 +95,7 @@ if [[ ! -z $DSE_SOFTWARE_pid_failures ]]; then
   for k in "${!DSE_SOFTWARE_server_pid_array[@]}"
   do
     if [[ "${DSE_SOFTWARE_pid_failures}" == *"$k"* ]]; then
-      pod_generic_misc_expansionDelimiter "${pod_software_send_pid_array[$k]}" ";" "1"
+      pod_generic_strings_expansionDelimiter "${pod_software_send_pid_array[$k]}" ";" "1"
       server="$_D1_"
       ip=$_D2_
       pod_generic_display_msgColourSimple "error-tight" "pid ${yellow}${k}${red} failed for ${yellow}${server}@${ip}${red}"
