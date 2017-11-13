@@ -39,9 +39,9 @@ $ git checkout -b <pod-version-x.x>
 
 pod is meant to be extensible and its core functions enable distribution and configuration of files.    
 pod modules ('pods') are discrete projects that make use of these core functions.    
-'pods' are organised into one or more STAGES, consisting of one or more TASKS, consisting of action(s).     
+Each 'pod' is organised into one or more **STAGES**, consisting of one or more **TASKS**, containing action(s).     
 
-### module #1 'pod_dse'  
+### pod #1 - 'pod_dse'  
 
 With **'pod_dse'** you can easily create and manage multiple cluster setups (different versions/settings).     
 You can deploy these different configurations to the same machines and they will not interfere with each other.  
