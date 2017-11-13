@@ -62,41 +62,15 @@ pod_dse_setup_checkFilesExist
 
 # ------------------------------------------
 
-## STAGE [0] - optional
-
-# prepare local copy of dse 'resources' folder - the basis for each distributed pod build
-destination_folder_parent_path="${pod_home_path}/builds/pod_dse/${BUILD_FOLDER}/"
-destination_folder_path="${destination_folder_parent_path}resources/"
-if [[ "${REGENERATE_RESOURCES}" == "true" ]] || [[ "${REGENERATE_RESOURCES}" == "edit" ]] || [[ ! -d ${destination_folder_path} ]]; then
-  pod_generic_display_banner
-  pod_generic_display_msgColourSimple "STAGE" "STAGE: Prepare 'resources' Folder"
-  pod_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}0${white} 1 2 3 4 5 ]${reset}"
-  pod_generic_display_msgColourSimple "TASK"  "TASK: Strip out all non config files"
-  pod_dse_prepareResourcesFolder
-  if [[ "${REGENERATE_RESOURCES}" == "edit" ]]; then
-    pod_generic_display_msgColourSimple "STAGE" "You can now edit each dse config in the folder ${yellow}${destination_folder_path}${reset}"
-    printf "%s\n"
-    exit 0;
-  fi
-  pod_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
-fi
-
-# ------------------------------------------
-
-# create duplicate version of 'pod' project
-pod_dse_setup_duplicateResourcesFolder
-
-# ------------------------------------------
-
 ## STAGE [1]
 
-if [[ "${CLUSTER_STATE}" != "" ]]; then
+if [[ "${clusterstateFlag}" == "true" ]]; then
 
   ## STAGE [1]
 
   pod_generic_display_banner
   pod_generic_display_msgColourSimple "STAGE"      "STAGE: Test cluster connections"
-  pod_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1${white} 2 3 4 ]${reset}"
+  pod_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1${white} 2 ]${reset}"
   pod_generic_display_msgColourSimple "TASK"       "TASK: Testing server connectivity"
   task_testConnectivity
   task_testConnectivity_report
@@ -126,6 +100,32 @@ if [[ "${CLUSTER_STATE}" != "" ]]; then
   WHICH_POD=${WHICH_POD}_rollingStartStop  
   
 else
+
+  # ------------------------------------------
+
+  ## STAGE [0] - optional
+
+  # prepare local copy of dse 'resources' folder - the basis for each distributed pod build
+  destination_folder_parent_path="${pod_home_path}/builds/pod_dse/${BUILD_FOLDER}/"
+  destination_folder_path="${destination_folder_parent_path}resources/"
+  if [[ "${REGENERATE_RESOURCES}" == "true" ]] || [[ "${REGENERATE_RESOURCES}" == "edit" ]] || [[ ! -d ${destination_folder_path} ]]; then
+    pod_generic_display_banner
+    pod_generic_display_msgColourSimple "STAGE" "STAGE: Prepare 'resources' Folder"
+    pod_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}0${white} 1 2 3 4 5 ]${reset}"
+    pod_generic_display_msgColourSimple "TASK"  "TASK: Strip out all non config files"
+    pod_dse_prepareResourcesFolder
+    if [[ "${REGENERATE_RESOURCES}" == "edit" ]]; then
+      pod_generic_display_msgColourSimple "STAGE" "You can now edit each dse config in the folder ${yellow}${destination_folder_path}${reset}"
+      printf "%s\n"
+      exit 0;
+    fi
+    pod_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
+  fi
+
+  # ------------------------------------------
+  
+  # create duplicate version of 'pod' project
+  pod_dse_setup_duplicateResourcesFolder
 
   # ------------------------------------------
 

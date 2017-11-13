@@ -12,21 +12,23 @@ function pod_dse_setup_checkFilesExist(){
 # check /servers/<json> file exists
 pod_generic_misc_fileExistsCheckAbort "${servers_json_path}"
 
-# test DSE_SOFTWARE folder is available
-if [[ "${SEND_DSE_SOFTWARE}" == "true" ]]; then
-  pod_generic_misc_folderExistsCheckAbort "${DSE_SOFTWARE}"
-  pod_generic_misc_fileExistsCheckAbort "${dse_tar_file}"
-  pod_generic_misc_fileExistsCheckAbort "${java_tar_file}"
-fi
-
-# test java folder is available
-if [[ "${JAVA_INSTALL_TYPE}" == ""tar"" ]]; then
-  pod_generic_misc_fileExistsCheckAbort "${java_tar_file}"
-fi
-
 # check jq library is available
 if [[ "${os}" != "Mac" ]]; then
   pod_generic_misc_fileExistsCheckAbort "${jq_file_path}"
+fi
+
+if [[ ${clusterstateFlag} != "true" ]]; then
+  # test DSE_SOFTWARE folder is available
+  if [[ "${SEND_DSE_SOFTWARE}" == "true" ]]; then
+    pod_generic_misc_folderExistsCheckAbort "${DSE_SOFTWARE}"
+    pod_generic_misc_fileExistsCheckAbort "${dse_tar_file}"
+    pod_generic_misc_fileExistsCheckAbort "${java_tar_file}"
+  fi
+
+  # test java folder is available
+  if [[ "${JAVA_INSTALL_TYPE}" == ""tar"" ]]; then
+    pod_generic_misc_fileExistsCheckAbort "${java_tar_file}"
+  fi
 fi
 }
 

@@ -48,8 +48,12 @@ do
 
 # ----------
 
-  pod_generic_display_msgColourSimple "info-indented" "starting dse:      with flags ${flags}"
-
+  if [[ "${flags}" == "" ]]; then  
+    pod_generic_display_msgColourSimple "info-indented" "starting dse:      cassandra only"
+  else
+    pod_generic_display_msgColourSimple "info-indented" "starting dse:      with flags ${flags}"
+  fi
+  
 # ----------
 
   status="999"

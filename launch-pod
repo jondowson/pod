@@ -128,8 +128,8 @@ pod_generic_preperation_sourcePodStages
 
 # ------------------------------------------
 
-## for pods that make use of them - source all build scripts for this pod
-if [[ ${USE_BUILDS} == "true" ]]; then
+## check if command makes use of build folder
+if [[ ${buildFlag} == "true" ]]; then
   pod_generic_preperation_sourcePodBuilds
 fi
 
