@@ -28,7 +28,7 @@ pod_home_path="$(pwd)"
 ## preparation: call in order
 
 # source generic preperation script
-source lib/pod_GENERIC/lib_generic_prepare_pod.sh
+source pods/pod_GENERIC/lib/lib_generic_prepare_pod.sh
 # identify local os
 lib_generic_prepare_identifyOs
 
@@ -76,7 +76,7 @@ while test $# -gt 0; do
         WHICH_POD=$1
         shift
         lib_generic_defaults
-        source flags/${WHICH_POD}/handleFlags.sh
+        source pods/${WHICH_POD}/flags/handleFlags.sh
         podFlag="true"
         ;;
     *)
@@ -111,7 +111,7 @@ fi
 
 ## all pod apps make use of a servers json definition file - check it exists
 
-servers_json_path="${pod_home_path}/servers/${WHICH_POD}/${SERVERS_JSON}"
+servers_json_path="${pod_home_path}/pods/${WHICH_POD}/servers/${SERVERS_JSON}"
 lib_generic_misc_fileExistsCheckAbort "${servers_json_path}"
 numberOfServers=$(${jq_folder}jq [.] ${servers_json_path} | tr '"' '\n' | grep 'server_' | wc -l)
 
@@ -119,7 +119,7 @@ numberOfServers=$(${jq_folder}jq [.] ${servers_json_path} | tr '"' '\n' | grep '
 
 ## source the specified pod's init script and run that pod
 
-source pods/"${WHICH_POD}".sh
+source "pods/${WHICH_POD}/${WHICH_POD}.sh"
 "${WHICH_POD}"
 
 # ------------------------------------------

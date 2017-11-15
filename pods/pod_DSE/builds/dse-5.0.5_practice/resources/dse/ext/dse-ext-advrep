@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+#
+#Copyright DataStax, Inc.
+#Please see the included license file for details
+#
+# TITLE:Advanced Replication command
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+if [ -z "$DSE_ENV" ]; then
+    for include in "$HOME/.dse-env.sh" \
+                   "`dirname "$0"`/dse-env.sh" \
+                   "/etc/dse/dse-env.sh"; do
+        if [ -r "$include" ]; then
+            DSE_ENV="$include"
+            break
+        fi
+    done
+fi
+
+if [ -z "$DSE_ENV" ]; then
+    echo "DSE_ENV could not be determined."
+    exit 1
+elif [ -r "$DSE_ENV" ]; then
+    . "$DSE_ENV"
+else
+    echo "Location pointed by DSE_ENV not readable: $DSE_ENV"
+    exit 1
+fi
+
+if [ -z "DSE_HOME" ]; then
+    DSE_HOME="$DIR/../../"
+fi
+
+for jar in "$DIR/advrep/lib"/*.jar; do
+    CLASSPATH="$jar:$CLASSPATH"
+done
+
+if [ -n "$DSE_SASL_PROTOCOL" ]; then
+    DSE_OPTS="$DSE_OPTS -Ddse.sasl.protocol=$DSE_SASL_PROTOCOL"
+fi
+
+if [ -n "$DSE_LOGIN_CONFIG" ]; then
+    DSE_OPTS="$DSE_OPTS -Djava.security.auth.login.config=$DSE_LOGIN_CONFIG"
+fi
+
+exec "$JAVA" $JAVA_AGENT $JVM_OPTS $DSE_OPTS -Dlogback.configurationFile=logback-tools.xml -cp "${CLASSPATH}" org.python.util.JarRunner $DSE_CLIENT_TOOL_CREDENTIALS "$@"
+
