@@ -28,11 +28,11 @@ pod_home_path="$(pwd)"
 ## preparation: call in order
 
 # source generic preperation script
-source lib/pod_generic/pod_generic_preperation.sh
+source lib/pod_GENERIC/lib_generic_prepare_pod.sh
 # identify local os
-pod_generic_preperation_identifyOs
+lib_generic_prepare_identifyOs
 # source all other generic, non pod specific, lib scripts
-pod_generic_preperation_sourceGenericLib
+lib_generic_prepare_sourceGenericLib
 
 # ------------------------------------------
 
@@ -46,6 +46,7 @@ if [[ "${os}" == "Mac" ]]; then
 else
   jq_folder="${pod_home_path}/third_party/jq-linux64/"
   jq_file_path="${jq_folder}jq"
+  lib_generic_misc_fileExistsCheckAbort "${jq_file_path}"
 fi
 
 # ------------------------------------------
@@ -55,7 +56,7 @@ fi
 # ensure pod flag is passed first
 if [[ "${1}" != "-p" ]] && [[ "${1}" != "--pod" ]] && [[ "${1}" != "-h" ]] && [[ "${1}" != "--help" ]]; then
   printf "%s\n"
-  pod_generic_display_msgColourSimple "error" "always specify the pod flag first ${yellow}-p | --pod${red}"
+  lib_generic_display_msgColourSimple "error" "always specify the pod flag first ${yellow}-p | --pod${red}"
   printf "%s\n"
   exit 1;
 fi
@@ -65,13 +66,13 @@ fi
 while test $# -gt 0; do
   case "$1" in
     -h|--help)
-        pod_generic_display_banner
-        pod_generic_help_pod
+        lib_generic_display_banner
+        lib_generic_help_pod
         exit 0 ;;
     -p|--pod)
         shift
         WHICH_POD=$1
-        pod_generic_defaults
+        lib_generic_defaults
         shift
         podFlag="true"
         ;;
@@ -107,7 +108,7 @@ while test $# -gt 0; do
         ;;
     *)
       printf "%s\n"
-      pod_generic_display_msgColourSimple "error" "Not a recognised flag ${yellow}${1}${red}"
+      lib_generic_display_msgColourSimple "error" "Not a recognised flag ${yellow}${1}${red}"
       printf "%s\n"
       exit 1;
         ;;
@@ -117,28 +118,28 @@ done
 # -----
 
 # ensure flags have been passed correctly
-pod_generic_preperation_flagRules
+lib_generic_prepare_flagRules
 
 # ------------------------------------------
 
 ## for this specific pod source all scripts from the lib and stages folders
 
-pod_generic_preperation_sourcePodLib
-pod_generic_preperation_sourcePodStages
+lib_generic_prepare_sourcePodLib
+lib_generic_prepare_sourcePodStages
 
 # ------------------------------------------
 
 ## check if command makes use of build folder
 if [[ ${buildFlag} == "true" ]]; then
-  pod_generic_preperation_sourcePodBuilds
+  lib_generic_prepare_sourcePodBuilds
 fi
 
 # ------------------------------------------
 
 ## all pod apps make use of a servers json definition file - check it exists
 
-servers_json_path="${pod_home_path}/servers/${SERVERS_JSON}"
-pod_generic_misc_fileExistsCheckAbort ${servers_json_path}
+servers_json_path="${pod_home_path}/servers/${WHICH_POD}/${SERVERS_JSON}"
+lib_generic_misc_fileExistsCheckAbort "${servers_json_path}"
 numberOfServers=$(${jq_folder}jq [.] ${servers_json_path} | tr '"' '\n' | grep 'server_' | wc -l)
 
 # ------------------------------------------
@@ -152,7 +153,7 @@ source pods/"${WHICH_POD}".sh
 
 ## closing messages
 
-pod_generic_display_finalMessage "${WHICH_POD}"
-pod_generic_misc_timePod
-pod_generic_display_msgColourSimple "info" "pod took: ${diff}[s]"
+lib_generic_display_finalMessage "${WHICH_POD}"
+lib_generic_misc_timePod
+lib_generic_display_msgColourSimple "info" "pod took: ${diff}[s]"
 printf "%s\n"
