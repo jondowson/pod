@@ -17,6 +17,11 @@ case "${WHICH_POD}" in
     SEND_POD_SOFTWARE="true"         # send POD_SOFTWARE tarball bundle on each run
     REGENERATE_RESOURCES="false"     # generate new /builds/pod_dse/dse-x.x.x_name/resources' folder - this action will remove any existing one for this build folder !!
     ;;
+
+  pod_SSH-AUTH)
+    MODE="test"
+    ;;
+
   *)
     lib_generic_display_msgColourSimple "error" "cannot resolve pod defaults for pod: ${WHICH_POD}"
     ;;

@@ -31,6 +31,7 @@ pod_home_path="$(pwd)"
 source lib/pod_GENERIC/lib_generic_prepare_pod.sh
 # identify local os
 lib_generic_prepare_identifyOs
+
 # source all other generic, non pod specific, lib scripts
 lib_generic_prepare_sourceGenericLib
 
@@ -53,7 +54,7 @@ fi
 
 ## handle flags
 
-# ensure pod flag is passed first
+# ensure --pod | -p flag is passed first if not using help flag
 if [[ "${1}" != "-p" ]] && [[ "${1}" != "--pod" ]] && [[ "${1}" != "-h" ]] && [[ "${1}" != "--help" ]]; then
   printf "%s\n"
   lib_generic_display_msgColourSimple "error" "always specify the pod flag first ${yellow}-p | --pod${red}"
@@ -63,6 +64,7 @@ fi
 
 # -----
 
+# use the flag handling function for the choosen pod
 while test $# -gt 0; do
   case "$1" in
     -h|--help)
@@ -72,45 +74,17 @@ while test $# -gt 0; do
     -p|--pod)
         shift
         WHICH_POD=$1
-        lib_generic_defaults
         shift
+        lib_generic_defaults
+        source flags/${WHICH_POD}/handleFlags.sh
         podFlag="true"
         ;;
-    -s|--servers)
-        shift
-        SERVERS_JSON=$1
-        shift
-        serversFlag="true"
-        ;;
-    -b|--build)
-        shift
-        BUILD_FOLDER=$1
-        shift
-        buildFlag="true"
-        ;;
-    -ss|--sendsoft)
-        shift
-        SEND_DSE_SOFTWARE=$1
-        shift
-        sendsoftFlag="true"
-        ;;
-    -rr|--regenresources)
-        shift
-        REGENERATE_RESOURCES=$1
-        shift
-        regenresourcesFlag="true"
-        ;;
-    -cs|--clusterstate)
-        shift
-        CLUSTER_STATE=$1
-        shift
-        clusterstateFlag="true"
-        ;;
     *)
-      printf "%s\n"
-      lib_generic_display_msgColourSimple "error" "Not a recognised flag ${yellow}${1}${red}"
-      printf "%s\n"
-      exit 1;
+      thisFlag=${1}
+      flagValue=$(shift && echo $1)
+      handleFlags ${thisFlag} ${flagValue}
+      shift
+      shift
         ;;
   esac
 done
@@ -122,12 +96,11 @@ lib_generic_prepare_flagRules
 
 # ------------------------------------------
 
-## for this specific pod source all scripts from the lib and stages folders
+## for this specific pod source all required scripts
 
 lib_generic_prepare_sourcePodLib
 lib_generic_prepare_sourcePodStages
-
-# ------------------------------------------
+lib_generic_prepare_sourcePodServers
 
 ## check if command makes use of build folder
 if [[ ${buildFlag} == "true" ]]; then

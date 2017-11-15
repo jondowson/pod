@@ -18,9 +18,9 @@ do
   target_folder=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.target_folder'  | tr -d '"')
   pubIp=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.pubIp'          | tr -d '"')
   prvIp=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.prvIp'          | tr -d '"')
-  
-# ---------- 
-  
+
+# ----------
+
   # add trailing '/' to path if not present
   target_folder=$(lib_generic_strings_addTrailingSlash "${target_folder}")
 
@@ -35,6 +35,7 @@ do
     retry=1
     until [[ "${retry}" == "6" ]] || [[ "${status}" == "0" ]]
     do
+      lib_generic_misc_fileExistsCheckAbort "${sshKey}"
       ssh -q -i ${sshKey} ${user}@${pubIp} exit
       status=${?}
       if [[ "${status}" == "0" ]]; then
