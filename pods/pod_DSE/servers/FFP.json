@@ -1,0 +1,83 @@
+{
+    "server_1":{
+      "tag": "GBRPSR000005738",
+      "user": "pulse",
+      "sshKey": "/home/pulse/.ssh/id_rsa",
+      "target_folder": "/home/pulse/",
+      "pubIp": "GBRPSR000005738",
+      "prvIp": "",
+      "listen_address": "GBRPSR000005738",
+      "rpc_address": "GBRPSR000005738",
+      "seeds": "GBRPSR000005738,GBRPSR000005739",
+      "token": "",
+      "dc": "dc1",
+      "rack": "rack1",
+      "mode": {
+        "search": "false",
+        "analytics": "false",
+        "graph": "false",
+        "dsefs:" "false"
+      },
+      "cass_data": [
+        "/apps/cassandra/data/feedzai",
+        "/apps/cassandra/data/profiles"
+      ],
+      "dsefs_data": [
+        "/apps/cassandra/data/dsefs/;1.0;5368709"
+      ]
+    },
+    "server_2":{
+      "tag": "GBRPSR000005739",
+      "user": "pulse",
+      "sshKey": "/home/pulse/.ssh/id_rsa",
+      "target_folder": "/home/pulse/",
+      "pubIp": "GBRPSR000005739",
+      "prvIp": "",
+      "listen_address": "GBRPSR000005739",
+      "rpc_address": "GBRPSR000005739",
+      "seeds": "GBRPSR000005739,GBRPSR000005738",
+      "token": "",
+      "dc": "dc1",
+      "rack": "rack1",
+      "mode": {
+        "search": "false",
+        "analytics": "false",
+        "graph": "false",
+        "dsefs:" "false"
+      },
+      "cass_data": [
+        "/apps/cassandra/data/feedzai",
+        "/apps/cassandra/data/profiles"
+      ],
+      "dsefs_data": [
+        "/apps/cassandra/data/dsefs/;1.0;5368709"
+      ]
+    },
+    "server_3":{
+      "tag": "GBRPSR000005740",
+      "user": "pulse",
+      "sshKey": "/home/pulse/.ssh/id_rsa",
+      "target_folder": "/home/pulse/",
+      "pubIp": "GBRPSR000005740",
+      "prvIp": "",
+      "listen_address": "GBRPSR000005740",
+      "rpc_address": "GBRPSR000005740",      
+      "seeds": "GBRPSR000005740,GBRPSR000005739",
+      "token": "",
+      "dc": "dc1",
+      "rack": "rack1",
+      "mode": {
+        "search": "false",
+        "analytics": "false",
+        "graph": "false",
+        "dsefs:" "false"
+      },
+      "cass_data": [
+        "/apps/cassandra/data/feedzai",
+        "/apps/cassandra/data/profiles"
+      ],
+      "dsefs_data": [
+        "/apps/cassandra/data/dsefs/;1.0;5368709"
+      ]
+  }
+}

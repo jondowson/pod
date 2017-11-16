@@ -1,0 +1,82 @@
+{
+    "server_1":{
+      "tag": "storage_1",
+      "user": "semblent",
+      "sshKey": "/home/jd/.ssh/id_rsa",
+      "target_folder": "/home/semblent/",
+      "pubIp": "192.168.1.15",
+      "prvIp": "127.0.0.1",
+      "listen_address": "pubIp",
+      "rpc_address": "pubIp",      
+      "seeds": "192.168.1.15,192.168.1.9",
+      "token": "789",
+      "dc": "dc1",
+      "rack": "rack1",
+      "mode": {
+        "search": "false",
+        "analytics": "false",
+        "graph": "false"
+      },
+      "cass_data": [
+        "/home/semblent/dse-installations/data.logs/data",
+        "/home/semblent/dse-installations/data.logs/data2"
+      ],
+      "dsefs_data": [
+        "/home/semblent/dse-installations/data.logs/data/dsefs/;1.0;5368709",
+        "/home/semblent/dse-installations/data.logs/data/dsefs2/;1.0;5368709"
+      ]
+    },
+    "server_2":{
+      "tag": "storage_2",
+      "user": "jondowson",
+      "sshKey": "/home/jd/.ssh/id_rsa",
+      "target_folder": "/Users/jondowson/Desktop/",
+      "pubIp": "192.168.1.9",
+      "prvIp": "127.0.0.1",
+      "listen_address": "pubIp",
+      "rpc_address": "pubIp",   
+      "seeds": "192.168.1.9,192.168.1.15",
+      "token": "654",
+      "dc": "dc1",
+      "rack": "rack1",
+      "mode": {
+        "search": "false",
+        "analytics": "false",
+        "graph": "false"
+      },
+      "cass_data": [
+        "/Users/jondowson/dse-installations/data.logs/data",
+        "/Users/jondowson/dse-installations/data.logs/data2"
+      ],
+      "dsefs_data": [
+        "/Users/jondowson/dse-installations/data.logs/data/dsefs/;1.0;5368709",
+        "/Users/jondowson/dse-installations/data.logs/data/dsefs2/;1.0;5368709"
+      ]
+    },
+    "server_3":{
+      "tag": "storage_3",
+      "user": "jd",
+      "sshKey": "/home/jd/.ssh/id_rsa",
+      "target_folder": "/home/jd/Desktop/",
+      "pubIp": "192.168.1.8",
+      "prvIp": "127.0.0.1",
+      "listen_address": "pubIp",
+      "seeds": "192.168.1.9,192.168.1.15",
+      "token": "321",
+      "dc": "dc1",
+      "rack": "rack1",
+      "mode": {
+        "search": "false",
+        "analytics": "false",
+        "graph": "false"
+      },
+      "cass_data": [
+        "/home/jd/dse-installations/data.logs/data",
+        "/home/jd/dse-installations/data.logs/data2"
+      ],
+      "dsefs_data": [
+        "/home/jd/dse-installations/data.logs/data/dsefs/;1.0;5368709",
+        "/home/jd/dse-installations/data.logs/data/dsefs2/;1.0;5368709"
+      ]
+    }
+}
