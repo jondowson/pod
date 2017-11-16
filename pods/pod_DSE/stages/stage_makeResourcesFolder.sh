@@ -10,7 +10,7 @@
 
 #--------------------------------------------
 
-function prepare_dse_resourcesFolder(){
+function task_makeRsourcesFolder(){
 
 ## assign paths to variables
 

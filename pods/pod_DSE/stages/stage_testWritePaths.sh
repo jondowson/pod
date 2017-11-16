@@ -36,7 +36,7 @@ do
 
 # ----------
 
-  if [[ $"{VB}" == "true" ]]; then lib_generic_display_msgColourSimple "info-indented" "editing:     'TARGET_FOLDER' in 'build_settings.sh'"; fi
+  if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "info-indented" "editing:     'TARGET_FOLDER' in 'build_settings.sh'"; fi
   lib_generic_strings_sedStringManipulation "editAfterSubstring" "${tmp_build_file_path}"   "TARGET_FOLDER=" "\"${target_folder}\""
   source ${tmp_build_file_path}
 

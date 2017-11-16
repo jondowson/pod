@@ -5,7 +5,7 @@
 
 # ---------------------------------------
 
-function config_locally_cassandraYamlData(){
+function lib_doStuff_locally_cassandraYamlData(){
 
 ## replace existing data directory/directories with new paths
 
@@ -44,7 +44,7 @@ done
 
 # ---------------------------------------
 
-function config_locally_cassandraTopologyProperties(){
+function lib_doStuff_locally_cassandraTopologyProperties(){
 
 ## rename the deprecated cassandra-topology.properties to stop it interfering !!
 
@@ -54,7 +54,7 @@ mv "${tmp_build_file_folder}resources/cassandra/conf/cassandra-topology.properti
 
 # ---------------------------------------
 
-function config_locally_cassandraRackdcProperties(){
+function lib_doStuff_locally_cassandraRackdcProperties(){
 
 ## utilise if using rack topology approach !!
 :
@@ -62,7 +62,7 @@ function config_locally_cassandraRackdcProperties(){
 
 # ---------------------------------------
 
-function config_locally_cassandraEnv(){
+function lib_doStuff_locally_cassandraEnv(){
 
 ## utilise if default logging folder does not have access permissions !!
 
@@ -82,7 +82,7 @@ EOF
 
 # ---------------------------------------
 
-function config_locally_jvmOptions(){
+function lib_doStuff_locally_jvmOptions(){
 
 ## utilise if default tmpdir does not have access permissions !!
 
@@ -100,7 +100,7 @@ EOF
 
 # ---------------------------------------
 
-function config_locally_cassandraRackDcProperties(){
+function lib_doStuff_locally_cassandraRackDcProperties(){
 
 ## configure the rack and data center for this node
 
@@ -114,7 +114,7 @@ lib_generic_strings_sedStringManipulation "editAfterSubstring" "${file}" "rack="
 
 # ---------------------------------------
 
-function config_locally_cassandraYaml(){
+function lib_doStuff_locally_cassandraYaml(){
 
 ## configure the 'main' settings for the cassandra config file
 
@@ -156,7 +156,7 @@ lib_generic_strings_sedStringManipulation "editAfterSubstring" "${file}" "endpoi
 
 # ---------------------------------------
 
-function config_locally_cassandraYaml_nodeSpecific(){
+function lib_doStuff_locally_cassandraYamlNodeSpecific(){
 
 # file to edit
 file="${tmp_build_file_folder}resources/cassandra/conf/cassandra.yaml"
@@ -176,7 +176,7 @@ lib_generic_strings_sedStringManipulation "editAfterSubstring" "${file}" "rpc_ad
 
 # ---------------------------------------
 
-function config_locally_dseYaml_dsefs(){
+function lib_doStuff_locally_dseYamlDsefs(){
 
 ## configure dse.yaml for dsefs - required by spark
 
@@ -215,7 +215,7 @@ EOF
 
 # ---------------------------------------
 
-function config_locally_dseSparkEnv(){
+function lib_doStuff_locally_dseSparkEnv(){
 
 ## configure dse-spark-env.sh (sourced at end of spark-env.sh) to set paths for log/data files
 
@@ -234,38 +234,4 @@ export SPARK_MASTER_LOG_DIR="${spark_master_log_folder}"
 export SPARK_WORKER_DIR=${spark_worker_data}
 export SPARK_LOCAL_DIRS=${spark_local_data}
 EOF
-}
-
-# ---------------------------------------
-
-function config_locally_hashBang(){
-
-## ensure bash interpreter is set correctly for pod on remote os
-
-# determine what comes after #!/ at top of remote launch script
-if [[ ${remote_os} == *"Mac"* ]]; then
-  hashBang="usr/local/bin/bash"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}launch-pod" "bin/bash" "${hashBang}"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/lib/lib_script_launchRemotely.sh" "bin/bash" "${hashBang}"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/lib/lib_doStuff_remotely.sh" "bin/bash" "${hashBang}"
-elif [[ ${remote_os} == "Ubuntu" ]]; then
-  hashBang="bin/bash"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}launch-pod" "usr/local/bin/bash" "${hashBang}"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/lib/lib_script_launchRemotely.sh" "usr/local/bin/bash" "${hashBang}"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/lib/lib_doStuff_remotely.sh" "usr/local/bin/bash" "${hashBang}"
-elif [[ ${remote_os} == "Centos" ]]; then
-  hashBang="bin/bash"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}launch-pod" "usr/local/bin/bash" "${hashBang}"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/lib/lib_script_launchRemotely.sh" "usr/local/bin/bash" "${hashBang}"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/lib/lib_doStuff_remotely.sh" "usr/local/bin/bash" "${hashBang}"
-elif [[ ${remote_os} == "Redhat" ]]; then
-  hashBang="bin/bash"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}launch-pod" "usr/local/bin/bash" "${hashBang}"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/lib/lib_script_launchRemotely.sh" "usr/local/bin/bash" "${hashBang}"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/lib/lib_doStuff_remotely.sh" "usr/local/bin/bash" "${hashBang}"
-else
-  os="Bad"
-  lib_generic_display_msgColourSimple "error" "OS Not Supported"
-  exit 1;
-fi
 }

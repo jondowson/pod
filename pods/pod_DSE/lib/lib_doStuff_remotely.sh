@@ -5,7 +5,7 @@
 
 # ---------------------------------------
 
-function config_remotely_createDseFolders(){
+function lib_doStuff_remotely_createDseFolders(){
 
 ## create required folders
 
@@ -43,7 +43,7 @@ mkdir -p ${spark_worker_data}
 
 # ---------------------------------------
 
-function config_remotely_installJavaTar(){
+function lib_doStuff_remotely__installJavaTar(){
 
 ## install from local tar to the designated java folder
 
@@ -52,7 +52,7 @@ tar -xf ${java_tar_file} -C ${java_untar_folder}
 
 # ---------------------------------------
 
-function config_remotely_installDseTar(){
+function lib_doStuff_remotely_installDseTar(){
 
 ## install from local tar
 
@@ -61,7 +61,7 @@ tar -xf ${dse_tar_file} -C ${INSTALL_FOLDER}
 
 # ---------------------------------------
 
-function config_remotely_dseBashProfile(){
+function lib_doStuff_remotely_dseBashProfile(){
 
 ## configure bash_profile to set paths in an idempotent 'manner'
 
@@ -83,7 +83,7 @@ EOF
 
 # ---------------------------------------
 
-function config_remotely_javaBashProfile(){
+function lib_doStuff_remotely_javaBashProfile(){
 
 ## configure bash_profile to set paths in an idempotent 'manner'
 
@@ -104,7 +104,7 @@ EOF
 
 # ---------------------------------------
 
-function config_remotely_bashrc(){
+function lib_doStuff_remotely_bashrc(){
 
 ## configure bashrc to source bash_profile everytime a new terminal is started (on ubuntu/centos)
 

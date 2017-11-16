@@ -44,12 +44,12 @@ pod_home_path="$(pwd)"
 
 ## source pod_generic _ pod_dse lib scripts
 
-files="$(find ${pod_home_path}/lib/pod_GENERIC -name "*.sh" | grep -v  "lib_generic_setup_pods.sh" | grep -v "lib_generic_display.sh" | grep -v "lib_generic_script_*")"
+files="$(find ${pod_home_path}/pod_/lib -name "*.sh" | grep -v "lib_generic_display.sh")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
 
-files="$(find ${pod_home_path}/pods/pod_DSE/lib/ -name "*.sh*" | grep -v  "lib_script_*")"
+files="$(find ${pod_home_path}/pod_DSE/lib/ -name "*.sh*")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
@@ -75,13 +75,13 @@ fi
 
 # [1] make folders
 
-config_remotely_createDseFolders
+lib_doStuff_remotely_createDseFolders
 
 # -----
 
 # [2] un-compress software
 
-config_remotely_installDseTar
+lib_doStuff_remotely_installDseTar
 
 # -----
 
@@ -93,5 +93,5 @@ cp -R "${build_file_folder}resources" "${INSTALL_FOLDER}${DSE_VERSION}"
 
 # [4] configure local environment
 
-config_remotely_dseBashProfile
-config_remotely_bashrc
+lib_doStuff_remotely_dseBashProfile
+lib_doStuff_remotely_bashrc

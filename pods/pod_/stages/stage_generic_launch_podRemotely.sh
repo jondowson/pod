@@ -5,7 +5,7 @@
 
 #-------------------------------------------
 
-function task_launchRemote(){
+function task_generic_launchPodRemotely(){
 
 for id in $(seq 1 ${numberOfServers});
 do
@@ -16,16 +16,6 @@ do
   target_folder=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.target_folder'  | tr -d '"')
   pubIp=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.pubIp'          | tr -d '"')
   prvIp=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.prvIp'          | tr -d '"')
-  listen_address=$(cat ${servers_json_path}| ${jq_folder}jq '.server_'${id}'.listen_address' | tr -d '"')
-  rpc_address=$(cat ${servers_json_path}   | ${jq_folder}jq '.server_'${id}'.rpc_address'    | tr -d '"')
-  seeds=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.seeds'          | tr -d '"')
-  token=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.token'          | tr -d '"')
-  dc=$(cat ${servers_json_path}            | ${jq_folder}jq '.server_'${id}'.dc'             | tr -d '"')
-  rack=$(cat ${servers_json_path}          | ${jq_folder}jq '.server_'${id}'.rack'           | tr -d '"')
-  search=$(cat ${servers_json_path}        | ${jq_folder}jq '.server_'${id}'.mode.search'    | tr -d '"')
-  analytics=$(cat ${servers_json_path}     | ${jq_folder}jq '.server_'${id}'.mode.analytics' | tr -d '"')
-  graph=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.mode.graph'     | tr -d '"')
-  dsefs=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.mode.dsefs'     | tr -d '"')
   
 # ----------  
 
@@ -38,7 +28,7 @@ do
   printf "\n%s"
 
   lib_generic_display_msgColourSimple "info-indented" "launch:      pod remotely"
-  ssh -ttq -o "BatchMode yes" -o "ForwardX11=no" ${user}@${pubIp} "chmod -R 700 ${target_folder}pod && ${target_folder}pod/lib/pod_DSE/lib_script_launchRemotely.sh" &                # run in parallel
+  ssh -ttq -o "BatchMode yes" -o "ForwardX11=no" ${user}@${pubIp} "chmod -R 700 ${target_folder}pod && ${target_folder}pod/pods/pod_/scripts/scripts_generic_launchPodRemotely.sh" &                # run in parallel
   # grab pid and capture owner in array
   pid=$!
   lib_generic_display_msgColourSimple "info-indented" "pid id:      ${yellow}${pid}${reset}"
@@ -82,7 +72,7 @@ done
 
 #-------------------------------------------
 
-function task_launchRemote_report(){
+function task_generic_launchPodRemotely_report(){
 
 lib_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Launch Pod On Each Server"
 

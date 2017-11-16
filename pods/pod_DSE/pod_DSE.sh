@@ -59,7 +59,7 @@ declare -A pod_stop_dse_error_array
 
 ## test specified files exist
 
-pod_dse_setup_checkFilesExist
+prepare_misc_checkFilesExist
 
 # ------------------------------------------
 
@@ -73,8 +73,8 @@ if [[ "${clusterstateFlag}" == "true" ]]; then
   lib_generic_display_msgColourSimple "STAGE"      "STAGE: Test cluster connections"
   lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1${white} 2 ]${reset}"
   lib_generic_display_msgColourSimple "TASK"       "TASK: Testing server connectivity"
-  task_testConnectivity
-  task_testConnectivity_report
+  task_generic_testConnectivity
+  task_generic_testConnectivity_report
   lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 
   # ------------------------------------------
@@ -114,7 +114,7 @@ else
     lib_generic_display_msgColourSimple "STAGE" "STAGE: Prepare 'resources' Folder"
     lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}0${white} 1 2 3 4 5 ]${reset}"
     lib_generic_display_msgColourSimple "TASK"  "TASK: Strip out all non config files"
-    prepare_dse_resourcesFolder
+    task_makeRsourcesFolder
     if [[ "${REGENERATE_RESOURCES}" == "edit" ]]; then
       lib_generic_display_msgColourSimple "STAGE" "You can now edit each dse config in the folder ${yellow}${destination_folder_path}${reset}"
       printf "%s\n"
@@ -124,9 +124,9 @@ else
   fi
 
   # ------------------------------------------
-
-  # create duplicate version of 'pod' project
-  pod_dse_setup_duplicateResourcesFolder
+  
+  # create configurable temp version of pod
+  prepare_generic_misc_podBuildTempFolder
 
   # ------------------------------------------
 
@@ -134,7 +134,7 @@ else
 
   lib_generic_display_banner
   lib_generic_display_msgColourSimple "STAGE"      "STAGE: Test cluster connections"
-  lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1${white} 2 3 4 5 ]${reset}"
+  lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}0 1${white} 2 3 4 5 ]${reset}"
   lib_generic_display_msgColourSimple "TASK"       "TASK: Testing server connectivity"
   task_generic_testConnectivity
   task_generic_testConnectivity_report
@@ -146,7 +146,7 @@ else
 
   lib_generic_display_banner
   lib_generic_display_msgColourSimple "STAGE"      "STAGE: Test cluster write-paths"
-  lib_generic_display_msgColourSimple "STAGECOUNT" "[ 1 ${cyan}${b}2${white} 3 4 5 ]${reset}"
+  lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}0 1 2${white} 3 4 5 ]${reset}"
   lib_generic_display_msgColourSimple "TASK"       "TASK: Testing server write-paths"
   task_testWritePaths
   task_testWritePaths_report
@@ -158,7 +158,7 @@ else
 
   lib_generic_display_banner
   lib_generic_display_msgColourSimple "STAGE"      "STAGE: Build and send pod"
-  lib_generic_display_msgColourSimple "STAGECOUNT" "[ 1 2 ${cyan}${b}3${white} 4 5 ]${reset}"
+  lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}0 1 2 3${white} 4 5 ]${reset}"
   lib_generic_display_msgColourSimple "TASK"       "TASK: Configure and send bespoke pod"
   task_buildSend
   task_buildSend_report
@@ -171,12 +171,12 @@ else
 
   lib_generic_display_banner
   lib_generic_display_msgColourSimple "STAGE" "STAGE: Send POD_SOFTWARE folder"
-  lib_generic_display_msgColourSimple "STAGECOUNT" "[ 1 2 3 ${cyan}${b}4${white} 5 ]${reset}"
+  lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}0 1 2 3 4${white} 5 ]${reset}"
   lib_generic_display_msgColourSimple "TASK"  "TASK: Send software in parallel"
 
   if [[ "${SEND_POD_SOFTWARE}" == true ]]; then
-    task_generic_sendSoftware
-    task_generic_sendSoftware_report
+    task_generic_sendPodSoftware
+    task_generic_sendPodSoftware_report
   else
     lib_generic_display_msgColourSimple "alert" "You have opted to skip this STAGE"
     lib_generic_misc_timecount "3" "Proceeding to next STAGE..."
@@ -190,10 +190,10 @@ else
 
   lib_generic_display_banner
   lib_generic_display_msgColourSimple "STAGE" "STAGE: Launch pod on cluster"
-  lib_generic_display_msgColourSimple "STAGECOUNT" "[ 1 2 3 4 ${cyan}${b}5${white} ]${reset}"
+  lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}0 1 2 3 4 5${white} ]${reset}"
   lib_generic_display_msgColourSimple "TASK"  "TASK: Run launch script remotely"
-  task_launchRemote
-  task_launchRemote_report
+  task_generic_launchPodRemotely
+  task_generic_launchPodRemotely_report
   lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 
   # ------------------------------------------
@@ -202,9 +202,10 @@ else
 
   lib_generic_display_banner
   lib_generic_display_msgColourSimple "STAGE" "FINISHED !!"
+  lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}0 1 2 3 4 5${white} ]${reset}"
   task_buildSend_report
-  if [[ "${SEND_POD_SOFTWARE}" == true ]]; then task_sendSoftware_report; fi
-  task_launchRemote_report
+  if [[ "${SEND_POD_SOFTWARE}" == true ]]; then task_generic_sendPodSoftware_report; fi
+  task_generic_launchPodRemotely_report
 
 fi
 }

@@ -19,12 +19,12 @@
         "dsefs": "false"
       },
       "cass_data": [
-        "/home/semblent/pod-installations/data.logs/data",
-        "/home/semblent/pod-installations/data.logs/data2"
+        "/home/semblent/pod-installations/data/data",
+        "/home/semblent/pod-installations/data/data2"
       ],
       "dsefs_data": [
-        "/home/semblent/pod-installations/data.logs/data/dsefs/;1.0;5368709",
-        "/home/semblent/pod-installations/data.logs/data/dsefs2/;1.0;5368709"
+        "/home/semblent/pod-installations/data/dsefs/;1.0;5368709",
+        "/home/semblent/pod-installations/data/dsefs2/;1.0;5368709"
       ]
     },
     "server_2":{
@@ -47,12 +47,12 @@
         "dsefs": "false"        
       },
       "cass_data": [
-        "/home/jd/Desktop/dse-installations/data.logs/data",
-        "/home/jd/Desktop/dse-installations/data.logs/data2"
+        "/home/jd/Desktop/pod-installations/data",
+        "/home/jd/Desktop/pod-installations/data2"
       ],
       "dsefs_data": [
-        "/home/jd/Desktop/dse-installations/data.logs/data/dsefs/;1.0;5368709",
-        "/home/jd/Desktop/dse-installations/data.logs/data/dsefs2/;1.0;5368709"
+        "/home/jd/Desktop/pod-installations/data/dsefs/;1.0;5368709",
+        "/home/jd/Desktop/pod-installations/data/dsefs2/;1.0;5368709"
       ]
     }
 }

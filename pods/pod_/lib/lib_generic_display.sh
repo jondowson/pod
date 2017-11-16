@@ -86,7 +86,8 @@ case ${which_pod} in
           lib_generic_display_msgColourSimple "info"      "$ dse cassandra -s -k -g   # start dse storage with search, analytics, graph (pick any combination)"
           printf "%s\n"
           lib_generic_display_msgColourSimple "TASK"      "To start the entire cluster:"
-          lib_generic_display_msgColourSimple "info"      "$ ./launch-pod --pod pod_dse --servers ${SERVERS_JSON} --clusterstate start"
+          lib_generic_display_msgColourSimple "info-bold" "--> based on mode settings in servers .json defintion file."
+          lib_generic_display_msgColourSimple "info"      "$ ./launch-pod --pod pod_DSE --servers ${SERVERS_JSON} --clusterstate start"
         elif [[ "${JAVA_INSTALL_TYPE}" == "tar" ]]; then
           lib_generic_display_msgColourSimple "TASK"      "To run dse locally:"
           lib_generic_display_msgColourSimple "info-bold" "(a) Source '.bash_profile' (or open new terminal):"
@@ -100,7 +101,8 @@ case ${which_pod} in
           lib_generic_display_msgColourSimple "info"      "$ dse cassandra -s -k -g   # start dse storage with search, analytics, graph (pick any combination)"
           printf "%s\n"
           lib_generic_display_msgColourSimple "TASK"      "To start the entire cluster:"
-          lib_generic_display_msgColourSimple "info"      "$ ./launch-pod --pod pod_dse --servers ${SERVERS_JSON} --clusterstate start"
+          lib_generic_display_msgColourSimple "info-bold" "--> based on mode settings in servers .json defintion file."
+          lib_generic_display_msgColourSimple "info"      "$ ./launch-pod --pod pod_DSE --servers ${SERVERS_JSON} --clusterstate start"
         fi
         printf "%s\n" ;;
         

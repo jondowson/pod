@@ -5,7 +5,7 @@
 
 # ------------------------------------------
 
-function handleFlags(){
+function prepare_handleFlags(){
 
 flag=${1}
 value=${2}

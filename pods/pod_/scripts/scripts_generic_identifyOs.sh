@@ -6,7 +6,7 @@
 # ------------------------------------------
 
 
-function lib_generic_identifyOs(){
+function scripts_generic_identifyOs(){
 
 ## determine OS of computer
 
@@ -24,6 +24,6 @@ else
 fi
 }
 
-lib_generic_identifyOs
+scripts_generic_identifyOs
 
 printf "%s\n" "${os}"

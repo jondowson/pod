@@ -80,6 +80,11 @@ dse_untar_bin_folder="${INSTALL_FOLDER}${DSE_VERSION}/bin/"
 
 # -----------------
 
+# required for java
+Djava_tmp_folder="${TEMP_FOLDER}"
+
+# -----------------
+
 # cassandra
 cassandra_log_folder="${PARENT_LOG_FOLDER}cassandra/"
 commitlog_directory="${PARENT_DATA_FOLDER}commitlog/"

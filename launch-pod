@@ -28,12 +28,14 @@ pod_home_path="$(pwd)"
 ## preparation: call in order
 
 # source generic preperation script
-source pods/pod_GENERIC/lib/lib_generic_prepare_pod.sh
+source pods/pod_/prepare/prepare_generic_misc.sh
 # identify local os
-lib_generic_prepare_identifyOs
+prepare_generic_misc_identifyOs
 
-# source all other generic, non pod specific, lib scripts
-lib_generic_prepare_sourceGenericLib
+# source all generic pod_ scripts
+prepare_generic_misc_sourceGeneric
+# set pod defaults
+prepare_generic_misc_setDefaults
 
 # ------------------------------------------
 
@@ -75,14 +77,14 @@ while test $# -gt 0; do
         shift
         WHICH_POD=$1
         shift
-        lib_generic_defaults
-        source pods/${WHICH_POD}/flags/handleFlags.sh
+        prepare_generic_misc_sourceThisPod
+        prepare_misc_setDefaults
         podFlag="true"
         ;;
     *)
       thisFlag=${1}
       flagValue=$(shift && echo $1)
-      handleFlags ${thisFlag} ${flagValue}
+      prepare_handleFlags ${thisFlag} ${flagValue}
       shift
       shift
         ;;
@@ -91,21 +93,8 @@ done
 
 # -----
 
-# ensure flags have been passed correctly
-lib_generic_prepare_flagRules
-
-# ------------------------------------------
-
-## for this specific pod source all required scripts
-
-lib_generic_prepare_sourcePodLib
-lib_generic_prepare_sourcePodStages
-lib_generic_prepare_sourcePodServers
-
-## check if command makes use of build folder
-if [[ ${buildFlag} == "true" ]]; then
-  lib_generic_prepare_sourcePodBuilds
-fi
+# ensure flags have been passed correctly for this pod
+prepare_flagRules
 
 # ------------------------------------------
 
@@ -114,6 +103,12 @@ fi
 servers_json_path="${pod_home_path}/pods/${WHICH_POD}/servers/${SERVERS_JSON}"
 lib_generic_misc_fileExistsCheckAbort "${servers_json_path}"
 numberOfServers=$(${jq_folder}jq [.] ${servers_json_path} | tr '"' '\n' | grep 'server_' | wc -l)
+
+# ------------------------------------------
+
+## source the specified pod's build folder
+
+prepare_generic_misc_sourceThisPodBuild
 
 # ------------------------------------------
 

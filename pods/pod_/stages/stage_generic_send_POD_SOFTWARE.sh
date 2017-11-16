@@ -5,7 +5,7 @@
 
 #-------------------------------------------
 
-function task_generic_sendSoftware(){
+function task_generic_sendPodSoftware(){
 
 # resolve ${POD_SOFTWARE} folder to local machine settings
 source ${build_file_path}
@@ -73,7 +73,7 @@ done
 
 #-------------------------------------------
 
-function task_generic_sendSoftware_report(){
+function task_generic_sendPodSoftware_report(){
 
 # display report
 

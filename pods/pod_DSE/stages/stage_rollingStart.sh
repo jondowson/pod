@@ -2,7 +2,7 @@
 
 # author:        jondowson
 # about:         start dse on each server based on its server json defined mode
-
+script_name="stage_rollingStart.sh"
 #-------------------------------------------
 
 function task_rollingStart(){
@@ -61,15 +61,27 @@ do
     retry=1
     until [[ "${retry}" == "6" ]] || [[ "${status}" == "0" ]]
     do
-      ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_cmd}" exit
+      ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && java" exit
       status=${?}
-      if [[ "${status}" == "0" ]]; then
-        lib_generic_display_msgColourSimple "info-indented" "ssh return code: ${green}${status}"
-      else
-        lib_generic_display_msgColourSimple "info-indented" "ssh return code: ${red}${status} ${white}(retry ${retry}/5)"
+      if [[ "${status}" == "127" ]]; then
+        lib_generic_display_msgColourSimple "info-indented" "ssh return code: ${red}${status}"
+        if [[ "${STRICT_START}" ==  "true" ]]; then
+          lib_generic_display_msgColourSimple "error" "Exiting pod: ${yellow}${script_name}${red} with ${yellow}--strict true${red} - java unavailable"
+          exit 1;
+        fi
+        pod_start_dse_error_array["${tag}"]="${status};${pubIp}"
+        break;
+      else  
+        ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_cmd}" exit
+        status=${?}
+        if [[ "${status}" == "0" ]]; then
+          lib_generic_display_msgColourSimple "info-indented" "ssh return code: ${green}${status}"
+        else
+          lib_generic_display_msgColourSimple "info-indented" "ssh return code: ${red}${status} ${white}(retry ${retry}/5)"
+        fi
+        pod_start_dse_error_array["${tag}"]="${status};${pubIp}"
+        ((retry++))
       fi
-      pod_start_dse_error_array["${tag}"]="${status};${pubIp}"
-      ((retry++))
     done
     printf "%s\n"
   fi
