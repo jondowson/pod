@@ -1,0 +1,2 @@
+Spark 1.6.0 (git revision e0c1108) built for Hadoop 2.2.0
+Build flags: -Phive -Phive-thriftserver
