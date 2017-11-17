@@ -4,7 +4,7 @@
       "user": "semblent",
       "sshKey": "/home/jd/.ssh/id_rsa",
       "target_folder": "/home/semblent/",
-      "pubIp": "192.168.1.15",
+      "pubIp": "192.168.1.65",
       "prvIp": "127.0.0.1",
       "listen_address": "pubIp",
       "rpc_address": "pubIp",      
@@ -18,12 +18,12 @@
         "graph": "false"
       },
       "cass_data": [
-        "/home/semblent/dse-installations/data.logs/data",
-        "/home/semblent/dse-installations/data.logs/data2"
+        "/home/semblent/pod-installations/data/data",
+        "/home/semblent/pod-installations/data/data2"
       ],
       "dsefs_data": [
-        "/home/semblent/dse-installations/data.logs/data/dsefs/;1.0;5368709",
-        "/home/semblent/dse-installations/data.logs/data/dsefs2/;1.0;5368709"
+        "/home/semblent/pod-installations/data/dsefs/;1.0;5368709",
+        "/home/semblent/pod-installations/data/dsefs2/;1.0;5368709"
       ]
     },
     "server_2":{
@@ -31,7 +31,7 @@
       "user": "jondowson",
       "sshKey": "/home/jd/.ssh/id_rsa",
       "target_folder": "/Users/jondowson/Desktop/",
-      "pubIp": "192.168.1.9",
+      "pubIp": "192.168.1.66",
       "prvIp": "127.0.0.1",
       "listen_address": "pubIp",
       "rpc_address": "pubIp",   
@@ -45,12 +45,12 @@
         "graph": "false"
       },
       "cass_data": [
-        "/Users/jondowson/dse-installations/data.logs/data",
-        "/Users/jondowson/dse-installations/data.logs/data2"
+        "/home/semblent/pod-installations/data/data",
+        "/home/semblent/pod-installations/data/data2"
       ],
       "dsefs_data": [
-        "/Users/jondowson/dse-installations/data.logs/data/dsefs/;1.0;5368709",
-        "/Users/jondowson/dse-installations/data.logs/data/dsefs2/;1.0;5368709"
+        "/Users/jondowson/pod-installations/data/dsefs/;1.0;5368709",
+        "/Users/jondowson/pod-installations/data/dsefs2/;1.0;5368709"
       ]
     },
     "server_3":{
@@ -58,7 +58,7 @@
       "user": "jd",
       "sshKey": "/home/jd/.ssh/id_rsa",
       "target_folder": "/home/jd/Desktop/",
-      "pubIp": "192.168.1.8",
+      "pubIp": "192.168.1.64",
       "prvIp": "127.0.0.1",
       "listen_address": "pubIp",
       "seeds": "192.168.1.9,192.168.1.15",
@@ -71,12 +71,12 @@
         "graph": "false"
       },
       "cass_data": [
-        "/home/jd/dse-installations/data.logs/data",
-        "/home/jd/dse-installations/data.logs/data2"
+        "/home/semblent/pod-installations/data/data",
+        "/home/semblent/pod-installations/data/data2"
       ],
       "dsefs_data": [
-        "/home/jd/dse-installations/data.logs/data/dsefs/;1.0;5368709",
-        "/home/jd/dse-installations/data.logs/data/dsefs2/;1.0;5368709"
+        "/home/jd/pod-installations/data/dsefs/;1.0;5368709",
+        "/home/jd/pod-installations/data/dsefs2/;1.0;5368709"
       ]
     }
 }

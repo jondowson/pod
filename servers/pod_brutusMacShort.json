@@ -4,7 +4,7 @@
       "user": "jondowson",
       "sshKey": "/home/jd/.ssh/id_rsa",
       "target_folder": "/Users/jondowson/Desktop/",
-      "pubIp": "192.168.0.2",
+      "pubIp": "192.168.1.64",
       "prvIp": "127.0.0.1"
     },
     "server_2":{
@@ -12,7 +12,7 @@
       "user": "jd",
       "sshKey": "/home/jd/.ssh/id_rsa",
       "target_folder": "/home/jd/Desktop",
-      "pubIp": "192.168.122.1",
+      "pubIp": "192.168.1.66",
       "prvIp": "127.0.0.2"
     }
 }

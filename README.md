@@ -65,7 +65,7 @@ Quick Instructions (to work out of the box):
 
 1) Setup passwordless access to all servers (including local machine).    
 `    
-$ ssh keygen -t rsa    # hit enter to all questions    
+$ ssh-keygen -t rsa    # hit enter to all questions    
 `    
 `
 $ ssh-copy-id user@remote-machine
@@ -77,7 +77,7 @@ This second step will send your key to the remote server to enable passwordless 
 
 3) For Macs (both running pod and in a cluster) - first run the dependencies script from the root folder of the repo.  
 `  
-$ ./misc/dependencies_mac.sh
+$ ./misc/install_podDependencies_mac.sh
 `     
 
 4) Make a folder on your desktop called '**DSE_SOFTWARE**'.  

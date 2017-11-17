@@ -29,11 +29,13 @@ pod_home_path="$(pwd)"
 
 # source generic preperation script
 source pods/pod_/prepare/prepare_generic_misc.sh
+
 # identify local os
 prepare_generic_misc_identifyOs
 
 # source all generic pod_ scripts
 prepare_generic_misc_sourceGeneric
+
 # set pod defaults
 prepare_generic_misc_setDefaults
 
@@ -50,6 +52,7 @@ else
   jq_folder="${pod_home_path}/third_party/jq-linux64/"
   jq_file_path="${jq_folder}jq"
   lib_generic_misc_fileExistsCheckAbort "${jq_file_path}"
+  chmod +x "${jq_file_path}"
 fi
 
 # ------------------------------------------
@@ -70,9 +73,18 @@ fi
 while test $# -gt 0; do
   case "$1" in
     -h|--help)
-        lib_generic_display_banner
-        lib_generic_help_pod
-        exit 0 ;;
+        if [[ ${podFlag} == "true" ]]; then 
+          lib_generic_display_banner 
+          lib_generic_help
+          lib_help
+          lib_generic_helpFinish 
+        else
+          lib_generic_display_banner
+          lib_generic_help
+          lib_generic_helpFinish
+        fi
+        exit 0;
+        ;;
     -p|--pod)
         shift
         WHICH_POD=$1
@@ -91,6 +103,8 @@ while test $# -gt 0; do
   esac
 done
 
+
+
 # -----
 
 # ensure flags have been passed correctly for this pod
@@ -100,7 +114,7 @@ prepare_flagRules
 
 ## all pod apps make use of a servers json definition file - check it exists
 
-servers_json_path="${pod_home_path}/pods/${WHICH_POD}/servers/${SERVERS_JSON}"
+servers_json_path="${pod_home_path}/servers/${SERVERS_JSON}"
 lib_generic_misc_fileExistsCheckAbort "${servers_json_path}"
 numberOfServers=$(${jq_folder}jq [.] ${servers_json_path} | tr '"' '\n' | grep 'server_' | wc -l)
 
