@@ -36,11 +36,11 @@ do
 
 # ----------
 
-  lib_generic_display_msgColourSimple "info" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
+  lib_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
 
 # ----------
 
-  lib_generic_display_msgColourSimple "info-indented" "stopping dse:      gracefully"                                                           
+  lib_generic_display_msgColourSimple "INFO-INDENTED" "stopping dse:      gracefully"                                                           
 
 # ----------
 
@@ -54,9 +54,9 @@ do
       ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${stop_cmd}" exit
       status=${?}
       if [[ "${status}" == "0" ]]; then
-        lib_generic_display_msgColourSimple "info-indented" "ssh return code: ${green}${status}"
+        lib_generic_display_msgColourSimple "INFO_INDENTED" "ssh return code: ${green}${status}"
       else
-        lib_generic_display_msgColourSimple "info-indented" "ssh return code: ${red}${status} ${white}(retry ${retry}/5)"
+        lib_generic_display_msgColourSimple "INFO_INDENTED" "ssh return code: ${red}${status} ${white}(retry ${retry}/5)"
       fi
       pod_stop_dse_error_array["${tag}"]="${status};${pubIp}"
       ((retry++))
@@ -86,13 +86,13 @@ done
 
 if [[ "${pod_stop_dse_fail}" == "true" ]]; then
   printf "%s\n"
-  lib_generic_display_msgColourSimple "info-bold" "--> ${red}Dse cassandra-stop errors report:"
+  lib_generic_display_msgColourSimple "INFO-BOLD-->" "${red}Dse cassandra-stop errors report:"
   printf "%s\n"
   for k in "${pod_stop_dse_report_array[@]}"
   do
-    lib_generic_display_msgColourSimple "info" "${cross} ${k}"
+    lib_generic_display_msgColourSimple "INFO" "${cross} ${k}"
   done
 else
-  lib_generic_display_msgColourSimple "success" "DSE stopped for all servers"
+  lib_generic_display_msgColourSimple "ERROR" "DSE stopped for all servers"
 fi
 }

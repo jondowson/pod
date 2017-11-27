@@ -8,6 +8,7 @@
 function prepare_flagRules(){
 
 ## rules for accepting flags
+errorTag="prepare_flagRules()"
 
 # pre-canned formatted messages
 defaultErrMsg="You must supply the correct combination of flags - please check the help: ${yellow}./launch-pod --help${red}"

@@ -31,32 +31,6 @@ fi
 
 # ---------------------------------------
 
-function lib_generic_misc_fileExistsCheckAbort(){
-
-## check for the existence of a file - abort script if failure
-
-file="${1}"
-[[ ! -f ${file} ]] && \
-printf "%s\n" && \
-lib_generic_display_msgColourSimple "error" "Aborting script: ${yellow}${file}${red} - file not found" \
-&& exit 1;
-}
-
-# ---------------------------------------
-
-function lib_generic_misc_folderExistsCheckAbort(){
-
-## check for the existence of a file - abort script if failure
-
-folder="${1}"
-[[ ! -d ${folder} ]] && \
-printf "%s\n" && \
-lib_generic_display_msgColourSimple "error" "Aborting script: ${yellow}${folder}${red} - folder not found" \
-&& exit 1;
-}
-
-# ---------------------------------------
-
 function lib_generic_misc_timecount(){
 min=0
 sec=${1}
@@ -81,4 +55,18 @@ function lib_generic_misc_timePod(){
 
 pod_end=$(date +%s)
 diff=$((pod_end - pod_start))
+}
+
+# ---------------------------------------
+
+function lib_generic_misc_catchError(){
+
+##  
+
+"$@"
+ret=$?
+if [[ $ret -ne 0 ]]; then
+  printf "%s\n" "Error: command [ $@ ] returned $ret"
+  exit $ret
+fi
 }

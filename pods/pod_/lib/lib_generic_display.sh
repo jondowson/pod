@@ -25,7 +25,7 @@ reverse=`tput rev`
 reset=`tput sgr0`
 italic=$(tput sitm)
 tick="${b}${green}$(printf '\xE2\x9C\x94')${reset}"
-cross="${b}${red}✘${reset}"
+cross="${b}${red}$(printf '\xE2\x9C\x99')${reset}"
 
 # ---------------------------------------
 
@@ -37,32 +37,37 @@ messageType="${1}"
 message="${2}"
 
 case ${messageType} in
-    "STAGE" )
-        printf "%s\n" "${b}${white}${message}${reset}" ;;
     "STAGECOUNT" )
-        printf "\n%s\n" "${b}${white}${message}${reset}" ;;
-    "TASK" )
-        printf "%s\n\n" "${b}${cyan}____________________________________${reset}"
-        printf "%s\n\n" "${b}${cyan}==> ${message}${reset}" ;;
+                    printf "\n%s\n" "${b}${white}${message}${reset}" ;;
+    "TASK==>" )
+                    printf "%s\n\n" "${b}${cyan}____________________________________${reset}"
+                    printf "%s\n\n" "${b}${cyan}==> ${message}${reset}" ;;
     "REPORT" )
-        printf "%s\n\n" "${b}${cyan}____________________________________${reset}"
-        printf "%s\n\n" "${b}${yellow}==> ${message}${reset}" ;;
-    "alert" )
-        printf "%s\n"   "${b}${yellow}--> ${message} !!${reset}" ;;
-    "error" )
-        printf "%s\n\n" "${b}${red}--> ${message} !!${reset}" ;;
-    "error-tight" )
-        printf "%s\n"   "${b}${red}--> ${message} !!${reset}" ;;
-    "info" )
-        printf "%s\n"   "${white}${message} ${reset}" ;;
-    "info-bold" )
-        printf "%s\n"   "${b}${white}${message} ${reset}" ;;
-    "info-indented" )
-        printf "%s\n"   "${white}--> ${message} ${reset}" ;;
-    "info-bold-indented" )
-        printf "%s\n"   "${b}${white}--> ${message} ${reset}" ;;
-    "success" )
-        printf "%s\n\n" "${tick}${b}${green} ${message} !!${reset}" ;;
+                    printf "%s\n\n" "${b}${cyan}____________________________________${reset}"
+                    printf "%s\n\n" "${b}${yellow}==> ${message}${reset}" ;;
+    "ALERT-->" )
+                    printf "\n%s\n" "${b}${yellow}--> ${message} !!${reset}" ;;
+    "ERROR-->" )
+                    printf "\n%s\n" "${b}${red}--> ${message} !!${reset}" ;;
+    "SUCCESS" )
+                    printf "%s\n\n" "${tick}${b}${green} ${message} !!${reset}" ;;
+    "FAILURE" )
+                    printf "%s\n\n" "${cross}${b}${green} ${message} !!${reset}" ;;                                   
+
+# ---------------- no-spacing
+
+    "STAGE" )
+                    printf "%s\n"   "${b}${white}${message}${reset}" ;;    
+    "INFO" )
+                    printf "%s\n"   "${white}${message} ${reset}" ;;
+    "INFO-->" )
+                    printf "%s\n"   "${white}--> ${message} ${reset}" ;;                    
+    "INFO-BOLD" )
+                    printf "%s\n"   "${b}${white}${message} ${reset}" ;;
+    "INFO-BOLD-->" )
+                    printf "%s\n"   "${b}${white}--> ${message} ${reset}" ;;
+    "ERROR-TIGHT-->" )
+                    printf "%s\n"   "${b}${red}--> ${message} !!${reset}" ;; 
 esac
 }
 

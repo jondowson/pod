@@ -12,7 +12,14 @@
 
 # ------------------------------------------
 
+## used in error messages
+
+thisScript="launch-pod"
+
+# ------------------------------------------
+
 ## timer for script duration
+
 pod_start=$(date +%s)
 
 # ------------------------------------------
@@ -25,44 +32,49 @@ pod_home_path="$(pwd)"
 
 # ------------------------------------------
 
-## preparation: call in order
+## pod preparation: call in correct order
 
-# source generic preperation script
+# [1] source generic preperation script
 source pods/pod_/prepare/prepare_generic_misc.sh
 
-# identify local os
+# [2] identify local os
 prepare_generic_misc_identifyOs
 
-# source all generic pod_ scripts
+# [3] source all generic pod_ scripts
 prepare_generic_misc_sourceGeneric
 
-# set pod defaults
+# [4] set pod defaults
 prepare_generic_misc_setDefaults
 
 # ------------------------------------------
 
-## define pod dependency paths
+## pod dependencies
 
-# Mac will directly use the brew installed version of jq
+# [1] jq - bash jason parser
+# --> mac will directly use the brew installed version of jq
 if [[ "${os}" == "Mac" ]]; then
   jq_folder=""
   jq_file_path="jq"
-# Other linux need the path to the included jq binary
+# --> other linux need the path to the included jq binary
 else
   jq_folder="${pod_home_path}/third_party/jq-linux64/"
   jq_file_path="${jq_folder}jq"
-  lib_generic_misc_fileExistsCheckAbort "${jq_file_path}"
-  chmod +x "${jq_file_path}"
+  lib_generic_checks_fileExists "${jq_file_path}"
 fi
+
+# -----
+
+# ensure third party packages are executable
+chmod -R +x "${pod_home_path}/third_party"
 
 # ------------------------------------------
 
 ## handle flags
 
-# ensure --pod | -p flag is passed first if not using help flag
+# ensure --pod | -p flag is passed first (if not using help flag on iys own)
 if [[ "${1}" != "-p" ]] && [[ "${1}" != "--pod" ]] && [[ "${1}" != "-h" ]] && [[ "${1}" != "--help" ]]; then
   printf "%s\n"
-  lib_generic_display_msgColourSimple "error" "always specify the pod flag first ${yellow}-p | --pod${red}"
+  lib_generic_display_msgColourSimple "ERROR" "always specify the pod flag first ${yellow}-p | --pod${red}"
   printf "%s\n"
   exit 1;
 fi
@@ -103,21 +115,21 @@ while test $# -gt 0; do
   esac
 done
 
-
-
 # -----
 
 # ensure flags have been passed correctly for this pod
-prepare_flagRules
+catchError prepare_flagRules
 
 # ------------------------------------------
 
-## all pod apps make use of a servers json definition file - check it exists
+## all pod apps make use of a servers json definition file
 
 servers_json_path="${pod_home_path}/servers/${SERVERS_JSON}"
-lib_generic_misc_fileExistsCheckAbort "${servers_json_path}"
+# check it exists
+lib_generic_checks_fileExists "${servers_json_path}"
+catchError "launch-pod" "${jq_folder}jq [.] ${servers_json_path}" 
 numberOfServers=$(${jq_folder}jq [.] ${servers_json_path} | tr '"' '\n' | grep 'server_' | wc -l)
-
+exit
 # ------------------------------------------
 
 ## source the specified pod's build folder

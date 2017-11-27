@@ -27,7 +27,7 @@
         "/home/semblent/pod-installations/data/dsefs2/;1.0;5368709"
       ]
     },
-    "server_2":{
+    "server_2":
       "tag": "storage_2",
       "user": "jd",
       "sshKey": "/home/jd/.ssh/id_rsa",

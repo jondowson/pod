@@ -191,9 +191,9 @@ if [[ "${pod_test_send_fail}" == "true" ]]; then
   do
     lib_generic_display_msgColourSimple "info" "${cross} ${k}"
   done
-  lib_generic_display_msgColourSimple "error" "Aborting script as not all paths are writeable"
+  lib_generic_display_msgColourSimple "ERROR" "Aborting script as not all paths are writeable"
   exit 1;
 else
-  lib_generic_display_msgColourSimple "success" "Write-paths test passed for all servers"
+  lib_generic_display_msgColourSimple "SUCCESS" "Write-paths test passed for all servers"
 fi
 }

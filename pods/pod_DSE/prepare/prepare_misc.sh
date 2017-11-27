@@ -12,8 +12,8 @@ function prepare_misc_checkFilesExist(){
 if [[ ${clusterstateFlag} != "true" ]]; then
   # test POD_SOFTWARE folder is available
   if [[ "${SEND_POD_SOFTWARE}" == "true" ]]; then
-    lib_generic_misc_folderExistsCheckAbort "${POD_SOFTWARE}"
-    lib_generic_misc_fileExistsCheckAbort   "${dse_tar_file}"
+    lib_generic_checks_folderExists "${POD_SOFTWARE}"
+    lib_generic_checks_fileExists   "${dse_tar_file}"
   fi
 fi
 }

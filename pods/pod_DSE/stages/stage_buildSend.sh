@@ -50,33 +50,33 @@ lib_generic_display_msgColourSimple   "info-indented" "detected os: ${green}${re
 
   if [[ "${VB}" == "true" ]]; then printf "%s\n"; fi
   if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "info-indented" "renaming:    'cassandra-topology.properties' to stop it interfering"; fi
-  lib_doStuff_locally_cassandraTopologyProperties
+  catchError lib_doStuff_locally_cassandraTopologyProperties
 
   if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "info-indented" "editing:     'TARGET_FOLDER' in 'build_settings.sh'"; fi
-  lib_generic_strings_sedStringManipulation "editAfterSubstring" "${tmp_build_file_path}"   "TARGET_FOLDER=" "\"${target_folder}\""
+  catchError lib_generic_strings_sedStringManipulation "editAfterSubstring" "${tmp_build_file_path}"   "TARGET_FOLDER=" "\"${target_folder}\""
   source ${tmp_build_file_path}
 
   if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "info-indented" "editing:     'build_folder_path' in 'pod_launch_remote.sh'"; fi
-  lib_generic_strings_sedStringManipulation "editAfterSubstring" "${tmp_build_folder}pods/pod_/scripts/scripts_generic_launchPodRemotely.sh" "build_folder_path=" "\"${target_folder}pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/\""
+  catchError lib_generic_strings_sedStringManipulation "editAfterSubstring" "${tmp_build_folder}pods/pod_/scripts/scripts_generic_launchPodRemotely.sh" "build_folder_path=" "\"${target_folder}pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/\""
 
   if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "info-indented" "editing:     'cassandra-env.sh'"; fi
-  lib_doStuff_locally_cassandraEnv
+  catchError lib_doStuff_locally_cassandraEnv
   if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "info-indented" "editing:     'jvm.options'"; fi
-  lib_doStuff_locally_jvmOptions
+  catchError lib_doStuff_locally_jvmOptions
   if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "info-indented" "editing:     'main' settings for 'cassandra.yaml'"; fi
-  lib_doStuff_locally_cassandraYaml
+  catchError lib_doStuff_locally_cassandraYaml
   
   if [[ "${analytics}" == "true" ]] || [[ "${dsefs}" == "true" ]]; then
     if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "info-indented" "editing:     'dse.yaml'"; fi
-    lib_doStuff_locally_dseYamlDsefs
+    catchError lib_doStuff_locally_dseYamlDsefs
   fi
   
   if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "info-indented" "editing:     'dse-spark-env.sh'"; fi
-  lib_doStuff_locally_dseSparkEnv
+  catchError lib_doStuff_locally_dseSparkEnv
   if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "info-indented" "editing:     'rackdc.properties'"; fi
-  lib_doStuff_locally_cassandraRackDcProperties
+  catchError lib_doStuff_locally_cassandraRackDcProperties
   if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "info-indented" "editing:     'lib_script_launchRemotely'"; fi
-  prepare_generic_misc_hashBang
+  catchError prepare_generic_misc_hashBang
 
 # -----
 
@@ -85,13 +85,13 @@ lib_generic_display_msgColourSimple   "info-indented" "detected os: ${green}${re
 
   # calculate number of cassandra data folders specified in json
   # -3? - one for each bracket line and another 'cos the array starts at zero
-  numberOfDataFolders=$(($(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.cass_data' | wc -l)-3))
+  catchError numberOfDataFolders=$(($(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.cass_data' | wc -l)-3))
 
 # remove all added data arrays from previous loop
-lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" "${tmp_build_file_path}" "dse_data_arrays" ""
+catchError lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" "${tmp_build_file_path}" "dse_data_arrays" ""
 
 # CAT/EOF cannot be indented !!
-cat << EOF >> "${tmp_build_file_path}"
+catchError cat << EOF >> "${tmp_build_file_path}"
 #BOF CLEAN-dse_data_arrays
 #
 declare -a data_file_directories_array
@@ -99,7 +99,7 @@ EOF
 
 for j in `seq 0 ${numberOfDataFolders}`;
 do
-data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.cass_data['${j}']' | tr -d '"')
+catchError data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.cass_data['${j}']' | tr -d '"')
 cat << EOF >> "${tmp_build_file_path}"
 data_file_directories_array[${j}]="${data_path}"
 EOF
@@ -109,12 +109,12 @@ done
 
   if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "info-indented" "editing:     'cassandra_data_folders' in 'cassandra.yaml'"; fi
   declare -a data_file_directories_array
-  for j in `seq 0 ${numberOfDataFolders}`;
+  for j in $(seq 0 ${numberOfDataFolders});
   do
     data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.cass_data['${j}']' | tr -d '"')
     data_file_directories_array[${j}]=${data_path}
   done
-  lib_doStuff_locally_cassandraYamlData
+  catchError lib_doStuff_locally_cassandraYamlData
 
 # -----
 
@@ -124,19 +124,19 @@ done
 
     # calculate number of cassandra data folders specified in json
     # -3? - one for each bracket line and another 'cos the array starts at zero
-    numberOfDataFolders=$(($(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.dsefs_data' | wc -l)-3))
+    catchError numberOfDataFolders=$(($(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.dsefs_data' | wc -l)-3))
 
 # CAT/EOF cannot be indented !!
-cat << EOF >> "${tmp_build_file_path}"
+catchError cat << EOF >> "${tmp_build_file_path}"
 # _________________
 # ADDED DYNAMICALLY
 #
 declare -a dsefs_data_file_directories_array
 EOF
 
-for j in `seq 0 ${numberOfDataFolders}`;
+for j in $(seq 0 ${numberOfDataFolders});
 do
-data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.dsefs_data['${j}']' | tr -d '"')
+catchError data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.dsefs_data['${j}']' | tr -d '"')
 cat << EOF >> "${tmp_build_file_path}"
 dsefs_data_file_directories_array[${j}]="${data_path}"
 EOF
@@ -149,12 +149,12 @@ printf "%s" "#EOF CLEAN-dse_data_arrays" >> "${tmp_build_file_path}"
   if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "info-indented" "editing:     'dsefs_data_folders' in 'dse.yaml'"; fi
 
   declare -a dsefs_data_file_directories_array
-  for j in `seq 0 ${numberOfDataFolders}`;
+  for j in $(seq 0 ${numberOfDataFolders});
   do
-    data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.dsefs_data['${j}']' | tr -d '"')
+    catchError data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.dsefs_data['${j}']' | tr -d '"')
     dsefs_data_file_directories_array[${j}]=${data_path}
   done
-  lib_doStuff_locally_dseYamlDsefs
+  catchError lib_doStuff_locally_dseYamlDsefs
 
 # -----
 
@@ -165,7 +165,7 @@ printf "%s" "#EOF CLEAN-dse_data_arrays" >> "${tmp_build_file_path}"
   else
     listen_address=${prvIp}
   fi
-  lib_doStuff_locally_cassandraYamlNodeSpecific
+  catchError lib_doStuff_locally_cassandraYamlNodeSpecific
   if [[ "${VB}" == "true" ]]; then printf "%s\n"; fi
 
 # -----
@@ -192,7 +192,7 @@ declare -a pod_build_send_report_array
 count=0
 for k in "${!pod_build_send_error_array[@]}"
 do
-  lib_generic_strings_expansionDelimiter ${pod_build_send_error_array[$k]} ";" "1"
+  catchError lib_generic_strings_expansionDelimiter ${pod_build_send_error_array[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
     pod_build_send_fail="true"
     pod_build_send_report_array["${count}"]="could not transfer: ${yellow}${k} ${white}on server ${yellow}${_D2_}${reset}"
@@ -212,7 +212,7 @@ if [[ "${pod_build_send_fail}" == "true" ]]; then
     lib_generic_display_msgColourSimple "info-bold" "${cross} ${k}"
   done
   printf "%s\n"
-  lib_generic_display_msgColourSimple "error" "Aborting script as not all paths are writeable"
+  lib_generic_display_msgColourSimple "ERROR" "Aborting script as not all paths are writeable"
   exit 1;
 else
   lib_generic_display_msgColourSimple "success" "Created and distributed pod builds on all servers"
