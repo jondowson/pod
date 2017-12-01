@@ -11,15 +11,20 @@ function catchError(){  # short name allowed to break naming convention as it wi
 
 # a helpful tag message outputted to screen 
 tagMsg=$1
-# if unsuccessfull choose whether to abort the script
+# if unsuccessful choose whether to abort the script
 abort=$2
 # run the command and check its return code
-$3 
+$3 > /dev/null
 ret=$?
+
+# usage example 
+# catchError "called from $thisScript" "true" "commandToRun"
 
 if [[ $ret != 0 ]]; then
   lib_generic_display_msgColourSimple "ERROR-->" "Error: command failed: ${yellow}[ $3 ]${red} with return value: ${yellow}[ $ret ]${red} tag: ${yellow}[ ${tagMsg} ]${red}" 
-  exit $ret
+  if [[ ${abort}  == "true" ]]; then
+    exit $ret;
+  fi 
 fi
 }
 
@@ -35,6 +40,9 @@ tagMsg=$1
 abort=$2
 # file to check for
 file="${3}"
+
+# usage example 
+# lib_generic_checks_fileExists "called from $thisScript" "true" "fileToCheck.sh"
 
 if [[ ! -f ${file} ]]; then
   lib_generic_display_msgColourSimple "ERROR" "Error: file not found: ${yellow}[ ${file} ]${red} tag: ${yellow}[ ${tagMsg} ]${red}" 
@@ -56,6 +64,9 @@ tagMsg=$1
 abort=$2
 # file to check for
 file="${3}"
+
+# usage example 
+# lib_generic_checks_folderExists "called from $thisScript" "true" "folderToCheck.sh"
 
 if [[ ! -d ${folder} ]]; then
   lib_generic_display_msgColourSimple "ERROR" "Error: file not found: ${yellow}[ ${folder} ]${red} tag: ${yellow}[ ${tagMsg} ]${red}" 

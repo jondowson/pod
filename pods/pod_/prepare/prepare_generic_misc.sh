@@ -93,7 +93,7 @@ done
 # ------------------------------------------
 
 function prepare_generic_misc_sourceThisPodBuild(){
-
+#set -x
 # source the pod-specific 'builds' folder to use
 if [[ ${buildFlag} == "true" ]]; then
 
@@ -103,7 +103,8 @@ if [[ ${buildFlag} == "true" ]]; then
   if [[ -f ${build_file_path} ]]; then
     source ${build_file_path}
   else
-    lib_generic_misc_fileExistsCheckAbort "build file path is wrong: ${build_file_path}"
+    set -x
+    lib_generic_checks_fileExists "build file path is wrong: ${build_file_path}" "true" "${build_file_path}"
   fi
 fi
 }

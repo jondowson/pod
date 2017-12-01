@@ -8,7 +8,7 @@
 
 ## uncomment to see full bash trace (debug)
 
-# set -x
+#set -x
 
 # ------------------------------------------
 
@@ -71,7 +71,7 @@ chmod -R +x "${pod_home_path}/third_party"
 
 ## handle flags
 
-# ensure --pod | -p flag is passed first (if not using help flag on iys own)
+# ensure --pod | -p flag is passed first (if not using help flag on its own)
 if [[ "${1}" != "-p" ]] && [[ "${1}" != "--pod" ]] && [[ "${1}" != "-h" ]] && [[ "${1}" != "--help" ]]; then
   printf "%s\n"
   lib_generic_display_msgColourSimple "ERROR" "always specify the pod flag first ${yellow}-p | --pod${red}"
@@ -123,19 +123,21 @@ catchError prepare_flagRules
 # ------------------------------------------
 
 ## all pod apps make use of a servers json definition file
-
+#set -x
 servers_json_path="${pod_home_path}/servers/${SERVERS_JSON}"
 # check it exists
 lib_generic_checks_fileExists "${servers_json_path}"
-catchError "launch-pod" "${jq_folder}jq [.] ${servers_json_path}" 
+
+catchError "launch-pod#1" "true" "${jq_folder}jq [.] ${servers_json_path}" 
+
 numberOfServers=$(${jq_folder}jq [.] ${servers_json_path} | tr '"' '\n' | grep 'server_' | wc -l)
-exit
+
 # ------------------------------------------
 
 ## source the specified pod's build folder
 
 prepare_generic_misc_sourceThisPodBuild
-
+exit
 # ------------------------------------------
 
 ## source the specified pod's init script and run that pod
