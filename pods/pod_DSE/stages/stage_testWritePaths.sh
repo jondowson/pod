@@ -36,16 +36,16 @@ do
 
 # ----------
 
-  if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "info-indented" "editing:     'TARGET_FOLDER' in 'build_settings.sh'"; fi
-  lib_generic_strings_sedStringManipulation "editAfterSubstring" "${tmp_build_file_path}"   "TARGET_FOLDER=" "\"${target_folder}\""
+  if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "INFO-->" "editing:     'TARGET_FOLDER' in 'build_settings.sh'"; fi
+  lib_generic_strings_sedStringManipulation "editAfterSubstring" "${tmp_build_file_path}" "TARGET_FOLDER=" "\"${target_folder}\""
   source ${tmp_build_file_path}
 
 # ----------
 
-  lib_generic_display_msgColourSimple "info" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
+  lib_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
   printf "\n%s"
-  lib_generic_display_msgColourSimple "info-indented" "configuring:    bespoke server paths"
-  lib_generic_display_msgColourSimple "info-indented" "writing-to:     bespoke server paths"
+  lib_generic_display_msgColourSimple "INFO-->" "configuring:    bespoke server paths"
+  lib_generic_display_msgColourSimple "INFO-->" "writing-to:     bespoke server paths"
   printf "%s\n" "${red}"
 
   declare -a mkdir_array
@@ -100,7 +100,7 @@ do
   done
 
 # ----------
-  
+
   if [[ "${analytics}" == "true" ]] || [[ "${dsefs}" == "true" ]]; then
     for i in "${dsefs_data_file_directories_array[@]}"
     do
@@ -173,25 +173,25 @@ done
 
 if [[ "${pod_test_send_fail}" == "true" ]]; then
   printf "%s\n"
-  lib_generic_display_msgColourSimple "info-bold" "--> ${red}Write-paths error report:"
+  lib_generic_display_msgColourSimple "INFO-BOLD" "--> ${red}Write-paths error report:"
   printf "%s\n"
 
   for k in "${pod_test_send_report_array_1[@]}"
   do
-    lib_generic_display_msgColourSimple "info" "${cross} ${k}"
+    lib_generic_display_msgColourSimple "INFO" "${cross} ${k}"
   done
   printf "%s\n"
 
   for k in "${pod_test_send_report_array_2[@]}"
   do
-    lib_generic_display_msgColourSimple "info" "${cross} ${k}"
+    lib_generic_display_msgColourSimple "INFO" "${cross} ${k}"
   done
 
   for k in "${pod_test_send_report_array_3[@]}"
   do
-    lib_generic_display_msgColourSimple "info" "${cross} ${k}"
+    lib_generic_display_msgColourSimple "INFO" "${cross} ${k}"
   done
-  lib_generic_display_msgColourSimple "ERROR" "Aborting script as not all paths are writeable"
+  lib_generic_display_msgColourSimple "ERROR-->" "Aborting script as not all paths are writeable"
   exit 1;
 else
   lib_generic_display_msgColourSimple "SUCCESS" "Write-paths test passed for all servers"

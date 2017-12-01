@@ -27,7 +27,7 @@ elif [[ "$(cat /etc/system-release-cpe)" == *"redhat"* ]]; then
   os="Redhat"
 else
   os="Bad"
-  lib_generic_display_msgColourSimple "error" "OS Not Supported"
+  lib_generic_display_msgColourSimple "ERROR-->" "OS Not Supported"
   exit 1;
 fi
 
@@ -66,7 +66,7 @@ build_file_path="${build_file_folder}build_settings.sh"
 if [[ -f ${build_file_path} ]]; then
   source ${build_file_path}
 else
-  lib_generic_misc_fileExistsCheckAbort "${build_file_path}"
+  lib_generic_checks_fileExists "scripts_generic_launchPodRemotely#1" "true" "${build_file_path}"
 fi
 
 #-------------------------------------------

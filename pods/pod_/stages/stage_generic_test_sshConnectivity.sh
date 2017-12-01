@@ -35,13 +35,13 @@ do
     retry=1
     until [[ "${retry}" == "6" ]] || [[ "${status}" == "0" ]]
     do
-      lib_generic_misc_fileExistsCheckAbort "${sshKey}"
+      lib_generic_checks_fileExists "stage_generic_test_sshConnectivity.sh#1" "true" "${sshKey}"
       ssh -q -i ${sshKey} ${user}@${pubIp} exit
       status=${?}
       if [[ "${status}" == "0" ]]; then
-        lib_generic_display_msgColourSimple "INFO-INDENTED" "ssh return code: ${green}${status}"
+        lib_generic_display_msgColourSimple "INFO-->" "ssh return code: ${green}${status}"
       else
-        lib_generic_display_msgColourSimple "INFO-INDENTED" "ssh return code: ${red}${status} ${white}(retry ${retry}/5)"
+        lib_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}(retry ${retry}/5)"
       fi
       pod_test_connect_error_array["${tag}"]="${status};${pubIp}"
       ((retry++))

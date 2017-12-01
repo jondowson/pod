@@ -52,22 +52,22 @@ case ${messageType} in
     "SUCCESS" )
                     printf "%s\n\n" "${tick}${b}${green} ${message} !!${reset}" ;;
     "FAILURE" )
-                    printf "%s\n\n" "${cross}${b}${green} ${message} !!${reset}" ;;                                   
+                    printf "%s\n\n" "${cross}${b}${green} ${message} !!${reset}" ;;
 
 # ---------------- no-spacing
 
     "STAGE" )
-                    printf "%s\n"   "${b}${white}${message}${reset}" ;;    
+                    printf "%s\n"   "${b}${white}${message}${reset}" ;;
     "INFO" )
                     printf "%s\n"   "${white}${message} ${reset}" ;;
     "INFO-->" )
-                    printf "%s\n"   "${white}--> ${message} ${reset}" ;;                    
+                    printf "%s\n"   "${white}--> ${message} ${reset}" ;;
     "INFO-BOLD" )
                     printf "%s\n"   "${b}${white}${message} ${reset}" ;;
     "INFO-BOLD-->" )
                     printf "%s\n"   "${b}${white}--> ${message} ${reset}" ;;
     "ERROR-TIGHT-->" )
-                    printf "%s\n"   "${b}${red}--> ${message} !!${reset}" ;; 
+                    printf "%s\n"   "${b}${red}--> ${message} !!${reset}" ;;
 esac
 }
 
@@ -83,37 +83,37 @@ case ${which_pod} in
     "pod_DSE" )
 
         if [[ ${os} == "Mac" ]] || [[ ${JAVA_INSTALL_TYPE} != "tar" ]]; then
-          lib_generic_display_msgColourSimple "TASK"      "To run dse locally:"
-          lib_generic_display_msgColourSimple "info-bold" "(a) Source '.bash_profile' (or open new terminal):"
-          lib_generic_display_msgColourSimple "info"      "$ . ~/.bash_profile"
-          lib_generic_display_msgColourSimple "info-bold" "(b) Run dse:"
-          lib_generic_display_msgColourSimple "info"      "$ dse cassandra            # start dse storage"
-          lib_generic_display_msgColourSimple "info"      "$ dse cassandra -s -k -g   # start dse storage with search, analytics, graph (pick any combination)"
+          lib_generic_display_msgColourSimple "TASK==>"      "To run dse locally:"
+          lib_generic_display_msgColourSimple "INFO-BOLD" "(a) Source '.bash_profile' (or open new terminal):"
+          lib_generic_display_msgColourSimple "INFO"      "$ . ~/.bash_profile"
+          lib_generic_display_msgColourSimple "INFO-BOLD" "(b) Run dse:"
+          lib_generic_display_msgColourSimple "INFO"      "$ dse cassandra            # start dse storage"
+          lib_generic_display_msgColourSimple "INFO"      "$ dse cassandra -s -k -g   # start dse storage with search, analytics, graph (pick any combination)"
           printf "%s\n"
-          lib_generic_display_msgColourSimple "TASK"      "To start the entire cluster:"
-          lib_generic_display_msgColourSimple "info-bold" "--> based on mode settings in servers .json defintion file."
-          lib_generic_display_msgColourSimple "info"      "$ ./launch-pod --pod pod_DSE --servers ${SERVERS_JSON} --clusterstate start"
+          lib_generic_display_msgColourSimple "TASK==>"      "To start the entire cluster:"
+          lib_generic_display_msgColourSimple "INFO-BOLD" "--> based on mode settings in servers .json defintion file."
+          lib_generic_display_msgColourSimple "INFO"      "$ ./launch-pod --pod pod_DSE --servers ${SERVERS_JSON} --clusterstate start"
         elif [[ "${JAVA_INSTALL_TYPE}" == "tar" ]]; then
-          lib_generic_display_msgColourSimple "TASK"      "To run dse locally:"
-          lib_generic_display_msgColourSimple "info-bold" "(a) Source '.bash_profile' (or open new terminal):"
-          lib_generic_display_msgColourSimple "info"      "$ . ~/.bash_profile"
-          lib_generic_display_msgColourSimple "info-bold" "(b) Add java tar to system java alternatives - you may have to alter yellow portion of path:"
-          lib_generic_display_msgColourSimple "info"      "$ sudo update-alternatives --install /usr/bin/java java ${yellow}${java_untar_folder}${white}${JAVA_VERSION}/bin/java 100"
-          lib_generic_display_msgColourSimple "info-bold" "(c) Select this java tar from list:"
-          lib_generic_display_msgColourSimple "info"      "$ sudo update-alternatives --config java"
-          lib_generic_display_msgColourSimple "info-bold" "(d) Run dse:"
-          lib_generic_display_msgColourSimple "info"      "$ dse cassandra            # start dse storage"
-          lib_generic_display_msgColourSimple "info"      "$ dse cassandra -s -k -g   # start dse storage with search, analytics, graph (pick any combination)"
+          lib_generic_display_msgColourSimple "TASK==>"      "To run dse locally:"
+          lib_generic_display_msgColourSimple "INFO-BOLD" "(a) Source '.bash_profile' (or open new terminal):"
+          lib_generic_display_msgColourSimple "INFO"      "$ . ~/.bash_profile"
+          lib_generic_display_msgColourSimple "INFO-BOLD" "(b) Add java tar to system java alternatives - you may have to alter yellow portion of path:"
+          lib_generic_display_msgColourSimple "INFO"      "$ sudo update-alternatives --install /usr/bin/java java ${yellow}${java_untar_folder}${white}${JAVA_VERSION}/bin/java 100"
+          lib_generic_display_msgColourSimple "INFO-BOLD" "(c) Select this java tar from list:"
+          lib_generic_display_msgColourSimple "INFO"      "$ sudo update-alternatives --config java"
+          lib_generic_display_msgColourSimple "INFO-BOLD" "(d) Run dse:"
+          lib_generic_display_msgColourSimple "INFO"      "$ dse cassandra            # start dse storage"
+          lib_generic_display_msgColourSimple "INFO"      "$ dse cassandra -s -k -g   # start dse storage with search, analytics, graph (pick any combination)"
           printf "%s\n"
-          lib_generic_display_msgColourSimple "TASK"      "To start the entire cluster:"
-          lib_generic_display_msgColourSimple "info-bold" "--> based on mode settings in servers .json defintion file."
-          lib_generic_display_msgColourSimple "info"      "$ ./launch-pod --pod pod_DSE --servers ${SERVERS_JSON} --clusterstate start"
+          lib_generic_display_msgColourSimple "TASK==>"      "To start the entire cluster:"
+          lib_generic_display_msgColourSimple "INFO-BOLD" "--> based on mode settings in servers .json defintion file."
+          lib_generic_display_msgColourSimple "INFO"      "$ ./launch-pod --pod pod_DSE --servers ${SERVERS_JSON} --clusterstate start"
         fi
         printf "%s\n" ;;
-        
+
     "pod_DSE_rollingStartStop" )
-          lib_generic_display_msgColourSimple "TASK" "To Check Status of Cluster:"
-          lib_generic_display_msgColourSimple "info" "$ nodetool status"
+          lib_generic_display_msgColourSimple "TASK==>" "To Check Status of Cluster:"
+          lib_generic_display_msgColourSimple "INFO" "$ nodetool status"
           printf "%s\n" ;;
 
       *)

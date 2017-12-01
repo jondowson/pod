@@ -23,7 +23,7 @@ while test $# -gt 0; do
         break
         ;;
     -ss|--sendsoft)
-        SEND_DSE_SOFTWARE=$value
+        SEND_POD_SOFTWARE=$value
         sendsoftFlag="true"
         break
         ;;
@@ -39,8 +39,7 @@ while test $# -gt 0; do
         ;;
     *)
       printf "%s\n"
-      lib_generic_display_msgColourSimple "error" "Not a recognised flag ${yellow}${1}${red}"
-      printf "%s\n"
+      lib_generic_display_msgColourSimple "ERROR-->" "Not a recognised flag ${yellow}${1}${red}"
       exit 1;
         ;;
   esac

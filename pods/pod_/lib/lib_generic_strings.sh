@@ -11,13 +11,13 @@ function lib_generic_strings_ifsStringDelimeter(){
 
 # example usage: call function and then handle as follows
 
-# declare -A ifsDelimArray                                                          # declare reusable associative array once 
+# declare -A ifsDelimArray                                                          # declare reusable associative array once
 # pod_generic_strings_ifsStringDelimeter "hello/path/;12345;!cluster999@" ";"       # call function passing string and char to delimit on
-# KEYS=(${!ifsDelimArray[@]})                                                       # assign all values of array to KEYS and then to individual variables  
+# KEYS=(${!ifsDelimArray[@]})                                                       # assign all values of array to KEYS and then to individual variables
 # _D1_=${ifsDelimArray[${KEYS[0]}]}                                                 # hello/path/
 # _D2_=${ifsDelimArray[${KEYS[1]}]}                                                 # 12345
 # _D3_=${ifsDelimArray[${KEYS[2]}]}                                                 # cluster999@
-#  ... etc    
+#  ... etc
 # unset ifsDelimArray && declare -A ifsDelimArray                                   # clear array for next use
 
 string="${1}"
@@ -55,7 +55,7 @@ elif [[ "${noOfDelims}" == "2" ]]; then
   _a_=${string#*;}
   _D2_=${_a_%${delim}*}
 else
-  lib_generic_display_msgColourSimple "error" "functions_generic.sh | pod_generic_strings_expansionDelimiter --> 'Unsupported no. of delimeted values'"
+  lib_generic_display_msgColourSimple "ERROR-->" "functions_generic.sh | pod_generic_strings_expansionDelimiter --> 'Unsupported no. of delimeted values'"
   exit 1;
 fi
 }

@@ -28,15 +28,15 @@ do
   analytics=$(cat ${servers_json_path}     | ${jq_folder}jq '.server_'${id}'.mode.analytics' | tr -d '"')
   graph=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.mode.graph'     | tr -d '"')
   dsefs=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.mode.dsefs'     | tr -d '"')
-  
-# ----------  
-  
+
+# ----------
+
   # add trailing '/' to path if not present
   target_folder=$(lib_generic_strings_addTrailingSlash "${target_folder}")
 
 # ----------
 
-  lib_generic_display_msgColourSimple "info" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
+  lib_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
 
 # ----------
 
@@ -48,12 +48,12 @@ do
 
 # ----------
 
-  if [[ "${flags}" == "" ]]; then  
-    lib_generic_display_msgColourSimple "info-indented" "starting dse:      cassandra only"
+  if [[ "${flags}" == "" ]]; then
+    lib_generic_display_msgColourSimple "INFO-->" "starting dse:      cassandra only"
   else
-    lib_generic_display_msgColourSimple "info-indented" "starting dse:      with flags ${flags}"
+    lib_generic_display_msgColourSimple "INFO-->" "starting dse:      with flags ${flags}"
   fi
-  
+
 # ----------
 
   status="999"
@@ -64,20 +64,20 @@ do
       ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && java" exit
       status=${?}
       if [[ "${status}" == "127" ]]; then
-        lib_generic_display_msgColourSimple "info-indented" "ssh return code: ${red}${status}"
+        lib_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status}"
         if [[ "${STRICT_START}" ==  "true" ]]; then
-          lib_generic_display_msgColourSimple "error" "Exiting pod: ${yellow}${script_name}${red} with ${yellow}--strict true${red} - java unavailable"
+          lib_generic_display_msgColourSimple "ERROR" "Exiting pod: ${yellow}${script_name}${red} with ${yellow}--strict true${red} - java unavailable"
           exit 1;
         fi
         pod_start_dse_error_array["${tag}"]="${status};${pubIp}"
         break;
-      else  
+      else
         ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_cmd}" exit
         status=${?}
         if [[ "${status}" == "0" ]]; then
-          lib_generic_display_msgColourSimple "info-indented" "ssh return code: ${green}${status}"
+          lib_generic_display_msgColourSimple "INFO-->" "ssh return code: ${green}${status}"
         else
-          lib_generic_display_msgColourSimple "info-indented" "ssh return code: ${red}${status} ${white}(retry ${retry}/5)"
+          lib_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}(retry ${retry}/5)"
         fi
         pod_start_dse_error_array["${tag}"]="${status};${pubIp}"
         ((retry++))
@@ -108,11 +108,11 @@ done
 
 if [[ "${pod_start_dse_fail}" == "true" ]]; then
   printf "%s\n"
-  lib_generic_display_msgColourSimple "info-bold-indented" "${red}pod remote launch errors report:"
+  lib_generic_display_msgColourSimple "INFO-BOLD-->" "${red}pod remote launch errors report:"
   printf "%s\n"
   for k in "${pod_start_dse_report_array[@]}"
   do
-    lib_generic_display_msgColourSimple "info" "${cross} ${k}"
+    lib_generic_display_msgColourSimple "INFO" "${cross} ${k}"
   done
 fi
 }

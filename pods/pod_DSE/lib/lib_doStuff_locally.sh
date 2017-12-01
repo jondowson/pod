@@ -54,14 +54,6 @@ mv "${tmp_build_file_folder}resources/cassandra/conf/cassandra-topology.properti
 
 # ---------------------------------------
 
-function lib_doStuff_locally_cassandraRackdcProperties(){
-
-## utilise if using rack topology approach !!
-:
-}
-
-# ---------------------------------------
-
 function lib_doStuff_locally_cassandraEnv(){
 
 ## utilise if default logging folder does not have access permissions !!

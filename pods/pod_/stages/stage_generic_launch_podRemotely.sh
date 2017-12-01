@@ -16,22 +16,22 @@ do
   target_folder=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.target_folder'  | tr -d '"')
   pubIp=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.pubIp'          | tr -d '"')
   prvIp=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.prvIp'          | tr -d '"')
-  
-# ----------  
+
+# ----------
 
   # add trailing '/' to path if not present
   target_folder=$(lib_generic_strings_addTrailingSlash "${target_folder}")
 
 # -----
 
-  lib_generic_display_msgColourSimple "info" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
+  lib_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
   printf "\n%s"
 
-  lib_generic_display_msgColourSimple "info-indented" "launch:      pod remotely"
+  lib_generic_display_msgColourSimple "INFO-->" "launch:      pod remotely"
   ssh -ttq -o "BatchMode yes" -o "ForwardX11=no" ${user}@${pubIp} "chmod -R 700 ${target_folder}pod && ${target_folder}pod/pods/pod_/scripts/scripts_generic_launchPodRemotely.sh" &                # run in parallel
   # grab pid and capture owner in array
   pid=$!
-  lib_generic_display_msgColourSimple "info-indented" "pid id:      ${yellow}${pid}${reset}"
+  lib_generic_display_msgColourSimple "INFO-->" "pid id:      ${yellow}${pid}${reset}"
   pod_build_launch_pid_array["${pid}"]="${tag};${pubIp}"
   runBuild_pids+=" $pid"
 
@@ -50,8 +50,8 @@ done
 
 # -----
 
-lib_generic_display_msgColourSimple "info-bold" "awaiting ssh pids:${reset}"
-lib_generic_display_msgColourSimple "info" "${yellow}$runBuild_pids${reset}"
+lib_generic_display_msgColourSimple "INFO-BOLD" "awaiting ssh pids:${reset}"
+lib_generic_display_msgColourSimple "INFO" "${yellow}$runBuild_pids${reset}"
 printf "\n%s"
 
 # -----
@@ -77,7 +77,7 @@ function task_generic_launchPodRemotely_report(){
 lib_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Launch Pod On Each Server"
 
 if [[ ! -z $runBuild_pid_failures ]]; then
-  lib_generic_display_msgColourSimple "info-indented" "${cross} Problems executing 'pod' on servers"
+  lib_generic_display_msgColourSimple "INFO-->" "${cross} Problems executing 'pod' on servers"
   printf "%s\n"
   for k in "${!pod_build_launch_pid_array[@]}"
   do
@@ -85,11 +85,11 @@ if [[ ! -z $runBuild_pid_failures ]]; then
       lib_generic_strings_expansionDelimiter "${pod_build_launch_pid_array[$k]}" ";" "1"
       server="$_D1_"
       ip=$_D2_
-      lib_generic_display_msgColourSimple "error-tight" "pid ${yellow}${k}${red} failed for ${yellow}${server}@${ip}${red}"
+      lib_generic_display_msgColourSimple "ERROR-TIGHT" "pid ${yellow}${k}${red} failed for ${yellow}${server}@${ip}${red}"
     fi
   done
   printf "%s\n"
 else
-  lib_generic_display_msgColourSimple "success" "Executed pod builds on all servers"                                                                 
+  lib_generic_display_msgColourSimple "SUCCESS" "Executed pod builds on all servers"                                                                 
 fi
 }

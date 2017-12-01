@@ -49,7 +49,7 @@ elif [[ "$(cat /etc/system-release-cpe)" == *"redhat"* ]]; then
   os="Redhat"
 else
   os="Bad"
-  lib_generic_display_msgColourSimple "error" "OS Not Supported"
+  lib_generic_display_msgColourSimple "ERROR-->" "OS Not Supported"
   exit 1;
 fi
 }
@@ -93,7 +93,7 @@ done
 # ------------------------------------------
 
 function prepare_generic_misc_sourceThisPodBuild(){
-#set -x
+
 # source the pod-specific 'builds' folder to use
 if [[ ${buildFlag} == "true" ]]; then
 
@@ -103,7 +103,6 @@ if [[ ${buildFlag} == "true" ]]; then
   if [[ -f ${build_file_path} ]]; then
     source ${build_file_path}
   else
-    set -x
     lib_generic_checks_fileExists "build file path is wrong: ${build_file_path}" "true" "${build_file_path}"
   fi
 fi

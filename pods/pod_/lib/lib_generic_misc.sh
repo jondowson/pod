@@ -24,7 +24,7 @@ elif [[ "${os}" == "Centos" ]];then
 elif [[ "${os}" == "Redhat" ]];then
   printf "%s" ${redhat_cmd}
 else
-  lib_generic_display_msgColourSimple "error" "functions_generic.sh | generic_dynamic_os_command --> 'Unsupported OS'"
+  lib_generic_display_msgColourSimple "ERROR-->" "functions_generic.sh | generic_dynamic_os_command --> 'Unsupported OS'"
   exit 1;
 fi
 }
@@ -55,18 +55,4 @@ function lib_generic_misc_timePod(){
 
 pod_end=$(date +%s)
 diff=$((pod_end - pod_start))
-}
-
-# ---------------------------------------
-
-function lib_generic_misc_catchError(){
-
-##  
-
-"$@"
-ret=$?
-if [[ $ret -ne 0 ]]; then
-  printf "%s\n" "Error: command [ $@ ] returned $ret"
-  exit $ret
-fi
 }

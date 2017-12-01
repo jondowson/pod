@@ -19,23 +19,23 @@ do
   target_folder=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.target_folder'  | tr -d '"')
   pubIp=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.pubIp'          | tr -d '"')
   prvIp=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.prvIp'          | tr -d '"')
-  
-# ---------- 
+
+# ----------
 
   # add trailing '/' to path if not present
   target_folder=$(lib_generic_strings_addTrailingSlash "${target_folder}")
 
   # ----------
 
-  lib_generic_display_msgColourSimple "info" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
+  lib_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
 
   # ----------
 
-  lib_generic_display_msgColourSimple "info-indented" "sending:     POD_SOFTWARE folder"
+  lib_generic_display_msgColourSimple "INFO-->" "sending:     POD_SOFTWARE folder"
   scp -q -o LogLevel=QUIET -i ${sshKey} -r ${POD_SOFTWARE} ${user}@${pubIp}:${target_folder} &                                                       # run in parallel
   # grab pid and capture owner in array
   pid=${!}
-  lib_generic_display_msgColourSimple "info-indented" "pid id:      ${yellow}${pid}${reset}"
+  lib_generic_display_msgColourSimple "INFO-->" "pid id:      ${yellow}${pid}${reset}"
   pod_software_send_pid_array["${pid}"]="${tag};${pubIp}"
   DSE_pids+=" $pid"
 
@@ -51,8 +51,8 @@ done
 
 # ----------
 
-lib_generic_display_msgColourSimple "info-bold" "awaiting scp pids:${reset}"
-lib_generic_display_msgColourSimple "info" "${yellow}$DSE_pids${reset}"
+lib_generic_display_msgColourSimple "INFO-BOLD" "awaiting scp pids:${reset}"
+lib_generic_display_msgColourSimple "INFO" "${yellow}$DSE_pids${reset}"
 printf "\n%s"
 
 # ----------
@@ -80,7 +80,7 @@ function task_generic_sendPodSoftware_report(){
 lib_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Send POD_SOFTWARE To Each Server"
 
 if [[ ! -z $POD_SOFTWARE_pid_failures ]]; then
-  lib_generic_display_msgColourSimple "info-indented" "${cross} Problems distributing POD_SOFTWARE to servers"
+  lib_generic_display_msgColourSimple "INFO-->" "${cross} Problems distributing POD_SOFTWARE to servers"
   printf "%s\n"
   for k in "${!POD_SOFTWARE_server_pid_array[@]}"
   do
@@ -88,11 +88,11 @@ if [[ ! -z $POD_SOFTWARE_pid_failures ]]; then
       lib_generic_strings_expansionDelimiter "${pod_software_send_pid_array[$k]}" ";" "1"
       server="$_D1_"
       ip=$_D2_
-      lib_generic_display_msgColourSimple "error-tight" "pid ${yellow}${k}${red} failed for ${yellow}${server}@${ip}${red}"
+      lib_generic_display_msgColourSimple "ERROR-TIGHT" "pid ${yellow}${k}${red} failed for ${yellow}${server}@${ip}${red}"
     fi
   done
   printf "%s\n"
 else
-  lib_generic_display_msgColourSimple "success" "Distributed 'POD_SOFTWARE' to all servers"                                                          
+  lib_generic_display_msgColourSimple "SUCCESS" "Distributed 'POD_SOFTWARE' to all servers"
 fi
 }

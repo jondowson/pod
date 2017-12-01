@@ -59,7 +59,7 @@ if [[ "${os}" == "Mac" ]]; then
 else
   jq_folder="${pod_home_path}/third_party/jq-linux64/"
   jq_file_path="${jq_folder}jq"
-  lib_generic_checks_fileExists "${jq_file_path}"
+  lib_generic_checks_fileExists "launch-pod#1" "true" "${jq_file_path}"
 fi
 
 # -----
@@ -74,7 +74,7 @@ chmod -R +x "${pod_home_path}/third_party"
 # ensure --pod | -p flag is passed first (if not using help flag on its own)
 if [[ "${1}" != "-p" ]] && [[ "${1}" != "--pod" ]] && [[ "${1}" != "-h" ]] && [[ "${1}" != "--help" ]]; then
   printf "%s\n"
-  lib_generic_display_msgColourSimple "ERROR" "always specify the pod flag first ${yellow}-p | --pod${red}"
+  lib_generic_display_msgColourSimple "ERROR-->" "always specify the pod flag first ${yellow}-p | --pod${red}"
   printf "%s\n"
   exit 1;
 fi
@@ -85,11 +85,11 @@ fi
 while test $# -gt 0; do
   case "$1" in
     -h|--help)
-        if [[ ${podFlag} == "true" ]]; then 
-          lib_generic_display_banner 
+        if [[ ${podFlag} == "true" ]]; then
+          lib_generic_display_banner
           lib_generic_help
           lib_help
-          lib_generic_helpFinish 
+          lib_generic_helpFinish
         else
           lib_generic_display_banner
           lib_generic_help
@@ -118,18 +118,17 @@ done
 # -----
 
 # ensure flags have been passed correctly for this pod
-catchError prepare_flagRules
+prepare_flagRules
 
 # ------------------------------------------
 
 ## all pod apps make use of a servers json definition file
-#set -x
+
 servers_json_path="${pod_home_path}/servers/${SERVERS_JSON}"
 # check it exists
-lib_generic_checks_fileExists "${servers_json_path}"
+#lib_generic_checks_fileExists "${servers_json_path}"
 
-catchError "launch-pod#1" "true" "${jq_folder}jq [.] ${servers_json_path}" 
-
+catchError "launch-pod#2" "true" "${jq_folder}jq [.] ${servers_json_path}"
 numberOfServers=$(${jq_folder}jq [.] ${servers_json_path} | tr '"' '\n' | grep 'server_' | wc -l)
 
 # ------------------------------------------
@@ -137,7 +136,7 @@ numberOfServers=$(${jq_folder}jq [.] ${servers_json_path} | tr '"' '\n' | grep '
 ## source the specified pod's build folder
 
 prepare_generic_misc_sourceThisPodBuild
-exit
+
 # ------------------------------------------
 
 ## source the specified pod's init script and run that pod
@@ -151,5 +150,5 @@ source "pods/${WHICH_POD}/${WHICH_POD}.sh"
 
 lib_generic_display_finalMessage "${WHICH_POD}"
 lib_generic_misc_timePod
-lib_generic_display_msgColourSimple "info" "pod took: ${diff}[s]"
+lib_generic_display_msgColourSimple "INFO" "pod took: ${diff}[s]"
 printf "%s\n"
