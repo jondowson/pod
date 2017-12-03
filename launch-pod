@@ -8,7 +8,7 @@
 
 ## uncomment to see full bash trace (debug)
 
-#set -x
+set -x
 
 # ------------------------------------------
 
