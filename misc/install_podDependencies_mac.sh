@@ -6,7 +6,7 @@
 #-------------------------------------------
 
 # uncomment to see full bash trace (debug)
-#set -x
+# set -x
 
 #-------------------------------------------
 
@@ -21,15 +21,26 @@ podSetupFolder="$(cd ../; pwd)"
 ## source dse-setup lib scripts
 
 # source lib folder scripts
-files="$(find ${podSetupFolder}/lib/pod_GENERIC -name "*.sh*")"
+files="$(find ${podSetupFolder}/pods/pod_/lib -name "*.sh*")"
+for file in $(printf "%s\n" "$files"); do
+    [ -f $file ] && . $file
+done
+
+# source prepare folder scripts
+files="$(find ${podSetupFolder}/pods/pod_/prepare -name "*.sh*")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
 
 #========================================== START!!
 
+lib_generic_display_banner
+lib_generic_display_msgColourSimple "STAGE"      "STAGE: Prepare Mac for pod"
+lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1${white} 2 ]${reset}"
+lib_generic_display_msgColourSimple "TASK==>"       "TASK: Install brew packages"
+
 brewList=$(brew list)
-clear
+
 if [[ $brewList == *"command not found"* ]]; then
   lib_generic_display_msgColourSimple "alert" "Installing homebrew"
 else
@@ -106,10 +117,15 @@ else
   printf "%s\n" "${tick}"
 fi
 
-# -----------------
+#-------------------------------------------
+
+lib_generic_display_banner
+lib_generic_display_msgColourSimple "STAGE"      "STAGE: Prepare Mac for pod"
+lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 ${white}]${reset}"
+lib_generic_display_msgColourSimple "TASK==>"       "TASK: Configure bash interpreter"
 
 # update hashbang for launch-pod - so it uses brew version of bash
-lib_generic_prepare_identifyOs
+prepare_generic_misc_identifyOs
 lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${podSetupFolder}/launch-pod" "bin/bash" "usr/local/bin/bash"
 
 printf "%s\n"

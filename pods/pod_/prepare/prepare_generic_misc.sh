@@ -84,10 +84,14 @@ function prepare_generic_misc_sourceThisPod(){
 
 ## source pod-specific lib scripts
 
+# check pod exists
+lib_generic_checks_folderExistsCaseSensitive "pod folder does not exist" "true" "${pod_home_path}/pods/" "${WHICH_POD}"
+
 files="$(find ${pod_home_path}/pods/${WHICH_POD}/ -name "*.sh*" -not -path "*builds/*" -not -path "*scripts/*")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
+
 }
 
 # ------------------------------------------

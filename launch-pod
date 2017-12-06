@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/local/bin/bash
 
 # script_name:   launch-pod.sh
 # author:        jondowson
@@ -8,13 +8,7 @@
 
 ## uncomment to see full bash trace (debug)
 
-set -x
-
-# ------------------------------------------
-
-## used in error messages
-
-thisScript="launch-pod"
+# set -x
 
 # ------------------------------------------
 
