@@ -62,8 +62,8 @@ lib_generic_display_msgColourSimple   "INFO-->" "detected os: ${green}${remote_o
   lib_generic_strings_sedStringManipulation "editAfterSubstring" "${tmp_build_file_path}"      "TARGET_FOLDER=" "\"${target_folder}\""
   source ${tmp_build_file_path}
 
-  if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "INFO-->" "editing:     'build_folder_path' in 'pod_launch_remote.sh'"; fi
-  lib_generic_strings_sedStringManipulation "editAfterSubstring" "${tmp_build_folder}pods/pod_/scripts/scripts_generic_launchPodRemotely.sh" "build_folder_path=" "\"${target_folder}pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/\""
+  if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "INFO-->" "editing:     'build_folder_path' in 'scripts_launchPodRemotely.sh'"; fi
+  lib_generic_strings_sedStringManipulation "editAfterSubstring" "${tmp_build_folder}pods/${WHICH_POD}/scripts/scripts_launchPodRemotely.sh" "build_folder_path=" "\"${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/\""
 
   if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "INFO-->" "editing:     'cassandra-env.sh'"; fi
   lib_doStuff_locally_cassandraEnv
@@ -81,7 +81,7 @@ lib_generic_display_msgColourSimple   "INFO-->" "detected os: ${green}${remote_o
   lib_doStuff_locally_dseSparkEnv
   if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "INFO-->" "editing:     'rackdc.properties'"; fi
   lib_doStuff_locally_cassandraRackDcProperties
-  if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "INFO-->" "editing:     'lib_script_launchRemotely'"; fi
+  if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "INFO-->" "editing:     'scripts_launchPodRemotely.sh'"; fi
   prepare_generic_misc_hashBang
 
 # -----
@@ -182,9 +182,10 @@ printf "%s" "#EOF CLEAN-dse_data_arrays" >> "${tmp_build_file_path}"
   ssh -o ForwardX11=no ${user}@${pubIp} "mkdir -p ${target_folder}"
   
   # check if server is local server - no point sending software if local +  no delete locally of existing pod folder
+  localServer="false"
   localServer=$(lib_generic_checks_localIpMatch "${pubIp}")
 
-  if [[ "${localServer}" != "true" ]]; then
+  if [[ "${localServer}" == "false" ]]; then
     ssh -o ForwardX11=no ${user}@${pubIp} "rm -rf ${target_folder}/POD_SOFTWARE/POD/pod"
   fi
   # copy server specific pod folder 
