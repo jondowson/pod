@@ -3,11 +3,7 @@
 # author:        jondowson
 # about:         script run on each server to install configured software
 
-#===========================================AUTO-EDITED!!
-
-build_folder_path="AUTO-EDITED"
-
-#===========================================END!!
+source ../builds/dynamic_build_settings 
 
 # uncomment to see full bash trace (debug)
 #set -x

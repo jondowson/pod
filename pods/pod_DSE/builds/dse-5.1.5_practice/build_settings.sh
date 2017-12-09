@@ -4,9 +4,6 @@
 # about:         software version and path configurations for a cluster created by 'pod_dse'
 #                this file should not be renamed !!
 
-# -----------------------------------------
-
-
 # ========================================= OPTIONS !!
 
 ## [1] choose 'basic' cluster-wide cassandra settings
@@ -26,20 +23,10 @@ DSE_TARBALL="${DSE_VERSION}-bin.tar.gz"
 
 ## [3] choose required folder-paths
 
-# note: out of the box - all paths hang off 'TARGET_FOLDER'
+# note: out of the box - all paths hang off 'TARGET_FOLDER' - specified for each server in the <server.json> defintion file
 
-
-# ----- AUTO-EDITED-for-remote-servers !!
-
-# TARGET_FOLDER is where POD_SOFTWARE and pod will be copied to on each server
-# the dse tarball will subsequently be uncompressed to a user defined INSTALL_FOLDER (see below)
-# TARGET_FOLDER is auto-edited for remote servers with its value taken from the servers' .json defintion file
-
-# put here the local parent folder to where POD_SOFTWARE is located
-TARGET_FOLDER="/home/jd/Desktop/"
-
-# ----- END !!
-
+# this file will contain any server specific settings defined at runtime, including TARGET_FOLDER
+source ../dynamic_build_settings
 
 # the location of the POD_SOFTWARE folder
 POD_SOFTWARE="${TARGET_FOLDER}POD_SOFTWARE/"

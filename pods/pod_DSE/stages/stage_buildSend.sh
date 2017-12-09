@@ -58,12 +58,14 @@ lib_generic_display_msgColourSimple   "INFO-->" "detected os: ${green}${remote_o
   if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "INFO-->" "renaming:    'cassandra-topology.properties' to stop it interfering"; fi
   lib_doStuff_locally_cassandraTopologyProperties
 
-  if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "INFO-->" "editing:     'TARGET_FOLDER' in 'build_settings.sh'"; fi
-  lib_generic_strings_sedStringManipulation "editAfterSubstring" "${tmp_build_file_path}"      "TARGET_FOLDER=" "\"${target_folder}\""
+  if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "INFO-->" "setting:     'TARGET_FOLDER' in 'dynamic_build_settings.sh'"; fi
+  #lib_generic_strings_sedStringManipulation "editAfterSubstring" "${tmp_build_file_path}"      "TARGET_FOLDER=" "\"${target_folder}\""
+  printf "%s\n" "TARGET_FOLDER=${target_folder}" > ${tmp_dynamic_build_file_path}
+  printf "%s\n" "build_folder_path=${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/" >> ${tmp_dynamic_build_file_path} 
   source ${tmp_build_file_path}
 
-  if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "INFO-->" "editing:     'build_folder_path' in 'scripts_launchPodRemotely.sh'"; fi
-  lib_generic_strings_sedStringManipulation "editAfterSubstring" "${tmp_build_folder}pods/${WHICH_POD}/scripts/scripts_launchPodRemotely.sh" "build_folder_path=" "\"${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/\""
+  #if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "INFO-->" "editing:     'build_folder_path' in 'scripts_launchPodRemotely.sh'"; fi
+  #lib_generic_strings_sedStringManipulation "editAfterSubstring" "${tmp_build_folder}pods/${WHICH_POD}/scripts/scripts_launchPodRemotely.sh" "build_folder_path=" "\"${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/\""
 
   if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "INFO-->" "editing:     'cassandra-env.sh'"; fi
   lib_doStuff_locally_cassandraEnv
@@ -94,19 +96,18 @@ lib_generic_display_msgColourSimple   "INFO-->" "detected os: ${green}${remote_o
   numberOfDataFolders=$(($(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.cass_data' | wc -l)-3))
 
 # remove all added data arrays from previous loop
-lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" "${tmp_build_file_path}" "dse_data_arrays" ""
+#label="dse_data_arrays"
+#lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" "${tmp_build_file_path}" "${label}" ""
 
 # CAT/EOF cannot be indented !!
-cat << EOF >> "${tmp_build_file_path}"
-#BOF CLEAN-dse_data_arrays
-#
+cat << EOF >> "${tmp_dynamic_build_file_path}"
 declare -a data_file_directories_array
 EOF
 
 for j in `seq 0 ${numberOfDataFolders}`;
 do
 data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.cass_data['${j}']' | tr -d '"')
-cat << EOF >> "${tmp_build_file_path}"
+cat << EOF >> "${tmp_dynamic_build_file_path}"
 data_file_directories_array[${j}]="${data_path}"
 EOF
 done
@@ -133,21 +134,18 @@ done
     numberOfDataFolders=$(($(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.dsefs_data' | wc -l)-3))
 
 # CAT/EOF cannot be indented !!
-cat << EOF >> "${tmp_build_file_path}"
-# _________________
-# ADDED DYNAMICALLY
-#
+cat << EOF >> "${tmp_dynamic_build_file_path}"
 declare -a dsefs_data_file_directories_array
 EOF
 
 for j in $(seq 0 ${numberOfDataFolders});
 do
 data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.dsefs_data['${j}']' | tr -d '"')
-cat << EOF >> "${tmp_build_file_path}"
+cat << EOF >> "${tmp_dynamic_build_file_path}"
 dsefs_data_file_directories_array[${j}]="${data_path}"
 EOF
 done
-printf "%s" "#EOF CLEAN-dse_data_arrays" >> "${tmp_build_file_path}"
+#printf "%s" "#>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'" >> "${tmp_build_file_path}"
   fi
 
 # -----
@@ -178,18 +176,17 @@ printf "%s" "#EOF CLEAN-dse_data_arrays" >> "${tmp_build_file_path}"
 
   lib_generic_display_msgColourSimple "INFO-->" "sending:     bespoke pod build"
   printf "%s\n" "${red}"
-  # target folder must exist on target machine !!
-  ssh -o ForwardX11=no ${user}@${pubIp} "mkdir -p ${target_folder}"
-  
+
   # check if server is local server - no point sending software if local +  no delete locally of existing pod folder
   localServer="false"
   localServer=$(lib_generic_checks_localIpMatch "${pubIp}")
 
   if [[ "${localServer}" == "false" ]]; then
-    ssh -o ForwardX11=no ${user}@${pubIp} "rm -rf ${target_folder}/POD_SOFTWARE/POD/pod"
+
+    ssh -o ForwardX11=no ${user}@${pubIp} "rm -rf ${target_folder}POD_SOFTWARE/POD/pod"
   fi
   # copy server specific pod folder 
-  scp -q -o LogLevel=QUIET -i ${sshKey} -r "${tmp_working_folder}" "${user}@${pubIp}:${target_folder}/POD_SOFTWARE/POD/"
+  scp -q -o LogLevel=QUIET -i ${sshKey} -r "${tmp_working_folder}" "${user}@${pubIp}:${target_folder}POD_SOFTWARE/POD/"
   status=${?}
   pod_build_send_error_array["${tag}"]="${status};${pubIp}"
 done

@@ -64,11 +64,17 @@ file="${tmp_build_file_folder}resources/cassandra/conf/cassandra-env.sh"
 lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export CASSANDRA_LOG_DIR=" "dummy"
 lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export TOMCAT_LOGS=" "dummy"
 
+# search for and remove any pre-canned blocks containing this label
+label="define_dse_log_folders"
+lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
+
 # append to end of file
 cat << EOF >> ${file}
+#>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'
 export CASSANDRA_LOG_DIR=${cassandra_log_folder}
 export TOMCAT_LOGS=${tomcat_log_folder}
 export GREMLIN_LOG_DIR=${gremlin_log_folder}
+#>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'
 EOF
 }
 
@@ -175,13 +181,13 @@ function lib_doStuff_locally_dseYamlDsefs(){
 # file to edit
 file="${tmp_build_file_folder}resources/dse/conf/dse.yaml"
 
-# search for and remove any pre-canned blocks containing this label:
+# search for and remove any pre-canned blocks containing this label
 label="define_dsefs_options"
 lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
 
 # add block to define dsefs settings and data folders
 cat << EOF >> $file
-#BOF CLEAN-${label}
+#>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'
 dsefs_options:
       enabled: false
       keyspace_name: dsefs
@@ -201,7 +207,7 @@ do
 EOF
 done
 cat << EOF >> $file
-#EOF CLEAN-${label}
+#>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'
 EOF
 }
 
@@ -214,6 +220,10 @@ function lib_doStuff_locally_dseSparkEnv(){
 # file to edit
 file="${tmp_build_file_folder}resources/spark/conf/dse-spark-env.sh"
 
+# search for and remove any pre-canned blocks containing this label:
+label="define_spark_folders"
+lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
+
 # search for and remove any lines starting with:
 lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export SPARK_WORKER_LOG_DIR=" "dummy"
 lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export SPARK_MASTER_LOG_DIR=" "dummy"
@@ -221,9 +231,11 @@ lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLin
 lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export SPARK_LOCAL_DIRS=" "dummy"
 
 cat << EOF >> ${file}
+#>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'
 export SPARK_WORKER_LOG_DIR="${spark_worker_log_folder}"
 export SPARK_MASTER_LOG_DIR="${spark_master_log_folder}"
 export SPARK_WORKER_DIR=${spark_worker_data}
 export SPARK_LOCAL_DIRS=${spark_local_data}
+#>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'
 EOF
 }

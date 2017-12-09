@@ -86,6 +86,7 @@ do
   do
     lib_generic_strings_expansionDelimiter "$i" ";" "2";
     writeFolder="${_D1_}"
+    echo $writeFolder
     status="999"
     if [[ "${status}" != "0" ]]; then
       retry=0

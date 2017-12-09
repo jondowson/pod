@@ -87,7 +87,7 @@ case "${1}" in
   "searchFromLineStartAndRemoveEntireLine" )
       ${cmd} "/${searchString}/d" "${file}" ;;
   "searchAndReplaceLabelledBlock" )
-      ${cmd} "/#ADDED-BY-POD-${searchString}_START/,/#ADDED-BY-POD-${searchString}_FINISH/d" ${file} ;;
+      ${cmd} "/#>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${searchString}'/,/#>>>>> END-ADDED-BY__'${WHICH_POD}@${searchString}'/d" ${file} ;;
   "deleteEverythingAfterIncludingSubstring" )
       ${cmd} "/${searchString}/,$d" ${file} ;;
   "hashCommentOutMatchingLine" )

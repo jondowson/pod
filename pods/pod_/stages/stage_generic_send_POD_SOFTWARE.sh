@@ -32,12 +32,21 @@ do
   # ----------
 
   lib_generic_display_msgColourSimple "INFO-->" "sending:     POD_SOFTWARE folder"
-  scp -q -o LogLevel=QUIET -i ${sshKey} -r ${POD_SOFTWARE} ${user}@${pubIp}:${target_folder} &                                                       # run in parallel
-  # grab pid and capture owner in array
-  pid=${!}
-  lib_generic_display_msgColourSimple "INFO-->" "pid id:      ${yellow}${pid}${reset}"
-  pod_software_send_pid_array["${pid}"]="${tag};${pubIp}"
-  DSE_pids+=" $pid"
+  # target folder must exist on target machine !!
+  ssh -o ForwardX11=no ${user}@${pubIp} "mkdir -p ${target_folder}"
+
+  # check if server is local server - no point sending software if local +  no delete locally of existing pod folder
+  localServer="false"
+  localServer=$(lib_generic_checks_localIpMatch "${pubIp}")
+
+  if [[ "${localServer}" == "false" ]]; then
+    scp -q -o LogLevel=QUIET -i ${sshKey} -r ${POD_SOFTWARE} ${user}@${pubIp}:${target_folder} &                                                       # run in parallel
+    # grab pid and capture owner in array
+    pid=${!}
+    lib_generic_display_msgColourSimple "INFO-->" "pid id:      ${yellow}${pid}${reset}"
+    pod_software_send_pid_array["${pid}"]="${tag};${pubIp}"
+    DSE_pids+=" $pid"
+  fi
 
   # print out pids
   if [[ "${DSE_pids_print}" ]]; then
