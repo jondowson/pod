@@ -91,6 +91,20 @@ fi
 
 # -----------------
 
+if [[ $brewList == *"iproute2mac"* ]]; then
+  lib_generic_display_msgColourSimple "alert" "Fetching latest iproute2mac"
+  printf "%s\t\t" "$ brew upgrade iproute2mac"
+  brew upgrade iproute2mac > /dev/null 2>&1
+  printf "%s\n" "${tick}"
+else
+  lib_generic_display_msgColourSimple "alert" "Installing iproute2mac"
+  printf "%s\t\t" "$ brew install iproute2mac"
+  brew install iproute2mac > /dev/null 2>&1
+  printf "%s\n" "${tick}"
+fi
+
+# -----------------
+
 if [[ $brewList == *"awk"* ]]; then
   lib_generic_display_msgColourSimple "alert" "Fetching latest awk"
   printf "%s\t\t" "$ brew upgrade awk"

@@ -36,7 +36,7 @@ DSE_TARBALL="${DSE_VERSION}-bin.tar.gz"
 # TARGET_FOLDER is auto-edited for remote servers with its value taken from the servers' .json defintion file
 
 # put here the local parent folder to where POD_SOFTWARE is located
-TARGET_FOLDER="/Users/jondowson/Desktop/"
+TARGET_FOLDER="/home/jd/Desktop/"
 
 # ----- END !!
 

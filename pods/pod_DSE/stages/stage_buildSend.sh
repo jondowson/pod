@@ -178,9 +178,17 @@ printf "%s" "#EOF CLEAN-dse_data_arrays" >> "${tmp_build_file_path}"
 
   lib_generic_display_msgColourSimple "INFO-->" "sending:     bespoke pod build"
   printf "%s\n" "${red}"
-  # folder must first exist on target machine !!!!!!
-  ssh -o ForwardX11=no ${user}@${pubIp} "mkdir -p ${target_folder} && rm -rf ${target_folder}pod"
-  scp -q -o LogLevel=QUIET -i ${sshKey} -r "${tmp_working_folder}" "${user}@${pubIp}:${target_folder}"
+  # target folder must exist on target machine !!
+  ssh -o ForwardX11=no ${user}@${pubIp} "mkdir -p ${target_folder}"
+  
+  # check if server is local server - no point sending software if local +  no delete locally of existing pod folder
+  localServer=$(lib_generic_checks_localIpMatch "${pubIp}")
+
+  if [[ "${localServer}" != "true" ]]; then
+    ssh -o ForwardX11=no ${user}@${pubIp} "rm -rf ${target_folder}/POD_SOFTWARE/POD/pod"
+  fi
+  # copy server specific pod folder 
+  scp -q -o LogLevel=QUIET -i ${sshKey} -r "${tmp_working_folder}" "${user}@${pubIp}:${target_folder}/POD_SOFTWARE/POD/"
   status=${?}
   pod_build_send_error_array["${tag}"]="${status};${pubIp}"
 done

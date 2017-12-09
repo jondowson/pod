@@ -167,21 +167,8 @@ else
   ## STAGE [4]
 
   lib_generic_display_banner
-  lib_generic_display_msgColourSimple "STAGE"      "STAGE: Build and send pod"
-  lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3 4${white} 5 6 ]${reset}"
-  lib_generic_display_msgColourSimple "TASK==>"    "TASK: Configure and send bespoke pod"
-  task_buildSend
-  task_buildSend_report
-  rm -rf "${tmp_folder}"
-  lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
-
-  # ------------------------------------------
-
-  ## STAGE [5]
-
-  lib_generic_display_banner
   lib_generic_display_msgColourSimple "STAGE"      "STAGE: Send POD_SOFTWARE folder"
-  lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3 4 5${white} 6 ]${reset}"
+  lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3 4${white} 5 6 ]${reset}"
   lib_generic_display_msgColourSimple "TASK==>"    "TASK: Send software in parallel"
 
   if [[ "${SEND_POD_SOFTWARE}" == "true" ]]; then
@@ -191,6 +178,19 @@ else
     lib_generic_display_msgColourSimple "ALERT-->" "You have opted to skip this STAGE"
     printf "%s\n"
   fi
+  lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
+
+  # ------------------------------------------
+
+  ## STAGE [5]
+
+  lib_generic_display_banner
+  lib_generic_display_msgColourSimple "STAGE"      "STAGE: Build and send pod"
+  lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3 4 5${white} 6 ]${reset}"
+  lib_generic_display_msgColourSimple "TASK==>"    "TASK: Configure and send bespoke pod"
+  task_buildSend
+  task_buildSend_report
+  rm -rf "${tmp_folder}"
   lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 
   # ------------------------------------------

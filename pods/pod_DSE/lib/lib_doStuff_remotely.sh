@@ -118,8 +118,8 @@ lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file
 
 # add line sourcing .bashrc - no need on a Mac
 cat << EOF >> ${file}
-#BOF CLEAN-${label}
+#ADDED-BY-POD-${label}_START
 if [ -r ~/.bash_profile ]; then source ~/.bash_profile; fi
-#EOF CLEAN-${label}
+#ADDED-BY-POD-${label}_FINISH
 EOF
 }

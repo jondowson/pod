@@ -23,13 +23,12 @@ rm -rf "${tmp_folder}"
 # duplicate 'pod' folder to working directory '/tmp'
 tmp_working_folder="${pod_home_path}/tmp/pod/"
 mkdir -p "${tmp_working_folder}"
-
-# copy pod into tmp folder
-cp -rp "${pod_home_path}/pods" "${tmp_working_folder}"
-cp -rp "${pod_home_path}/misc" "${tmp_working_folder}"
-cp -rp "${pod_home_path}/third_party" "${tmp_working_folder}"
-cp -p ${pod_home_path}/*.* "${tmp_working_folder}"
-cp -p ${pod_home_path}/launch-pod "${tmp_working_folder}"
+cp -rp "${pod_home_path}/misc"         "${tmp_working_folder}"
+cp -rp "${pod_home_path}/pods"         "${tmp_working_folder}"
+cp -rp "${pod_home_path}/servers"      "${tmp_working_folder}"
+cp -rp "${pod_home_path}/third_party"  "${tmp_working_folder}"
+cp -p  "${pod_home_path}/README.md"    "${tmp_working_folder}"
+cp -p  "${pod_home_path}/launch-pod"   "${tmp_working_folder}"
 }
 
 # ------------------------------------------

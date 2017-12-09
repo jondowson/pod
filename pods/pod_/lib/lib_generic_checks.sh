@@ -119,3 +119,18 @@ if [[ "${notFound}" == "true" ]]; then
   fi
 fi
 }
+
+# ---------------------------------------
+
+function lib_generic_checks_localIpMatch(){
+
+## check if an ip is a local ip 
+ipToCheck=${1}
+
+ip addr | grep -w "${ipToCheck}"
+ret=$?
+
+if [[ ${ret} == "0" ]]; then 
+  printf "%s" "true"
+fi
+}  
