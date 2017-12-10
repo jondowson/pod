@@ -122,7 +122,14 @@ do
     done
   fi
 # finally delete test POD_INSTALL folder - BUT NOT ON LOCAL MACHINE !!!!!!
-ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "[ -d ${INSTALL_FOLDER} ] && rm -rf ${INSTALL_FOLDER}" exit
+localServer="false"
+localServer=$(lib_generic_checks_localIpMatch "${pubIp}")
+
+if [[ "${localServer}" == "true" ]]; then
+  :
+else
+  ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "[ -d ${INSTALL_FOLDER} ] && rm -rf ${INSTALL_FOLDER}" exit
+fi
 done
 }
 
@@ -199,4 +206,3 @@ else
   lib_generic_display_msgColourSimple "SUCCESS" "Write-paths test passed for all servers"
 fi
 }
-

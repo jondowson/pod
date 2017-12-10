@@ -34,6 +34,7 @@ do
   # ----------
 
   lib_generic_display_msgColourSimple "INFO-->" "sending:     POD_SOFTWARE folder"
+  
   # target folder must exist on target machine !!
   ssh -o ForwardX11=no ${user}@${pubIp} "mkdir -p ${target_folder}"
 
@@ -109,4 +110,3 @@ else
   lib_generic_display_msgColourSimple "SUCCESS" "Distributed 'POD_SOFTWARE' to all servers"
 fi
 }
-
