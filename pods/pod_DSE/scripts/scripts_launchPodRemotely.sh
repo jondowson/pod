@@ -3,10 +3,10 @@
 # author:        jondowson
 # about:         script run on each server to install configured software
 
-source ../builds/dynamic_build_settings 
+#-------------------------------------------
 
 # uncomment to see full bash trace (debug)
-#set -x
+# set -x
 
 #-------------------------------------------
 
@@ -35,6 +35,8 @@ parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 cd ${parent_path}
 cd ../../
 pod_home_path="$(pwd)"
+
+source "${pod_home_path}/pods/pod_DSE/builds/dynamic_build_settings" 
 
 #-------------------------------------------
 

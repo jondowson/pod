@@ -24,7 +24,9 @@ do
 
   # add trailing '/' to path if not present
   target_folder=$(lib_generic_strings_addTrailingSlash "${target_folder}")
-
+  TARGET_FOLDER="${LOCAL_TARGET_FOLDER}"
+  source ${tmp_build_file_path}
+  
   # ----------
 
   lib_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
@@ -39,7 +41,9 @@ do
   localServer="false"
   localServer=$(lib_generic_checks_localIpMatch "${pubIp}")
 
-  if [[ "${localServer}" == "false" ]]; then
+  if [[ "${localServer}" == "true" ]]; then
+    lib_generic_display_msgColourSimple "INFO-->" "Not sending to local machine ! ${reset}"
+  else
     scp -q -o LogLevel=QUIET -i ${sshKey} -r ${POD_SOFTWARE} ${user}@${pubIp}:${target_folder} &                                                       # run in parallel
     # grab pid and capture owner in array
     pid=${!}
@@ -48,7 +52,7 @@ do
     DSE_pids+=" $pid"
   fi
 
-  # print out pids
+  # collect pids for print
   if [[ "${DSE_pids_print}" ]]; then
     DSE_pids_print="${DSE_pids_print},$pid"
   else

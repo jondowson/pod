@@ -94,6 +94,8 @@ case "${1}" in
       ${cmd} -e "/${searchString}/ s/^#*/#/" -i ${file} ;;
   "searchAndReplaceStringGlobal" )
       ${cmd} -e "s,${searchString},${newValue},g" -i ${file} ;;
+  "searchSubstringAndRemoveEverythingAfterOnLine" )
+      ${cmd} -e "s,${searchString}.*,${newValue}," -i ${file} ;;
 esac
 }
 

@@ -182,7 +182,7 @@ done
   localServer=$(lib_generic_checks_localIpMatch "${pubIp}")
 
   if [[ "${localServer}" == "false" ]]; then
-
+    echo notLocalServer
     ssh -o ForwardX11=no ${user}@${pubIp} "rm -rf ${target_folder}POD_SOFTWARE/POD/pod"
   fi
   # copy server specific pod folder 

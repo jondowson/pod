@@ -21,6 +21,8 @@ pod_start=$(date +%s)
 ## discover pod system path and source generic scripts
 
 parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+LOCAL_TARGET_FOLDER=$(printf $parent_path | sed 's,POD_SOFTWARE.*,,')
+TARGET_FOLDER="${LOCAL_TARGET_FOLDER}"
 cd "${parent_path}"
 pod_home_path="$(pwd)"
 
@@ -119,8 +121,6 @@ prepare_flagRules
 ## all pod apps make use of a servers json definition file
 
 servers_json_path="${pod_home_path}/servers/${SERVERS_JSON}"
-# check it exists
-#lib_generic_checks_fileExists "${servers_json_path}"
 
 catchError "launch-pod#2" "true" "${jq_folder}jq [.] ${servers_json_path}"
 numberOfServers=$(${jq_folder}jq [.] ${servers_json_path} | tr '"' '\n' | grep 'server_' | wc -l)

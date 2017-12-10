@@ -26,7 +26,7 @@ DSE_TARBALL="${DSE_VERSION}-bin.tar.gz"
 # note: out of the box - all paths hang off 'TARGET_FOLDER' - specified for each server in the <server.json> defintion file
 
 # this file will contain any server specific settings defined at runtime, including TARGET_FOLDER
-source ../dynamic_build_settings
+#source ${pod_home_path}/pods/${WHICH_POD}/builds/dynamic_build_settings
 
 # the location of the POD_SOFTWARE folder
 POD_SOFTWARE="${TARGET_FOLDER}POD_SOFTWARE/"
