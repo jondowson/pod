@@ -122,7 +122,7 @@ function prepare_generic_misc_hashBang(){
 if [[ ${remote_os} == *"Mac"* ]]; then
   hashBang="usr/local/bin/bash"
   lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}launch-pod" "bin/bash" "${hashBang}"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/pod_/scripts/scripts_generic_launchPodRemotely.sh" "bin/bash" "${hashBang}"
+  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/pod_/scripts/scripts_launchPodRemotely.sh" "bin/bash" "${hashBang}"
   lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/lib/lib_doStuff_remotely.sh" "bin/bash" "${hashBang}"
 elif [[ ${remote_os} == "Ubuntu" ]]; then
   hashBang="bin/bash"
@@ -155,4 +155,3 @@ function prepare_generic_misc_setDefaults(){
 VB="false"           # verbose messages
 STAGE_PAUSE="5"      # pauses between STAGES
 }
-

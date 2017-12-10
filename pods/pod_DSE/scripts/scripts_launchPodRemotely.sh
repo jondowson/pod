@@ -36,7 +36,7 @@ cd ${parent_path}
 cd ../../
 pod_home_path="$(pwd)"
 
-source "${pod_home_path}/pods/pod_DSE/builds/dynamic_build_settings" 
+source "${pod_home_path}/pods/pod_DSE/builds/dynamic_build_settings"
 
 #-------------------------------------------
 
@@ -64,7 +64,7 @@ build_file_path="${build_file_folder}build_settings.sh"
 if [[ -f ${build_file_path} ]]; then
   source ${build_file_path}
 else
-  lib_generic_checks_fileExists "scripts_generic_launchPodRemotely#1" "true" "${build_file_path}"
+  lib_generic_checks_fileExists "scripts_launchPodRemotely#1" "true" "${build_file_path}"
 fi
 
 #-------------------------------------------

@@ -58,14 +58,11 @@ lib_generic_display_msgColourSimple   "INFO-->" "detected os: ${green}${remote_o
   if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "INFO-->" "renaming:    'cassandra-topology.properties' to stop it interfering"; fi
   lib_doStuff_locally_cassandraTopologyProperties
 
-  if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "INFO-->" "setting:     'TARGET_FOLDER' in 'dynamic_build_settings.sh'"; fi
-  #lib_generic_strings_sedStringManipulation "editAfterSubstring" "${tmp_build_file_path}"      "TARGET_FOLDER=" "\"${target_folder}\""
-  printf "%s\n" "TARGET_FOLDER=${target_folder}" > ${tmp_dynamic_build_file_path}
-  source ${tmp_build_file_path}
-  printf "%s\n" "build_folder_path=${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/" >> ${tmp_dynamic_build_file_path} 
-
-  #if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "INFO-->" "editing:     'build_folder_path' in 'scripts_launchPodRemotely.sh'"; fi
-  #lib_generic_strings_sedStringManipulation "editAfterSubstring" "${tmp_build_folder}pods/${WHICH_POD}/scripts/scripts_launchPodRemotely.sh" "build_folder_path=" "\"${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/\""
+  if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "INFO-->" "setting:     'dynamic_build_settings.sh'"; fi
+  printf "%s\n" "TARGET_FOLDER=${target_folder}" > "${tmp_dynamic_build_file_path}"
+  # we want to use all the settings with the new target_folder
+  source "${tmp_build_file_path}"
+  printf "%s\n" "build_folder_path=${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/" >> "${tmp_dynamic_build_file_path}"
 
   if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "INFO-->" "editing:     'cassandra-env.sh'"; fi
   lib_doStuff_locally_cassandraEnv
@@ -186,7 +183,11 @@ done
   scp -q -o LogLevel=QUIET -i ${sshKey} -r "${tmp_working_folder}" "${user}@${pubIp}:${target_folder}POD_SOFTWARE/POD/"
   status=${?}
   pod_build_send_error_array["${tag}"]="${status};${pubIp}"
+  > ${tmp_dynamic_build_file_path}
 done
+
+# delete the temporary work folder
+rm -rf "${tmp_folder}"
 }
 
 #-------------------------------------------

@@ -190,7 +190,6 @@ else
   lib_generic_display_msgColourSimple "TASK==>"    "TASK: Configure and send bespoke pod"
   task_buildSend
   task_buildSend_report
-  rm -rf "${tmp_folder}"
   lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 
   # ------------------------------------------
@@ -217,4 +216,3 @@ else
   task_generic_launchPodRemotely_report
 fi
 }
-
