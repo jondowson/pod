@@ -185,7 +185,8 @@ done
     echo notLocalServer
     ssh -o ForwardX11=no ${user}@${pubIp} "rm -rf ${target_folder}POD_SOFTWARE/POD/pod"
   fi
-  # copy server specific pod folder 
+  # remove any existing pod and copy server specific pod over to remote machine 
+  ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "rm -rf ${target_folder}POD_SOFTWARE/POD/pod" exit
   scp -q -o LogLevel=QUIET -i ${sshKey} -r "${tmp_working_folder}" "${user}@${pubIp}:${target_folder}POD_SOFTWARE/POD/"
   status=${?}
   pod_build_send_error_array["${tag}"]="${status};${pubIp}"
@@ -230,3 +231,4 @@ else
   lib_generic_display_msgColourSimple "SUCCESS" "Created and distributed pod builds on all servers"
 fi
 }
+

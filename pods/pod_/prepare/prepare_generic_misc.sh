@@ -15,7 +15,7 @@ function prepare_generic_misc_podBuildTempFolder(){
 tmp_build_folder="${pod_home_path}/tmp/pod/"
 tmp_build_file_folder="${tmp_build_folder}pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"
 tmp_build_file_path="${tmp_build_file_folder}build_settings.sh"
-tmp_dynamic_build_file_path="${tmp_build_folder}pods/${WHICH_POD}/builds/dynamic_build_settings.sh"
+tmp_dynamic_build_file_path="${tmp_build_folder}pods/${WHICH_POD}/builds/dynamic_build_settings"
 
 # delete any existing duplicated 'pod' folder from '/tmp'
 tmp_folder="${pod_home_path}/tmp/"
@@ -155,3 +155,4 @@ function prepare_generic_misc_setDefaults(){
 VB="false"           # verbose messages
 STAGE_PAUSE="5"      # pauses between STAGES
 }
+

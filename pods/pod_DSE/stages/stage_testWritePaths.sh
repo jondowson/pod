@@ -73,7 +73,7 @@ do
       retry=0
       until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
       do
-        ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "[ ! -d ${i} ] && mkdir -p ${i} && rm -rf ${i} || mkdir ${i}dummyFolder && rm -rf ${i}dummyFolder" exit
+        ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir -p ${i}dummyFolder && rm -rf ${i}dummyFolder" exit
         status=${?}
         pod_test_send_error_array_1["${i}"]="${status};${tag}"
         ((retry++))
@@ -93,7 +93,7 @@ do
       retry=0
       until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
       do
-        ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "[ ! -d ${writeFolder} ] && mkdir -p ${writeFolder} && rm -rf ${writeFolder} || mkdir ${writeFolder}dummyFolder && rm -rf ${writeFolder}dummyFolder" exit
+        ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir -p ${writeFolder}dummyFolder && rm -rf ${writeFolder}dummyFolder" exit
         status=${?}
         pod_test_send_error_array_2["${i}"]="${status};${tag}"
         ((retry++))
@@ -113,7 +113,7 @@ do
       retry=0
       until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
       do
-        ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "[ ! -d ${writeFolder} ] && mkdir -p ${writeFolder} && rm -rf ${writeFolder} || mkdir ${writeFolder}dummyFolder && rm -rf ${writeFolder}dummyFolder" exit
+        ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir ${writeFolder}dummyFolder && rm -rf ${writeFolder}dummyFolder" exit
         status=${?}
         pod_test_send_error_array_3["${i}"]="${status};${tag}"
         ((retry++))
@@ -121,7 +121,7 @@ do
     fi
     done
   fi
-
+# finally delete test POD_INSTALL folder - BUT NOT ON LOCAL MACHINE !!!!!!
 ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "[ -d ${INSTALL_FOLDER} ] && rm -rf ${INSTALL_FOLDER}" exit
 done
 }
@@ -199,3 +199,4 @@ else
   lib_generic_display_msgColourSimple "SUCCESS" "Write-paths test passed for all servers"
 fi
 }
+
