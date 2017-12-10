@@ -65,7 +65,7 @@ declare -A pod_stop_dse_error_array
 
 ## test specified files exist
 
-prepare_misc_checkFilesExist
+#prepare_misc_checkFilesExist
 
 # ------------------------------------------
 

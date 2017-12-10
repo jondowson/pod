@@ -28,3 +28,13 @@ SEND_POD_SOFTWARE="true"         # send POD_SOFTWARE tarball bundle on each run
 REGENERATE_RESOURCES="false"     # generate new /builds/pod_dse/dse-x.x.x_name/resources' folder - this action will remove any existing one for this build folder !!
 STRICT_START="false"             # exit pod_DSE if any server cannot be reached or dependencies are not available
 }
+
+# ------------------------------------------
+
+function prepare_misc_clearTheDecks(){
+
+## remove any temporary files/folders that may be left from a previous run of pod_DSE
+
+rm -rf ${pod_home_path}/pods/pod_DSE/builds/dynamic_build_settings
+rm -rf ${pod_home_path}/tmp
+}

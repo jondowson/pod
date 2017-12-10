@@ -21,10 +21,15 @@ pod_start=$(date +%s)
 ## discover pod system path and source generic scripts
 
 parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
-LOCAL_TARGET_FOLDER=$(printf $parent_path | sed 's,POD_SOFTWARE.*,,')
-TARGET_FOLDER="${LOCAL_TARGET_FOLDER}"
 cd "${parent_path}"
 pod_home_path="$(pwd)"
+
+# ------------------------------------------
+
+## establish TARGET_FOLDER on this machine running pod (parent folder to POD_SOFTWARE)
+
+LOCAL_TARGET_FOLDER=$(printf $parent_path | sed 's,POD_SOFTWARE.*,,')
+TARGET_FOLDER="${LOCAL_TARGET_FOLDER}"
 
 # ------------------------------------------
 
@@ -43,7 +48,7 @@ prepare_generic_misc_sourceGeneric
 prepare_generic_misc_setDefaults
 
 # [5] change local permissions
-chmod -R 777 ${pod_home_path}/.git 
+chmod -R 777 ${pod_home_path}/.git
 
 # ------------------------------------------
 
@@ -60,8 +65,6 @@ else
   jq_file_path="${jq_folder}jq"
   lib_generic_checks_fileExists "launch-pod#1" "true" "${jq_file_path}"
 fi
-
-# -----
 
 # ensure third party packages are executable
 chmod -R +x "${pod_home_path}/third_party"
@@ -102,6 +105,8 @@ while test $# -gt 0; do
         shift
         prepare_generic_misc_sourceThisPod
         prepare_misc_setDefaults
+        prepare_misc_checkFilesExist
+        prepare_misc_clearTheDecks
         podFlag="true"
         ;;
     *)
