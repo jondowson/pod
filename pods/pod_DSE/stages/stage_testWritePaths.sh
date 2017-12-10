@@ -121,15 +121,8 @@ do
     fi
     done
   fi
-# finally delete test POD_INSTALL folder - BUT NOT ON LOCAL MACHINE !!!!!!
-localServer="false"
-localServer=$(lib_generic_checks_localIpMatch "${pubIp}")
-
-if [[ "${localServer}" == "true" ]]; then
-  :
-else
-  ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "[ -d ${INSTALL_FOLDER} ] && rm -rf ${INSTALL_FOLDER}" exit
-fi
+# finally delete test POD_INSTALL folder
+ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "[ -d ${INSTALL_FOLDER} ] && rm -rf ${INSTALL_FOLDER}" exit
 done
 }
 

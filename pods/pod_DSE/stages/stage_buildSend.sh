@@ -185,8 +185,17 @@ done
     echo notLocalServer
     ssh -o ForwardX11=no ${user}@${pubIp} "rm -rf ${target_folder}POD_SOFTWARE/POD/pod"
   fi
-  # remove any existing pod and copy server specific pod over to remote machine 
-  ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "rm -rf ${target_folder}POD_SOFTWARE/POD/pod" exit
+
+  # remove any existing pod and copy server specific pod over to remote machine - BUT NOT ON LOCAL MACHINE !!!!!!
+  localServer="false"
+  localServer=$(lib_generic_checks_localIpMatch "${pubIp}")
+
+  if [[ "${localServer}" == "true" ]]; then
+    :
+  else
+    ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "rm -rf ${target_folder}POD_SOFTWARE/POD/pod" exit
+  fi
+  done
   scp -q -o LogLevel=QUIET -i ${sshKey} -r "${tmp_working_folder}" "${user}@${pubIp}:${target_folder}POD_SOFTWARE/POD/"
   status=${?}
   pod_build_send_error_array["${tag}"]="${status};${pubIp}"
@@ -231,4 +240,3 @@ else
   lib_generic_display_msgColourSimple "SUCCESS" "Created and distributed pod builds on all servers"
 fi
 }
-
