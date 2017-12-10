@@ -3,7 +3,7 @@
       "tag": "storage_1",
       "user": "jondowson",
       "sshKey": "/Users/jondowson/.ssh/id_rsa",
-      "target_folder": "/Users/jondowson/Desktop/Desktop/",
+      "target_folder": "/Users/jondowson/Desktop/",
       "pubIp": "192.168.15.144",
       "prvIp": "127.0.0.1",
       "listen_address": "pubIp",

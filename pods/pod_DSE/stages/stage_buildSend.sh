@@ -45,10 +45,10 @@ do
 
 # -----
 
-# establish os on remote machine
+# establish the OS on remote machine
 
-remote_os=$(ssh -q -o Forwardx11=no ${user}@${pubIp} 'bash -s' < ${pod_home_path}/pods/pod_/scripts/scripts_generic_identifyOs.sh)
-lib_generic_display_msgColourSimple   "INFO-->" "detected os: ${green}${remote_os}${reset}"
+  remote_os=$(ssh -q -o Forwardx11=no ${user}@${pubIp} 'bash -s' < ${pod_home_path}/pods/pod_/scripts/scripts_generic_identifyOs.sh)
+  lib_generic_display_msgColourSimple   "INFO-->" "detected os: ${green}${remote_os}${reset}"
 
 # -----
 
@@ -60,7 +60,7 @@ lib_generic_display_msgColourSimple   "INFO-->" "detected os: ${green}${remote_o
 
   if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "INFO-->" "setting:     'dynamic_build_settings.sh'"; fi
   printf "%s\n" "TARGET_FOLDER=${target_folder}" > "${tmp_dynamic_build_file_path}"
-  # we want to use all the settings with the new target_folder
+  # source folder to reset paths based this server's target_folder
   source "${tmp_build_file_path}"
   printf "%s\n" "build_folder_path=${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/" >> "${tmp_dynamic_build_file_path}"
 
@@ -91,10 +91,6 @@ lib_generic_display_msgColourSimple   "INFO-->" "detected os: ${green}${remote_o
   # calculate number of cassandra data folders specified in json
   # -3? - one for each bracket line and another 'cos the array starts at zero
   numberOfDataFolders=$(($(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.cass_data' | wc -l)-3))
-
-# remove all added data arrays from previous loop
-#label="dse_data_arrays"
-#lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" "${tmp_build_file_path}" "${label}" ""
 
 # CAT/EOF cannot be indented !!
 cat << EOF >> "${tmp_dynamic_build_file_path}"
@@ -142,7 +138,6 @@ cat << EOF >> "${tmp_dynamic_build_file_path}"
 dsefs_data_file_directories_array[${j}]="${data_path}"
 EOF
 done
-#printf "%s" "#>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'" >> "${tmp_build_file_path}"
   fi
 
 # -----
@@ -160,12 +155,7 @@ done
 # -----
 
   # set node specific settings for 'seeds:' and 'listen_address:'
-  if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "INFO-->" "setting:     'seeds:' and 'listen_address:' in cassandra.yaml"; fi
-  if [[ "${listen_address}" == "pubIp" ]]; then
-    listen_address=${pubIp}
-  else
-    listen_address=${prvIp}
-  fi
+  if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "INFO-->" "setting:     'seeds', 'listen_address and rpc_address' in cassandra.yaml"; fi
   lib_doStuff_locally_cassandraYamlNodeSpecific
   if [[ "${VB}" == "true" ]]; then printf "%s\n"; fi
 
