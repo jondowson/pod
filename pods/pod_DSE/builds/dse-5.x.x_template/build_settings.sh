@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # author:        jondowson
-# about:         software version and path configurations for a cluster created by 'pod_DSE'
+# about:         software version and path configurations for a cluster created by 'pod_dse'
 #                this file should not be renamed !!
 
 # ========================================= OPTIONS !!
@@ -63,8 +63,8 @@ TEMP_FOLDER="${INSTALL_FOLDER}tmp/"
 # dse
 dse_tar_folder="${PACKAGES}dse/"
 dse_tar_file="${dse_tar_folder}${DSE_TARBALL}"
-dse_untar_config_folder="${INSTALL_FOLDER_POD}${DSE_VERSION}/resources/dse/conf/"
-dse_untar_bin_folder="${INSTALL_FOLDER_POD}${DSE_VERSION}/bin/"
+dse_untar_config_folder="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/resources/dse/conf/"
+dse_untar_bin_folder="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/bin/"
 
 # -----------------
 

@@ -16,7 +16,7 @@ Its first 'pod' makes it easy to set up and run a DSE cluster from **tarballs**.
 
 **The latest stable version is:**
 ```diff
-+ pod-version-1.2
++ pod-version-1.3
 ```    
 The master branch is in sync with the latest stable version.    
 
@@ -87,7 +87,9 @@ $ ./misc/install_podDependencies_mac.sh
       - datastax-agent-6.x.x.tar.gz
   - JAVA    
     - **oracle-java**  
-    - jdk-8uxxx-linux-i586.tar.gz     
+    - jdk-8uxxx-linux-i586.tar.gz
+  - POD    
+    - **pod**   
 
 Opscenter and agent software is not setup by pod_DSE but inclusion will ensure their tarballs are distributed to each server.     
 Check online datastax documents to ensure usage of compatible versions.      

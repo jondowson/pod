@@ -1,8 +1,0 @@
-TARGET_FOLDER=/Users/jondowson/Desktop/
-DSE_VERSION=dse-5.1.5
-BUILD_FOLDER=dse-5.1.5_practice
-build_folder_path=/Users/jondowson/Desktop/POD_SOFTWARE/POD/pod/pods/pod_DSE/builds/dse-5.1.5_practice/
-WHICH_POD=pod_DSE
-declare -a data_file_directories_array
-data_file_directories_array[0]="/Users/jondowson/Desktop/POD_INSTALLS/DATASTAX/data/sstables/"
-data_file_directories_array[1]="/Users/jondowson/Desktop/POD_INSTALLS/DATASTAX/data/sstables2/"
