@@ -57,6 +57,7 @@ function lib_doStuff_remotely_installDseTar(){
 ## install from local tar
 
 tar -xf "${dse_tar_file}" -C "${INSTALL_FOLDER_POD}"
+mv "${INSTALL_FOLDER_POD}${DSE_VERSION}" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
 }
 
 # ---------------------------------------

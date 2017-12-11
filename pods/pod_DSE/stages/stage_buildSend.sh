@@ -59,9 +59,14 @@ do
   lib_doStuff_locally_cassandraTopologyProperties
 
   if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "INFO-->" "setting:     'dynamic_build_settings.sh'"; fi
+
+  # pack a 'suitcase' of variables that will be sent to each server
   printf "%s\n" "TARGET_FOLDER=${target_folder}" > "${tmp_dynamic_build_file_path}"
   # source folder to reset paths based this server's target_folder
   source "${tmp_build_file_path}"
+
+  printf "%s\n" "DSE_VERSION=${DSE_VERSION}" >> "${tmp_dynamic_build_file_path}"
+  printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}" >> "${tmp_dynamic_build_file_path}"
   printf "%s\n" "build_folder_path=${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/" >> "${tmp_dynamic_build_file_path}"
   printf "%s\n" "WHICH_POD=${WHICH_POD}" >> "${tmp_dynamic_build_file_path}"
 

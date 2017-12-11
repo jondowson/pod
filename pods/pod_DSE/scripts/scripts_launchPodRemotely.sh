@@ -85,7 +85,7 @@ lib_doStuff_remotely_installDseTar
 
 # [3] merge the copied over 'resources' folder to the untarred one
 
-cp -R "${build_file_folder}resources" "${INSTALL_FOLDER_POD}${DSE_VERSION}"
+cp -R "${build_file_folder}resources" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
 
 # -----
 

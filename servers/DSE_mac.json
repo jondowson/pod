@@ -4,10 +4,11 @@
       "user": "jondowson",
       "sshKey": "/Users/jondowson/.ssh/id_rsa",
       "target_folder": "/Users/jondowson/Desktop/",
-      "pubIp": "192.168.15.144",
+      "pubIp": "10.10.151.215",
       "prvIp": "127.0.0.1",
-      "listen_address": "pubIp",
-      "seeds": "192.168.15.144",
+      "listen_address": "10.10.151.215",
+      "rpc_address": "10.10.151.215",
+      "seeds": "10.10.151.215",
       "token": "",
       "dc": "dc1",
       "rack": "rack3",
@@ -18,12 +19,12 @@
         "dsefs": "false"
       },
       "cass_data": [
-        "/Users/jondowson/Desktop/POD_INSTALLS/data",
-        "/Users/jondowson/Desktop/POD_INSTALLS/data2"
+        "/Users/jondowson/Desktop/POD_INSTALLS/DATASTAX/data/sstables/",
+        "/Users/jondowson/Desktop/POD_INSTALLS/DATASTAX/data/sstables2/"
       ],
       "dsefs_data": [
-        "/Users/jondowson/Desktop/POD_INSTALLS/data/dsefs/;1.0;5368709",
-        "/Users/jondowson/Desktop/POD_INSTALLS/data2/dsefs2/;1.0;5368709"
+        "/Users/jondowson/Desktop/POD_INSTALLS/DATASTAX/data/dsefs/;1.0;5368709",
+        "/Users/jondowson/Desktop/POD_INSTALLS/DATASTAX/data2/dsefs2/;1.0;5368709"
       ]
     }
 }

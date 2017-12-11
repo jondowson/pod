@@ -76,6 +76,9 @@ export TOMCAT_LOGS=${tomcat_log_folder}
 export GREMLIN_LOG_DIR=${gremlin_log_folder}
 #>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'
 EOF
+
+lib_generic_strings_sedStringManipulation "removeHashAndLeadingWhitespace"         ${file} '# JVM_OPTS=\"$JVM_OPTS -Djava.rmi.server.hostname=<public name>\"' "dummy"
+lib_generic_strings_sedStringManipulation "editAfterSubstring"                     ${file} 'JVM_OPTS=\"$JVM_OPTS -Djava.rmi.server.hostname=' "${pubIp}\""
 }
 
 # ---------------------------------------
