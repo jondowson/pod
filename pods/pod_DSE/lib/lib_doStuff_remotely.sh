@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/local/bin/bash
 
 # author:        jondowson
 # about:         functions executed on remote server
@@ -43,7 +43,7 @@ mkdir -p ${spark_worker_data}
 
 # ---------------------------------------
 
-function lib_doStuff_remotely__installJavaTar(){
+function lib_doStuff_remotely_installJavaTar(){
 
 ## install from local tar to the designated java folder
 
@@ -56,7 +56,7 @@ function lib_doStuff_remotely_installDseTar(){
 
 ## install from local tar
 
-tar -xf ${dse_tar_file} -C ${INSTALL_FOLDER}
+tar -xf "${dse_tar_file}" -C "${INSTALL_FOLDER_POD}"
 }
 
 # ---------------------------------------
@@ -118,8 +118,8 @@ lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file
 
 # add line sourcing .bashrc - no need on a Mac
 cat << EOF >> ${file}
-#ADDED-BY-POD-${label}_START
+#>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'
 if [ -r ~/.bash_profile ]; then source ~/.bash_profile; fi
-#ADDED-BY-POD-${label}_FINISH
+#>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'
 EOF
 }

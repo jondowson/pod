@@ -28,7 +28,7 @@ do
   printf "\n%s"
 
   lib_generic_display_msgColourSimple "INFO-->" "launch:      pod remotely"
-  ssh -ttq -o "BatchMode yes" -o "ForwardX11=no" ${user}@${pubIp} "chmod -R 700 ${target_folder}pod && ${target_folder}POD_SOFTWARE/POD/pods/${WHICH_POD}/scripts/scripts_launchPodRemotely.sh" &                # run in parallel
+  ssh -ttq -o "BatchMode yes" -o "ForwardX11=no" ${user}@${pubIp} "chmod -R 700 ${target_folder}POD_SOFTWARE/POD && ${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/scripts/scripts_launchPodRemotely.sh" &                # run in parallel
   # grab pid and capture owner in array
   pid=$!
   lib_generic_display_msgColourSimple "INFO-->" "pid id:      ${yellow}${pid}${reset}"

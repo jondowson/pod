@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/local/bin/bash
 
 # script_name:   launch-pod.sh
 # author:        jondowson
@@ -105,7 +105,6 @@ while test $# -gt 0; do
         shift
         prepare_generic_misc_sourceThisPod
         prepare_misc_setDefaults
-        prepare_misc_checkFilesExist
         prepare_misc_clearTheDecks
         podFlag="true"
         ;;

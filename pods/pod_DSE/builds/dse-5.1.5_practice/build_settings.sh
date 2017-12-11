@@ -104,4 +104,3 @@ gremlin_log_folder="${PARENT_LOG_FOLDER}gremlin/"
 
 # tomcat logs
 tomcat_log_folder="${PARENT_LOG_FOLDER}tomcat/"
-

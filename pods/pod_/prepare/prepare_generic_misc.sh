@@ -13,7 +13,8 @@ function prepare_generic_misc_podBuildTempFolder(){
 # note: it is this duplicate folder will be configured locally and then sent to remote server(s)
 
 tmp_build_folder="${pod_home_path}/tmp/pod/"
-tmp_build_file_folder="${tmp_build_folder}pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"
+tmp_builds_folder="${tmp_build_folder}pods/${WHICH_POD}/builds/"
+tmp_build_file_folder="${tmp_builds_folder}${BUILD_FOLDER}/"
 tmp_build_file_path="${tmp_build_file_folder}build_settings.sh"
 tmp_dynamic_build_file_path="${tmp_build_folder}pods/${WHICH_POD}/builds/dynamic_build_settings"
 
@@ -120,25 +121,25 @@ function prepare_generic_misc_hashBang(){
 
 # determine what comes after #!/ at top of remote launch script
 if [[ ${remote_os} == *"Mac"* ]]; then
-  hashBang="usr/local/bin/bash"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}launch-pod" "bin/bash" "${hashBang}"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/pod_/scripts/scripts_launchPodRemotely.sh" "bin/bash" "${hashBang}"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/lib/lib_doStuff_remotely.sh" "bin/bash" "${hashBang}"
+  hashBang="#!/usr/local/bin/bash"
+  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}launch-pod" "#!/bin/bash" "${hashBang}"
+  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/scripts/scripts_launchPodRemotely.sh" "#!/bin/bash" "${hashBang}"
+  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/lib/lib_doStuff_remotely.sh" "#!/bin/bash" "${hashBang}"
 elif [[ ${remote_os} == "Ubuntu" ]]; then
-  hashBang="bin/bash"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}launch-pod" "usr/local/bin/bash" "${hashBang}"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/scripts/scripts_launchPodRemotely.sh" "usr/local/bin/bash" "${hashBang}"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/lib/lib_doStuff_remotely.sh" "usr/local/bin/bash" "${hashBang}"
+  hashBang="#!/bin/bash"
+  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}launch-pod" "#!/usr/local/bin/bash" "${hashBang}"
+  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/scripts/scripts_launchPodRemotely.sh" "#!/usr/local/bin/bash" "${hashBang}"
+  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/lib/lib_doStuff_remotely.sh" "#!/usr/local/bin/bash" "${hashBang}"
 elif [[ ${remote_os} == "Centos" ]]; then
-  hashBang="bin/bash"
+  hashBang="#!/bin/bash"
   lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}launch-pod" "usr/local/bin/bash" "${hashBang}"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/scripts/scripts_launchPodRemotely.sh" "usr/local/bin/bash" "${hashBang}"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/lib/lib_doStuff_remotely.sh" "usr/local/bin/bash" "${hashBang}"
+  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/scripts/scripts_launchPodRemotely.sh" "#!/usr/local/bin/bash" "${hashBang}"
+  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/lib/lib_doStuff_remotely.sh" "#!/usr/local/bin/bash" "${hashBang}"
 elif [[ ${remote_os} == "Redhat" ]]; then
-  hashBang="bin/bash"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}launch-pod"                                             "usr/local/bin/bash" "${hashBang}"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/scripts/scripts_launchPodRemotely.sh" "usr/local/bin/bash" "${hashBang}"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/lib/lib_doStuff_remotely.sh"          "usr/local/bin/bash" "${hashBang}"
+  hashBang="#!/bin/bash"
+  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}launch-pod"                                             "#!/usr/local/bin/bash" "${hashBang}"
+  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/scripts/scripts_launchPodRemotely.sh" "#!/usr/local/bin/bash" "${hashBang}"
+  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/lib/lib_doStuff_remotely.sh"          "#!/usr/local/bin/bash" "${hashBang}"
 else
   os="Bad"
   lib_generic_display_msgColourSimple "error" "OS Not Supported"
