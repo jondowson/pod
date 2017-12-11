@@ -35,6 +35,6 @@ function prepare_misc_clearTheDecks(){
 
 ## remove any temporary files/folders that may be left from a previous run of pod_DSE
 
-rm -rf ${pod_home_path}/pods/pod_DSE/builds/dynamic_build_settings
+> ${pod_home_path}/pods/pod_DSE/builds/dynamic_build_settings
 rm -rf ${pod_home_path}/tmp
 }

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/local/bin/bash
 
 # author:        jondowson
 # about:         script run on each server to install configured software
@@ -33,7 +33,7 @@ fi
 
 parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 cd ${parent_path}
-cd ../../
+cd ../../../
 pod_home_path="$(pwd)"
 
 source "${pod_home_path}/pods/pod_DSE/builds/dynamic_build_settings"
@@ -42,12 +42,12 @@ source "${pod_home_path}/pods/pod_DSE/builds/dynamic_build_settings"
 
 ## source pod_generic _ pod_dse lib scripts
 
-files="$(find ${pod_home_path}/pod_/lib -name "*.sh" | grep -v "lib_generic_display.sh")"
+files="$(find ${pod_home_path}/pods/pod_/lib -name "*.sh" | grep -v "lib_generic_display.sh")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
 
-files="$(find ${pod_home_path}/pod_DSE/lib/ -name "*.sh*")"
+files="$(find ${pod_home_path}/pods/pod_DSE/lib/ -name "*.sh*")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
@@ -85,7 +85,7 @@ lib_doStuff_remotely_installDseTar
 
 # [3] merge the copied over 'resources' folder to the untarred one
 
-cp -R "${build_file_folder}resources" "${INSTALL_FOLDER}${DSE_VERSION}"
+cp -R "${build_file_folder}resources" "${INSTALL_FOLDER_POD}${DSE_VERSION}"
 
 # -----
 

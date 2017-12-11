@@ -63,6 +63,7 @@ do
   # source folder to reset paths based this server's target_folder
   source "${tmp_build_file_path}"
   printf "%s\n" "build_folder_path=${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/" >> "${tmp_dynamic_build_file_path}"
+  printf "%s\n" "WHICH_POD=${WHICH_POD}" >> "${tmp_dynamic_build_file_path}"
 
   if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "INFO-->" "editing:     'cassandra-env.sh'"; fi
   lib_doStuff_locally_cassandraEnv
