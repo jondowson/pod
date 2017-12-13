@@ -80,6 +80,7 @@ lib_doStuff_remotely_createDseFolders
 # [2] un-compress software
 
 lib_doStuff_remotely_installDseTar
+lib_doStuff_remotely_installAgentTar
 
 # -----
 
@@ -89,7 +90,13 @@ cp -R "${build_file_folder}resources" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
 
 # -----
 
-# [4] configure local environment
+# [4] update the agent address.yaml
+
+lib_doStuff_remotely_agentAddressYaml
+
+# -----
+
+# [5] configure local environment
 
 lib_doStuff_remotely_dseBashProfile
 

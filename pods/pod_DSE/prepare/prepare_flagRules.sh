@@ -17,7 +17,7 @@ servJsonErrMsg="You must supply a server .json definition file - please check th
 # check flags and values for this mode of operation
 if [[ ${clusterstateFlag} == "true" ]]; then
     # part 1 - check flag combinations
-    if [[ ${buildFlag} == "true" ]] || [[ ${sendsoftFlag} == "true" ]]  || [[ ${regenresourcesFlag} == "true" ]]; then
+    if [[ ${buildFlag} == "false" ]] || [[ ${sendsoftFlag} == "true" ]]  || [[ ${regenresourcesFlag} == "true" ]]; then
       lib_generic_display_msgColourSimple "ERROR-->" "${defaultErrMsg}" && exit 1;
     elif [[ ${serversFlag} != "true" ]]; then
       lib_generic_display_msgColourSimple "ERROR-->" "${servJsonErrMsg}" && exit 1;

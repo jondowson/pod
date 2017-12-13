@@ -45,10 +45,19 @@ mkdir -p ${spark_worker_data}
 
 function lib_doStuff_remotely_installDseTar(){
 
-## install from local tar
+## uncompress tar on remote machine and rename it to name of build folder
 
 tar -xf "${dse_tar_file}" -C "${INSTALL_FOLDER_POD}"
 mv "${INSTALL_FOLDER_POD}${DSE_VERSION}" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
+}
+
+# ---------------------------------------
+
+function lib_doStuff_remotely_installAgentTar(){
+
+## uncompress tar on remote machine
+
+tar -xf "${agent_tar_file}" -C "${INSTALL_FOLDER_POD}"
 }
 
 # ---------------------------------------
@@ -91,6 +100,31 @@ lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file
 cat << EOF >> ${file}
 #>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'
 if [ -r ~/.bash_profile ]; then source ~/.bash_profile; fi
+#>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'
+EOF
+}
+
+# ---------------------------------------
+
+function lib_doStuff_remotely_agentAddressYaml(){
+
+## configure bashrc to source bash_profile everytime a new terminal is started (on ubuntu/centos)
+
+# file to edit
+file="${agent_untar_config_folder}address.yaml"
+touch ${file}
+
+lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "# stomp_interface=" "dummy"
+lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "#stomp_interface=" "dummy"
+
+# search for and remove any pre-canned blocks containing a label:
+label="set_stomp_opscenter"
+lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
+
+# add line sourcing .bashrc - no need on a Mac
+cat << EOF >> ${file}
+#>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'
+stomp_interface="${STOMP_INTERFACE}"
 #>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'
 EOF
 }

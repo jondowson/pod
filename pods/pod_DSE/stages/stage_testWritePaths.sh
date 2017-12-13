@@ -121,9 +121,11 @@ do
     fi
     done
   fi
-  
-# finally delete test POD_INSTALL/ folder
+
+# delete POD_INSTALL/pod-build folder
 ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "[ -d ${INSTALL_FOLDER} ] && rm -rf ${INSTALL_FOLDER_POD}${BUILD_FOLDER}" exit
+# delete POD_INSTALL/pod-build folder
+ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "[ -d ${INSTALL_FOLDER} ] && rm -rf ${INSTALL_FOLDER_POD}${AGENT_VERSION}" exit
 done
 }
 

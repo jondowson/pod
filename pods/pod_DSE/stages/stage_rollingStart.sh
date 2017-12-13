@@ -40,6 +40,11 @@ do
 
 # ----------
 
+  agent_untar_bin_folder="${target_folder}POD_INSTALLS/DATASTAX/${AGENT_VERSION}/bin/"
+  start_agent="source ~/.bash_profile && . ${agent_untar_bin_folder}/datastax-agent"
+
+# ----------
+
   flags=""
   if [[ "${searchFlag}" == "true" ]];     then flags="${flags} -s"; fi
   if [[ "${analyticsFlag}" == "true" ]];  then flags="${flags} -k"; fi
@@ -72,7 +77,7 @@ do
         pod_start_dse_error_array["${tag}"]="${status};${pubIp}"
         break;
       else
-        ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_cmd}"
+        ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_cmd} && ${start_agent}"
         status=${?}
         if [[ "${status}" == "0" ]]; then
           lib_generic_display_msgColourSimple "INFO-->" "ssh return code: ${green}${status}"

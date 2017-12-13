@@ -24,10 +24,12 @@ VNODES="8"                                      # specify a value (8,16,32) for 
 
 # -----
 
-## [2] DSE VERSION
+## [2] DSE VERSIONS
 
 DSE_VERSION="dse-5.1.5"
 DSE_TARBALL="${DSE_VERSION}-bin.tar.gz"
+AGENT_VERSION="datastax-agent-6.1.3"
+AGENT_TARBALL="${AGENT_VERSION}.tar.gz"
 
 # -----
 
@@ -53,6 +55,12 @@ dse_tar_folder="${PACKAGES}dse/"
 dse_tar_file="${dse_tar_folder}${DSE_TARBALL}"
 dse_untar_config_folder="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/resources/dse/conf/"
 dse_untar_bin_folder="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/bin/"
+
+agent_tar_folder="${PACKAGES}datastax-agent/"
+agent_tar_file="${agent_tar_folder}${AGENT_TARBALL}"
+agent_untar_folder="${INSTALL_FOLDER_POD}${AGENT_VERSION}"
+agent_untar_config_folder="${INSTALL_FOLDER_POD}${AGENT_VERSION}/conf/"
+agent_untar_bin_folder="${INSTALL_FOLDER_POD}${AGENT_VERSION}/bin/"
 
 # -----
 
