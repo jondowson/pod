@@ -61,7 +61,7 @@ do
     retry=1
     until [[ "${retry}" == "6" ]] || [[ "${status}" == "0" ]]
     do
-      ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && java" exit
+      ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && java &> /dev/null"
       status=${?}
       if [[ "${status}" == "127" ]]; then
         lib_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status}"
@@ -72,7 +72,7 @@ do
         pod_start_dse_error_array["${tag}"]="${status};${pubIp}"
         break;
       else
-        ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_cmd}" exit
+        ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_cmd}"
         status=${?}
         if [[ "${status}" == "0" ]]; then
           lib_generic_display_msgColourSimple "INFO-->" "ssh return code: ${green}${status}"

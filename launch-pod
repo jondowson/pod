@@ -131,6 +131,7 @@ servers_json_path="${pod_home_path}/servers/${SERVERS_JSON}"
 
 catchError "launch-pod#2" "true" "${jq_folder}jq [.] ${servers_json_path}"
 numberOfServers=$(${jq_folder}jq [.] ${servers_json_path} | tr '"' '\n' | grep 'server_' | wc -l)
+# ivf numberOfServers=0 then exit
 
 # ------------------------------------------
 

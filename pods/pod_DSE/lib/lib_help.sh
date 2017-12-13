@@ -20,6 +20,6 @@ printf "%s\n"   "${yellow}$ ./launch-pod -p pod_DSE -s myServers.json -b dse-5.0
 printf "%s\n"   "${yellow}$ ./launch-pod -p pod_DSE -s myServers.json --clusterstate start${reset}"
 printf "%s\n"   "--------------------------------------------------------------------------------------------------"
 lib_generic_display_msgColourSimple "TASK==>" "Available ${WHICH_POD} builds:"
-availableServers=$(ls ${pod_home_path}/pods/${WHICH_POD}/builds)
+availableServers=$(ls ${pod_home_path}/pods/${WHICH_POD}/builds | grep -v 'dynamic_build_settings')
 printf "%s\n" ${availableServers}
 }
