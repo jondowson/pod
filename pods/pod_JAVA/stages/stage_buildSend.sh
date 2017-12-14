@@ -58,7 +58,7 @@ do
   # pack a 'tmp_suitcase_file_path' of variables that will be sent to each server
   printf "%s\n" "TARGET_FOLDER=${target_folder}" > "${tmp_suitcase_file_path}"
   # source folder to reset paths based this server's target_folder
-  # source "${tmp_build_file_path}"
+  # source "${tmp_build_settings_file_path}"
 
   printf "%s\n" "JAVA_DISTRIBUTION=${JAVA_DISTRIBUTION}" >> "${tmp_suitcase_file_path}"
   printf "%s\n" "JAVA_VERSION=${JAVA_VERSION}" >> "${tmp_suitcase_file_path}"
@@ -67,7 +67,7 @@ do
   printf "%s\n" "build_folder_path=${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/" >> "${tmp_suitcase_file_path}"
 
   if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "INFO-->" "editing:     'scripts_launchPodRemotely.sh'"; fi
-  prepare_generic_misc_hashBang
+
 
 # -----
 

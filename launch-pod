@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash
+#!/bin/bash
 
 # script_name:   launch-pod.sh
 # author:        jondowson
@@ -36,121 +36,129 @@ TARGET_FOLDER="${LOCAL_TARGET_FOLDER}"
 ## pod preparation: call in correct order
 
 # [1] source generic preperation script
-source pods/pod_/prepare/prepare_generic_misc.sh
+source pods/pod_/prepare/prepare_generic_misc.bash
 
 # [2] identify local os
 prepare_generic_misc_identifyOs
 
-# [3] source all generic pod_ scripts
-prepare_generic_misc_sourceGeneric
-
-# [4] set pod defaults
-prepare_generic_misc_setDefaults
-
-# [5] change local permissions
-chmod -R 777 ${pod_home_path}/.git
-
-# ------------------------------------------
-
-## pod dependencies
-
-# [1] jq - bash jason parser
-# --> mac will directly use the brew installed version of jq
 if [[ "${os}" == "Mac" ]]; then
-  jq_folder=""
-  jq_file_path="jq"
-# --> other linux need the path to the included jq binary
+
+  ./.launch-pod "$@"
+
 else
-  jq_folder="${pod_home_path}/third_party/jq-linux64/"
-  jq_file_path="${jq_folder}jq"
-  lib_generic_checks_fileExists "launch-pod#1" "true" "${jq_file_path}"
-fi
 
-# ensure third party packages are executable
-chmod -R +x "${pod_home_path}/third_party"
+  # [3] source all generic pod_ scripts
+  prepare_generic_misc_sourceGeneric
 
-# ------------------------------------------
+  # [4] set pod defaults
+  prepare_generic_misc_setDefaults
 
-## handle flags
+  # [5] change local permissions
+  chmod -R 777 ${pod_home_path}/.git
 
-# ensure --pod | -p flag is passed first (if not using help flag on its own)
-if [[ "${1}" != "-p" ]] && [[ "${1}" != "--pod" ]] && [[ "${1}" != "-h" ]] && [[ "${1}" != "--help" ]]; then
-  printf "%s\n"
-  lib_generic_display_msgColourSimple "ERROR-->" "always specify the pod flag first ${yellow}-p | --pod${red}"
-  printf "%s\n"
-  exit 1;
-fi
+  # ------------------------------------------
 
-# -----
+  ## pod dependencies
 
-# use the flag handling function for the choosen pod
-while test $# -gt 0; do
-  case "$1" in
-    -h|--help)
-        if [[ ${podFlag} == "true" ]]; then
-          lib_generic_display_banner
-          lib_generic_help
-          lib_help
-          lib_generic_helpFinish
-        else
-          lib_generic_display_banner
-          lib_generic_help
-          lib_generic_helpFinish
-        fi
-        exit 0;
-        ;;
-    -p|--pod)
+  # [1] jq - bash jason parser
+  # --> mac will directly use the brew installed version of jq
+  if [[ "${os}" == "Mac" ]]; then
+    jq_folder=""
+    jq_file_path="jq"
+  # --> other linux need the path to the included jq binary
+  else
+    jq_folder="${pod_home_path}/third_party/jq-linux64/"
+    jq_file_path="${jq_folder}jq"
+    lib_generic_checks_fileExists "launch-pod#1" "true" "${jq_file_path}"
+  fi
+
+  # ensure third party packages are executable
+  chmod -R +x "${pod_home_path}/third_party"
+
+  # ------------------------------------------
+
+  ## handle flags
+
+  # ensure --pod | -p flag is passed first (if not using help flag on its own)
+  if [[ "${1}" != "-p" ]] && [[ "${1}" != "--pod" ]] && [[ "${1}" != "-h" ]] && [[ "${1}" != "--help" ]]; then
+    printf "%s\n"
+    lib_generic_display_msgColourSimple "ERROR-->" "always specify the pod flag first ${yellow}-p | --pod${red}"
+    printf "%s\n"
+    exit 1;
+  fi
+
+  # -----
+
+  # use the flag handling function for the choosen pod
+  while test $# -gt 0; do
+    case "$1" in
+      -h|--help)
+          if [[ ${podFlag} == "true" ]]; then
+            lib_generic_display_banner
+            lib_generic_help
+            lib_help
+            lib_generic_helpFinish
+          else
+            lib_generic_display_banner
+            lib_generic_help
+            lib_generic_helpFinish
+          fi
+          exit 0;
+          ;;
+      -p|--pod)
+          shift
+          WHICH_POD=$1
+          shift
+          prepare_generic_misc_sourceThisPod
+          prepare_misc_setDefaults
+          prepare_misc_clearTheDecks
+          podFlag="true"
+          ;;
+      *)
+        thisFlag=${1}
+        flagValue=$(shift && echo $1)
+        prepare_handleFlags ${thisFlag} ${flagValue}
         shift
-        WHICH_POD=$1
         shift
-        prepare_generic_misc_sourceThisPod
-        prepare_misc_setDefaults
-        prepare_misc_clearTheDecks
-        podFlag="true"
-        ;;
-    *)
-      thisFlag=${1}
-      flagValue=$(shift && echo $1)
-      prepare_handleFlags ${thisFlag} ${flagValue}
-      shift
-      shift
-        ;;
-  esac
-done
+          ;;
+    esac
+  done
 
-# -----
+  # -----
 
-# ensure flags have been passed correctly for this pod
-prepare_flagRules
+  # ensure flags have been passed correctly for this pod
+  prepare_flagRules
 
-# ------------------------------------------
+  # ------------------------------------------
 
-## all pod apps make use of a servers json definition file
+  ## all pod apps make use of a servers json definition file
 
-servers_json_path="${pod_home_path}/servers/${SERVERS_JSON}"
-lib_generic_checks_fileExists "launch-pod#1" "true" "${servers_json_path}"
-catchError "launch-pod#2" "true" "${jq_folder}jq [.] ${servers_json_path}"
-numberOfServers=$(${jq_folder}jq [.] ${servers_json_path} | tr '"' '\n' | grep 'server_' | wc -l)
-lib_generic_checks_noOfServers "${numberOfServers}" "launch-pod#3"
-echo $numberOfServers
-# ------------------------------------------
+  servers_json_path="${pod_home_path}/servers/${SERVERS_JSON}"
+  lib_generic_checks_fileExists "launch-pod#1" "true" "${servers_json_path}"
+  catchError "launch-pod#2" "true" "${jq_folder}jq [.] ${servers_json_path}"
+  numberOfServers=$(${jq_folder}jq [.] ${servers_json_path} | tr '"' '\n' | grep 'server_' | wc -l)
+  lib_generic_checks_noOfServers "${numberOfServers}" "launch-pod#3"
 
-## source the specified pod's build folder
+  # ------------------------------------------
 
-prepare_generic_misc_sourceThisPodBuild
+  ## source the specified pod's build folder
 
-# ------------------------------------------
+  prepare_generic_misc_sourceThisPodBuild
 
-## source the specified pod's init script and run that pod
+  # ------------------------------------------
 
-source "pods/${WHICH_POD}/${WHICH_POD}.sh"
-"${WHICH_POD}"
+  ## source the specified pod's init script and run that pod
 
-# ------------------------------------------
+  source "pods/${WHICH_POD}/${WHICH_POD}.sh"
+  "${WHICH_POD}"
 
-## closing messages
+  # ------------------------------------------
 
-lib_generic_display_finalMessage "${WHICH_POD}"
-lib_generic_misc_timePod
-lib_generic_display_msgColourSimple "INFO" "pod took: ${diff}[s]"
-printf "%s\n"
+  ## closing messages
+
+  lib_generic_display_finalMessage "${WHICH_POD}"
+  lib_generic_misc_timePod
+  lib_generic_display_msgColourSimple "INFO" "pod took: ${diff}[s]"
+  printf "%s\n"
+
+fi

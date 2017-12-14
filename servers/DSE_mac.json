@@ -8,6 +8,7 @@
       "prvIp": "127.0.0.1",
       "listen_address": "10.10.151.215",
       "rpc_address": "10.10.151.215",
+      "stomp_interface": "127.0.0.1",
       "seeds": "10.10.151.215",
       "token": "",
       "dc": "dc1",

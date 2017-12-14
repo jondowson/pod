@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash
+#!/bin/bash
 
 # author:        jondowson
 # about:         script run on each server to install configured software
@@ -27,6 +27,8 @@ else
   exit 1;
 fi
 
+
+
 #-------------------------------------------
 
 ## determine this scripts' folder path
@@ -35,71 +37,85 @@ parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 cd ${parent_path}
 cd ../../../
 pod_home_path="$(pwd)"
-
 source "${pod_home_path}/pods/pod_/.suitcase"
 
-#-------------------------------------------
+if [[ "${os}" == "Mac" ]]; then
 
-## source pod_generic _ pod_dse lib scripts
+  chmod +x ${pod_home_path}/pods/pod_DSE/scripts/.scripts_launchPodRemotely.sh
+  . ${pod_home_path}/pods/pod_DSE/scripts/.scripts_launchPodRemotely.sh
 
-files="$(find ${pod_home_path}/pods/pod_/lib -name "*.sh" | grep -v "lib_generic_display.sh")"
-for file in $(printf "%s\n" "$files"); do
-    [ -f $file ] && . $file
-done
-
-files="$(find ${pod_home_path}/pods/pod_DSE/lib/ -name "*.sh*")"
-for file in $(printf "%s\n" "$files"); do
-    [ -f $file ] && . $file
-done
-
-#-------------------------------------------
-
-## source the pod-specific 'builds' folder to use
-
-source ${build_folder_path}build_settings.sh
-
-# folder specified at top of this script
-build_file_folder="${build_folder_path}"
-build_file_path="${build_file_folder}build_settings.sh"
-if [[ -f ${build_file_path} ]]; then
-  source ${build_file_path}
 else
-  lib_generic_checks_fileExists "scripts_launchPodRemotely#1" "true" "${build_file_path}"
-fi
 
-#-------------------------------------------
 
-## install dse on each server
+  #-------------------------------------------
 
-# [1] make folders
+  ## source pod_generic _ pod_dse lib scripts
 
-lib_doStuff_remotely_createDseFolders
+  files="$(find ${pod_home_path}/pods/pod_/lib -name "*.sh" | grep -v "lib_generic_display.bash")"
+  for file in $(printf "%s\n" "$files"); do
+      [ -f $file ] && . $file
+  done
 
-# -----
+  files="$(find ${pod_home_path}/pods/pod_DSE/lib/ -name "*.bash*")"
+  for file in $(printf "%s\n" "$files"); do
+      [ -f $file ] && . $file
+  done
 
-# [2] un-compress software
+  #-------------------------------------------
 
-lib_doStuff_remotely_installDseTar
-lib_doStuff_remotely_installAgentTar
+  ## source the pod-specific 'builds' folder to use
 
-# -----
+  source ${build_folder_path}build_settings.bash
 
-# [3] merge the copied over 'resources' folder to the untarred one
+  # folder specified at top of this script
+  build_file_folder="${build_folder_path}"
+  build_file_path="${build_file_folder}build_settings.bash"
+  if [[ -f ${build_file_path} ]]; then
+    source ${build_file_path}
+  else
+    lib_generic_checks_fileExists "scripts_launchPodRemotely#1" "true" "${build_file_path}"
+  fi
 
-cp -R "${build_file_folder}resources" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
+  #-------------------------------------------
 
-# -----
+  ## install dse + agents on each server
 
-# [4] update the agent address.yaml
+  # [1] delete any previous POD_INSTALL/pod-build folder + agent folder
 
-lib_doStuff_remotely_agentAddressYaml
+  [ -d ${INSTALL_FOLDER} ] && rm -rf ${INSTALL_FOLDER_POD}${BUILD_FOLDER}
+  [ -d ${INSTALL_FOLDER} ] && rm -rf ${INSTALL_FOLDER_POD}${AGENT_VERSION}
 
-# -----
+  # [2] make folders
 
-# [5] configure local environment
+  lib_doStuff_remotely_createDseFolders
 
-lib_doStuff_remotely_dseBashProfile
+  # -----
 
-if [[ ${os} == *"Ubuntu"* ]]; then
-  lib_doStuff_remotely_bashrc
+  # [3] un-compress software
+
+  lib_doStuff_remotely_installDseTar
+  lib_doStuff_remotely_installAgentTar
+
+  # -----
+
+  # [4] merge the copied over 'resources' folder to the untarred one
+
+  cp -R "${build_file_folder}resources" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
+
+  # -----
+
+  # [5] update the agent address.yaml
+
+  lib_doStuff_remotely_agentAddressYaml
+
+  # -----
+
+  # [6] configure local environment
+
+  lib_doStuff_remotely_dseBashProfile
+
+  if [[ ${os} == *"Ubuntu"* ]]; then
+    lib_doStuff_remotely_bashrc
+  fi
+
 fi
