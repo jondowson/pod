@@ -1,14 +1,7 @@
-#!/bin/bash
-
 # author:        jondowson
 # about:         prepare dse 'resources' folder by removing all non-configuration files
 
-#--------------------------------------------
-
-## uncomment to see full bash trace (debug)
-# set -x
-
-#--------------------------------------------
+# -------------------------------------------
 
 function task_makeResourcesFolder(){
 
@@ -21,13 +14,13 @@ destination_folder_parent_path="${pod_home_path}/pods/${WHICH_POD}/builds/${BUIL
 destination_folder_path="${destination_folder_parent_path}resources/"
 source_folder_path="${pod_home_path}/tmp/${DSE_VERSION}/resources/"
 
-# -------------------------------------------
+# -----
 
 ## check to see folder paths exist
 
 lib_generic_checks_folderExists "${thisFunction}#1" "true" "${destination_folder_parent_path}"
 
-# -------------------------------------------
+# -----
 
 ## copy resources folder from dse package to dse-setup
 
@@ -51,7 +44,7 @@ lib_generic_display_msgColourSimple "ALERT" "Strip files from 'resources' folder
 mkdir -p "${pod_home_path}/tmp"
 tar -xf "${dse_tar_file}" -C "${pod_home_path}/tmp/"
 
-#-------------------------------------------
+# -----
 
 ## declare file extensions to remove in an array
 
@@ -87,7 +80,7 @@ array_file_extensions_to_strip[27]="kryo"
 array_file_extensions_to_strip[28]="ico"
 array_file_extensions_to_strip[29]="war"
 
-# -------------------------------------------
+# -----
 
 ## display stats on removed files
 
@@ -109,7 +102,7 @@ printf "%s\n" "--------------------------------------------------"
 printf "%s\t\t\t%s\n"   "${b}Folder size before:" "${before_size}"
 printf "%s\t\t\t%s\n\n" "${b}Folder size after:"  "$(du -sh ${source_folder_path} | awk '{ print $1 }')${reset}"
 
-# -------------------------------------------
+# -----
 
 ## copy source folder to destination folder
 lib_generic_display_msgColourSimple "ALERT" "Move stripped 'resources' folder into the pod_DSE 'build' folder"

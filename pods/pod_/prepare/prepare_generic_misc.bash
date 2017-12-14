@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # author:        jondowson
 # about:         functions required prior to running pod
 
@@ -15,7 +13,7 @@ function prepare_generic_misc_podBuildTempFolder(){
 tmp_build_folder="${pod_home_path}/tmp/pod/"
 tmp_builds_folder="${tmp_build_folder}pods/${WHICH_POD}/builds/"
 tmp_build_file_folder="${tmp_builds_folder}${BUILD_FOLDER}/"
-tmp_build_file_path="${tmp_build_file_folder}build_settings.sh"
+tmp_build_settings_file_path="${tmp_build_file_folder}build_settings.bash"
 tmp_suitcase_file_path="${tmp_build_folder}pods/pod_/.suitcase"
 
 # delete any existing duplicated 'pod' folder from '/tmp'
@@ -31,6 +29,7 @@ cp -rp "${pod_home_path}/servers"      "${tmp_working_folder}"
 cp -rp "${pod_home_path}/third_party"  "${tmp_working_folder}"
 cp -p  "${pod_home_path}/README.md"    "${tmp_working_folder}"
 cp -p  "${pod_home_path}/launch-pod"   "${tmp_working_folder}"
+cp -p  "${pod_home_path}/.launch-pod"  "${tmp_working_folder}"
 }
 
 # ------------------------------------------
@@ -73,7 +72,7 @@ function prepare_generic_misc_sourceGeneric(){
 
 ## source generic reusable pod scripts
 
-files="$(find ${pod_home_path}/pods/pod_/ -name "*.sh*" -not -path "*scripts/*" | grep -v  "template_*" | grep -v  "lib_generic_prepare.sh")"
+files="$(find ${pod_home_path}/pods/pod_/ -name "*.bash*" -not -path "*scripts/*" | grep -v  "template_*" | grep -v  "lib_generic_prepare.bash")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
@@ -88,7 +87,7 @@ function prepare_generic_misc_sourceThisPod(){
 # check pod exists
 lib_generic_checks_folderExistsCaseSensitive "pod folder does not exist" "true" "${pod_home_path}/pods/" "${WHICH_POD}"
 
-files="$(find ${pod_home_path}/pods/${WHICH_POD}/ -name "*.sh*" -not -path "*builds/*" -not -path "*scripts/*")"
+files="$(find ${pod_home_path}/pods/${WHICH_POD}/ -name "*.bash*" -not -path "*builds/*" -not -path "*scripts/*")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
@@ -103,7 +102,7 @@ function prepare_generic_misc_sourceThisPodBuild(){
 if [[ ${buildFlag} == "true" ]]; then
 
   build_file_folder="${pod_home_path}/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"
-  build_file_path="${build_file_folder}build_settings.sh"
+  build_file_path="${build_file_folder}build_settings.bash"
 
   if [[ -f ${build_file_path} ]]; then
     source ${build_file_path}
@@ -113,46 +112,11 @@ if [[ ${buildFlag} == "true" ]]; then
 fi
 }
 
-# ---------------------------------------
-
-function prepare_generic_misc_hashBang(){
-
-## ensure bash interpreter is set correctly for pod on remote os
-
-# determine what comes after #!/ at top of remote launch script
-if [[ ${remote_os} == *"Mac"* ]]; then
-  hashBang="#!/usr/local/bin/bash"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}launch-pod" "#!/bin/bash" "${hashBang}"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/scripts/scripts_launchPodRemotely.sh" "#!/bin/bash" "${hashBang}"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/lib/lib_doStuff_remotely.sh" "#!/bin/bash" "${hashBang}"
-elif [[ ${remote_os} == "Ubuntu" ]]; then
-  hashBang="#!/bin/bash"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}launch-pod" "#!/usr/local/bin/bash" "${hashBang}"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/scripts/scripts_launchPodRemotely.sh" "#!/usr/local/bin/bash" "${hashBang}"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/lib/lib_doStuff_remotely.sh" "#!/usr/local/bin/bash" "${hashBang}"
-elif [[ ${remote_os} == "Centos" ]]; then
-  hashBang="#!/bin/bash"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}launch-pod" "usr/local/bin/bash" "${hashBang}"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/scripts/scripts_launchPodRemotely.sh" "#!/usr/local/bin/bash" "${hashBang}"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/lib/lib_doStuff_remotely.sh" "#!/usr/local/bin/bash" "${hashBang}"
-elif [[ ${remote_os} == "Redhat" ]]; then
-  hashBang="#!/bin/bash"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}launch-pod"                                             "#!/usr/local/bin/bash" "${hashBang}"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/scripts/scripts_launchPodRemotely.sh" "#!/usr/local/bin/bash" "${hashBang}"
-  lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${tmp_working_folder}pods/${WHICH_POD}/lib/lib_doStuff_remotely.sh"          "#!/usr/local/bin/bash" "${hashBang}"
-else
-  os="Bad"
-  lib_generic_display_msgColourSimple "error" "OS Not Supported"
-  exit 1;
-fi
-}
-
 # ------------------------------------------
 
 function prepare_generic_misc_setDefaults(){
 
 ## pod_DSE default settings
 
-VB="false"           # verbose messages
 STAGE_PAUSE="5"      # pauses between STAGES
 }

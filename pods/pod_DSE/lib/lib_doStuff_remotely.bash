@@ -1,5 +1,3 @@
-#!/usr/local/bin/bash
-
 # author:        jondowson
 # about:         functions executed on remote server
 

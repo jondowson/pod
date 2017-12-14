@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # author:        jondowson
 # about:         configure dse software and distribute to all servers in cluster
 
@@ -72,7 +70,7 @@ if [[ "${clusterstateFlag}" == "true" ]]; then
   lib_generic_display_banner
   lib_generic_display_msgColourSimple "STAGE"      "STAGE: Test cluster connections"
   lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1${white} 2 ]${reset}"
-  lib_generic_display_msgColourSimple "TASK==>"       "TASK: Testing server connectivity"
+  lib_generic_display_msgColourSimple "TASK==>"    "TASK: Testing server connectivity"
   task_generic_testConnectivity
   task_generic_testConnectivity_report
   lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."

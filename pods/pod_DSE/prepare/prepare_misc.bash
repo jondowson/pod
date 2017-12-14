@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # author:        jondowson
 # about:         preperation functions for 'pod_DSE'
 
@@ -12,9 +10,9 @@ function prepare_misc_checkFilesExist(){
 if [[ ${clusterstateFlag} != "true" ]]; then
   # test POD_SOFTWARE folder and dse_tar file are available
   if [[ "${SEND_POD_SOFTWARE}" == "true" ]]; then
-    lib_generic_checks_folderExists "prepare_misc.sh#1" "true" "${POD_SOFTWARE}"
-    lib_generic_checks_fileExists   "prepare_misc.sh#2" "true" "${dse_tar_file}"
-    lib_generic_checks_fileExists   "prepare_misc.sh#2" "true" "${agent_tar_file}"
+    lib_generic_checks_folderExists "prepare_misc.bash#1" "true" "${POD_SOFTWARE}"
+    lib_generic_checks_fileExists   "prepare_misc.bash#2" "true" "${dse_tar_file}"
+    lib_generic_checks_fileExists   "prepare_misc.bash#2" "true" "${agent_tar_file}"
   fi
 fi
 }
@@ -36,6 +34,6 @@ function prepare_misc_clearTheDecks(){
 
 ## remove any temporary files/folders that may be left from a previous run of pod_DSE
 
-> ${pod_home_path}/pods/pod_DSE/builds/dynamic_build_settings
+> ${pod_home_path}/pods/pod_/.suitcase
 rm -rf ${pod_home_path}/tmp
 }

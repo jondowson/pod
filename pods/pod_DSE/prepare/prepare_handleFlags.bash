@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # author:        jondowson
 # about:         flag handling for pod_DSE
 

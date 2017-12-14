@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # author:        jondowson
 # about:         test write-paths for all servers in servers json definition
 
@@ -36,11 +34,12 @@ do
 
 # ----------
 
-  if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "INFO-->" "editing:     'TARGET_FOLDER' in 'build_settings.sh'"; fi
-  #lib_generic_strings_sedStringManipulation "editAfterSubstring" "${tmp_build_file_path}" "TARGET_FOLDER=" "\"${target_folder}\""
-  TARGET_FOLDER="${target_folder}"
-  source ${tmp_build_file_path}
-
+  # pack a 'suitcase' of variables that will be sent to each server
+  printf "%s\n" "TARGET_FOLDER=${target_folder}" >> "${tmp_suitcase_file_path}"
+  source "${tmp_build_settings_file_path}"
+  # as this is being used in a command run locally - we will append and straight away remove - to avoid polluting variables
+  lib_generic_strings_sedStringManipulation "removeLastLineFromFile" "${tmp_suitcase_file_path}" "dummy" "dummy"
+  
 # ----------
 
   lib_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
@@ -121,11 +120,6 @@ do
     fi
     done
   fi
-
-# delete POD_INSTALL/pod-build folder
-ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "[ -d ${INSTALL_FOLDER} ] && rm -rf ${INSTALL_FOLDER_POD}${BUILD_FOLDER}" exit
-# delete POD_INSTALL/pod-build folder
-ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "[ -d ${INSTALL_FOLDER} ] && rm -rf ${INSTALL_FOLDER_POD}${AGENT_VERSION}" exit
 done
 }
 

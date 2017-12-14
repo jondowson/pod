@@ -1,9 +1,7 @@
-#!/bin/bash
-
 # author:        jondowson
 # about:         send POD_SOFTWARE tarballs to each server to specified target folder
 
-#-------------------------------------------
+# ------------------------------------------
 
 function task_generic_sendPodSoftware(){
 
@@ -20,21 +18,21 @@ do
   pubIp=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.pubIp'          | tr -d '"')
   prvIp=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.prvIp'          | tr -d '"')
 
-# ----------
+# -----
 
   # add trailing '/' to path if not present
   target_folder=$(lib_generic_strings_addTrailingSlash "${target_folder}")
   TARGET_FOLDER="${LOCAL_TARGET_FOLDER}"
-  source ${tmp_build_file_path}
-  
-  # ----------
+  source ${tmp_build_settings_file_path}
+
+# -----
 
   lib_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
 
-  # ----------
+# -----
 
   lib_generic_display_msgColourSimple "INFO-->" "sending:     POD_SOFTWARE folder"
-  
+
   # target folder must exist on target machine !!
   ssh -o ForwardX11=no ${user}@${pubIp} "mkdir -p ${target_folder}"
 
@@ -63,13 +61,13 @@ do
 
 done
 
-# ----------
+# -----
 
 lib_generic_display_msgColourSimple "INFO-BOLD" "awaiting scp pids:${reset}"
 lib_generic_display_msgColourSimple "INFO" "${yellow}$DSE_pids${reset}"
 printf "\n%s"
 
-# ----------
+# -----
 
 # Wait for all processes to finish
 
@@ -85,7 +83,7 @@ for p in $DSE_pids; do
 done
 }
 
-#-------------------------------------------
+# ------------------------------------------
 
 function task_generic_sendPodSoftware_report(){
 

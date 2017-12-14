@@ -1,9 +1,7 @@
-#!/bin/bash
-
 # author:        jondowson
 # about:         run 'pod_launch_remote.sh' on each server in the cluster
 
-#-------------------------------------------
+# ------------------------------------------
 
 function task_generic_launchPodRemotely(){
 
@@ -17,7 +15,7 @@ do
   pubIp=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.pubIp'          | tr -d '"')
   prvIp=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.prvIp'          | tr -d '"')
 
-# ----------
+# -----
 
   # add trailing '/' to path if not present
   target_folder=$(lib_generic_strings_addTrailingSlash "${target_folder}")
@@ -70,7 +68,7 @@ for p in $runBuild_pids; do
 done
 }
 
-#-------------------------------------------
+# ------------------------------------------
 
 function task_generic_launchPodRemotely_report(){
 
