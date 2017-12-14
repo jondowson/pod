@@ -128,11 +128,11 @@ prepare_flagRules
 ## all pod apps make use of a servers json definition file
 
 servers_json_path="${pod_home_path}/servers/${SERVERS_JSON}"
-
+lib_generic_checks_fileExists "launch-pod#1" "true" "${servers_json_path}"
 catchError "launch-pod#2" "true" "${jq_folder}jq [.] ${servers_json_path}"
 numberOfServers=$(${jq_folder}jq [.] ${servers_json_path} | tr '"' '\n' | grep 'server_' | wc -l)
-# ivf numberOfServers=0 then exit
-
+lib_generic_checks_noOfServers "${numberOfServers}" "launch-pod#3"
+echo $numberOfServers
 # ------------------------------------------
 
 ## source the specified pod's build folder

@@ -28,7 +28,7 @@ VNODES="8"                                      # specify a value (8,16,32) for 
 
 DSE_VERSION="dse-5.1.5"
 DSE_TARBALL="${DSE_VERSION}-bin.tar.gz"
-AGENT_VERSION="datastax-agent-6.1.3"
+AGENT_VERSION="datastax-agent-6.1.5"
 AGENT_TARBALL="${AGENT_VERSION}.tar.gz"
 
 # -----

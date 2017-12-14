@@ -11,7 +11,7 @@
 # prvIp:          the private address of the server (e.g. AWS internal ips)
 # listen_address  specify either the 'pubIp' or 'prvIp' to use in cassandra.yaml (use prvIp on aws)
 # rpc_address     specify either the pubIp or prvIp (use prvIp on aws) or use default value of localhost
-# stomp_interface specify the address of the opscenter - or leave empty if unsure
+# stomp_interface specify the address of the opscenter - or leave default setting of 127.0.0.1
 # seeds:          used at bootstrap of node into cluster
 #                 --> take care when choosing the seeds for a node
 #                 --> order local DC seeds first, then seeds for any other DC
@@ -38,7 +38,7 @@
       "prvIp": "127.0.0.1",
       "listen_address": "172.0.0.1",
       "rpc_address": "172.0.0.1",
-      "stomp_interface": "172.0.0.1",
+      "stomp_interface": "127.0.0.1",
       "seeds": "172.0.0.1,172.0.0.2",
       "token": "",
       "dc": "dc1",

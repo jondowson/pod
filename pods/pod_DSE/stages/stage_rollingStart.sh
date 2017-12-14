@@ -41,7 +41,7 @@ do
 # ----------
 
   agent_untar_bin_folder="${target_folder}POD_INSTALLS/DATASTAX/${AGENT_VERSION}/bin/"
-  start_agent="source ~/.bash_profile && . ${agent_untar_bin_folder}/datastax-agent"
+  start_agent="${agent_untar_bin_folder}/datastax-agent"
 
 # ----------
 
@@ -54,9 +54,9 @@ do
 # ----------
 
   if [[ "${flags}" == "" ]]; then
-    lib_generic_display_msgColourSimple "INFO-->" "starting dse:      cassandra only"
+    lib_generic_display_msgColourSimple "INFO-->" "starting dse + agent:      cassandra only"
   else
-    lib_generic_display_msgColourSimple "INFO-->" "starting dse:      with flags ${flags}"
+    lib_generic_display_msgColourSimple "INFO-->" "starting dse + agent:      with flags ${flags}"
   fi
 
 # ----------

@@ -124,7 +124,21 @@ fi
 
 function lib_generic_checks_localIpMatch(){
 
-## check if an ip is a local ip 
+## check if an ip is a local ip
 ipToCheck=${1}
 ip addr | grep -wq "${ipToCheck}" &&  printf "%s" "true"
-}  
+}
+
+# ---------------------------------------
+
+function lib_generic_checks_noOfServers(){
+
+noOfServers="${1}"
+tagMsg="${2}"
+
+## check if an ip is a local ip
+if [[ "$noOfServers" -eq 0 ]]; then
+  lib_generic_display_msgColourSimple "ERROR-->" "Error: number of servers is empty: ${yellow}[ ${noOfServers} ]${red} tag: ${yellow}[ ${tagMsg} ]${red}"
+  exit 1;
+fi
+}

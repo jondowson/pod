@@ -77,6 +77,7 @@ export GREMLIN_LOG_DIR=${gremlin_log_folder}
 #>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'
 EOF
 
+# helps cqlsh and nodetool connect
 lib_generic_strings_sedStringManipulation "removeHashAndLeadingWhitespace"         ${file} '# JVM_OPTS=\"$JVM_OPTS -Djava.rmi.server.hostname=<public name>\"' "dummy"
 lib_generic_strings_sedStringManipulation "editAfterSubstring"                     ${file} 'JVM_OPTS=\"$JVM_OPTS -Djava.rmi.server.hostname=' "${pubIp}\""
 }
@@ -93,9 +94,15 @@ file="${tmp_build_file_folder}resources/cassandra/conf/jvm.options"
 # search for and remove any lines starting with:
 lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "-Djna.tmpdir=" "dummy"
 
+# search for and remove any pre-canned blocks containing this label
+label="define_jvm_options"
+lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
+
 # append to end of file
 cat << EOF >> ${file}
+#>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'
 -Djna.tmpdir=${Djava_tmp_folder}
+#>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'
 EOF
 }
 

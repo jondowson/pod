@@ -28,8 +28,8 @@ do
   analytics=$(cat ${servers_json_path}     | ${jq_folder}jq '.server_'${id}'.mode.analytics' | tr -d '"')
   graph=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.mode.graph'     | tr -d '"')
   dsefs=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.mode.dsefs'     | tr -d '"')
-  
-# ---------- 
+
+# ----------
 
   # add trailing '/' to path if not present
   target_folder=$(lib_generic_strings_addTrailingSlash "${target_folder}")
@@ -40,7 +40,8 @@ do
 
 # ----------
 
-  lib_generic_display_msgColourSimple "INFO-INDENTED" "stopping dse:      gracefully"                                                           
+  lib_generic_display_msgColourSimple "INFO-INDENTED" "stopping dse:      gracefully"
+  lib_generic_display_msgColourSimple "INFO-INDENTED" "killing agent:     ungracefully"
 
 # ----------
 
@@ -51,7 +52,8 @@ do
     retry=1
     until [[ "${retry}" == "6" ]] || [[ "${status}" == "0" ]]
     do
-      ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${stop_cmd}" exit
+      ssh -q -i ${sshKey} ${user}@${pubIp} "ps aux | grep -i datastax-agent | awk {'print \$2'} | xargs kill -9"
+      ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${stop_cmd}"
       status=${?}
       if [[ "${status}" == "0" ]]; then
         lib_generic_display_msgColourSimple "INFO_INDENTED" "ssh return code: ${green}${status}"

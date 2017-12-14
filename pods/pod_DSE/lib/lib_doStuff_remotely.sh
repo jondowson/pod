@@ -75,10 +75,16 @@ lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLin
 lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export CASSANDRA_HOME=" "dummy"
 lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export PATH=\$PATH:\$CASSANDRA_HOME" "dummy"
 
+# search for and remove any pre-canned blocks containing a label:
+label="dse_bash_profile"
+lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
+
 cat << EOF >> ${file}
+#>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'
 export OPSC_JVM_OPTS="-Djava.io.tmpdir=${Djava_tmp_folder}"
 export CASSANDRA_HOME="${dse_untar_bin_folder}"
 export PATH=\$PATH:\$CASSANDRA_HOME
+#>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'
 EOF
 }
 
@@ -114,8 +120,8 @@ function lib_doStuff_remotely_agentAddressYaml(){
 file="${agent_untar_config_folder}address.yaml"
 touch ${file}
 
-lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "# stomp_interface=" "dummy"
-lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "#stomp_interface=" "dummy"
+lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "stomp_interface:" "dummy"
+lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "use_ssl:" "dummy"
 
 # search for and remove any pre-canned blocks containing a label:
 label="set_stomp_opscenter"
@@ -124,7 +130,8 @@ lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file
 # add line sourcing .bashrc - no need on a Mac
 cat << EOF >> ${file}
 #>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'
-stomp_interface="${STOMP_INTERFACE}"
+stomp_interface: ${STOMP_INTERFACE}
+use_ssl: 0
 #>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'
 EOF
 }

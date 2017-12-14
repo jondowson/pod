@@ -55,16 +55,16 @@ do
 
   lib_generic_display_msgColourSimple "INFO-->" "making:      bespoke pod build"
 
-  # pack a 'tmp_dynamic_build_file_path' of variables that will be sent to each server
-  printf "%s\n" "TARGET_FOLDER=${target_folder}" > "${tmp_dynamic_build_file_path}"
+  # pack a 'tmp_suitcase_file_path' of variables that will be sent to each server
+  printf "%s\n" "TARGET_FOLDER=${target_folder}" > "${tmp_suitcase_file_path}"
   # source folder to reset paths based this server's target_folder
   # source "${tmp_build_file_path}"
 
-  printf "%s\n" "JAVA_DISTRIBUTION=${JAVA_DISTRIBUTION}" >> "${tmp_dynamic_build_file_path}"
-  printf "%s\n" "JAVA_VERSION=${JAVA_VERSION}" >> "${tmp_dynamic_build_file_path}"
-  printf "%s\n" "JAVA_TARBALL=${JAVA_TARBALL}" >> "${tmp_dynamic_build_file_path}"
-  printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}" >> "${tmp_dynamic_build_file_path}"
-  printf "%s\n" "build_folder_path=${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/" >> "${tmp_dynamic_build_file_path}"
+  printf "%s\n" "JAVA_DISTRIBUTION=${JAVA_DISTRIBUTION}" >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "JAVA_VERSION=${JAVA_VERSION}" >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "JAVA_TARBALL=${JAVA_TARBALL}" >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}" >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "build_folder_path=${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/" >> "${tmp_suitcase_file_path}"
 
   if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "INFO-->" "editing:     'scripts_launchPodRemotely.sh'"; fi
   prepare_generic_misc_hashBang
@@ -83,7 +83,7 @@ do
   scp -q -o LogLevel=QUIET -i ${sshKey} -r "${tmp_working_folder}" "${user}@${pubIp}:${target_folder}POD_SOFTWARE/POD/"
   status=${?}
   pod_build_send_error_array["${tag}"]="${status};${pubIp}"
-  > ${tmp_dynamic_build_file_path}
+  > ${tmp_suitcase_file_path}
 done
 
 # delete the temporary work folder

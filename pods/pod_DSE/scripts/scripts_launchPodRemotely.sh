@@ -36,7 +36,7 @@ cd ${parent_path}
 cd ../../../
 pod_home_path="$(pwd)"
 
-source "${pod_home_path}/pods/pod_DSE/builds/dynamic_build_settings"
+source "${pod_home_path}/pods/pod_/.suitcase"
 
 #-------------------------------------------
 

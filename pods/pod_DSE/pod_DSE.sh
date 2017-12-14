@@ -39,12 +39,6 @@
 
 # ------------------------------------------
 
-## used in error messages
-
-thisScript="pod_DSE.sh"
-
-# ------------------------------------------
-
 function pod_DSE(){
 
 ## create arrays for capturing errors

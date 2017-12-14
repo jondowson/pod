@@ -36,7 +36,6 @@ do
 # ----------
 
   # add trailing '/' to path if not present
-
   target_folder="$(lib_generic_strings_addTrailingSlash ${target_folder})"
 
 # -----
@@ -46,8 +45,7 @@ do
 
 # -----
 
-# establish the OS on remote machine
-
+  # establish the OS on remote machine
   remote_os=$(ssh -q -o Forwardx11=no ${user}@${pubIp} 'bash -s' < ${pod_home_path}/pods/pod_/scripts/scripts_generic_identifyOs.sh)
   lib_generic_display_msgColourSimple   "INFO-->" "detected os: ${green}${remote_os}${reset}"
 
@@ -62,18 +60,22 @@ do
   if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "INFO-->" "setting:     'dynamic_build_settings.sh'"; fi
 
   # pack a 'suitcase' of variables that will be sent to each server
-  printf "%s\n" "TARGET_FOLDER=${target_folder}" > "${tmp_dynamic_build_file_path}"
+  printf "%s\n" "TARGET_FOLDER=${target_folder}" > "${tmp_suitcase_file_path}"
   # source folder to reset paths based this server's target_folder
   source "${tmp_build_file_path}"
 
-  # pack the tmp_dynamic_build_file_path !!
-  printf "%s\n" "DSE_VERSION=${DSE_VERSION}" >> "${tmp_dynamic_build_file_path}"
-  printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}" >> "${tmp_dynamic_build_file_path}"
-  printf "%s\n" "build_folder_path=${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/" >> "${tmp_dynamic_build_file_path}"
-  printf "%s\n" "WHICH_POD=${WHICH_POD}" >> "${tmp_dynamic_build_file_path}"
-  printf "%s\n" "agent_untar_config_folder=${INSTALL_FOLDER_POD}${AGENT_VERSION}/conf/" >> "${tmp_dynamic_build_file_path}"
-  printf "%s\n" "AGENT_VERSION=${AGENT_VERSION}" >> "${tmp_dynamic_build_file_path}"
-  printf "%s\n" "STOMP_INTERFACE=${stomp_interface}" >> "${tmp_dynamic_build_file_path}"
+# -----
+
+  # pack the tmp_suitcase_file_path !!
+  printf "%s\n" "DSE_VERSION=${DSE_VERSION}" >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}" >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "build_folder_path=${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/" >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "WHICH_POD=${WHICH_POD}" >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "agent_untar_config_folder=${INSTALL_FOLDER_POD}${AGENT_VERSION}/conf/" >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "AGENT_VERSION=${AGENT_VERSION}" >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "STOMP_INTERFACE=${stomp_interface}" >> "${tmp_suitcase_file_path}"
+
+# -----
 
   if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "INFO-->" "editing:     'cassandra-env.sh'"; fi
   lib_doStuff_locally_cassandraEnv
@@ -104,14 +106,14 @@ do
   numberOfDataFolders=$(($(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.cass_data' | wc -l)-3))
 
 # CAT/EOF cannot be indented !!
-cat << EOF >> "${tmp_dynamic_build_file_path}"
+cat << EOF >> "${tmp_suitcase_file_path}"
 declare -a data_file_directories_array
 EOF
 
 for j in `seq 0 ${numberOfDataFolders}`;
 do
 data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.cass_data['${j}']' | tr -d '"')
-cat << EOF >> "${tmp_dynamic_build_file_path}"
+cat << EOF >> "${tmp_suitcase_file_path}"
 data_file_directories_array[${j}]="${data_path}"
 EOF
 done
@@ -138,14 +140,14 @@ done
     numberOfDataFolders=$(($(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.dsefs_data' | wc -l)-3))
 
 # CAT/EOF cannot be indented !!
-cat << EOF >> "${tmp_dynamic_build_file_path}"
+cat << EOF >> "${tmp_suitcase_file_path}"
 declare -a dsefs_data_file_directories_array
 EOF
 
 for j in $(seq 0 ${numberOfDataFolders});
 do
 data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.dsefs_data['${j}']' | tr -d '"')
-cat << EOF >> "${tmp_dynamic_build_file_path}"
+cat << EOF >> "${tmp_suitcase_file_path}"
 dsefs_data_file_directories_array[${j}]="${data_path}"
 EOF
 done
@@ -184,7 +186,7 @@ done
   scp -q -o LogLevel=QUIET -i ${sshKey} -r "${tmp_working_folder}" "${user}@${pubIp}:${target_folder}POD_SOFTWARE/POD/"
   status=${?}
   pod_build_send_error_array["${tag}"]="${status};${pubIp}"
-  > ${tmp_dynamic_build_file_path}
+  > ${tmp_suitcase_file_path}
 done
 
 # delete the temporary work folder

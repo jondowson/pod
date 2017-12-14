@@ -14,6 +14,7 @@ if [[ ${clusterstateFlag} != "true" ]]; then
   if [[ "${SEND_POD_SOFTWARE}" == "true" ]]; then
     lib_generic_checks_folderExists "prepare_misc.sh#1" "true" "${POD_SOFTWARE}"
     lib_generic_checks_fileExists   "prepare_misc.sh#2" "true" "${dse_tar_file}"
+    lib_generic_checks_fileExists   "prepare_misc.sh#2" "true" "${agent_tar_file}"
   fi
 fi
 }
