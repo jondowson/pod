@@ -53,6 +53,11 @@ else
       [ -f $file ] && . $file
   done
 
+  files="$(find ${pod_home_path}/pods/pod_/prepare -name "*.bash")"
+  for file in $(printf "%s\n" "$files"); do
+      [ -f $file ] && . $file
+  done
+
   files="$(find ${pod_home_path}/pods/pod_DSE/lib/ -name "*.bash*")"
   for file in $(printf "%s\n" "$files"); do
       [ -f $file ] && . $file
@@ -114,5 +119,10 @@ else
   if [[ ${os} == *"Ubuntu"* ]]; then
     lib_doStuff_remotely_bashrc
   fi
+
+  # -----
+
+  # [7] tidy up
+  prepare_generic_misc_clearTheDecks
 
 fi
