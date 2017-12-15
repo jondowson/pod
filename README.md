@@ -9,8 +9,9 @@ Tested on Mac, Ubuntu, Centos and Redhat.
 It is extensible and new modules (or 'pods') can be added quickly that make use of pod's core capabilities.  
 Its first 'pod' makes it easy to set up and run a DSE cluster from **tarballs**.  
 - **pod_DSE**:    
-    - setup, configure and distribute dse software to all servers in a cluster.    
-    - perform rolling starts and stops.            
+    - setup, configure and distribute DSE software to all servers in a cluster.
+    - setup and configure datastax-agent software.    
+    - perform rolling start and stop for DSE clusters.            
 
 ## pod versioning
 
@@ -72,10 +73,7 @@ Quick Instructions (to work out of the box):
   - **JAVA**    
     - **oracle**  
       - jdk-8uxxx-linux-i586.tar.gz
-  - **POD**       
-
-Opscenter and agent software is not setup by pod_DSE but inclusion will ensure their distribution to each server.     
-Check online Datastax documents to ensure usage of compatible versions.   
+  - **POD**          
 
 3) cd to POD_SOFTWARE/POD folder
 4) git clone https://github.com/jondowson/pod or download + uncompress zip here.  
@@ -130,12 +128,14 @@ When you first run pod_DSE, it will look in your specified builds folder to see 
 If there is not, it will uncompress your chosen dse version tarball and copy its resources folder there.    
 This copied folder is stripped of all **non-config files** - the remainder are then available for editing.    
 
-The settings specified in **build_settings.bash** and the **<servers.json>** will be edited into this copied resources folder.    
+The settings specified in **build_settings.bash** and the **<servers.json>** are edited into this copied resources folder.    
 But for all the settings they do not cover, you can manually edit any of them.    
 So if required, hit **\<ctrl-c\>** at the end of this initial stage - you will have 10 seconds!   
-Then edit any DSE config file in the build's **resources** folder.    
+Then edit any DSE config file in the build's **resources** folder and re-launch **pod_DSE**.       
 
-Re-launch **pod_DSE**.    
 All servers will receive a bespoke version of the resources folder + all required software.     
-A pod-launcher script will be run remotely and finish the server configuration, including merging the bespoke resources folder.  
+A pod-launcher script will be run remotely and finish the server configuration:    
+- uncompress software.    
+- merge the bespoke resources folder.    
+- setup environment variables.      
 Once finished - pod_DSE has a rolling start command to start DSE (choice of modes) and datastax-agents - see help for example.    
