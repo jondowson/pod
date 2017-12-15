@@ -28,6 +28,7 @@ cp -rp "${pod_home_path}/pods"         "${tmp_working_folder}" && \
 cp -rp "${pod_home_path}/servers"      "${tmp_working_folder}" && \
 cp -rp "${pod_home_path}/third_party"  "${tmp_working_folder}" && \
 cp -p  "${pod_home_path}/README.md"    "${tmp_working_folder}" && \
+cp -p  "${pod_home_path}/.gitignore"   "${tmp_working_folder}" && \
 cp -p  "${pod_home_path}/launch-pod"   "${tmp_working_folder}"
 }
 
@@ -126,6 +127,6 @@ function prepare_generic_misc_clearTheDecks(){
 
 ## remove any temporary files/folders that may be left from a previous run of pod_DSE
 
-> ${pod_home_path}/pods/pod_/.suitcase
+> ${pod_home_path}/misc/.suitcase
 rm -rf ${pod_home_path}/tmp
 }

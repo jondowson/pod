@@ -3,7 +3,7 @@
 
 # //////////////////////////////////////////
 # DO-NOT-EDIT-THIS-BLOCK !!
-source ${pod_home_path}/pods/pod_/.suitcase
+source ${pod_home_path}/misc/.suitcase
 POD_SOFTWARE="${TARGET_FOLDER}POD_SOFTWARE/"
 PACKAGES="${POD_SOFTWARE}DATASTAX/"
 INSTALL_FOLDER="${TARGET_FOLDER}POD_INSTALLS/"
