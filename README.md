@@ -4,7 +4,7 @@
 
 **pod** is about automating tasks over many machines.    
 It is written in bash because sometimes thats all you can use in locked down environments (banking).    
-Tested on Mac, Ubuntu and Centos.    
+Tested on Mac, Ubuntu, Centos and Redhat.    
 
 It is extensible and new modules (or 'pods') can be added quickly that make use of pod's core capabilities.  
 Its first 'pod' makes it easy to set up and run a DSE cluster from **tarballs**.  
@@ -31,13 +31,14 @@ $ git checkout -b <pod-version-x.x>
 
 ## pod modules
 
-pod is meant to be extensible and its core functions enable distribution and configuration of files.    
-pod modules ('pods') are discrete projects that make use of these core functions.    
-Each 'pod' is organised into one or more **STAGES**, consisting of one or more **TASKS**, containing action(s).     
+- pod is meant to be extensible and its core functions enable distribution and configuration of files.        
+- pod modules ('pods') are discrete projects that make use of these core functions.    
+- each 'pod' contain the same sub folders and can make use of the generic 'pod_' for common tasks.    
+- pod workflows are organised into one or more **STAGES**, consisting of one or more **TASKS**, containing action(s).     
 
 ### pod #1 - 'pod_DSE'  
 
-With **'pod_DSE'** you can easily create and manage multiple dse cluster setups with varying versions / settings.     
+With **pod_DSE** you can easily create and manage multiple dse cluster setups with varying versions / settings.     
 Different configurations can be deployed to the same machines and they will not interfere with each other.  
 As such **pod_DSE** is very useful in development / testing environments as well as in production if opscenter is not an option.  
 
@@ -86,24 +87,25 @@ $ ./misc/install_podDependencies_mac.sh
     - datastax-agent    
       - datastax-agent-6.x.x.tar.gz
   - JAVA    
-    - **oracle-java**  
-    - jdk-8uxxx-linux-i586.tar.gz
-  - POD    
+    - **oracle**  
+      - jdk-8uxxx-linux-i586.tar.gz
+  - **POD**    
     - **pod**   
 
+- add the pod software to the POD folder !    
 Opscenter and agent software is not setup by pod_DSE but inclusion will ensure their tarballs are distributed to each server.     
 Check online datastax documents to ensure usage of compatible versions.      
 
-6) Duplicate **pods/pod_DSE/builds/dse-5.x.x_template**, rename it and then review/edit its '**build_settings.sh**' file.    
+6) Duplicate **pods/pod_DSE/builds/dse-5.x.x_template**, rename it and then review/edit its '**build_settings.bash**' file.    
 `   
 $ cp -r pods/pod_DSE/builds/dse-5.x.x_template  pods/pod_DSE/builds/dse-5.x.x_nameIt  
 `     
 `   
-$ vi pods/pod_DSE/builds/dse-5.x.x_nameIt/build_settings.sh    
+$ vi pods/pod_DSE/builds/dse-5.x.x_nameIt/build_settings.bash    
 `   
 
 Rename the template file in line with the dse version you intend to use.    
-The '**build_settings.sh**' file captures cluster-wide settings such as cluster name and write paths for logs/data.    
+The '**build_settings.bash**' file captures cluster-wide settings such as cluster name and write paths for logs/data.    
 
 7) Duplicate a servers template **.json** file, rename and edit it.  
 `   
@@ -127,15 +129,15 @@ $ ./launch-pod --pod pod_DSE --servers nameIt.json --build dse-x.x.x_nameIt
 
 **Note:**    
 When you first run pod, it will look in your specified builds folder to see if there is a '**resources**' folder.    
-If there is not, it will untar your choosen dse version tarball and copy its resourcs folder there.    
+If there is not, it will untar your chosen dse version tarball and copy its resources folder there.    
 This copied folder is stripped of all **non-config files** - the remainder are then available for editing.    
 
-The settings specified in '**build_settings.sh**' and the servers '**.json**' will be edited into this copied resources folder.    
+The settings specified in '**build_settings.bash**' and the servers '**.json**' will be edited into this copied resources folder.    
 But for all the settings they do not cover, you can manually edit any of them.    
 So if required, hit **\<ctrl-c\>** at the end of this initial stage - you will have 10 seconds!   
 Then edit any dse config file in the build's **resources** folder.    
 
 Re-launch **pod_DSE**.    
 All servers will receive a bespoke version of the resources folder + all required software.     
-A pod-launcher script will be run remotely and finish the server configuration.  
-You can then perform a rolling start of the cluster - see help for example.    
+A pod-launcher script will be run remotely and finish the server configuration, including merging the resources folder.  
+You can then perform a rolling start of the cluster using pod_DSE - see help for example.    
