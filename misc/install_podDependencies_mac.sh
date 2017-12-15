@@ -131,6 +131,20 @@ else
   printf "%s\n" "${tick}"
 fi
 
+# -----
+
+if [[ $brewList == *"ssh-copy-id"* ]]; then
+  lib_generic_display_msgColourSimple "alert" "Fetching latest ssh-copy-id"
+  printf "%s\t\t" "$ brew upgrade ssh-copy-id"
+  brew upgrade ssh-copy-id > /dev/null 2>&1
+  printf "%s\n" "${tick}"
+else
+  lib_generic_display_msgColourSimple "alert" "Installing ssh-copy-id"
+  printf "%s\t\t" "$ brew install ssh-copy-id"
+  brew install ssh-copy-id > /dev/null 2>&1
+  printf "%s\n" "${tick}"
+fi
+
 # ------------------------------------------
 
 lib_generic_display_banner
