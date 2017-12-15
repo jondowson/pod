@@ -120,6 +120,9 @@ $ ./launch-pod --help
 
 10) Finally run '**launch-pod**' passing in the required parameters.  
 `   
+$ chmod +x launch-pod   
+`  
+`   
 $ ./launch-pod --pod pod_DSE --servers nameIt.json --build dse-x.x.x_nameIt    
 `   
 
