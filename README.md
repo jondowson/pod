@@ -126,16 +126,16 @@ $ ./launch-pod --pod pod_DSE --servers nameIt.json --build dse-x.x.x_nameIt
 `   
 
 **Note:**    
-When you first run pod, it will look in your specified builds folder to see if there is a '**resources**' folder.    
+When you first run pod_DSE, it will look in your specified builds folder to see if there is a '**resources**' folder.    
 If there is not, it will uncompress your chosen dse version tarball and copy its resources folder there.    
 This copied folder is stripped of all **non-config files** - the remainder are then available for editing.    
 
-The settings specified in '**build_settings.bash**' and the servers '**.json**' will be edited into this copied resources folder.    
+The settings specified in **build_settings.bash** and the **<servers.json>** will be edited into this copied resources folder.    
 But for all the settings they do not cover, you can manually edit any of them.    
 So if required, hit **\<ctrl-c\>** at the end of this initial stage - you will have 10 seconds!   
-Then edit any dse config file in the build's **resources** folder.    
+Then edit any DSE config file in the build's **resources** folder.    
 
 Re-launch **pod_DSE**.    
 All servers will receive a bespoke version of the resources folder + all required software.     
-A pod-launcher script will be run remotely and finish the server configuration, including merging the resources folder.  
-You can then perform a rolling start of the cluster using pod_DSE - see help for example.    
+A pod-launcher script will be run remotely and finish the server configuration, including merging the bespoke resources folder.  
+Once finished - pod_DSE has a rolling start command to start DSE (choice of modes) and datastax-agents - see help for example.    
