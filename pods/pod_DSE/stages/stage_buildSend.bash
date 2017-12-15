@@ -69,6 +69,7 @@ do
   printf "%s\n" "STOMP_INTERFACE=${stomp_interface}" >> "${tmp_suitcase_file_path}"
 
 # -----
+
   # edit the local copy of the dse config files
   lib_doStuff_locally_cassandraEnv
   lib_doStuff_locally_jvmOptions
