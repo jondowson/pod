@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# script_name:   launch-pod.sh
+# script_name:   launch-pod
 # author:        jondowson
 # about:         launch a chosen pod with passed in flags
 
@@ -43,7 +43,7 @@ prepare_generic_misc_identifyOs
 
 if [[ "${os}" == "Mac" ]]; then
 
-  ./.launch-pod "$@"
+  misc/.launch-pod "$@"
 
 else
 
@@ -111,7 +111,7 @@ else
           shift
           prepare_generic_misc_sourceThisPod
           prepare_misc_setDefaults
-          prepare_misc_clearTheDecks
+          prepare_generic_misc_clearTheDecks
           podFlag="true"
           ;;
       *)
@@ -149,7 +149,7 @@ else
 
   ## source the specified pod's init script and run that pod
 
-  source "pods/${WHICH_POD}/${WHICH_POD}.sh"
+  source "pods/${WHICH_POD}/${WHICH_POD}.bash"
   "${WHICH_POD}"
 
   # ------------------------------------------

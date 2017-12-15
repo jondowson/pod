@@ -10,26 +10,25 @@ function prepare_generic_misc_podBuildTempFolder(){
 # this requires an existing local resources folder
 # note: it is this duplicate folder will be configured locally and then sent to remote server(s)
 
-tmp_build_folder="${pod_home_path}/tmp/pod/"
-tmp_builds_folder="${tmp_build_folder}pods/${WHICH_POD}/builds/"
-tmp_build_file_folder="${tmp_builds_folder}${BUILD_FOLDER}/"
-tmp_build_settings_file_path="${tmp_build_file_folder}build_settings.bash"
-tmp_suitcase_file_path="${tmp_build_folder}pods/pod_/.suitcase"
+tmp_build_folder="${pod_home_path}/tmp/pod/" && \
+tmp_builds_folder="${tmp_build_folder}pods/${WHICH_POD}/builds/" && \
+tmp_build_file_folder="${tmp_builds_folder}${BUILD_FOLDER}/" && \
+tmp_build_settings_file_path="${tmp_build_file_folder}build_settings.bash" && \
+tmp_suitcase_file_path="${tmp_build_folder}misc/.suitcase" && \
 
 # delete any existing duplicated 'pod' folder from '/tmp'
-tmp_folder="${pod_home_path}/tmp/"
-rm -rf "${tmp_folder}"
+tmp_folder="${pod_home_path}/tmp/" && \
+rm -rf "${tmp_folder}" && \
 
 # duplicate 'pod' folder to working directory '/tmp'
-tmp_working_folder="${pod_home_path}/tmp/pod/"
-mkdir -p "${tmp_working_folder}"
-cp -rp "${pod_home_path}/misc"         "${tmp_working_folder}"
-cp -rp "${pod_home_path}/pods"         "${tmp_working_folder}"
-cp -rp "${pod_home_path}/servers"      "${tmp_working_folder}"
-cp -rp "${pod_home_path}/third_party"  "${tmp_working_folder}"
-cp -p  "${pod_home_path}/README.md"    "${tmp_working_folder}"
+tmp_working_folder="${pod_home_path}/tmp/pod/" && \
+mkdir -p "${tmp_working_folder}" && \
+cp -rp "${pod_home_path}/misc"         "${tmp_working_folder}" && \
+cp -rp "${pod_home_path}/pods"         "${tmp_working_folder}" && \
+cp -rp "${pod_home_path}/servers"      "${tmp_working_folder}" && \
+cp -rp "${pod_home_path}/third_party"  "${tmp_working_folder}" && \
+cp -p  "${pod_home_path}/README.md"    "${tmp_working_folder}" && \
 cp -p  "${pod_home_path}/launch-pod"   "${tmp_working_folder}"
-cp -p  "${pod_home_path}/.launch-pod"  "${tmp_working_folder}"
 }
 
 # ------------------------------------------
@@ -119,4 +118,14 @@ function prepare_generic_misc_setDefaults(){
 ## pod_DSE default settings
 
 STAGE_PAUSE="5"      # pauses between STAGES
+}
+
+# ------------------------------------------
+
+function prepare_generic_misc_clearTheDecks(){
+
+## remove any temporary files/folders that may be left from a previous run of pod_DSE
+
+> ${pod_home_path}/pods/pod_/.suitcase
+rm -rf ${pod_home_path}/tmp
 }

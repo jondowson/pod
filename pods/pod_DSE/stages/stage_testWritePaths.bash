@@ -34,12 +34,11 @@ do
 
 # ----------
 
-  # pack a 'suitcase' of variables that will be sent to each server
-  printf "%s\n" "TARGET_FOLDER=${target_folder}" >> "${tmp_suitcase_file_path}"
+  # use the 'suitcase' as a means of refreshing the build_settings.bash variables
+  # note this stage does not send the suitcase to the remote server
+  printf "%s\n" "TARGET_FOLDER=${target_folder}" > "${tmp_suitcase_file_path}"
   source "${tmp_build_settings_file_path}"
-  # as this is being used in a command run locally - we will append and straight away remove - to avoid polluting variables
-  lib_generic_strings_sedStringManipulation "removeLastLineFromFile" "${tmp_suitcase_file_path}" "dummy" "dummy"
-  
+
 # ----------
 
   lib_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
@@ -82,11 +81,21 @@ do
 
 # ----------
 
+  # calculate number of cassandra data folders specified in json
+  # -3? - one for each bracket line and another 'cos the array starts at zero
+  numberOfDataFolders=$(($(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.cass_data' | wc -l)-3))
+
+  declare -a data_file_directories_array
+  for j in $(seq 0 ${numberOfDataFolders});
+  do
+    data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.cass_data['${j}']' | tr -d '"')
+    data_file_directories_array[${j}]=${data_path}
+  done
+
   for i in "${data_file_directories_array[@]}"
   do
     lib_generic_strings_expansionDelimiter "$i" ";" "2";
     writeFolder="${_D1_}"
-    echo $writeFolder
     status="999"
     if [[ "${status}" != "0" ]]; then
       retry=0
@@ -94,7 +103,7 @@ do
       do
         ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir -p ${writeFolder}dummyFolder && rm -rf ${writeFolder}dummyFolder" exit
         status=${?}
-        pod_test_send_error_array_2["${i}"]="${status};${tag}"
+        pod_test_send_error_array_2["${writeFolder}"]="${status};${tag}"
         ((retry++))
       done
     fi
@@ -103,6 +112,18 @@ do
 # ----------
 
   if [[ "${analytics}" == "true" ]] || [[ "${dsefs}" == "true" ]]; then
+
+    # calculate number of cassandra data folders specified in json
+    # -3? - one for each bracket line and another 'cos the array starts at zero
+    numberOfDataFolders=$(($(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.dsefs_data' | wc -l)-3))
+
+    declare -a dsefs_data_file_directories_array
+    for j in $(seq 0 ${numberOfDataFolders});
+    do
+      data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.dsefs_data['${j}']' | tr -d '"')
+      dsefs_data_file_directories_array[${j}]=${data_path}
+    done
+
     for i in "${dsefs_data_file_directories_array[@]}"
     do
     lib_generic_strings_expansionDelimiter "$i" ";" "2";
@@ -112,9 +133,9 @@ do
       retry=0
       until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
       do
-        ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir ${writeFolder}dummyFolder && rm -rf ${writeFolder}dummyFolder" exit
+        ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir -p ${writeFolder}dummyFolder && rm -rf ${writeFolder}dummyFolder" exit
         status=${?}
-        pod_test_send_error_array_3["${i}"]="${status};${tag}"
+        pod_test_send_error_array_3["${writeFolder}"]="${status};${tag}"
         ((retry++))
       done
     fi
@@ -191,7 +212,7 @@ if [[ "${pod_test_send_fail}" == "true" ]]; then
     lib_generic_display_msgColourSimple "INFO" "${cross} ${k}"
   done
   lib_generic_display_msgColourSimple "ERROR-->" "Aborting script as not all paths are writeable"
-  exit 1;
+  prepare_generic_misc_clearTheDecks && exit 1;
 else
   lib_generic_display_msgColourSimple "SUCCESS" "Write-paths test passed for all servers"
 fi

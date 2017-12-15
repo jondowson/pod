@@ -3,12 +3,12 @@
 # author:        jondowson
 # about:         script run on each server to install configured software
 
-#-------------------------------------------
+# ------------------------------------------
 
 # uncomment to see full bash trace (debug)
 # set -x
 
-#-------------------------------------------
+# ------------------------------------------
 
 ## determine OS of this computer
 
@@ -27,7 +27,7 @@ else
   exit 1;
 fi
 
-#-------------------------------------------
+# ------------------------------------------
 
 ## determine this scripts' folder path
 
@@ -35,11 +35,11 @@ parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 cd ${parent_path}
 cd ../../../
 pod_home_path="$(pwd)"
-source "${pod_home_path}/pods/pod_/.suitcase"
+source "${pod_home_path}/misc/.suitcase"
 
-#-------------------------------------------
+# ------------------------------------------
 
-## source pod_generic _ pod_dse lib scripts
+## source pod_ + pod_DSE lib scripts
 
 files="$(find ${pod_home_path}/pods/pod_/lib -name "*.bash" | grep -v "lib_generic_display.bash")"
 for file in $(printf "%s\n" "$files"); do
@@ -51,7 +51,7 @@ for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
 
-#-------------------------------------------
+# ------------------------------------------
 
 ## source the pod-specific 'builds' folder to use
 
@@ -66,11 +66,11 @@ else
   lib_generic_checks_fileExists "scripts_launchPodRemotely#1" "true" "${build_file_path}"
 fi
 
-#-------------------------------------------
+# ------------------------------------------
 
 ## install dse + agents on each server
 
-# [1] delete any previous POD_INSTALL/pod-build folder + agent folder
+# [1] delete any previous pod build folder with the same name + any agent folder of the same version
 
 [ -d ${INSTALL_FOLDER} ] && rm -rf ${INSTALL_FOLDER_POD}${BUILD_FOLDER}
 [ -d ${INSTALL_FOLDER} ] && rm -rf ${INSTALL_FOLDER_POD}${AGENT_VERSION}
@@ -94,7 +94,7 @@ cp -R "${build_file_folder}resources" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
 
 # -----
 
-# [5] update the agent address.yaml
+# [5] update the datastax-agent address.yaml to point to opscenter
 
 lib_doStuff_remotely_agentAddressYaml
 

@@ -1,8 +1,8 @@
 #!/usr/local/bin/bash
 
-# script_name:   launch-pod.sh
+# script_name:   .launch-pod
 # author:        jondowson
-# about:         launch a chosen pod with passed in flags
+# about:         launch a chosen pod with passed in flags for Macs
 
 # ------------------------------------------
 
@@ -22,7 +22,7 @@ pod_start=$(date +%s)
 
 parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 cd "${parent_path}"
-pod_home_path="$(pwd)"
+pod_home_path="$(cd ../; pwd)"
 
 # ------------------------------------------
 
@@ -36,7 +36,7 @@ TARGET_FOLDER="${LOCAL_TARGET_FOLDER}"
 ## pod preparation: call in correct order
 
 # [1] source generic preperation script
-source pods/pod_/prepare/prepare_generic_misc.bash
+source ../pods/pod_/prepare/prepare_generic_misc.bash
 
 # [2] identify local os
 prepare_generic_misc_identifyOs
@@ -105,7 +105,7 @@ while test $# -gt 0; do
         shift
         prepare_generic_misc_sourceThisPod
         prepare_misc_setDefaults
-        prepare_misc_clearTheDecks
+        prepare_generic_misc_clearTheDecks
         podFlag="true"
         ;;
     *)
@@ -143,7 +143,7 @@ prepare_generic_misc_sourceThisPodBuild
 
 ## source the specified pod's init script and run that pod
 
-source "pods/${WHICH_POD}/${WHICH_POD}.sh"
+source "../pods/${WHICH_POD}/${WHICH_POD}.bash"
 "${WHICH_POD}"
 
 # ------------------------------------------

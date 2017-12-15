@@ -29,11 +29,3 @@ STRICT_START="false"             # exit pod_DSE if any server cannot be reached 
 }
 
 # ------------------------------------------
-
-function prepare_misc_clearTheDecks(){
-
-## remove any temporary files/folders that may be left from a previous run of pod_DSE
-
-> ${pod_home_path}/pods/pod_/.suitcase
-rm -rf ${pod_home_path}/tmp
-}

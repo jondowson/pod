@@ -3,31 +3,31 @@
 # author:       jondowson
 # about:        install mac dependencies for the pod application
 
-#-------------------------------------------
+# ------------------------------------------
 
 # uncomment to see full bash trace (debug)
 # set -x
 
-#-------------------------------------------
+# ------------------------------------------
 
 ## determine this scripts' folder path
 
 parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 cd ${parent_path}
-podSetupFolder="$(cd ../; pwd)"
+pod_home_path="$(cd ../; pwd)"
 
-#-------------------------------------------
+# ------------------------------------------
 
 ## source dse-setup lib scripts
 
 # source lib folder scripts
-files="$(find ${podSetupFolder}/pods/pod_/lib -name "*.sh*")"
+files="$(find ${pod_home_path}/pods/pod_/lib -name "*.bash*")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
 
 # source prepare folder scripts
-files="$(find ${podSetupFolder}/pods/pod_/prepare -name "*.sh*")"
+files="$(find ${pod_home_path}/pods/pod_/prepare -name "*.bash*")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
@@ -37,7 +37,7 @@ done
 lib_generic_display_banner
 lib_generic_display_msgColourSimple "STAGE"      "STAGE: Prepare Mac for pod"
 lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1${white} 2 ]${reset}"
-lib_generic_display_msgColourSimple "TASK==>"       "TASK: Install brew packages"
+lib_generic_display_msgColourSimple "TASK==>"    "TASK: Install brew packages"
 
 brewList=$(brew list)
 
@@ -61,7 +61,7 @@ else
   printf "%s\n" "${tick}"
 fi
 
-# -----------------
+# -----
 
 if [[ $brewList == *"bash"* ]]; then
   lib_generic_display_msgColourSimple "alert" "Fetching latest bash"
@@ -75,7 +75,7 @@ else
   printf "%s\n" "${tick}"
 fi
 
-# -----------------
+# -----
 
 if [[ $brewList == *"gnu-sed"* ]]; then
   lib_generic_display_msgColourSimple "alert" "Fetching latest gnu-sed"
@@ -89,7 +89,7 @@ else
   printf "%s\n" "${tick}"
 fi
 
-# -----------------
+# -----
 
 if [[ $brewList == *"iproute2mac"* ]]; then
   lib_generic_display_msgColourSimple "alert" "Fetching latest iproute2mac"
@@ -103,7 +103,7 @@ else
   printf "%s\n" "${tick}"
 fi
 
-# -----------------
+# -----
 
 if [[ $brewList == *"awk"* ]]; then
   lib_generic_display_msgColourSimple "alert" "Fetching latest awk"
@@ -117,7 +117,7 @@ else
   printf "%s\n" "${tick}"
 fi
 
-# -----------------
+# -----
 
 if [[ $brewList == *"jq"* ]]; then
   lib_generic_display_msgColourSimple "alert" "Fetching latest jq"
@@ -131,16 +131,12 @@ else
   printf "%s\n" "${tick}"
 fi
 
-#-------------------------------------------
+# ------------------------------------------
 
 lib_generic_display_banner
-lib_generic_display_msgColourSimple "STAGE"      "STAGE: Prepare Mac for pod"
+lib_generic_display_msgColourSimple "STAGE"      "STAGE: Summary"
 lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 ${white}]${reset}"
-lib_generic_display_msgColourSimple "TASK==>"       "TASK: Configure bash interpreter"
-
-# update hashbang for launch-pod - so it uses brew version of bash
-prepare_generic_misc_identifyOs
-lib_generic_strings_sedStringManipulation "searchAndReplaceStringGlobal" "${podSetupFolder}/launch-pod" "bin/bash" "usr/local/bin/bash"
+lib_generic_display_msgColourSimple "TASK==>"    "TASK: Confirm bash version"
 
 printf "%s\n"
 lib_generic_display_msgColourSimple "alert" "Homebrew installed packages:"

@@ -1,18 +1,20 @@
 # author:        jondowson
-# about:         software version and path configurations for a cluster created by 'pod_dse'
-#                this file should not be renamed !!
+# about:         software version and path configurations for a cluster created by pod_DSE
 
-# ////////////////////////////////////////// DO-NOT-EDIT-THIS-BLOCK !!
-
+# //////////////////////////////////////////
+# DO-NOT-EDIT-THIS-BLOCK !!
 source ${pod_home_path}/pods/pod_/.suitcase
 POD_SOFTWARE="${TARGET_FOLDER}POD_SOFTWARE/"
 PACKAGES="${POD_SOFTWARE}DATASTAX/"
 INSTALL_FOLDER="${TARGET_FOLDER}POD_INSTALLS/"
 INSTALL_FOLDER_POD="${TARGET_FOLDER}POD_INSTALLS/DATASTAX/"
+# //////////////////////////////////////////
+
+
 
 
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-# EDIT-ME-BEGIN ===========================
+# EDIT-THIS-BLOCK !!
 
 ## [1] BASIC CASSANDRA SETTINGS
 
@@ -41,32 +43,26 @@ PARENT_LOG_FOLDER="${INSTALL_FOLDER_POD}${dse_version}logs/"
 
 # temp folder - can be anywhere with suffcient permissions
 TEMP_FOLDER="${INSTALL_FOLDER}tmp/"
-
-# EDIT-ME-END ============================
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
-# ////////////////////////////////////////// DO-NOT-EDIT-THIS-BLOCK !!
 
+
+# //////////////////////////////////////////
+# DO-NOT-EDIT-THIS-BLOCK !!
 # dse
 dse_tar_folder="${PACKAGES}dse/"
 dse_tar_file="${dse_tar_folder}${DSE_TARBALL}"
 dse_untar_config_folder="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/resources/dse/conf/"
 dse_untar_bin_folder="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/bin/"
-
+# datastax-agent
 agent_tar_folder="${PACKAGES}datastax-agent/"
 agent_tar_file="${agent_tar_folder}${AGENT_TARBALL}"
 agent_untar_folder="${INSTALL_FOLDER_POD}${AGENT_VERSION}"
 agent_untar_config_folder="${INSTALL_FOLDER_POD}${AGENT_VERSION}/conf/"
 agent_untar_bin_folder="${INSTALL_FOLDER_POD}${AGENT_VERSION}/bin/"
-
-# -----
-
 # required for java
 Djava_tmp_folder="${TEMP_FOLDER}"
-
-# -----
-
 # cassandra
 cassandra_log_folder="${PARENT_LOG_FOLDER}cassandra/"
 commitlog_directory="${PARENT_DATA_FOLDER}commitlog/"
@@ -74,27 +70,16 @@ cdc_raw_directory="${PARENT_DATA_FOLDER}cdc_raw/"
 saved_caches_directory="${PARENT_DATA_FOLDER}saved_caches/"
 hints_directory="${PARENT_DATA_FOLDER}hints/"
 cassandra_untar_config_folder="${INSTALL_FOLDER_POD}${DSE_VERSION}/resources/cassandra/conf/"
-
-# -----
-
 # spark data and log folders
 spark_local_data="${PARENT_DATA_FOLDER}spark/rdd/"
 spark_worker_data="${PARENT_DATA_FOLDER}spark/worker/"
 spark_master_log_folder="${PARENT_LOG_FOLDER}spark/master/"
 spark_worker_log_folder="${PARENT_LOG_FOLDER}spark/worker/"
 spark_untar_config_folder="${INSTALL_FOLDER_POD}${DSE_VERSION}/resources/spark/conf/"
-
-# -----
-
 # dsefs
 dsefs_untar_folder="${INSTALL_FOLDER_POD}${DSE_VERSION}/resources/dsefs/"
-
-# -----
-
 # gremlin logs
 gremlin_log_folder="${PARENT_LOG_FOLDER}gremlin/"
-
-# -----
-
 # tomcat logs
 tomcat_log_folder="${PARENT_LOG_FOLDER}tomcat/"
+# //////////////////////////////////////////

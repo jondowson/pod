@@ -58,7 +58,7 @@ do
 
 # -----
 
-  # pack the tmp_suitcase_file_path !!
+  # pack the suitcase as its going on vacation to the remote server !!
   printf "%s\n" "DSE_VERSION=${DSE_VERSION}" >> "${tmp_suitcase_file_path}"
   printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}" >> "${tmp_suitcase_file_path}"
   printf "%s\n" "build_folder_path=${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/" >> "${tmp_suitcase_file_path}"
@@ -69,7 +69,7 @@ do
   printf "%s\n" "STOMP_INTERFACE=${stomp_interface}" >> "${tmp_suitcase_file_path}"
 
 # -----
-
+  # edit the local copy of the dse config files
   lib_doStuff_locally_cassandraEnv
   lib_doStuff_locally_jvmOptions
   lib_doStuff_locally_cassandraYaml
@@ -158,6 +158,7 @@ done
   if [[ "${localServer}" == "false" ]]; then
     ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "rm -rf ${target_folder}POD_SOFTWARE/POD/pod" exit
   fi
+  # send the updated pod
   scp -q -o LogLevel=QUIET -i ${sshKey} -r "${tmp_working_folder}" "${user}@${pubIp}:${target_folder}POD_SOFTWARE/POD/"
   status=${?}
   pod_build_send_error_array["${tag}"]="${status};${pubIp}"
@@ -203,7 +204,7 @@ if [[ "${pod_build_send_fail}" == "true" ]]; then
   done
   printf "%s\n"
   lib_generic_display_msgColourSimple "ERROR-->" "Aborting script as not all paths are writeable"
-  exit 1;
+  prepare_generic_misc_clearTheDecks && exit 1;
 else
   lib_generic_display_msgColourSimple "SUCCESS" "Created and distributed pod builds on all servers"
 fi

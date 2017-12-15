@@ -21,6 +21,8 @@ ret=$?
 if [[ $ret != 0 ]]; then
   lib_generic_display_msgColourSimple "ERROR-->" "Error: command failed: ${yellow}[ $3 ]${red} with return value: ${yellow}[ $ret ]${red} tag: ${yellow}[ ${tagMsg} ]${red}"
   if [[ ${abort}  == "true" ]]; then
+    > ${pod_home_path}/pods/pod_/.suitcase
+    rm -rf ${pod_home_path}/tmp
     exit $ret;
   fi
 fi
@@ -45,6 +47,8 @@ file=${3}
 if [[ ! -f ${file} ]]; then
   lib_generic_display_msgColourSimple "ERROR-->" "Error: file not found: ${yellow}[ ${file} ]${red} tag: ${yellow}[ ${tagMsg} ]${red}"
   if [[ "${abort}"  == "true" ]]; then
+    > ${pod_home_path}/pods/pod_/.suitcase
+    rm -rf ${pod_home_path}/tmp
     exit 1;
   fi
 fi
@@ -69,6 +73,8 @@ folder=${3}
 if [[ ! -d ${folder} ]]; then
   lib_generic_display_msgColourSimple "ERROR-->" "Error: folder not found: ${yellow}[ ${folder} ]${red} tag: ${yellow}[ ${tagMsg} ]${red}"
   if [[ ${abort}  == "true" ]]; then
+    > ${pod_home_path}/pods/pod_/.suitcase
+    rm -rf ${pod_home_path}/tmp
     exit 1;
   fi
 fi
@@ -113,6 +119,8 @@ done
 if [[ "${notFound}" == "true" ]]; then
   lib_generic_display_msgColourSimple "ERROR-->" "Error: folder not found: ${yellow}[ ${checkFolder} ]${red} tag: ${yellow}[ ${tagMsg} ]${red}"
   if [[ "${abort}" == "true" ]]; then
+    > ${pod_home_path}/pods/pod_/.suitcase
+    rm -rf ${pod_home_path}/tmp
     exit 1;
   fi
 fi
@@ -137,6 +145,8 @@ tagMsg="${2}"
 ## check if an ip is a local ip
 if [[ "$noOfServers" -eq 0 ]]; then
   lib_generic_display_msgColourSimple "ERROR-->" "Error: number of servers is empty: ${yellow}[ ${noOfServers} ]${red} tag: ${yellow}[ ${tagMsg} ]${red}"
+  > ${pod_home_path}/pods/pod_/.suitcase
+  rm -rf ${pod_home_path}/tmp
   exit 1;
 fi
 }

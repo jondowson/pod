@@ -5,9 +5,6 @@
 
 function task_generic_sendPodSoftware(){
 
-# resolve ${POD_SOFTWARE} folder to local machine settings
-source ${build_file_path}
-
 for id in $(seq 1 ${numberOfServers});
 do
 
@@ -34,7 +31,7 @@ do
   lib_generic_display_msgColourSimple "INFO-->" "sending:     POD_SOFTWARE folder"
 
   # target folder must exist on target machine !!
-  ssh -o ForwardX11=no ${user}@${pubIp} "mkdir -p ${target_folder}"
+  catchError "cannot make target folder" "true" "ssh -o ForwardX11=no ${user}@${pubIp} mkdir -p ${target_folder}"
 
   # check if server is local server - no point sending software if local +  no delete locally of existing pod folder
   localServer="false"
@@ -43,7 +40,7 @@ do
   if [[ "${localServer}" == "true" ]]; then
     lib_generic_display_msgColourSimple "INFO-->" "Not sending to local machine ! ${reset}"
   else
-    scp -q -o LogLevel=QUIET -i ${sshKey} -r ${POD_SOFTWARE} ${user}@${pubIp}:${target_folder} &                                                       # run in parallel
+    scp -q -o LogLevel=QUIET -i ${sshKey} -r ${POD_SOFTWARE} ${user}@${pubIp}:${target_folder} &    # run in parallel
     # grab pid and capture owner in array
     pid=${!}
     lib_generic_display_msgColourSimple "INFO-->" "pid id:      ${yellow}${pid}${reset}"
