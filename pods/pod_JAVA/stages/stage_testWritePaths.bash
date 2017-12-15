@@ -3,7 +3,7 @@
 # author:        jondowson
 # about:         test write-paths for all servers in servers json definition
 
-#-------------------------------------------
+# -------------------------------------------
 
 function task_testWritePaths(){
 
@@ -29,19 +29,17 @@ do
   graph=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.mode.graph'     | tr -d '"')
   dsefs=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.mode.dsefs'     | tr -d '"')
 
-# ----------
+# -----
 
   # add trailing '/' to path if not present
   target_folder=$(lib_generic_strings_addTrailingSlash "${target_folder}")
 
-# ----------
+# -----
 
-  if [[ "${VB}" == "true" ]]; then lib_generic_display_msgColourSimple "INFO-->" "editing:     'TARGET_FOLDER' in 'build_settings.sh'"; fi
-  #lib_generic_strings_sedStringManipulation "editAfterSubstring" "${tmp_build_settings_file_path}" "TARGET_FOLDER=" "\"${target_folder}\""
   TARGET_FOLDER="${target_folder}"
   source ${tmp_build_settings_file_path}
 
-# ----------
+# -----
 
   lib_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
   printf "\n%s"
@@ -51,20 +49,9 @@ do
 
   declare -a mkdir_array
   mkdir_array[0]="${target_folder}"
-  mkdir_array[1]="${cassandra_log_folder}"
-  mkdir_array[2]="${gremlin_log_folder}"
-  mkdir_array[3]="${tomcat_log_folder}"
-  mkdir_array[4]="${spark_master_log_folder}"
-  mkdir_array[5]="${spark_worker_log_folder}"
-  mkdir_array[6]="${commitlog_directory}"
-  mkdir_array[7]="${cdc_raw_directory}"
-  mkdir_array[8]="${saved_caches_directory}"
-  mkdir_array[9]="${hints_directory}"
-  mkdir_array[10]="${dsefs_untar_folder}"
-  mkdir_array[11]="${spark_local_data}"
-  mkdir_array[12]="${spark_worker_data}"
+  mkdir_array[1]="${INSTALL_FOLDER_POD}"
 
-# ----------
+# -----
 
   for i in "${mkdir_array[@]}"
   do
@@ -80,53 +67,11 @@ do
       done
     fi
   done
-
-# ----------
-
-  for i in "${data_file_directories_array[@]}"
-  do
-    lib_generic_strings_expansionDelimiter "$i" ";" "2";
-    writeFolder="${_D1_}"
-    echo $writeFolder
-    status="999"
-    if [[ "${status}" != "0" ]]; then
-      retry=0
-      until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
-      do
-        ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir -p ${writeFolder}dummyFolder && rm -rf ${writeFolder}dummyFolder" exit
-        status=${?}
-        pod_test_send_error_array_2["${i}"]="${status};${tag}"
-        ((retry++))
-      done
-    fi
-  done
-
-# ----------
-
-  if [[ "${analytics}" == "true" ]] || [[ "${dsefs}" == "true" ]]; then
-    for i in "${dsefs_data_file_directories_array[@]}"
-    do
-    lib_generic_strings_expansionDelimiter "$i" ";" "2";
-    writeFolder="${_D1_}"
-    status="999"
-    if [[ "${status}" != "0" ]]; then
-      retry=0
-      until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
-      do
-        ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir ${writeFolder}dummyFolder && rm -rf ${writeFolder}dummyFolder" exit
-        status=${?}
-        pod_test_send_error_array_3["${i}"]="${status};${tag}"
-        ((retry++))
-      done
-    fi
-    done
-  fi
-# finally delete test POD_INSTALL folder
-ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "[ -d ${INSTALL_FOLDER} ] && rm -rf ${INSTALL_FOLDER}" exit
+  
 done
 }
 
-#-------------------------------------------
+# -------------------------------------------
 
 function task_testWritePaths_report(){
 
@@ -143,35 +88,7 @@ do
   fi
 done
 
-# ----------
-
-declare -a pod_test_send_report_array_2
-count=0
-for k in "${!pod_test_send_error_array_2[@]}"
-do
-  lib_generic_strings_expansionDelimiter ${pod_test_send_error_array_2[$k]} ";" "1"
-  if [[ "${_D1_}" != "0" ]]; then
-    pod_test_send_fail="true"
-    pod_test_send_report_array_2["${count}"]="could not make folder: ${yellow}${k} ${white}on server ${yellow}${_D2_}${reset}"
-    (( count++ ))
-  fi
-done
-
-# ----------
-
-declare -a pod_test_send_report_array_3
-count=0
-for k in "${!pod_test_send_error_array_3[@]}"
-do
-  lib_generic_strings_expansionDelimiter ${pod_test_send_error_array_3[$k]} ";" "1"
-  if [[ "${_D1_}" != "0" ]]; then
-    pod_test_send_fail="true"
-    pod_test_send_report_array_3["${count}"]="could not make folder: ${yellow}${k} ${white}on server ${yellow}${_D2_}${reset}"
-    (( count++ ))
-  fi
-done
-
-# ----------
+# -----
 
 if [[ "${pod_test_send_fail}" == "true" ]]; then
   printf "%s\n"

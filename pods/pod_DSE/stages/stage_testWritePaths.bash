@@ -1,7 +1,7 @@
 # author:        jondowson
 # about:         test write-paths for all servers in servers json definition
 
-#-------------------------------------------
+# -------------------------------------------
 
 function task_testWritePaths(){
 
@@ -144,7 +144,7 @@ do
 done
 }
 
-#-------------------------------------------
+# -------------------------------------------
 
 function task_testWritePaths_report(){
 

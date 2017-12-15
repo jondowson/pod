@@ -2,7 +2,7 @@
 # about:         start dse on each server based on its server json defined mode
 script_name="stage_rollingStart.bash"
 
-#-------------------------------------------
+# -------------------------------------------
 
 function task_rollingStart(){
 
@@ -92,7 +92,7 @@ do
 done
 }
 
-#-------------------------------------------
+# -------------------------------------------
 
 function task_rollingStart_report(){
 

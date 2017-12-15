@@ -3,36 +3,36 @@
 
 # ------------------------------------------
 
-## pod desription: 'pod_dse'
+## pod desription: pod_DSE
 
 # note: a pod consists of STAGE(S), which consist of TASK(S), which contain actions.
 
-# 'pod_dse' makes use of 2 user defined files and has 5 STAGES.
+# pod_DSE makes use of 2 user defined files and has 5 STAGES.
 
 # --> ${SERVERS_JSON}
 # --> ${BUILD_FOLDER}cluster_settings.sh
 # and a DSE version specific prepared 'resources' folder.
 # --> ${BUILD_FOLDER}resources
 
-# STAGE [0] - optionally prepare local 'resources' folder
+# STAGE [1] - optionally prepare local 'resources' folder
 # --> will strip all non-config files from the 'resources' folder in the dse-<version> tarball.
 # --> copy to ${BUILD_FOLDER}resources.
 # --> OPTIONAL if one already exists.
 
-# STAGE [1] - test cluster connections
+# STAGE [2] - test cluster connections
 # --> test defined paths can be written to.
 
-# STAGE [2] - test cluster write paths
+# STAGE [3] - test cluster write paths
 # --> test that ssh can connect.
 
-# STAGE [3] - build and send pod build
+# STAGE [4] - build and send pod build
 # --> duplicate 'pod 'project to a temporary folder and configure for each server.
 # --> copy the duplicated and configured version - the pod 'build' - to each server.
 
-# STAGE [4] - build and send software tarballs
+# STAGE [5] - build and send software tarballs
 # --> copy over the 'POD_SOFTWARE' folder to each server.
 
-# STAGE [5] - execute pod remotely
+# STAGE [6] - execute pod remotely
 # --> remotely run 'launch-pod.sh' on each server.
 
 # ------------------------------------------

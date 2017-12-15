@@ -1,7 +1,7 @@
 # author:        jondowson
 # about:         start dse on each server based on its server json defined mode
 
-#-------------------------------------------
+# -------------------------------------------
 
 function task_rollingStop(){
 
@@ -66,7 +66,7 @@ do
 done
 }
 
-#-------------------------------------------
+# -------------------------------------------
 
 function task_rollingStop_report(){
 

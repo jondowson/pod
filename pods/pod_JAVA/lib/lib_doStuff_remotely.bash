@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # author:        jondowson
 # about:         functions executed on remote server
 
@@ -32,14 +30,20 @@ file="${HOME}/.bash_profile"
 touch ${file}
 
 # search for and remove any lines starting with:
-pod_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export JAVA_HOME=" "dummy"
-pod_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export PATH=\$JAVA_HOME:\$PATH" "dummy"
-pod_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export PATH=\$PATH:\$JAVA_HOME" "dummy"
+lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export JAVA_HOME=" "dummy"
+lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export PATH=\$JAVA_HOME:\$PATH" "dummy"
+lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export PATH=\$PATH:\$JAVA_HOME" "dummy"
+
+# search for and remove any pre-canned blocks containing a label:
+label="java_bash_profile"
+lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
 
 # append to end of files
 cat << EOF >> ${file}
+#>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'
 export JAVA_HOME="${java_untar_folder}${JAVA_VERSION}/bin"
 export PATH=\$JAVA_HOME:\$PATH
+#>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'
 EOF
 }
 
