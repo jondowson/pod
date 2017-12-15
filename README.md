@@ -58,7 +58,33 @@ Out of the box - pod creates a desktop folder with all configured software, data
 
 Quick Instructions (to work out of the box):  
 
-1) Setup passwordless access to all servers (including local machine).    
+1) Make a folder on your desktop called '**POD_SOFTWARE**'.  
+2) Add the following folder structure and tar files (add multiple versions per folder if you like).
+
+- **POD_SOFTWARE**  
+  - **DATASTAX**  
+    - **dse**
+      - dse-5.x.x-bin.tar.gz  
+    - **opscenter**    
+      - opscenter-6.x.x.tar.gz    
+    - **datastax-agent**    
+      - datastax-agent-6.x.x.tar.gz
+  - **JAVA**    
+    - **oracle**  
+      - jdk-8uxxx-linux-i586.tar.gz
+  - **POD**       
+
+Opscenter and agent software is not setup by pod_DSE but inclusion will ensure their distribution to each server.     
+Check online Datastax documents to ensure usage of compatible versions.   
+
+3) cd to POD_SOFTWARE/POD folder
+4) git clone https://github.com/jondowson/pod or download + uncompress zip here.  
+5) On Macs (both running pod and in a cluster) - first run the dependencies script from the root folder of the repo.  
+`  
+$ ./misc/install_podDependencies_mac.sh
+`
+
+6) Setup passwordless access to all servers (including local machine).        
 `    
 $ ssh-keygen -t rsa    # hit enter to all questions    
 `    
@@ -66,37 +92,9 @@ $ ssh-keygen -t rsa    # hit enter to all questions
 $ ssh-copy-id user@remote-machine
 `    
 The first step is required if you do not already have a local key setup.    
-This second step will send your key to the remote server to enable passwordless authentication.    
+This second step will send your key to the remote server to enable password-less authentication.    
 
-2) git clone https://github.com/jondowson/pod  
-
-3) For Macs (both running pod and in a cluster) - first run the dependencies script from the root folder of the repo.  
-`  
-$ ./misc/install_podDependencies_mac.sh
-`     
-
-4) Make a folder on your desktop called '**POD_SOFTWARE**'.  
-5) Add the following folder structure and tar files (add multiple versions per folder if you like).
-
-- **POD_SOFTWARE**  
-  - **DATASTAX**  
-    - **dse**
-      - dse-5.x.x-bin.tar.gz  
-    - opscenter    
-      - opscenter-6.x.x.tar.gz    
-    - datastax-agent    
-      - datastax-agent-6.x.x.tar.gz
-  - JAVA    
-    - **oracle**  
-      - jdk-8uxxx-linux-i586.tar.gz
-  - **POD**    
-    - **pod**   
-
-- add the pod software to the POD folder !    
-Opscenter and agent software is not setup by pod_DSE but inclusion will ensure their tarballs are distributed to each server.     
-Check online datastax documents to ensure usage of compatible versions.      
-
-6) Duplicate **pods/pod_DSE/builds/dse-5.x.x_template**, rename it and then review/edit its '**build_settings.bash**' file.    
+7) Duplicate **pods/pod_DSE/builds/dse-5.x.x_template**, rename it and then review/edit its '**build_settings.bash**' file.    
 `   
 $ cp -r pods/pod_DSE/builds/dse-5.x.x_template  pods/pod_DSE/builds/dse-5.x.x_nameIt  
 `     
@@ -107,7 +105,7 @@ $ vi pods/pod_DSE/builds/dse-5.x.x_nameIt/build_settings.bash
 Rename the template file in line with the dse version you intend to use.    
 The '**build_settings.bash**' file captures cluster-wide settings such as cluster name and write paths for logs/data.    
 
-7) Duplicate a servers template **.json** file, rename and edit it.  
+8) Duplicate a servers template **.json** file, rename and edit it.  
 `   
 $ cp pods/pod_DSE/servers/template_x.json  servers/nameIt.json  
 `   
@@ -117,19 +115,19 @@ $ vi servers/nameIt.json
 
 The **.json** defintion file captures server specific settings such as login credentials and ip addresses.    
 
-8) For help run '**launch-pod**' passing '**-h**' or '**--help**'.  
+9) For help run '**launch-pod**' passing '**-h**' or '**--help**'.  
 `   
 $ ./launch-pod --help    
 `       
 
-9) Finally run '**launch-pod**' passing in the required parameters.  
+10) Finally run '**launch-pod**' passing in the required parameters.  
 `   
 $ ./launch-pod --pod pod_DSE --servers nameIt.json --build dse-x.x.x_nameIt    
 `   
 
 **Note:**    
 When you first run pod, it will look in your specified builds folder to see if there is a '**resources**' folder.    
-If there is not, it will untar your chosen dse version tarball and copy its resources folder there.    
+If there is not, it will uncompress your chosen dse version tarball and copy its resources folder there.    
 This copied folder is stripped of all **non-config files** - the remainder are then available for editing.    
 
 The settings specified in '**build_settings.bash**' and the servers '**.json**' will be edited into this copied resources folder.    
