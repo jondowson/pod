@@ -48,7 +48,7 @@ else
 
   ## source pod_ + pod_DSE lib scripts
 
-  files="$(find ${pod_home_path}/pods/pod_/lib -name "*.sh" | grep -v "lib_generic_display.bash")"
+  files="$(find ${pod_home_path}/pods/pod_/lib -name "*.bash" | grep -v "lib_generic_display.bash")"
   for file in $(printf "%s\n" "$files"); do
       [ -f $file ] && . $file
   done
@@ -58,7 +58,7 @@ else
       [ -f $file ] && . $file
   done
 
-  files="$(find ${pod_home_path}/pods/pod_DSE/lib/ -name "*.bash*")"
+  files="$(find ${pod_home_path}/pods/pod_DSE/lib/ -name "*.bash")"
   for file in $(printf "%s\n" "$files"); do
       [ -f $file ] && . $file
   done

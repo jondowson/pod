@@ -51,7 +51,7 @@ for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
 
-files="$(find ${pod_home_path}/pods/pod_DSE/lib/ -name "*.bash*")"
+files="$(find ${pod_home_path}/pods/pod_DSE/lib/ -name "*.bash")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done

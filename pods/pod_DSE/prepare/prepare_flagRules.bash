@@ -38,5 +38,4 @@ elif [[ "${BUILD_FOLDER}" == "" ]]; then
      lib_generic_display_msgColourSimple "ERROR-->" "You must supply values for ${yellow}--regenresources${red} and ${yellow}--sendsoft${red} flags - please check the help: ${yellow}./launch-pod --help${red}" && exit 1;
   fi
 fi
-exit
 }
