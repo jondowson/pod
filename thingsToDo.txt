@@ -1,0 +1,64 @@
+1.0) add audit logging function to POD and add value to build_settings.bash
+
++ include list of keyspaces/tables to audit and list of actions
++ turn logging option to true in dse.yaml etc
+
+File: <<dse.yml>>
+audit_logging_options:
+    enabled: true
+    included_categories: DML,DDL,DCL,AUTH,ADMIN,ERROR
+    included_keyspaces: ob_accounts,ob_payauth,ob_paysub
+
+2.0) Create certs and copy them to /etc/dse/conf/
+
+Check the .cer file and the .pem file
+
+-------------------------------------
+
+You can quickly review the certificate with the following command, and ensure
+
+- The OU  at subject match the cluster name
+- The SAN contain the set of servers fqdns and ips.
+
+openssl x509 -in <<cert>>.cer  -text
+Review the modules to verify that the cert and the key match
+
+>   openssl rsa -in obdsedevst.key.pem  -modulus -noout | openssl md5
+(stdin)= f56934932e6e1e2a98dae23f74df42b1
+>  openssl x509  -in obdsedevst.cer  -modulus  -noout | openssl md5
+(stdin)= f56934932e6e1e2a98dae23f74df42b1
+
+The modules of the 2 big prime number that are public and private key should match
+Set up the java keystone.
+
+openssl pkcs12 -export -in obdsesit.cer -inkey  obdsesit.key.pem -chain -CAfile root-SHA2.cer -name "obdsesit" -out obdsesit.p12
+openssl pkcs12 -export -in obdsesit.cer -inkey  obdsesit.key.pem  -CAfile root-SHA2.cer -name "obdsesit" -out obdsesit.p12
+/home/c416805/Datastax/packages/oracle-java/jdk1.8.0_141/bin/keytool -importkeystore -deststorepass changeit  -destkeystore obdsesit.jks -srckeystore obdsesit.p12
+/home/c416805/Datastax/packages/oracle-java/jdk1.8.0_141/bin/keytool -import -keystore obdsesit.jks  -trustcacerts -alias rootca -file root-SHA2.cer
+
+
+3.0) create TDE
+
+3.1) uncompress java-jce to each server $JAVA_HOME/jre/lib/security
+3.2) verify with jrunscript -e 'print (javax.crypto.Cipher.getMaxAllowedKeyLength("RC5")>=256);' ==> true
+3.3) MANUALLY/script create system key and copy to all servers for OB using DSEtool command:
+
+
+
+review the key:
+
+$ stat /etc/dse/conf/ob_key     # chmod 700
+
+3.4) configure TDE
+system_info_encrytption:
+enabled: true
+cipher_algorithm: AES
+secret_key_strength: 256
+chunk_length_kb: 64
+
+
+$ dsetool createsystemkey 'AES/ECB/PKCS5Padding'256 ob_key     # where ob_key is the specified key name (making key now)
+
+
+3.4.1) Rolling restart of cluster.
+3.4.2) nodetool upgradesstables -a system batchlog paxos

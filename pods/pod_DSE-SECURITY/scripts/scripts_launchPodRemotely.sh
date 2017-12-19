@@ -39,14 +39,14 @@ source "${pod_home_path}/misc/.suitcase"
 
 if [[ "${os}" == "Mac" ]]; then
 
-  chmod +x ${pod_home_path}/pods/pod_DSE/scripts/.scripts_launchPodRemotely.sh
-  . ${pod_home_path}/pods/pod_DSE/scripts/.scripts_launchPodRemotely.sh
+  chmod +x ${pod_home_path}/pods/pod_JAVA/scripts/.scripts_launchPodRemotely.sh
+  . ${pod_home_path}/pods/pod_JAVA/scripts/.scripts_launchPodRemotely.sh
 
 else
 
-  # ------------------------------------------
+# ------------------------------------------
 
-  ## source pod_ + pod_DSE lib scripts
+  ## source pod_ + pod_JAVA lib scripts
 
   files="$(find ${pod_home_path}/pods/pod_/lib -name "*.bash" | grep -v "lib_generic_display.bash")"
   for file in $(printf "%s\n" "$files"); do
@@ -58,12 +58,12 @@ else
       [ -f $file ] && . $file
   done
 
-  files="$(find ${pod_home_path}/pods/pod_DSE/lib/ -name "*.bash")"
+  files="$(find ${pod_home_path}/pods/pod_DSE-SECURITY/lib/ -name "*.bash")"
   for file in $(printf "%s\n" "$files"); do
       [ -f $file ] && . $file
   done
 
-  # ------------------------------------------
+# ------------------------------------------
 
   ## source the pod-specific 'builds' folder to use
 
@@ -78,52 +78,13 @@ else
     lib_generic_checks_fileExists "scripts_launchPodRemotely#1" "true" "${build_file_path}"
   fi
 
-  # ------------------------------------------
+# ------------------------------------------
 
-  ## install dse + agents on each server
+  ## edit DSE config files
 
-  # [1] delete any previous pod build folder with the same name + any agent folder of the same version
+  # [1] delete any previous java install folder with the same version
 
-  [ -d ${INSTALL_FOLDER} ] && rm -rf ${INSTALL_FOLDER_POD}${BUILD_FOLDER}
-  [ -d ${INSTALL_FOLDER} ] && rm -rf ${INSTALL_FOLDER_POD}${AGENT_VERSION}
-
-  # [2] make folders
-
-  lib_doStuff_remotely_createDseFolders
-
-  # -----
-
-  # [3] un-compress software
-
-  lib_doStuff_remotely_installDseTar
-  lib_doStuff_remotely_installAgentTar
-
-  # -----
-
-  # [4] merge the copied over 'resources' folder to the untarred one
-
-  cp -R "${build_file_folder}resources" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
-
-  # -----
-
-  # [5] update the datastax-agent address.yaml to point to opscenter and environment to find JAVA_HOME
-
-  lib_doStuff_remotely_agentAddressYaml
-  lib_doStuff_remotely_agentEnvironment
-
-  # -----
-
-  # [6] configure local environment
-
-  lib_doStuff_remotely_dseBashProfile
-
-  if [[ ${os} == *"Ubuntu"* ]]; then
-    lib_doStuff_remotely_bashrc
-  fi
-
-  # -----
-
-  # [7] tidy up
-  prepare_generic_misc_clearTheDecks
+  lib_doStuff_remotely_dseYamlTDE
+  lib_doStuff_remotely_dseYamlAuditLogging
 
 fi

@@ -16,13 +16,18 @@ INSTALL_FOLDER_POD="${TARGET_FOLDER}POD_INSTALLS/JAVA/"
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # EDIT-THIS-BLOCK !!
 
-## [1] DSE VERSIONS
+## [1] JAVA VERSION
 
 # this needs to match the name of folder in the POD_SOFTWARE folder holding the java tarball
 # e.g. oracle-java, open-java, azul-zing etc
 JAVA_DISTRIBUTION="oracle"
 JAVA_VERSION="jre1.8.0_152"
 JAVA_TARBALL="jre-8u152-linux-x64.tar.gz"
+
+# -----
+
+JAVA_SECURITY_DISTRIBUTION="oracle"
+JAVA_SECURITY_ZIP="jce_policy-8.zip"
 
 # -----
 
@@ -40,4 +45,6 @@ TEMP_FOLDER="${INSTALL_FOLDER}tmp/"
 # java
 java_tar_file="${PACKAGES}${JAVA_DISTRIBUTION}/${JAVA_TARBALL}"
 java_untar_folder="${INSTALL_FOLDER_POD}${JAVA_DISTRIBUTION}/"
+java_security_folder="${PACKAGES}${JAVA_SECURITY_DISTRIBUTION}/"
+java_security_zip_file="${java_security_folder}${JAVA_SECURITY_ZIP}"
 # //////////////////////////////////////////

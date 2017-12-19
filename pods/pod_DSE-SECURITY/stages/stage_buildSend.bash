@@ -37,114 +37,49 @@ do
 
   lib_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
   printf "\n%s"
+  # establish the OS on remote machine
   remote_os=$(ssh -q -o Forwardx11=no ${user}@${pubIp} 'bash -s' < ${pod_home_path}/pods/pod_/scripts/scripts_generic_identifyOs.sh)
   lib_generic_display_msgColourSimple "INFO-->" "detected os: ${green}${remote_os}${reset}"
   lib_generic_display_msgColourSimple "INFO-->" "making:      bespoke pod build"
 
 # -----
 
-  lib_doStuff_locally_cassandraTopologyProperties
+  # pack the suitcase !! - this personalised carry-all will be travelling to each server !!
+  # [1] first pack all the server specific variables from the json file (not all are neccessarily required but it does not matter)
+  # [2] set the TARGET_FOLDER and source this server's build_settings file to reset its values for this server
+  # [3] then append the build settings - these may now be updated as they are dependent on the target_folder specified in the json file.
 
-# -----
-
-  # source folder to reset paths based this server's target_folder
+  printf "%s\n" "tag=${tag}"                         >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "user=${user}"                       >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "sshKey=${sshKey}"                   >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "target_folder=${target_folder}"     >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "pubIp=${pubIp}"                     >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "prvIp=${prvIp}"                     >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "listen_address=${listen_address}"   >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "rpc_address=${rpc_address}"         >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "stomp_interface=${stomp_interface}" >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "seeds=${seeds}"                     >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "token=${token}"                     >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "dc=${dc}"                           >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "rack=${rack}"                       >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "search=${search}"                   >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "analytics=${analytics}"             >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "graph=${graph}"                     >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "dsefs=${dsefs}"                     >> "${tmp_suitcase_file_path}"
+ set -x
+  # this capitalised target_folder will determine paths for this server's build settings file
+  # this will be picked up when the scripts_launchPodRemotely.sh script is run on the remote server
+  printf "%s\n" "TARGET_FOLDER=${target_folder}"     >> "${tmp_suitcase_file_path}"
   TARGET_FOLDER=${target_folder}
-  source "${tmp_build_settings_file_path}" # this is configured per server
-
-  # clear any existing values with first entry (i.e. '>')
-  printf "%s\n" "TARGET_FOLDER=${target_folder}"            > "${tmp_suitcase_file_path}"
-  # append variables from build_settings.bash that are dependent of TARGET_FOLDER
-  printf "%s\n" "INSTALL_FOLDER_POD=${INSTALL_FOLDER_POD}" >> "${tmp_suitcase_file_path}"
-  printf "%s\n" "build_folder_path=${TARGET_FOLDER}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"  >> "${tmp_suitcase_file_path}"
-  printf "%s\n" "agent_untar_config_folder=${INSTALL_FOLDER_POD}${AGENT_VERSION}/conf/"                             >> "${tmp_suitcase_file_path}"
-  # append variables from build_settings.bash that are independent of TARGET_FOLDER
-  printf "%s\n" "DSE_VERSION=${DSE_VERSION}"               >> "${tmp_suitcase_file_path}"
-  printf "%s\n" "AGENT_VERSION=${AGENT_VERSION}"           >> "${tmp_suitcase_file_path}"
-  # append variables from server json definition file
-  printf "%s\n" "STOMP_INTERFACE=${stomp_interface}"       >> "${tmp_suitcase_file_path}"
-  # append variables gathered from flags
-  printf "%s\n" "WHICH_POD=${WHICH_POD}"                   >> "${tmp_suitcase_file_path}"
-  printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}"             >> "${tmp_suitcase_file_path}"
-
+  # refesh build_settings.bash - it will now make use of the updated TARGET_FOLDER
+  source "${tmp_build_settings_file_path}"
+  # now refreshed - add these also to the suitacase
+  printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}" >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "build_folder_path=${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/" >> "${tmp_suitcase_file_path}"
+exit
 # -----
 
-  # edit the local copy of the dse config files
-  lib_doStuff_locally_cassandraEnv
-  lib_doStuff_locally_jvmOptions
-  lib_doStuff_locally_cassandraYaml
-
-  if [[ "${analytics}" == "true" ]] || [[ "${dsefs}" == "true" ]]; then
-    lib_doStuff_locally_dseYamlDsefs
-  fi
-
-  lib_doStuff_locally_dseSparkEnv
-  lib_doStuff_locally_cassandraRackDcProperties
-
-# -----
-
-  # calculate number of cassandra data folders specified in json
-  # -3? - one for each bracket line and another 'cos the array starts at zero
-  numberOfDataFolders=$(($(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.cass_data' | wc -l)-3))
-
-# CAT/EOF cannot be indented !!
-cat << EOF >> "${tmp_suitcase_file_path}"
-declare -a data_file_directories_array
-EOF
-
-for j in `seq 0 ${numberOfDataFolders}`;
-do
-data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.cass_data['${j}']' | tr -d '"')
-cat << EOF >> "${tmp_suitcase_file_path}"
-data_file_directories_array[${j}]="${data_path}"
-EOF
-done
-
-# -----
-
-  declare -a data_file_directories_array
-  for j in $(seq 0 ${numberOfDataFolders});
-  do
-    data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.cass_data['${j}']' | tr -d '"')
-    data_file_directories_array[${j}]=${data_path}
-  done
-  lib_doStuff_locally_cassandraYamlData
-
-# -----
-
-  if [[ "${analytics}" == "true" ]] || [[ "${dsefs}" == "true" ]]; then
-
-    # calculate number of cassandra data folders specified in json
-    # -3? - one for each bracket line and another 'cos the array starts at zero
-    numberOfDataFolders=$(($(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.dsefs_data' | wc -l)-3))
-
-# CAT/EOF cannot be indented !!
-cat << EOF >> "${tmp_suitcase_file_path}"
-declare -a dsefs_data_file_directories_array
-EOF
-
-for j in $(seq 0 ${numberOfDataFolders});
-do
-data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.dsefs_data['${j}']' | tr -d '"')
-cat << EOF >> "${tmp_suitcase_file_path}"
-dsefs_data_file_directories_array[${j}]="${data_path}"
-EOF
-done
-  fi
-
-# -----
-
-  declare -a dsefs_data_file_directories_array
-  for j in $(seq 0 ${numberOfDataFolders});
-  do
-    data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.dsefs_data['${j}']' | tr -d '"')
-    dsefs_data_file_directories_array[${j}]=${data_path}
-  done
-  lib_doStuff_locally_dseYamlDsefs
-
-# -----
-
-  # set node specific settings for 'seeds:' and 'listen_address:'
-  lib_doStuff_locally_cassandraYamlNodeSpecific
+  lib_doStuff_locally_dseYamlTDE
 
 # -----
 
@@ -163,7 +98,7 @@ done
   pod_build_send_error_array["${tag}"]="${status};${pubIp}"
 
   # clear the suitcase for the next server
-  > ${tmp_suitcase_file_path}
+  #> ${tmp_suitcase_file_path}
 done
 
 # delete the temporary work folder

@@ -52,17 +52,23 @@ do
 
   # pack a 'suitcase' of variables that will be sent to each server
   printf "%s\n" "TARGET_FOLDER=${target_folder}" > "${tmp_suitcase_file_path}"
+  TARGET_FOLDER=${target_folder}
   # source folder to reset paths based this server's target_folder
   source "${tmp_build_settings_file_path}"
 
 # -----
 
+  printf "%s\n" "WHICH_POD=${WHICH_POD}" >> "${tmp_suitcase_file_path}"
   printf "%s\n" "JAVA_DISTRIBUTION=${JAVA_DISTRIBUTION}" >> "${tmp_suitcase_file_path}"
   printf "%s\n" "JAVA_VERSION=${JAVA_VERSION}" >> "${tmp_suitcase_file_path}"
   printf "%s\n" "JAVA_TARBALL=${JAVA_TARBALL}" >> "${tmp_suitcase_file_path}"
   printf "%s\n" "java_untar_folder=${java_untar_folder}" >> "${tmp_suitcase_file_path}"
   printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}" >> "${tmp_suitcase_file_path}"
   printf "%s\n" "build_folder_path=${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/" >> "${tmp_suitcase_file_path}"
+
+  printf "%s\n" "JAVA_SECURITY_DISTRIBUTION=${JAVA_SECURITY_DISTRIBUTION}" >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "java_security_folder=${java_security_folder}" >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "java_security_zip_file=${java_security_zip_file}" >> "${tmp_suitcase_file_path}"
 
 # -----
 

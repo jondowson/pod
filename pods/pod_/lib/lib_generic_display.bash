@@ -114,6 +114,15 @@ case ${which_pod} in
           lib_generic_display_msgColourSimple "INFO" "$ nodetool status"
           printf "%s\n" ;;
 
+    "pod_JAVA" )
+          lib_generic_display_msgColourSimple "TASK==>" "Optional Java Security Instructions:"
+          lib_generic_display_msgColourSimple "INFO" "$ dsetool createsystemkey 'AES/ECB/PKCS5Padding'256 ob_key"
+          lib_generic_display_msgColourSimple "INFO" "$ stat /etc/dse/conf/ob_key     # chmod 700"
+          lib_generic_display_msgColourSimple "INFO" "Perform a rolling restart of cluster"
+          lib_generic_display_msgColourSimple "INFO" "Upgrade SSTABLES for encryption:"
+          lib_generic_display_msgColourSimple "$ nodetool upgradesstables -a system batchlog paxos"
+          printf "%s\n" ;;
+
       *)
       printf "%s\n" "" ;;
 esac

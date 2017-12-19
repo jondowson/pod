@@ -7,7 +7,8 @@ function lib_doStuff_remotely_createJavaFolders(){
 
 ## create required folders
 
-mkdir -p ${java_untar_folder}
+mkdir -p ${java_untar_folder}${JAVA_VERSION}
+mkdir -p ${java_untar_folder}${JAVA_VERSION}/lib/security
 }
 
 # ---------------------------------------
@@ -17,6 +18,9 @@ function lib_doStuff_remotely_installJavaTar(){
 ## install from local tar to the designated java folder
 
 tar -xf ${java_tar_file} -C ${java_untar_folder}
+unzip ${java_security_zip_file}
+mv UnlimitedJCEPolicyJDK8/*.jar  ${java_untar_folder}${JAVA_VERSION}/lib/security/
+rm -rf UnlimitedJCEPolicyJDK8/
 }
 
 # ---------------------------------------

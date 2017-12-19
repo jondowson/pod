@@ -145,6 +145,9 @@ else
   printf "%s\n" "${tick}"
 fi
 
+# append this line to allow JAVA_HOME to be found
+echo "export JAVA_HOME=\$(/usr/libexec/java_home)" >> ~/.bash_profile
+
 # ------------------------------------------
 
 lib_generic_display_banner

@@ -133,3 +133,32 @@ use_ssl: 0
 #>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'
 EOF
 }
+
+# ---------------------------------------
+
+function lib_doStuff_remotely_agentEnvironment(){
+
+## configure JAVA_HOME for datastax-agent-env.sh
+
+# file to edit
+file="${agent_untar_config_folder}datastax-agent-env.sh"
+touch ${file}
+
+# search for and remove any pre-canned blocks containing a label:
+label="set_java_agent"
+lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
+
+source ~/.bash_profile &>/dev/null
+agent_java_home=$(echo ${JAVA_HOME})
+if [[ "${agent_java_home}" == "" ]]; then
+  lib_generic_display_msgColourSimple "ERROR-->" "No JAVA_HOME found on this server !!"
+fi
+agent_java_home=$(echo ${agent_java_home} | sed 's/\bin.*//')
+
+# add line sourcing .bashrc - no need on a Mac
+cat << EOF >> ${file}
+#>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'
+export JAVA_HOME="${agent_java_home}"
+#>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'
+EOF
+}
