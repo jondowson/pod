@@ -79,11 +79,12 @@ if [[ "${clusterstateFlag}" == "true" ]]; then
 
   ## STAGE [2]
 
-  if [[ "${CLUSTER_STATE}" == "start" ]]; then
+  if [[ "${CLUSTER_STATE}" == "restart" ]]; then
     lib_generic_display_banner
-    lib_generic_display_msgColourSimple "STAGE" "STAGE: Starting DSE Cluster"
+    lib_generic_display_msgColourSimple "STAGE" "STAGE: Restarting DSE Cluster"
     lib_generic_display_msgColourSimple "STAGECOUNT" "[ 1 ${cyan}${b}2${white} ]${reset}"
-    lib_generic_display_msgColourSimple "TASK==>"  "TASK: Starting each server in cluster"
+    lib_generic_display_msgColourSimple "TASK==>"  "TASK: Restarting each server in cluster"
+    task_rollingStop
     task_rollingStart
     task_rollingStart_report
   else

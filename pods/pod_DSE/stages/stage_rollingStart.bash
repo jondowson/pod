@@ -65,12 +65,12 @@ do
     retry=1
     until [[ "${retry}" == "6" ]] || [[ "${status}" == "0" ]]
     do
-      ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && java &> /dev/null"
+      ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && java &>/dev/null"
       status=${?}
       if [[ "${status}" == "127" ]]; then
         lib_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status}"
         if [[ "${STRICT_START}" ==  "true" ]]; then
-          lib_generic_display_msgColourSimple "ERROR" "Exiting pod: ${yellow}${script_name}${red} with ${yellow}--strict true${red} - java unavailable"
+          lib_generic_display_msgColourSimple "ERROR-->" "Exiting pod: ${yellow}${script_name}${red} with ${yellow}--strict true${red} - java unavailable"
           exit 1;
         fi
         pod_start_dse_error_array["${tag}"]="${status};${pubIp}"

@@ -24,5 +24,5 @@ function prepare_misc_setDefaults(){
 ## pod_DSE default settings
 
 SEND_POD_SOFTWARE="true"         # send POD_SOFTWARE tarball bundle on each run
-STRICT_START="false"             # exit pod_JAVA if any server cannot be reached or dependencies are not available
+STRICT_START="true"              # exit pod_JAVA if any server cannot be reached or dependencies are not available
 }

@@ -93,7 +93,9 @@ lib_doStuff_remotely_installJavaTar
 
 # [4] configure local environment
 
-lib_doStuff_remotely_javaBashProfile
+if [[ ${os} != *"Mac"* ]]; then
+  lib_doStuff_remotely_javaBashProfile
+fi
 
 if [[ ${os} == *"Ubuntu"* ]]; then
   lib_doStuff_remotely_bashrc

@@ -20,8 +20,8 @@ if [[ "${clusterstateFlag}" == "true" ]]; then
     elif [[ "${serversFlag}" != "true" ]]; then
       lib_generic_display_msgColourSimple "ERROR-->" "${servJsonErrMsg}" && exit 1;
     # part 2 - check values are acceptable
-  elif [[ "${CLUSTER_STATE}" != "stop" ]] && [[ ${CLUSTER_STATE} != "start" ]]; then
-      lib_generic_display_msgColourSimple "ERROR-->" "You must specify --clusterstate as either ${yellow}stop${red} or ${yellow}start${red}" && exit 1;
+  elif [[ "${CLUSTER_STATE}" != "stop" ]] && [[ ${CLUSTER_STATE} != "restart" ]]; then
+      lib_generic_display_msgColourSimple "ERROR-->" "You must specify --clusterstate as either ${yellow}stop${red} or ${yellow}restart${red}" && exit 1;
     fi
 
 # check flags and values for this mode of operation

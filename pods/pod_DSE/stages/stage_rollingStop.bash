@@ -38,8 +38,8 @@ do
 
 # ----------
 
-  lib_generic_display_msgColourSimple "INFO-INDENTED" "stopping dse:      gracefully"
-  lib_generic_display_msgColourSimple "INFO-INDENTED" "killing agent:     ungracefully"
+  lib_generic_display_msgColourSimple "INFO-->" "stopping dse:      gracefully"
+  lib_generic_display_msgColourSimple "INFO-->" "killing agent:     ungracefully"
 
 # ----------
 
@@ -50,13 +50,13 @@ do
     retry=1
     until [[ "${retry}" == "6" ]] || [[ "${status}" == "0" ]]
     do
-      ssh -q -i ${sshKey} ${user}@${pubIp} "ps aux | grep -i datastax-agent | awk {'print \$2'} | xargs kill -9"
+      ssh -q -i ${sshKey} ${user}@${pubIp} "ps aux | grep datastax-agent | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
       ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${stop_cmd}"
       status=${?}
       if [[ "${status}" == "0" ]]; then
-        lib_generic_display_msgColourSimple "INFO_INDENTED" "ssh return code: ${green}${status}"
+        lib_generic_display_msgColourSimple "INFO-->" "ssh return code: ${green}${status}"
       else
-        lib_generic_display_msgColourSimple "INFO_INDENTED" "ssh return code: ${red}${status} ${white}(retry ${retry}/5)"
+        lib_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}(retry ${retry}/5)"
       fi
       pod_stop_dse_error_array["${tag}"]="${status};${pubIp}"
       ((retry++))
@@ -93,6 +93,6 @@ if [[ "${pod_stop_dse_fail}" == "true" ]]; then
     lib_generic_display_msgColourSimple "INFO" "${cross} ${k}"
   done
 else
-  lib_generic_display_msgColourSimple "ERROR" "DSE stopped for all servers"
+  lib_generic_display_msgColourSimple "ERROR-->" "DSE stopped for all servers"
 fi
 }

@@ -162,8 +162,6 @@ done
   status=${?}
   pod_build_send_error_array["${tag}"]="${status};${pubIp}"
 
-  # clear the suitcase for the next server
-  > ${tmp_suitcase_file_path}
 done
 
 # delete the temporary work folder

@@ -87,7 +87,7 @@ function prepare_generic_misc_sourceThisPod(){
 # check pod exists
 lib_generic_checks_folderExistsCaseSensitive "pod folder does not exist" "true" "${pod_home_path}/pods/" "${WHICH_POD}"
 
-files="$(find ${pod_home_path}/pods/${WHICH_POD}/ -name "*.bash*" -not -path "*builds/*" -not -path "*scripts/*")"
+files="$(find ${pod_home_path}/pods/${WHICH_POD}/ -name "*.bash" -not -path "*builds/*" -not -path "*scripts/*")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
@@ -114,9 +114,18 @@ fi
 
 # ------------------------------------------
 
+function prepare_misc_setDefaults(){
+
+## pod_ default settings
+
+STAGE_PAUSE="5"      # pauses between STAGES
+}
+
+# ------------------------------------------
+
 function prepare_generic_misc_setDefaults(){
 
-## pod_DSE default settings
+## generic default settings for all pods
 
 STAGE_PAUSE="5"      # pauses between STAGES
 }

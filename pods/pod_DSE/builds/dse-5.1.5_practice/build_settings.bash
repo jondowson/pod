@@ -7,7 +7,7 @@ source ${pod_home_path}/misc/.suitcase
 POD_SOFTWARE="${TARGET_FOLDER}POD_SOFTWARE/"
 PACKAGES="${POD_SOFTWARE}DATASTAX/"
 INSTALL_FOLDER="${TARGET_FOLDER}POD_INSTALLS/"
-INSTALL_FOLDER_POD="${TARGET_FOLDER}POD_INSTALLS/DATASTAX/"
+INSTALL_FOLDER_POD="${INSTALL_FOLDER}${WHICH_POD}/"
 # //////////////////////////////////////////
 
 
@@ -37,7 +37,7 @@ AGENT_TARBALL="${AGENT_VERSION}.tar.gz"
 
 # note: cassandra sstable data folders are specified in the <servers.json> definition file
 # this data folder is where the supporting persistence files will go such as commitlogs and hinted-handoffs
-# on spinning disks it is recommended to locate these on seperate mount points
+# on spinning disks it is recommended to locate these on seperate mount points to sstable data folders
 PARENT_DATA_FOLDER="${INSTALL_FOLDER_POD}${dse_version}data/"
 PARENT_LOG_FOLDER="${INSTALL_FOLDER_POD}${dse_version}logs/"
 
@@ -59,8 +59,8 @@ dse_untar_bin_folder="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/bin/"
 agent_tar_folder="${PACKAGES}datastax-agent/"
 agent_tar_file="${agent_tar_folder}${AGENT_TARBALL}"
 agent_untar_folder="${INSTALL_FOLDER_POD}${AGENT_VERSION}"
-agent_untar_config_folder="${INSTALL_FOLDER_POD}${AGENT_VERSION}/conf/"
-agent_untar_bin_folder="${INSTALL_FOLDER_POD}${AGENT_VERSION}/bin/"
+agent_untar_config_folder="${agent_untar_folder}/conf/"
+agent_untar_bin_folder="${agent_untar_folder}/bin/"
 # required for java
 Djava_tmp_folder="${TEMP_FOLDER}"
 # cassandra
@@ -69,15 +69,16 @@ commitlog_directory="${PARENT_DATA_FOLDER}commitlog/"
 cdc_raw_directory="${PARENT_DATA_FOLDER}cdc_raw/"
 saved_caches_directory="${PARENT_DATA_FOLDER}saved_caches/"
 hints_directory="${PARENT_DATA_FOLDER}hints/"
-cassandra_untar_config_folder="${INSTALL_FOLDER_POD}${DSE_VERSION}/resources/cassandra/conf/"
+cassandra_untar_base_folder="${INSTALL_FOLDER_POD}${DSE_VERSION}/"
+cassandra_untar_config_folder="${cassandra_untar_base_folder}resources/cassandra/conf/"
 # spark data and log folders
 spark_local_data="${PARENT_DATA_FOLDER}spark/rdd/"
 spark_worker_data="${PARENT_DATA_FOLDER}spark/worker/"
 spark_master_log_folder="${PARENT_LOG_FOLDER}spark/master/"
 spark_worker_log_folder="${PARENT_LOG_FOLDER}spark/worker/"
-spark_untar_config_folder="${INSTALL_FOLDER_POD}${DSE_VERSION}/resources/spark/conf/"
+spark_untar_config_folder="${cassandra_untar_base_folder}resources/spark/conf/"
 # dsefs
-dsefs_untar_folder="${INSTALL_FOLDER_POD}${DSE_VERSION}/resources/dsefs/"
+dsefs_untar_folder="${cassandra_untar_base_folder}resources/dsefs/"
 # gremlin logs
 gremlin_log_folder="${PARENT_LOG_FOLDER}gremlin/"
 # tomcat logs

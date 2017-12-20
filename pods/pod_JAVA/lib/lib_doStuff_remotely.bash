@@ -18,7 +18,7 @@ function lib_doStuff_remotely_installJavaTar(){
 ## install from local tar to the designated java folder
 
 tar -xf ${java_tar_file} -C ${java_untar_folder}
-unzip ${java_security_zip_file}
+unzip ${java_security_zip_file} &>/dev/null
 mv UnlimitedJCEPolicyJDK8/*.jar  ${java_untar_folder}${JAVA_VERSION}/lib/security/
 rm -rf UnlimitedJCEPolicyJDK8/
 }
@@ -44,6 +44,7 @@ lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file
 
 # append to end of files
 cat << EOF >> ${file}
+
 #>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'
 export JAVA_HOME="${java_untar_folder}${JAVA_VERSION}/bin"
 export PATH=\$JAVA_HOME:\$PATH
@@ -62,7 +63,7 @@ file="${HOME}/.bashrc"
 touch ${file}
 
 # search for and remove any pre-canned blocks containing a label:
-label="source_bash_profile"
+label="source_bash_rc"
 lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
 
 # add line sourcing .bashrc - no need on a Mac

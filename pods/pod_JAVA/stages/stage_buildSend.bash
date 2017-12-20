@@ -37,38 +37,34 @@ do
 
   lib_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
   printf "\n%s"
-
-# -----
-
-  # establish the OS on remote machine
   remote_os=$(ssh -q -o Forwardx11=no ${user}@${pubIp} 'bash -s' < ${pod_home_path}/pods/pod_/scripts/scripts_generic_identifyOs.sh)
-  lib_generic_display_msgColourSimple   "INFO-->" "detected os: ${green}${remote_os}${reset}"
-
-# -----
-
+  lib_generic_display_msgColourSimple "INFO-->" "detected os: ${green}${remote_os}${reset}"
   lib_generic_display_msgColourSimple "INFO-->" "making:      bespoke pod build"
 
 # -----
 
-  # pack a 'suitcase' of variables that will be sent to each server
-  printf "%s\n" "TARGET_FOLDER=${target_folder}" > "${tmp_suitcase_file_path}"
-  TARGET_FOLDER=${target_folder}
   # source folder to reset paths based this server's target_folder
-  source "${tmp_build_settings_file_path}"
+  TARGET_FOLDER=${target_folder}
+  source "${tmp_build_settings_file_path}" # this is configured per server
 
-# -----
-
-  printf "%s\n" "WHICH_POD=${WHICH_POD}" >> "${tmp_suitcase_file_path}"
-  printf "%s\n" "JAVA_DISTRIBUTION=${JAVA_DISTRIBUTION}" >> "${tmp_suitcase_file_path}"
-  printf "%s\n" "JAVA_VERSION=${JAVA_VERSION}" >> "${tmp_suitcase_file_path}"
-  printf "%s\n" "JAVA_TARBALL=${JAVA_TARBALL}" >> "${tmp_suitcase_file_path}"
-  printf "%s\n" "java_untar_folder=${java_untar_folder}" >> "${tmp_suitcase_file_path}"
-  printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}" >> "${tmp_suitcase_file_path}"
-  printf "%s\n" "build_folder_path=${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/" >> "${tmp_suitcase_file_path}"
-
-  printf "%s\n" "JAVA_SECURITY_DISTRIBUTION=${JAVA_SECURITY_DISTRIBUTION}" >> "${tmp_suitcase_file_path}"
-  printf "%s\n" "java_security_folder=${java_security_folder}" >> "${tmp_suitcase_file_path}"
+  # clear any existing values with first entry (i.e. '>')
+  printf "%s\n" "TARGET_FOLDER=${target_folder}"                    > "${tmp_suitcase_file_path}"
+  # append variables from build_settings.bash that are dependent of TARGET_FOLDER
+  printf "%s\n" "INSTALL_FOLDER_POD=${INSTALL_FOLDER_POD}"         >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "java_untar_folder=${java_untar_folder}"           >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "build_folder_path=${TARGET_FOLDER}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/" >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "java_security_folder=${java_security_folder}"     >> "${tmp_suitcase_file_path}"
   printf "%s\n" "java_security_zip_file=${java_security_zip_file}" >> "${tmp_suitcase_file_path}"
+  # append variables from build_settings.bash that are independent of TARGET_FOLDER
+  printf "%s\n" "JAVA_DISTRIBUTION=${JAVA_DISTRIBUTION}"                     >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "JAVA_SECURITY_DISTRIBUTION=${JAVA_SECURITY_DISTRIBUTION}"   >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "JAVA_VERSION=${JAVA_VERSION}"                               >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "JAVA_TARBALL=${JAVA_TARBALL}"                               >> "${tmp_suitcase_file_path}"
+  # append variables from server json definition file
+  printf "%s\n" "STOMP_INTERFACE=${stomp_interface}"       >> "${tmp_suitcase_file_path}"
+  # append variables gathered from flags
+  printf "%s\n" "WHICH_POD=${WHICH_POD}"                   >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}"             >> "${tmp_suitcase_file_path}"
 
 # -----
 
@@ -86,8 +82,6 @@ do
   status=${?}
   pod_build_send_error_array["${tag}"]="${status};${pubIp}"
 
-  # clear the suitcase for the next server
-  #> ${tmp_suitcase_file_path}
 done
 
 # delete the temporary work folder
