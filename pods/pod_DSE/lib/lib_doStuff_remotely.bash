@@ -153,7 +153,7 @@ agent_java_home=$(echo ${JAVA_HOME})
 if [[ "${agent_java_home}" == "" ]]; then
   lib_generic_display_msgColourSimple "ERROR-->" "No JAVA_HOME found on this server !!"
 fi
-agent_java_home=$(echo ${agent_java_home} | sed 's/\bin.*//')
+agent_java_home=$(echo ${agent_java_home} | sed 's/bin.*//')
 
 # add line sourcing .bashrc - no need on a Mac
 cat << EOF >> ${file}

@@ -1,0 +1,137 @@
+{
+    "server_1":{
+      "tag": "OB_Data1",
+      "user": "cassandra",
+      "sshKey": "/home/cassandra/.ssh/id_rsa",
+      "target_folder": "/home/cassandra/",
+      "pubIp": "172.31.66.68",
+      "prvIp": "",
+      "listen_address": "10.225.134.68",
+      "rpc_address": "10.225.134.68",
+      "stomp_interface": "172.31.53.39",
+      "seeds": "10.225.134.68,10.225.134.69,10.225.134.70",
+      "token": "",
+      "dc": "dc1",
+      "rack": "rack1",
+      "mode": {
+        "search": "false",
+        "analytics": "false",
+        "graph": "false",
+        "dsefs": "false"
+      },
+      "cass_data": [
+        "/cassandra/data/var/lib/data/"
+      ],
+      "dsefs_data": [
+        "/cassandra/data/dsefs/;1.0;5368709"
+      ]
+    },
+    "server_2":{
+      "tag": "OB_Data2",
+      "user": "cassandra",
+      "sshKey": "/home/cassandra/.ssh/id_rsa",
+      "target_folder": "/home/cassandra/",
+      "pubIp": "172.31.66.69",
+      "prvIp": "",
+      "listen_address": "10.225.134.69",
+      "rpc_address": "10.225.134.69",
+      "stomp_interface": "172.31.53.39",
+      "seeds": "10.225.134.68,10.225.134.69,10.225.134.70",
+      "token": "",
+      "dc": "dc1",
+      "rack": "rack1",
+      "mode": {
+        "search": "false",
+        "analytics": "false",
+        "graph": "false",
+        "dsefs": "false"
+      },
+      "cass_data": [
+        "/cassandra/data/var/lib/data/"
+     ],
+      "dsefs_data": [
+        "/cassandra/data/dsefs/;1.0;5368709"
+      ]
+    },
+     "server_3":{
+      "tag": "OB_Data3",
+      "user": "cassandra",
+      "sshKey": "/home/cassandra/.ssh/id_rsa",
+      "target_folder": "/home/cassandra/",
+      "pubIp": "172.31.66.70",
+      "prvIp": "",
+      "listen_address": "10.225.134.70",
+      "rpc_address": "10.225.134.70",
+      "stomp_interface": "172.31.53.39",
+      "seeds": "10.225.134.68,10.225.134.69,10.225.134.70",
+      "token": "",
+      "dc": "dc1",
+      "rack": "rack1",
+      "mode": {
+        "search": "false",
+        "analytics": "false",
+        "graph": "false",
+        "dsefs": "false"
+      },
+      "cass_data": [
+        "/cassandra/data/var/lib/data/"
+      ],
+      "dsefs_data": [
+        "/cassandra/data/dsefs/;1.0;5368709"
+      ]
+    },
+     "server_4":{
+      "tag": "OB_Data4",
+      "user": "cassandra",
+      "sshKey": "/home/cassandra/.ssh/id_rsa",
+      "target_folder": "/home/cassandra/",
+      "pubIp": "172.31.66.71",
+      "prvIp": "",
+      "listen_address": "10.225.134.71",
+      "rpc_address": "10.225.134.71",
+      "stomp_interface": "172.31.53.39",
+      "seeds": "10.225.134.68,10.225.134.69,10.225.134.70",
+      "token": "",
+      "dc": "dc1",
+      "rack": "rack1",
+      "mode": {
+        "search": "false",
+        "analytics": "false",
+        "graph": "false",
+        "dsefs": "false"
+      },
+      "cass_data": [
+        "/cassandra/data/var/lib/data/"
+      ],
+      "dsefs_data": [
+        "/cassandra/data/dsefs/;1.0;5368709"
+      ]
+    },
+     "server_5":{
+      "tag": "OB_Data5",
+      "user": "cassandra",
+      "sshKey": "/home/cassandra/.ssh/id_rsa",
+      "target_folder": "/home/cassandra/",
+      "pubIp": "172.31.66.72",
+      "prvIp": "",
+      "listen_address": "10.225.134.72",
+      "rpc_address": "10.225.134.72",
+      "stomp_interface": "172.31.53.39",
+      "seeds": "10.225.134.68,10.225.134.69,10.225.134.70",
+      "token": "",
+      "dc": "dc1",
+      "rack": "rack1",
+      "mode": {
+        "search": "false",
+        "analytics": "false",
+        "graph": "false",
+        "dsefs": "false"
+      },
+      "cass_data": [
+        "/cassandra/data/var/lib/data/"
+      ],
+      "dsefs_data": [
+        "/cassandra/data/dsefs/;1.0;5368709"
+      ]
+    }
+}
