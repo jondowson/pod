@@ -86,6 +86,8 @@ case "${1}" in
       ${cmd} "/${searchString}/d" "${file}" ;;
   "searchAndReplaceLabelledBlock" )
       ${cmd} "/#>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${searchString}'/,/#>>>>> END-ADDED-BY__'${WHICH_POD}@${searchString}'/d" ${file} ;;
+  "searchAndReplaceLabelledBlock2" )
+      ${cmd} "/#>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@/,/#>>>>> END-ADDED-BY__'${WHICH_POD}@/d" ${file} ;;
   "deleteEverythingAfterIncludingSubstring" )
       ${cmd} "/${searchString}/,$d" ${file} ;;
   "hashCommentOutMatchingLine" )

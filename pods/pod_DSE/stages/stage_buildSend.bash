@@ -51,18 +51,18 @@ do
   TARGET_FOLDER=${target_folder}
   source "${tmp_build_settings_file_path}" # this is configured per server
 
-  # clear any existing values with first entry (i.e. '>')
+  # [1] clear any existing values with first entry (i.e. '>')
   printf "%s\n" "TARGET_FOLDER=${target_folder}"            > "${tmp_suitcase_file_path}"
-  # append variables from build_settings.bash that are dependent of TARGET_FOLDER
+  # [2] append variables from build_settings.bash that are dependent of TARGET_FOLDER
   printf "%s\n" "INSTALL_FOLDER_POD=${INSTALL_FOLDER_POD}" >> "${tmp_suitcase_file_path}"
   printf "%s\n" "build_folder_path=${TARGET_FOLDER}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"  >> "${tmp_suitcase_file_path}"
   printf "%s\n" "agent_untar_config_folder=${INSTALL_FOLDER_POD}${AGENT_VERSION}/conf/"                             >> "${tmp_suitcase_file_path}"
-  # append variables from build_settings.bash that are independent of TARGET_FOLDER
+  # [3] append variables from build_settings.bash that are independent of TARGET_FOLDER
   printf "%s\n" "DSE_VERSION=${DSE_VERSION}"               >> "${tmp_suitcase_file_path}"
   printf "%s\n" "AGENT_VERSION=${AGENT_VERSION}"           >> "${tmp_suitcase_file_path}"
-  # append variables from server json definition file
+  # [4] append variables from server json definition file
   printf "%s\n" "STOMP_INTERFACE=${stomp_interface}"       >> "${tmp_suitcase_file_path}"
-  # append variables gathered from flags
+  # [5] append variables gathered from flags
   printf "%s\n" "WHICH_POD=${WHICH_POD}"                   >> "${tmp_suitcase_file_path}"
   printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}"             >> "${tmp_suitcase_file_path}"
 
