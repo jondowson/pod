@@ -11,7 +11,6 @@ printf "%s\n"   ".. specify build folder                  | -b  --build         
 printf "%s\n"   ".. scp POD_SOFTWARE folder to servers    | -ss --sendsoft         |  false [true]     |   no"
 printf "%s\n"   ".. re-generate build resources folder    | -rr --regenresources   |  true  [false]    |   no"
 printf "%s\n"   ".. rolling stop/start of cluster         | -cs --clusterstate     |  restart stop     | on-its-own"
-printf "%s\n"   ".. remove this pod from POD_INSTALLS     | -rp --removepod        |  restart stop     | on-its-own"
 printf "%s\n"
 printf "%s\n"   "${b}examples:${reset}"
 printf "%s\n"   "--------------------------------------------------------------------------------------------------"

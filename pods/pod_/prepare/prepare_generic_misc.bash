@@ -114,15 +114,6 @@ fi
 
 # ------------------------------------------
 
-function prepare_misc_setDefaults(){
-
-## pod_ default settings
-
-STAGE_PAUSE="5"      # pauses between STAGES
-}
-
-# ------------------------------------------
-
 function prepare_generic_misc_setDefaults(){
 
 ## generic default settings for all pods

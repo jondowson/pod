@@ -14,14 +14,12 @@ printf "%s\n"     ".. specify pod to run                    | -p  --pod         
 printf "%s\n"     ".. specify servers .json defintion       | -s  --servers          |  <servers.json>   |   always"
 printf "%s\n"     ".. this help                             | -h  --help             |      no           |     n/a"
 printf "%s\n"     ".. specific pod help                     | -p  -h                 |  <pod_NAME>       |     no"
-printf "%s\n"     ".. specific pod to remove                | -s  -b -rp             |  <pod_NAME>       |     no"
 printf "%s\n"     "--------------------------------------------------------------------------------------------------"
 printf "%s\n"     "${b}examples:${reset}"
 printf "%s\n"     "--------------------------------------------------------------------------------------------------"
 printf "%s\n"     "${yellow}$ ./launch-pod -h${reset}"
 printf "%s\n"     "${yellow}$ ./launch-pod -p pod_NAME -h${reset}"
 printf "%s\n"     "${yellow}$ ./launch-pod -p pod_NAME --servers myServers.json${reset}"
-printf "%s\n"     "${yellow}$ ./launch-pod -p pod_ --servers myServers.json -b pod_generic -rp pod_DSE${reset}"
 printf "%s\n"     "--------------------------------------------------------------------------------------------------"
 }
 
