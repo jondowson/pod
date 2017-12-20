@@ -2,7 +2,7 @@
 
 # script_name:   .launch-pod
 # author:        jondowson
-# about:         launch a chosen pod with passed in flags for Macs
+# about:         mac version of launch-pod script
 
 # ------------------------------------------
 
