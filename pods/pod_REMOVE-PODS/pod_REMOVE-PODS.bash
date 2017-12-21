@@ -99,6 +99,6 @@ if [[ "${removepodFlag}" == "true" ]]; then
   lib_generic_display_msgColourSimple "STAGE"      "FINISHED !!"
   lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3 4${white} ]${reset}"
   printf "%s\n"
-  lib_generic_display_msgColourSimple "SUCCESS" "${REMOVE_POD} was successfully removed from ${INSTALL_FOLDER} on all servers"
+  lib_generic_display_msgColourSimple "SUCCESS" "${REMOVE_POD} was successfully removed from on all servers"
 fi
 }

@@ -22,7 +22,7 @@ elif [[ ${BUILD_FOLDER} == "" ]] && [[ ${removepodFlag} != "true" ]]; then
   lib_generic_display_msgColourSimple "ERROR-->" "You must supply a value for ${yellow}--builds${red} - please check the help: ${yellow}./launch-pod --help${red}" && exit 1;
 elif [[ ${SERVERS_JSON} == "" ]]; then
   lib_generic_display_msgColourSimple "ERROR-->" "You must supply a value for ${yellow}--servers${red} - please check the help: ${yellow}./launch-pod --help${red}" && exit 1;
-elif [[ ${removepodFlag} == "true" ]] && [[ "${REMOVE_POD}" == "" ]]; then
+elif [[ ${removepodFlag} != "true" ]] || [[ ${removepodFlag} == "true" ]] && [[ "${REMOVE_POD}" == "" ]]; then
   lib_generic_display_msgColourSimple "ERROR-->" "You must supply a value for ${yellow}--removepod${red} flag - please check the help: ${yellow}./launch-pod --help${red}" && exit 1;
 elif [[ ${removepodFlag} == "true" ]] && [[ "${REMOVE_POD}" != "pod_DSE" ]] && [[ "${REMOVE_POD}" != "pod_JAVA" ]]; then
   lib_generic_display_msgColourSimple "ERROR-->" "You must supply valid values for ${yellow}--removepod${red} flag - please check the help: ${yellow}./launch-pod --help${red}" && exit 1;
