@@ -48,7 +48,7 @@ else
 
   ## source pod_ + pod_DSE lib scripts
 
-  files="$(find ${pod_home_path}/pods/pod_/lib -name "*.bash" | grep -v "lib_generic_display.bash")"
+  files="$(find ${pod_home_path}/pods/pod_/lib -name "*.bash")"
   for file in $(printf "%s\n" "$files"); do
       [ -f $file ] && . $file
   done
@@ -67,11 +67,7 @@ else
 
   ## source the pod-specific 'builds' folder to use
 
-  source ${build_folder_path}build_settings.bash
-
-  # folder specified at top of this script
-  build_file_folder="${build_folder_path}"
-  build_file_path="${build_file_folder}build_settings.bash"
+  build_file_path="${build_folder_path}build_settings.bash"
   if [[ -f ${build_file_path} ]]; then
     source ${build_file_path}
   else
@@ -102,7 +98,7 @@ else
 
   # [4] merge the copied over 'resources' folder to the untarred one
 
-  cp -R "${build_file_folder}resources" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
+  cp -R "${build_folder_path}resources" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
 
   # -----
 
@@ -124,6 +120,6 @@ else
   # -----
 
   # [7] tidy up
-  prepare_generic_misc_clearTheDecks
+  #prepare_generic_misc_clearTheDecks
 
 fi

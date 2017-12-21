@@ -34,9 +34,7 @@ do
 
 # ----------
 
-  # use the 'suitcase' as a means of refreshing the build_settings.bash variables
-  # note this stage does not send the suitcase to the remote server
-  printf "%s\n" "TARGET_FOLDER=${target_folder}" > "${tmp_suitcase_file_path}"
+  TARGET_FOLDER="${target_folder}" 
   source "${tmp_build_settings_file_path}"
 
 # ----------
@@ -162,6 +160,10 @@ do
 done
 
 # ----------
+
+declare -A pod_test_send_error_array_1
+declare -A pod_test_send_error_array_2
+declare -A pod_test_send_error_array_3
 
 declare -a pod_test_send_report_array_2
 count=0

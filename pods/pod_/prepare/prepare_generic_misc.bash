@@ -10,6 +10,7 @@ function prepare_generic_misc_podBuildTempFolder(){
 # this requires an existing local resources folder
 # note: it is this duplicate folder will be configured locally and then sent to remote server(s)
 
+suitcase_file_path="${pod_home_path}/misc/.suitcase"
 tmp_build_folder="${pod_home_path}/tmp/pod/" && \
 tmp_builds_folder="${tmp_build_folder}pods/${WHICH_POD}/builds/" && \
 tmp_build_file_folder="${tmp_builds_folder}${BUILD_FOLDER}/" && \

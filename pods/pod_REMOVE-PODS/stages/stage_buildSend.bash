@@ -32,20 +32,22 @@ do
 
 # -----
 
-  # source folder to reset paths based this server's target_folder
-  TARGET_FOLDER=${target_folder}
-  source "${tmp_build_settings_file_path}" # this is configured per server
+  # assign build settings per the TARGET_FOLDER specified for this server  
+  printf "%s\n" "TARGET_FOLDER=${target_folder}"            > "${suitcase_file_path}"
+  source "${tmp_build_settings_file_path}"      
+
+# -----
 
   # [1] clear any existing values with first entry (i.e. '>')
   printf "%s\n" "TARGET_FOLDER=${target_folder}"            > "${tmp_suitcase_file_path}"
   # [2] append variables from build_settings.bash that are dependent of TARGET_FOLDER
   printf "%s\n" "INSTALL_FOLDER=${INSTALL_FOLDER}" >> "${tmp_suitcase_file_path}"
-  printf "%s\n" "build_folder_path=${TARGET_FOLDER}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"  >> "${tmp_suitcase_file_path}"
   # [3] append variables from build_settings.bash that are independent of TARGET_FOLDER
   # [4] append variables from server json definition file
-  # [5] append variables gathered from flags
+  # [5] append variables determined from flags
   printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}"             >> "${tmp_suitcase_file_path}"
   printf "%s\n" "REMOVE_POD=${REMOVE_POD}"                 >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "build_folder_path=${TARGET_FOLDER}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"  >> "${tmp_suitcase_file_path}"
 
 # -----
 
@@ -55,16 +57,19 @@ do
   # check if server is local server - so not to delete itself !!
   localServer="false"
   localServer=$(lib_generic_checks_localIpMatch "${pubIp}")
-  if [[ "${localServer}" == "false" ]]; then
+  if [[ "${localServer}" != "true" ]]; then
     ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "rm -rf ${target_folder}POD_SOFTWARE/POD/pod" exit
+  else
+    cp "${tmp_suitcase_file_path}" ${pod_home_path}/.suitcase.tmp
   fi
   # send the updated pod
   scp -q -o LogLevel=QUIET -i ${sshKey} -r "${tmp_working_folder}" "${user}@${pubIp}:${target_folder}POD_SOFTWARE/POD/"
   status=${?}
   pod_build_send_error_array["${tag}"]="${status};${pubIp}"
-
 done
 
+# assign the local target_folder value to the suitcase
+mv ${pod_home_path}/.suitcase.tmp "${suitcase_file_path}"
 # delete the temporary work folder
 rm -rf "${tmp_folder}"
 }

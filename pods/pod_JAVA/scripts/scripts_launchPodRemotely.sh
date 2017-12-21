@@ -67,11 +67,7 @@ else
 
   ## source the pod-specific 'builds' folder to use
 
-  source ${build_folder_path}build_settings.bash
-
-  # folder specified at top of this script
-  build_file_folder="${build_folder_path}"
-  build_file_path="${build_file_folder}build_settings.bash"
+  build_file_path="${build_folder_path}build_settings.bash"
   if [[ -f ${build_file_path} ]]; then
     source ${build_file_path}
   else

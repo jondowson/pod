@@ -132,7 +132,7 @@ function lib_generic_checks_localIpMatch(){
 
 ## check if an ip is a local ip
 ipToCheck=${1}
-ip addr | grep -wq "${ipToCheck}" &&  printf "%s" "true"
+ip addr | grep -wq "${ipToCheck}" &&  printf "%s\n" "true"
 }
 
 # ---------------------------------------
