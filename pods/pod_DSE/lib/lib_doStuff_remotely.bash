@@ -9,6 +9,9 @@ function lib_doStuff_remotely_createDseFolders(){
 
 # assume here that the mount has been pre-created and assigned to 'the user'
 
+# make dse build folder
+mkdir -p "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
+
 # create log folders
 mkdir -p ${cassandra_log_folder}
 mkdir -p ${gremlin_log_folder}
@@ -44,9 +47,7 @@ mkdir -p ${spark_worker_data}
 function lib_doStuff_remotely_installDseTar(){
 
 ## uncompress tar on remote machine and rename it to name of build folder
-
-tar -xf "${dse_tar_file}" -C "${INSTALL_FOLDER_POD}"
-mv "${INSTALL_FOLDER_POD}${DSE_VERSION}" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
+tar -xf "${dse_tar_file}" -C "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
 }
 
 # ---------------------------------------
@@ -55,7 +56,18 @@ function lib_doStuff_remotely_installAgentTar(){
 
 ## uncompress tar on remote machine
 
-tar -xf "${agent_tar_file}" -C "${INSTALL_FOLDER_POD}"
+tar -xf "${agent_tar_file}" -C "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
+}
+
+# ---------------------------------------
+
+function lib_doStuff_remotely_cassandraTopologyProperties(){
+
+## rename the deprecated cassandra-topology.properties to stop it interfering !!
+
+# rename files and suppress error messages if file does not exist
+topology_file_path="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/${DSE_VERSION}/resources/cassandra/conf/cassandra-topology.properties"
+mv "${topology_file_path}" "${topology_file_path}_old" 2>/dev/null
 }
 
 # ---------------------------------------

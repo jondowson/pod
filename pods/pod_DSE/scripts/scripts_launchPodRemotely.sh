@@ -80,8 +80,7 @@ else
 
   # [1] delete any previous pod build folder with the same name + any agent folder of the same version
 
-  [ -d ${INSTALL_FOLDER} ] && rm -rf ${INSTALL_FOLDER_POD}${BUILD_FOLDER}
-  [ -d ${INSTALL_FOLDER} ] && rm -rf ${INSTALL_FOLDER_POD}${AGENT_VERSION}
+  rm -rf ${INSTALL_FOLDER_POD}${BUILD_FOLDER}
 
   # [2] make folders
 
@@ -97,8 +96,7 @@ else
   # -----
 
   # [4] merge the copied over 'resources' folder to the untarred one
-
-  cp -R "${build_folder_path}resources" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
+  cp -R "${build_folder_path}resources" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}/${DSE_VERSION}"
 
   # -----
 
@@ -109,7 +107,13 @@ else
 
   # -----
 
-  # [6] configure local environment
+  # [6] rename this redundant and meddlesome file !!
+
+  lib_doStuff_remotely_cassandraTopologyProperties
+
+  # -----
+
+  # [7] configure local environment
 
   lib_doStuff_remotely_dseBashProfile
 
@@ -120,6 +124,6 @@ else
   # -----
 
   # [7] tidy up
-  #prepare_generic_misc_clearTheDecks
+  prepare_generic_misc_clearTheDecks
 
 fi

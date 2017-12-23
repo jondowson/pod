@@ -42,16 +42,6 @@ done
 
 # ---------------------------------------
 
-function lib_doStuff_locally_cassandraTopologyProperties(){
-
-## rename the deprecated cassandra-topology.properties to stop it interfering !!
-
-# rename files and suppress error messages if file does not exist
-mv "${tmp_build_file_folder}resources/cassandra/conf/cassandra-topology.properties" "${tmp_build_file_folder}resources/cassandra/conf/cassandra-topology.properties_old" 2>/dev/null
-}
-
-# ---------------------------------------
-
 function lib_doStuff_locally_cassandraEnv(){
 
 ## utilise if default logging folder does not have access permissions !!

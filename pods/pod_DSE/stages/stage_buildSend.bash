@@ -43,32 +43,23 @@ do
 
 # -----
 
-  lib_doStuff_locally_cassandraTopologyProperties
-
-# -----
-
   # assign build settings per the TARGET_FOLDER specified for this server  
   printf "%s\n" "TARGET_FOLDER=${target_folder}"            > "${suitcase_file_path}"
   source "${tmp_build_settings_file_path}"                    
 
 # -----
 
-## pack the suitcase !!!
+  ## pack the suitcase !! - the tmp_suitcase becomes the suitcase on each server
 
-  # [1] clear any existing values with first entry (i.e. '>')
-  printf "%s\n" "TARGET_FOLDER=${target_folder}"            > "${tmp_suitcase_file_path}"
-  # [2] append variables from build_settings.bash that are dependent of TARGET_FOLDER
-  printf "%s\n" "INSTALL_FOLDER_POD=${INSTALL_FOLDER_POD}" >> "${tmp_suitcase_file_path}"
-  printf "%s\n" "agent_untar_config_folder=${INSTALL_FOLDER_POD}${AGENT_VERSION}/conf/"                             >> "${tmp_suitcase_file_path}"
-  # [3] append variables from build_settings.bash that are independent of TARGET_FOLDER
-  printf "%s\n" "DSE_VERSION=${DSE_VERSION}"               >> "${tmp_suitcase_file_path}"
-  printf "%s\n" "AGENT_VERSION=${AGENT_VERSION}"           >> "${tmp_suitcase_file_path}"
-  # [4] append variables from server json definition file
-  printf "%s\n" "STOMP_INTERFACE=${stomp_interface}"       >> "${tmp_suitcase_file_path}"
-  # [5] append variables dependent on passed flags
-  printf "%s\n" "WHICH_POD=${WHICH_POD}"                   >> "${tmp_suitcase_file_path}"
-  printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}"             >> "${tmp_suitcase_file_path}"
-  printf "%s\n" "build_folder_path=${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"  >> "${tmp_suitcase_file_path}"
+  # [1] TARGET_FOLDER determines many of the settings in build_settings.bash and can be different for each server  
+  printf "%s\n" "TARGET_FOLDER=${target_folder}"                  > "${tmp_suitcase_file_path}"    # clear any existing values with first entry (i.e. '>')
+  # [2] append variables derived from server json definition file
+  printf "%s\n" "STOMP_INTERFACE=${stomp_interface}"             >> "${tmp_suitcase_file_path}"
+  # [3] append variables derived from flags
+  printf "%s\n" "WHICH_POD=${WHICH_POD}"                         >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}"                   >> "${tmp_suitcase_file_path}"
+  build_folder_path_string="${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"
+  printf "%s\n" "build_folder_path=${build_folder_path_string}"  >> "${tmp_suitcase_file_path}"
 
 # -----
 
@@ -76,11 +67,6 @@ do
   lib_doStuff_locally_cassandraEnv
   lib_doStuff_locally_jvmOptions
   lib_doStuff_locally_cassandraYaml
-
-  if [[ "${analytics}" == "true" ]] || [[ "${dsefs}" == "true" ]]; then
-    lib_doStuff_locally_dseYamlDsefs
-  fi
-
   lib_doStuff_locally_dseSparkEnv
   lib_doStuff_locally_cassandraRackDcProperties
 
@@ -143,7 +129,10 @@ done
     data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.dsefs_data['${j}']' | tr -d '"')
     dsefs_data_file_directories_array[${j}]=${data_path}
   done
-  lib_doStuff_locally_dseYamlDsefs
+  
+  if [[ "${analytics}" == "true" ]] || [[ "${dsefs}" == "true" ]]; then
+    lib_doStuff_locally_dseYamlDsefs
+  fi
 
 # -----
 

@@ -73,8 +73,7 @@ fi
 
 # [1] delete any previous pod build folder with the same name + any agent folder of the same version
 
-[ -d ${INSTALL_FOLDER} ] && rm -rf ${INSTALL_FOLDER_POD}${BUILD_FOLDER}
-[ -d ${INSTALL_FOLDER} ] && rm -rf ${INSTALL_FOLDER_POD}${AGENT_VERSION}
+rm -rf ${INSTALL_FOLDER_POD}${BUILD_FOLDER}
 
 # [2] make folders
 
@@ -91,7 +90,7 @@ lib_doStuff_remotely_installAgentTar
 
 # [4] merge the copied over 'resources' folder to the untarred one
 
-cp -R "${build_folder_path}resources" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
+cp -R "${build_folder_path}resources" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}/${DSE_VERSION}"
 
 # -----
 
@@ -102,7 +101,13 @@ lib_doStuff_remotely_agentEnvironment
 
 # -----
 
-# [6] configure local environment
+# [6] rename this redundant and meddlesome file !!
+
+lib_doStuff_remotely_cassandraTopologyProperties
+
+# -----
+
+# [7] configure local environment
 
 lib_doStuff_remotely_dseBashProfile
 

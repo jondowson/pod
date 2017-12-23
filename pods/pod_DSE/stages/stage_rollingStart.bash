@@ -39,7 +39,7 @@ do
 
 # ----------
 
-  agent_untar_bin_folder="${target_folder}POD_INSTALLS/${WHICH_POD}/${AGENT_VERSION}/bin/"
+  agent_untar_bin_folder="${target_folder}POD_INSTALLS/${WHICH_POD}/${BUILD_FOLDER}/${AGENT_VERSION}/bin/"
   start_agent="${agent_untar_bin_folder}/datastax-agent"
 
 # ----------
