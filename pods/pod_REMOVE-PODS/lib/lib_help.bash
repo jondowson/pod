@@ -7,6 +7,7 @@ function lib_help(){
 
 lib_generic_display_msgColourSimple "TASK==>" "pod_REMOVE-PODS flags:"
 printf "%s\n"   "--------------------------------------------------------------------------------------------------"
+printf "%s\n"   ".. specify servers .json defintion       | -s  --servers          |  <servers.json>   |   yes"
 printf "%s\n"   ".. specify build folder                  | -b  --build            |  <build_folder>   |   yes"
 printf "%s\n"   ".. remove this pod from POD_INSTALLS     | -rp --removepod        |  <pod_NAME>       |   yes"
 printf "%s\n"

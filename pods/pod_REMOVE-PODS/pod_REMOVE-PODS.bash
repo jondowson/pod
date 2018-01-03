@@ -7,7 +7,7 @@
 
 # note: a pod consists of STAGE(S), which consist of TASK(S), which contain actions.
 
-# pod_JAVA makes use of 2 user defined files and has 5 STAGES.
+# pod_JAVA makes use of 2 user defined files and has 3 STAGES.
 
 # --> ${SERVERS_JSON}
 # --> ${BUILD_FOLDER}cluster_settings.sh
@@ -44,63 +44,61 @@ declare -A pod_remove_pod_error_array
 
 ## test specified files exist
 
-#prepare_misc_checkFilesExist
+prepare_misc_checkFilesExist
 
 # ------------------------------------------
 
 # create configurable temp version of pod
-catchError "pod_generic.sh#1" "true" "true" prepare_generic_misc_podBuildTempFolder
+catchError "pod_REMOVE-PODS.sh#1" "true" "true" prepare_generic_misc_podBuildTempFolder
 
 # ------------------------------------------
 
 ## STAGES
 
-if [[ "${removepodFlag}" == "true" ]]; then
+## STAGE [1]
 
-  ## STAGE [1]
+lib_generic_display_banner
+lib_generic_display_msgColourSimple "STAGE"      "STAGE: Test server connectivity"
+lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 ${white}2 3 4 ]${reset}"
+lib_generic_display_msgColourSimple "TASK==>"    "TASK: Testing server connectivity"
+task_generic_testConnectivity
+task_generic_testConnectivity_report
+lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 
-  lib_generic_display_banner
-  lib_generic_display_msgColourSimple "STAGE"      "STAGE: Test server connectivity"
-  lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 ${white}2 3 4 ]${reset}"
-  lib_generic_display_msgColourSimple "TASK==>"    "TASK: Testing server connectivity"
-  task_generic_testConnectivity
-  task_generic_testConnectivity_report
-  lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
+# ------------------------------------------
 
-  # ------------------------------------------
+## STAGE [2]
 
-  ## STAGE [2]
+lib_generic_display_banner
+lib_generic_display_msgColourSimple "STAGE"      "STAGE: Build and send bespoke pod"
+lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 ${white}3 4 ]${reset}"
+lib_generic_display_msgColourSimple "TASK==>"    "TASK: Configure locally and distribute"
+task_buildSend
+task_buildSend_report
+lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 
-  lib_generic_display_banner
-  lib_generic_display_msgColourSimple "STAGE"      "STAGE: Build and send bespoke pod"
-  lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 ${white}3 4 ]${reset}"
-  lib_generic_display_msgColourSimple "TASK==>"    "TASK: Configure locally and distribute"
-  task_buildSend
-  task_buildSend_report
-  lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
+# ------------------------------------------
 
-  # ------------------------------------------
+## STAGE [3]
 
-  ## STAGE [3]
+lib_generic_display_banner
+lib_generic_display_msgColourSimple "STAGE"      "STAGE: Launch pod remotely"
+lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3 ${white}4 ]${reset}"
+lib_generic_display_msgColourSimple "TASK==>"    "TASK: Execute launch script on each server"
+task_generic_launchPodRemotely
+task_generic_launchPodRemotely_report
+lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 
-  lib_generic_display_banner
-  lib_generic_display_msgColourSimple "STAGE"      "STAGE: Launch pod remotely"
-  lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3 ${white}4 ]${reset}"
-  lib_generic_display_msgColourSimple "TASK==>"    "TASK: Execute launch script on each server"
-  task_generic_launchPodRemotely
-  task_generic_launchPodRemotely_report
-  lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
+# ------------------------------------------
 
-  # ------------------------------------------
+## STAGE [4] FINISH
 
-  ## STAGE [4] FINISH
+lib_generic_display_banner
+lib_generic_display_msgColourSimple "STAGE"      "Summary"
+lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3 4${white} ]${reset}"
+task_generic_testConnectivity_report
+task_buildSend_report
+task_generic_launchPodRemotely_report
+task_removePod_report
 
-  lib_generic_display_banner
-  lib_generic_display_msgColourSimple "STAGE"      "Summary"
-  lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3 4${white} ]${reset}"
-  task_generic_testConnectivity_report
-  task_buildSend_report
-  task_generic_launchPodRemotely_report
-  task_removePod_report
-fi
 }
