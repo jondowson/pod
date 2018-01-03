@@ -39,9 +39,9 @@ do
 
 # ----------
 
-  # assign build settings per the TARGET_FOLDER specified for this server  
+  # assign build settings per the TARGET_FOLDER specified for this server
   printf "%s\n" "TARGET_FOLDER=${target_folder}"            > "${suitcase_file_path}"
-  source "${tmp_build_settings_file_path}"                    
+  source "${tmp_build_settings_file_path}"
 
 # ----------
 
@@ -70,9 +70,10 @@ do
     retry=1
     until [[ "${retry}" == "6" ]] || [[ "${status}" == "0" ]]
     do
-      ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && java &>/dev/null"
+      #ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bashrc; source ~/.bash_profile && java -version" #&>/dev/null"
+      ssh -v -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && java -version"
       status=${?}
-      if [[ "${status}" == "127" ]]; then
+      if [[ "${status}" != "0" ]]; then
         lib_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status}"
         if [[ "${STRICT_START}" ==  "true" ]]; then
           lib_generic_display_msgColourSimple "ERROR-->" "Exiting pod: ${yellow}${script_name}${red} with ${yellow}--strict true${red} - java unavailable"
@@ -81,7 +82,7 @@ do
         pod_start_dse_error_array["${tag}"]="${status};${pubIp}"
         break;
       else
-        ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_cmd} && ${start_agent}"
+        ssh -v -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_cmd} && ${start_agent}"
         status=${?}
         if [[ "${status}" == "0" ]]; then
           lib_generic_display_msgColourSimple "INFO-->" "ssh return code: ${green}${status}"
@@ -112,7 +113,7 @@ do
   lib_generic_strings_expansionDelimiter ${pod_start_dse_error_array[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
     pod_start_dse_fail="true"
-    pod_start_dse_report_array["${count}"]="${yellow}${k}${white}at address ${yellow}${_D2_}${white}with code ${red}${_D1_}${reset}"
+    pod_start_dse_report_array["${count}"]="${yellow}${k}${white} at address ${yellow}${_D2_}${white} with code ${red}${_D1_}${reset}"
     (( count++ ))
   fi
 done
