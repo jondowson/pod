@@ -34,7 +34,7 @@ do
 
 # ----------
 
-  TARGET_FOLDER="${target_folder}" 
+  TARGET_FOLDER="${target_folder}"
   source "${tmp_build_settings_file_path}"
 
 # ----------
