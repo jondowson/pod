@@ -70,8 +70,7 @@ do
     retry=1
     until [[ "${retry}" == "6" ]] || [[ "${status}" == "0" ]]
     do
-      #ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bashrc; source ~/.bash_profile && java -version" #&>/dev/null"
-      ssh -v -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && java -version"
+      ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && java -version"
       status=${?}
       if [[ "${status}" != "0" ]]; then
         lib_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status}"
@@ -82,7 +81,7 @@ do
         pod_start_dse_error_array["${tag}"]="${status};${pubIp}"
         break;
       else
-        ssh -v -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_cmd} && ${start_agent}"
+        ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_cmd} && ${start_agent}"
         status=${?}
         if [[ "${status}" == "0" ]]; then
           lib_generic_display_msgColourSimple "INFO-->" "ssh return code: ${green}${status}"
