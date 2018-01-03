@@ -3,11 +3,11 @@
 
 # ------------------------------------------
 
-## pod desription: pod_REMOVE-PODS
+## pod desription: pod_SSH_AUTH
 
 # note: a pod consists of STAGE(S), which consist of TASK(S), which contain actions.
 
-# pod_JAVA makes use of 2 user defined files and has 3 STAGES.
+# pod_SSH_AUTH makes use of 2 user defined files and has 3 STAGES.
 
 # --> ${SERVERS_JSON}
 # --> ${BUILD_FOLDER}cluster_settings.sh
@@ -49,7 +49,7 @@ prepare_misc_checkFilesExist
 # ------------------------------------------
 
 # create configurable temp version of pod
-catchError "pod_REMOVE-PODS.sh#1" "true" "true" prepare_generic_misc_podBuildTempFolder
+catchError "pod_generic.sh#1" "true" "true" prepare_generic_misc_podBuildTempFolder
 
 # ------------------------------------------
 
