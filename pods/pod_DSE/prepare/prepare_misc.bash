@@ -28,5 +28,5 @@ function prepare_misc_setDefaults(){
 
 SEND_POD_SOFTWARE="true"         # send POD_SOFTWARE tarball bundle on each run
 REGENERATE_RESOURCES="false"     # generate new /builds/pod_dse/dse-x.x.x_name/resources' folder - this action will remove any existing one for this build folder !!
-STRICT_START="false"             # exit pod_DSE if any server cannot be reached or dependencies are not available
+STRICT_START="true"              # exit pod_DSE if any server cannot be reached or dependencies are not available
 }

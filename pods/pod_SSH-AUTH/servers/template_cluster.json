@@ -1,0 +1,47 @@
+# INSTRUCTIONS:
+
+# ENSURE BLOCKS use this unique identifier with convention !!!
+#             --> 'server_1','server_2', 'server_3' ...
+
+# tag:            server tag should be relevant and unique - perhaps its hostname
+# user:           account used to connect to on remote server
+# sshKey:         full path to local copy of server authentication file
+# target_folder:  where 'POD_SOFTWARE' + the 'pod' build are put
+# pubIp:          specify here what will be used to connect - could be internal 'private ip'!
+# prvIp:          the private address of the server (e.g. AWS internal ips)
+
+# FINALLY:        in the copy of this template, delete all these instructions, leaving just the json !!
+{
+    "server_1":{
+      "tag": "storage_1",
+      "user": "<user>",
+      "sshKey": "/home/<user>/.ssh/id_rsa",
+      "target_folder": "/home/<user>/Desktop",
+      "pubIp": "172.0.0.1",
+      "prvIp": "127.0.0.1",
+    },
+    "server_2":{
+      "tag": "storage_2",
+      "user": "<user>",
+      "sshKey": "/home/<user>/.ssh/id_rsa",
+      "target_folder": "/home/<user>/Desktop",
+      "pubIp": "172.0.0.2",
+      "prvIp": "127.0.0.2"
+    },
+    "server_3":{
+      "tag": "storage_3",
+      "user": "<user>",
+      "sshKey": "/home/<user>/.ssh/id_rsa",
+      "target_folder": "/home/<user>/Desktop",
+      "pubIp": "172.0.0.3",
+      "prvIp": "127.0.0.3"
+  },
+  "server_4":{
+    "tag": "search_analytics_1",
+    "user": "<user>",
+    "sshKey": "/home/<user>/.ssh/id_rsa",
+    "target_folder": "/home/<user>/Desktop",
+    "pubIp": "172.0.0.4",
+    "prvIp": "127.0.0.4"
+  }
+}
