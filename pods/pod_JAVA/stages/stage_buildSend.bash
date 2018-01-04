@@ -39,13 +39,18 @@ do
   printf "\n%s"
   remote_os=$(ssh -q -o Forwardx11=no ${user}@${pubIp} 'bash -s' < ${pod_home_path}/pods/pod_/scripts/scripts_generic_identifyOs.sh)
   lib_generic_display_msgColourSimple "INFO-->" "detected os: ${green}${remote_os}${reset}"
-  lib_generic_display_msgColourSimple "INFO-->" "making:      bespoke pod build"
+
+  if [[ "${remote_os}" == "Mac" ]]; then
+    lib_generic_display_msgColourSimple "INFO-->" "note:        pod_JAVA does not set Java on Macs"
+  else
+    lib_generic_display_msgColourSimple "INFO-->" "making:      bespoke pod build"
+  fi
 
 # -----
 
-  # assign build settings per the TARGET_FOLDER specified for this server  
+  # assign build settings per the TARGET_FOLDER specified for this server
   printf "%s\n" "TARGET_FOLDER=${target_folder}"            > "${suitcase_file_path}"
-  source "${tmp_build_settings_file_path}"                    
+  source "${tmp_build_settings_file_path}"
 
 # -----
 
@@ -62,9 +67,13 @@ do
 
   # -----
 
-  lib_generic_display_msgColourSimple "INFO-->" "sending:     bespoke pod build"
-  printf "%s\n" "${red}"
+  if [[ "${remote_os}" == "Mac" ]]; then
+    lib_generic_display_msgColourSimple "INFO-->" "sending:     dummy pod build"
+  else
+    lib_generic_display_msgColourSimple "INFO-->" "sending:     bespoke pod build"
+  fi
 
+  printf "%s\n" "${red}"
   # check if server is local server - so not to delete itself !!
   localServer="false"
   localServer=$(lib_generic_checks_localIpMatch "${pubIp}")
@@ -78,7 +87,6 @@ do
   scp -q -o LogLevel=QUIET -i ${sshKey} -r "${tmp_working_folder}" "${user}@${pubIp}:${target_folder}POD_SOFTWARE/POD/"
   status=${?}
   pod_build_send_error_array["${tag}"]="${status};${pubIp}"
-
 done
 
 # assign the local target_folder value to the suitcase

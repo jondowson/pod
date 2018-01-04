@@ -39,16 +39,6 @@
 
 function pod_DSE(){
 
-## pre-stage jobs and checks
-
-# create configurable temporary version of pod
-catchError "pod_DSE.sh#1" "true" "true" prepare_generic_misc_podBuildTempFolder
-
-# test pod specific required files/folders exist
-prepare_misc_checkFileFolderExist
-
-# ------------------------------------------
-
 ## create arrays used by pod_DSE
 
 declare -A ifsDelimArray
@@ -111,7 +101,7 @@ if [[ "${clusterstateFlag}" == "true" ]]; then
   task_generic_testConnectivity_report
   if [[ "${CLUSTER_STATE}" == "restart" ]]; then
     task_rollingStart_report
-  else 
+  else
     task_rollingStop_report
   fi
   # change WHICH_POD to alter final message displayed by pod_ generic function

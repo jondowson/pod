@@ -42,17 +42,6 @@ declare -A pod_remove_pod_error_array
 
 # ------------------------------------------
 
-## test specified files exist
-
-prepare_misc_checkFilesExist
-
-# ------------------------------------------
-
-# create configurable temp version of pod
-catchError "pod_SSH-AUTH.sh#1" "true" "true" prepare_generic_misc_podBuildTempFolder
-
-# ------------------------------------------
-
 ## STAGES
 
 ## STAGE [1]

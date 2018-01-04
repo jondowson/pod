@@ -96,10 +96,6 @@ else
 
   # [4] configure local environment
 
-  if [[ ${os} != *"Mac"* ]]; then
-    lib_doStuff_remotely_javaBashProfile
-  fi
-
   if [[ ${os} == *"Ubuntu"* ]]; then
     lib_doStuff_remotely_bashrc
   fi
@@ -107,6 +103,6 @@ else
 # -----
 
   # [5] tidy up
-#  prepare_generic_misc_clearTheDecks
+  prepare_generic_misc_clearTheDecks
 
 fi
