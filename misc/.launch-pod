@@ -129,24 +129,34 @@ prepare_generic_misc_sourceThisPodBuild
 
 # ==========
 
-## [7] run the chosen pod
+## [7] create tmp folder - used for configuration
 
-# [7.1] source the pod's init script
-source "pods/${WHICH_POD}/${WHICH_POD}.bash"
+# [7.1 ]create configurable temporary version of pod
+catchError "launch-pod#4" "true" "true" prepare_generic_misc_podBuildTempFolder
 
-# [7.2] call the chosen pod's init function
-"${WHICH_POD}"
+# ==========
+
+## [8] pod specific checks and call
+
+# [8.1] test pod specific required files/folders exist
+prepare_misc_checkFileFolderExist
+
+# [8.2] source the pod's init script
+  source "pods/${WHICH_POD}/${WHICH_POD}.bash"
+
+# [8.3] call the chosen pod's init function
+  "${WHICH_POD}"
 
 
-# ////////////////////////////////////////// GENERIC FINISH
+# ////////////////////////////////////////// GENERIC POD FINISH
 
 
-## [8] display generic pod_ closing messages
+## [9] display generic pod_ closing messages
 
-# [8.1] display generic final message
-lib_generic_display_finalMessage "${WHICH_POD}"
+# [9.1] display generic final message
+  lib_generic_display_finalMessage "${WHICH_POD}"
 
-# [8.2] calculate and display script timings
-lib_generic_misc_timePod
-lib_generic_display_msgColourSimple "INFO" "pod took: ${diff}[s]"
-printf "%s\n"
+# [9.2] calculate and display script timings
+  lib_generic_misc_timePod
+  lib_generic_display_msgColourSimple "INFO" "pod took: ${diff}[s]"
+  printf "%s\n"

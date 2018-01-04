@@ -5,7 +5,7 @@
 
 # ------------------------------------------
 
-function prepare_misc_checkFilesExist(){
+function prepare_misc_checkFileFolderExist(){
 
 ## test specified files exist
 
@@ -14,7 +14,6 @@ if [[ "${SEND_POD_SOFTWARE}" == "true" ]]; then
   lib_generic_checks_folderExists "prepare_misc.sh#1" "true" "${POD_SOFTWARE}"
   lib_generic_checks_fileExists   "prepare_misc.sh#2" "true" "${java_tar_file}"
 fi
-
 }
 
 # ------------------------------------------

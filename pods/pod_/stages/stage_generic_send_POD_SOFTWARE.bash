@@ -18,7 +18,6 @@ do
 # -----
 
   # add trailing '/' to path if not present
-  echo ${LOCAL_POD_SOFTWARE}
   target_folder=$(lib_generic_strings_addTrailingSlash "${target_folder}")
   TARGET_FOLDER="${LOCAL_TARGET_FOLDER}"
   source ${tmp_build_settings_file_path}
@@ -41,7 +40,9 @@ do
   if [[ "${localServer}" == "true" ]]; then
     lib_generic_display_msgColourSimple "INFO-->" "Not sending to local machine ! ${reset}"
   else
-    ssh -q -i ${sshKey} ${user}@${pubIp} "rm -rf ${target_folder}POD_SOFTWARE/POD/pod" #&>/dev/null"
+    # remove any existing pod software from target server
+    ssh -q -i ${sshKey} ${user}@${pubIp} "rm -rf ${target_folder}POD_SOFTWARE/POD/pod"              #&>/dev/null"
+    # copy POD_SOFTWARE from this server to remote server
     scp -q -o LogLevel=QUIET -i ${sshKey} -r ${POD_SOFTWARE} ${user}@${pubIp}:${target_folder} &    # run in parallel
     # grab pid and capture owner in array
     pid=${!}

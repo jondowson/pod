@@ -42,17 +42,6 @@ declare -A pod_remove_pod_error_array
 
 # ------------------------------------------
 
-## test specified files exist
-
-prepare_misc_checkFilesExist
-
-# ------------------------------------------
-
-# create configurable temp version of pod
-catchError "pod_REMOVE-PODS.sh#1" "true" "true" prepare_generic_misc_podBuildTempFolder
-
-# ------------------------------------------
-
 ## STAGES
 
 ## STAGE [1]
@@ -99,6 +88,4 @@ lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3 4${white} ]
 task_generic_testConnectivity_report
 task_buildSend_report
 task_generic_launchPodRemotely_report
-task_removePod_report
-
 }
