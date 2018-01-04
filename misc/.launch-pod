@@ -21,7 +21,6 @@ pod_home_path="$(pwd)"
 
 LOCAL_TARGET_FOLDER=$(printf $parent_path | sed 's,POD_SOFTWARE.*,,')
 TARGET_FOLDER="${LOCAL_TARGET_FOLDER}"
-LOCAL_POD_SOFTWARE="${LOCAL_TARGET_FOLDER}POD_SOFTWARE/"
 
 
 # ////////////////////////////////////////// GENERIC PREPERATION (pod_)
