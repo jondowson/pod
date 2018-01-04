@@ -40,13 +40,13 @@ source "${pod_home_path}/misc/.suitcase"
 # ------------------------------------------
 
 ## source pod_ + pod_JAVA lib scripts
-
-files="$(find ${pod_home_path}/pods/pod_/lib -name "*.bash" | grep -v "lib_generic_display.bash")"
+echo ${pod_home_path}
+files="$(find ${pod_home_path}/pods/pod_/lib/ -name "*.bash")" #| grep -v "lib_generic_display.bash")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
 
-files="$(find ${pod_home_path}/pods/pod_/prepare -name "*.bash")"
+files="$(find ${pod_home_path}/pods/pod_/prepare/ -name "*.bash")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
@@ -69,33 +69,33 @@ fi
 
 # ------------------------------------------
 
-## install java on each server
+## install java on each server - as thisis the mac version do nothing !!
 
 # [1] delete any previous java install folder with the same version
 
-rm -rf ${java_untar_folder}
+#rm -rf ${java_untar_folder}
 
 # [2] make folders
 
-lib_doStuff_remotely_createJavaFolders
+#lib_doStuff_remotely_createJavaFolders
 
 # -----
 
 # [3] un-compress software
 
-lib_doStuff_remotely_installJavaTar
+#lib_doStuff_remotely_installJavaTar
 
 # -----
 
 # [4] configure local environment
 
-if [[ ${os} != *"Mac"* ]]; then
-  lib_doStuff_remotely_javaBashProfile
-fi
+#if [[ ${os} != *"Mac"* ]]; then
+#  lib_doStuff_remotely_javaBashProfile
+#fi
 
-if [[ ${os} == *"Ubuntu"* ]]; then
-  lib_doStuff_remotely_bashrc
-fi
+#if [[ ${os} == *"Ubuntu"* ]]; then
+#  lib_doStuff_remotely_bashrc
+#fi
 
 # -----
 

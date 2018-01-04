@@ -42,6 +42,9 @@ lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLin
 label="java_bash_profile"
 lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
 
+# remove any empty blank lines at end of file
+a=$(<$file); printf "%s\n" "$a" > $file
+
 # append to end of files
 cat << EOF >> ${file}
 
@@ -66,8 +69,12 @@ touch ${file}
 label="source_bash_rc"
 lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
 
+# remove any empty blank lines at end of file
+a=$(<$file); printf "%s\n" "$a" > $file
+
 # add line sourcing .bashrc - no need on a Mac
 cat << EOF >> ${file}
+
 #>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'
 if [ -r ~/.bash_profile ]; then source ~/.bash_profile; fi
 #>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'

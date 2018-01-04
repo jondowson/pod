@@ -48,7 +48,7 @@ do
   status="999"
   if [[ "${status}" != "0" ]]; then
     retry=1
-    until [[ "${retry}" == "6" ]] || [[ "${status}" == "0" ]]
+    until [[ "${retry}" == "4" ]] || [[ "${status}" == "0" ]]
     do
       ssh -q -i ${sshKey} ${user}@${pubIp} "ps aux | grep datastax-agent | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
       ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${stop_cmd}"
@@ -56,7 +56,9 @@ do
       if [[ "${status}" == "0" ]]; then
         lib_generic_display_msgColourSimple "INFO-->" "ssh return code: ${green}${status}"
       else
-        lib_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}(retry ${retry}/5)"
+        lib_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}(retry ${retry}/3)"
+        lib_generic_display_msgColourSimple "INFO-->" "killing dse:     ungracefully"
+        ssh -q -i ${sshKey} ${user}@${pubIp} "ps aux | grep cassandra | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
       fi
       pod_stop_dse_error_array["${tag}"]="${status};${pubIp}"
       ((retry++))

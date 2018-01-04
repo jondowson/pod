@@ -89,7 +89,11 @@ lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLin
 label="dse_bash_profile"
 lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
 
+# remove any empty blank lines at end of file
+a=$(<$file); printf "%s\n" "$a" > $file
+
 cat << EOF >> ${file}
+
 #>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'
 export OPSC_JVM_OPTS="-Djava.io.tmpdir=${Djava_tmp_folder}"
 export CASSANDRA_HOME="${dse_untar_bin_folder}"
@@ -112,8 +116,12 @@ touch ${file}
 label="source_bash_profile"
 lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
 
+# remove any empty blank lines at end of file
+a=$(<$file); printf "%s\n" "$a" > $file
+
 # add line sourcing .bashrc - no need on a Mac
 cat << EOF >> ${file}
+
 #>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'
 if [ -r ~/.bash_profile ]; then source ~/.bash_profile; fi
 #>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'
@@ -137,8 +145,12 @@ lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLin
 label="set_stomp_opscenter"
 lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
 
+# remove any empty blank lines at end of file
+a=$(<$file); printf "%s\n" "$a" > $file
+
 # add line sourcing .bashrc - no need on a Mac
 cat << EOF >> ${file}
+
 #>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'
 stomp_interface: ${STOMP_INTERFACE}
 use_ssl: 0
@@ -167,8 +179,12 @@ if [[ "${agent_java_home}" == "" ]]; then
 fi
 agent_java_home=$(echo ${agent_java_home} | sed 's/bin.*//')
 
+# remove any empty blank lines at end of file
+a=$(<$file); printf "%s\n" "$a" > $file
+
 # add line sourcing .bashrc - no need on a Mac
 cat << EOF >> ${file}
+
 #>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'
 export JAVA_HOME="${agent_java_home}"
 #>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'

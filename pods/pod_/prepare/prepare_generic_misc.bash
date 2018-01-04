@@ -31,6 +31,10 @@ cp -rp "${pod_home_path}/third_party"  "${tmp_working_folder}" && \
 cp -p  "${pod_home_path}/README.md"    "${tmp_working_folder}" && \
 cp -p  "${pod_home_path}/.gitignore"   "${tmp_working_folder}" && \
 cp -p  "${pod_home_path}/launch-pod"   "${tmp_working_folder}"
+
+# check these paths have been created
+lib_generic_checks_fileExists   "prepare_misc.bash#4" "true" "${suitcase_file_path}"
+lib_generic_checks_fileExists   "prepare_misc.bash#5" "true" "${tmp_build_settings_file_path}"
 }
 
 # ------------------------------------------
@@ -101,7 +105,7 @@ function prepare_generic_misc_sourceThisPodBuild(){
 # source the pod-specific 'builds' folder to use
 if [[ ${buildFlag} == "true" ]]; then
   lib_generic_checks_fileFolderExists "build file path is wrong:" "true" "${pod_home_path}/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/" "file" "build_settings.bash"
-  source  "${pod_home_path}/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/build_settings.bash" 
+  source  "${pod_home_path}/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/build_settings.bash"
 fi
 }
 
