@@ -108,7 +108,6 @@ lib_generic_display_banner
 lib_generic_display_msgColourSimple "STAGE"      "STAGE: Launch pod remotely"
 lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3 4 5 ${white}6 ]${reset}"
 lib_generic_display_msgColourSimple "TASK==>"    "TASK: Execute launch script on each server"
-lib_generic_display_msgColourSimple "INFO-->"    "note:    pod_JAVA script on Macs will do nothing"
 task_generic_launchPodRemotely
 task_generic_launchPodRemotely_report
 lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."

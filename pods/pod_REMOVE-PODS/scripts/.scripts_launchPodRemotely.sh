@@ -39,7 +39,7 @@ source "${pod_home_path}/misc/.suitcase"
 
 # ------------------------------------------
 
-## source pod_ + pod_DSE lib scripts
+## source pod_ + pod_REMOVE-PODS lib scripts
 
 files="$(find ${pod_home_path}/pods/pod_/lib -name "*.bash")"
 for file in $(printf "%s\n" "$files"); do

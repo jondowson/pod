@@ -40,7 +40,7 @@ source "${pod_home_path}/misc/.suitcase"
 # ------------------------------------------
 
 ## source pod_ + pod_JAVA lib scripts
-echo ${pod_home_path}
+
 files="$(find ${pod_home_path}/pods/pod_/lib/ -name "*.bash")" #| grep -v "lib_generic_display.bash")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file

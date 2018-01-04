@@ -33,7 +33,7 @@ function lib_generic_misc_timecount(){
 min=0
 sec=${1}
 message=${2}
-echo "${2}"
+printf "%s\n" "${2}"
 while [ $min -ge 0 ]; do
       while [[ $sec -ge 0 ]]; do
           echo -ne "00:0$min:$sec\033[0K\r"

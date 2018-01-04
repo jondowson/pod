@@ -36,7 +36,7 @@ do
 # -----
 
   lib_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
-  printf "\n%s"
+  printf "%s\n"
   remote_os=$(ssh -q -o Forwardx11=no ${user}@${pubIp} 'bash -s' < ${pod_home_path}/pods/pod_/scripts/scripts_generic_identifyOs.sh)
   lib_generic_display_msgColourSimple "INFO-->" "detected os: ${green}${remote_os}${reset}"
 
@@ -81,7 +81,6 @@ do
     ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "rm -rf ${target_folder}POD_SOFTWARE/POD/pod" exit
   else
     cp "${tmp_suitcase_file_path}" ${pod_home_path}/.suitcase.tmp
-    echo $local_target_folder
   fi
   # send the updated pod folder
   scp -q -o LogLevel=QUIET -i ${sshKey} -r "${tmp_working_folder}" "${user}@${pubIp}:${target_folder}POD_SOFTWARE/POD/"

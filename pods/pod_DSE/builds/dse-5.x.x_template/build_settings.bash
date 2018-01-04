@@ -5,7 +5,8 @@
 # DO-NOT-EDIT-THIS-BLOCK !!
 source ${pod_home_path}/misc/.suitcase
 POD_SOFTWARE="${TARGET_FOLDER}POD_SOFTWARE/"
-PACKAGES="${POD_SOFTWARE}DATASTAX/"
+PACKAGE="DATASTAX"
+PACKAGES="${POD_SOFTWARE}${PACKAGE}/"
 INSTALL_FOLDER="${TARGET_FOLDER}POD_INSTALLS/"
 INSTALL_FOLDER_POD="${INSTALL_FOLDER}${WHICH_POD}/"
 # //////////////////////////////////////////
@@ -26,9 +27,9 @@ VNODES="8"                                      # specify a value (8,16,32) for 
 
 ## [2] DSE VERSIONS
 
-DSE_VERSION="dse-5.1.3"
+DSE_VERSION="dse-5.1.5"
 DSE_TARBALL="${DSE_VERSION}-bin.tar.gz"
-AGENT_VERSION="datastax-agent-6.1.3"
+AGENT_VERSION="datastax-agent-6.1.5"
 AGENT_TARBALL="${AGENT_VERSION}.tar.gz"
 
 # -----

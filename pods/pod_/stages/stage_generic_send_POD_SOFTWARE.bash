@@ -1,5 +1,5 @@
 # author:        jondowson
-# about:         send POD_SOFTWARE tarballs to each server to specified target folder
+# about:         send entire POD_SOFTWARE folder to each server to its specified target folder
 
 # ------------------------------------------
 
@@ -28,7 +28,7 @@ do
 
 # -----
 
-  lib_generic_display_msgColourSimple "INFO-->" "sending:     POD_SOFTWARE folder"
+  lib_generic_display_msgColourSimple "INFO-->" "sending:     POD_SOFTWARE/${PACKAGE} folder"
 
   # target folder must exist on target machine !!
   catchError "cannot make target folder" "true" "true" "ssh -o ForwardX11=no ${user}@${pubIp} mkdir -p ${target_folder}"
@@ -42,8 +42,8 @@ do
   else
     # remove any existing pod software from target server
     ssh -q -i ${sshKey} ${user}@${pubIp} "rm -rf ${target_folder}POD_SOFTWARE/POD/pod"              #&>/dev/null"
-    # copy POD_SOFTWARE from this server to remote server
-    scp -q -o LogLevel=QUIET -i ${sshKey} -r ${POD_SOFTWARE} ${user}@${pubIp}:${target_folder} &    # run in parallel
+    # copy the POD_SOFTWARE for this pod from this server to remote server
+    scp -q -o LogLevel=QUIET -i ${sshKey} -r "${PACKAGES}" "${user}@${pubIp}:${target_folder}POD_SOFTWARE" &    # run in parallel
     # grab pid and capture owner in array
     pid=${!}
     lib_generic_display_msgColourSimple "INFO-->" "pid id:      ${yellow}${pid}${reset}"
@@ -89,10 +89,10 @@ function task_generic_sendPodSoftware_report(){
 
 # display report
 
-lib_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Send POD_SOFTWARE to each server"
+lib_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Send POD_SOFTWARE/${PACKAGE} to each server"
 
 if [[ ! -z $POD_SOFTWARE_pid_failures ]]; then
-  lib_generic_display_msgColourSimple "INFO-->" "${cross} Problems distributing POD_SOFTWARE to servers"
+  lib_generic_display_msgColourSimple "INFO-->" "${cross} Problems distributing POD_SOFTWARE/${PACKAGE} to servers"
   printf "%s\n"
   for k in "${!POD_SOFTWARE_server_pid_array[@]}"
   do
@@ -105,6 +105,6 @@ if [[ ! -z $POD_SOFTWARE_pid_failures ]]; then
   done
   printf "%s\n"
 else
-  lib_generic_display_msgColourSimple "SUCCESS" "Distributed 'POD_SOFTWARE' to all servers"
+  lib_generic_display_msgColourSimple "SUCCESS" "Distributed 'POD_SOFTWARE/${PACKAGE}' to all servers"
 fi
 }
