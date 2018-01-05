@@ -86,6 +86,7 @@ else
 
   # [4] configure local environment
 
+  lib_doStuff_remotely_javaBashProfile
   if [[ ${os} == *"Ubuntu"* ]]; then
     lib_doStuff_remotely_bashrc
   fi
