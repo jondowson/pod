@@ -1,4 +1,3 @@
-# author:        jondowson
 # about:         start dse on each server based on its server json defined mode
 
 # -------------------------------------------

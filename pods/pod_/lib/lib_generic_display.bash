@@ -1,4 +1,3 @@
-# author:       jondowson
 # about:        formatting for screen output
 
 # ---------------------------------------
@@ -76,8 +75,8 @@ function lib_generic_display_finalMessage(){
 ## at the end of each pod - display a message
 
 which_pod="${1}"
-# now is a good time to remove the temp files created during pod 
-prepare_generic_misc_clearTheDecks 
+# now is a good time to remove the temp files created during pod
+prepare_generic_misc_clearTheDecks
 case ${which_pod} in
 
     "pod_DSE" )

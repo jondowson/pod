@@ -1,5 +1,4 @@
-# author:        jondowson
-# about:         software version and path configurations for a cluster created by pod_DSE
+# about:  set software versions, paths and homogenous settings ( i.e non server.json settings)
 
 # //////////////////////////////////////////
 # DO-NOT-EDIT-THIS-BLOCK !!

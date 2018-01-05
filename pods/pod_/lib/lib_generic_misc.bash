@@ -1,4 +1,3 @@
-# author: jondowson
 # about:  miscellaneous generic bash functions
 
 # ---------------------------------------

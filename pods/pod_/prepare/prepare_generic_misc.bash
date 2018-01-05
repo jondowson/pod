@@ -1,4 +1,3 @@
-# author:        jondowson
 # about:         functions required prior to running pod
 
 # ------------------------------------------

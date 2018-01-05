@@ -1,4 +1,3 @@
-# author: jondowson
 # about:  checks and error catching functions
 
 # ---------------------------------------
@@ -21,7 +20,7 @@ if [[ ${quiet} == "true" ]]; then
   ${4} &> /dev/null
 else
   ${4}
-fi   
+fi
 ret=$?
 
 if [[ $ret != 0 ]]; then
@@ -88,12 +87,12 @@ fi
 function lib_generic_checks_fileFolderExists(){
 
 ## check for the existence of a file or folder for a given folder path
-# note: case sensitive approach required as Macs ignore case when listing folders/files  
-# note: returns return code 0 if file/folder found or error message  
+# note: case sensitive approach required as Macs ignore case when listing folders/files
+# note: returns return code 0 if file/folder found or error message
 
 # usage examples
-# lib_generic_checks_folderExistsCaseSensitive "message" "true" "pathToParentFolder" "folder" "file/folderTChec" 
-# lib_generic_checks_folderExistsCaseSensitive "message" "false" "pathToParentFolder" "file" "file/folderTCheck" 
+# lib_generic_checks_folderExistsCaseSensitive "message" "true" "pathToParentFolder" "folder" "file/folderTChec"
+# lib_generic_checks_folderExistsCaseSensitive "message" "false" "pathToParentFolder" "file" "file/folderTCheck"
 
 # a helpful tag message outputted to screen
 tagMsg=${1}
@@ -123,11 +122,11 @@ for((i=0;i<${#checks[@]};i++))
 do
   if [[ "${checkThis}" == "${checks[i]}" ]]; then
     if [[ -d "${listPath}/${checkThis}" ]] && [[ $fileOrFolder == "folder" ]]; then
-      fileOrFolder="folder" && notFound="false" 
+      fileOrFolder="folder" && notFound="false"
       break;
     elif [[ -f "${listPath}/${checkThis}" ]] && [[ $fileOrFolder == "file" ]]; then
       fileOrFolder="file" && notFound="false"
-      break;      
+      break;
     fi
   fi
 done

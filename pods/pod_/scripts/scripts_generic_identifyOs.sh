@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# author:        jondowson
-# about:         determine os on machine
-
-# ------------------------------------------
-
-
 function scripts_generic_identifyOs(){
 
 ## determine OS of computer
@@ -25,5 +19,4 @@ fi
 }
 
 scripts_generic_identifyOs
-
 printf "%s\n" "${os}"

@@ -1,4 +1,3 @@
-# author:        jondowson
 # about:         for each server build and then send a configured version of pod
 
 # ------------------------------------------
@@ -43,15 +42,15 @@ do
 
 # -----
 
-  # assign build settings per the TARGET_FOLDER specified for this server  
+  # assign build settings per the TARGET_FOLDER specified for this server
   printf "%s\n" "TARGET_FOLDER=${target_folder}"            > "${suitcase_file_path}"
-  source "${tmp_build_settings_file_path}"                    
+  source "${tmp_build_settings_file_path}"
 
 # -----
 
   ## pack the suitcase !! - the tmp_suitcase becomes the suitcase on each server
 
-  # [1] TARGET_FOLDER determines many of the settings in build_settings.bash and can be different for each server  
+  # [1] TARGET_FOLDER determines many of the settings in build_settings.bash and can be different for each server
   printf "%s\n" "TARGET_FOLDER=${target_folder}"                  > "${tmp_suitcase_file_path}"    # clear any existing values with first entry (i.e. '>')
   # [2] append variables derived from server json definition file
   printf "%s\n" "STOMP_INTERFACE=${stomp_interface}"             >> "${tmp_suitcase_file_path}"
@@ -129,7 +128,7 @@ done
     data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.dsefs_data['${j}']' | tr -d '"')
     dsefs_data_file_directories_array[${j}]=${data_path}
   done
-  
+
   if [[ "${analytics}" == "true" ]] || [[ "${dsefs}" == "true" ]]; then
     lib_doStuff_locally_dseYamlDsefs
   fi

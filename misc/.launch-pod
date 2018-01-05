@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/usr/local/bin/bash
 
 POD_VERSION="1.3.1"
 script_name=".launch-pod"
-script_author="jondowson"
+script_author="JRD"
 script_about="launch a chosen pod with passed flags - mac version"
 script_start=$(date +%s)
 
@@ -38,6 +38,10 @@ prepare_generic_misc_sourceGeneric
 prepare_generic_misc_setDefaults
 # [2.5] change local permissions to assist later pod folder copy
 chmod -R 777 ${pod_home_path}/.git
+# [2.6] declare global arrays used by generic pod_ stages / functions
+declare -A ifsDelimArray
+declare -A pod_test_connect_error_array
+declare -A pod_software_send_pid_array
 
 # ==========
 
@@ -141,10 +145,10 @@ catchError "launch-pod#4" "true" "true" prepare_generic_misc_podBuildTempFolder
 prepare_misc_checkFileFolderExist
 
 # [8.2] source the pod's init script
-  source "pods/${WHICH_POD}/${WHICH_POD}.bash"
+source "pods/${WHICH_POD}/${WHICH_POD}.bash"
 
 # [8.3] call the chosen pod's init function
-  "${WHICH_POD}"
+"${WHICH_POD}"
 
 
 # ////////////////////////////////////////// GENERIC POD FINISH
@@ -153,9 +157,9 @@ prepare_misc_checkFileFolderExist
 ## [9] display generic pod_ closing messages
 
 # [9.1] display generic final message
-  lib_generic_display_finalMessage "${WHICH_POD}"
+lib_generic_display_finalMessage "${WHICH_POD}"
 
 # [9.2] calculate and display script timings
-  lib_generic_misc_timePod
-  lib_generic_display_msgColourSimple "INFO" "pod took: ${diff}[s]"
-  printf "%s\n"
+lib_generic_misc_timePod
+lib_generic_display_msgColourSimple "INFO" "pod took: ${diff}[s]"
+printf "%s\n"

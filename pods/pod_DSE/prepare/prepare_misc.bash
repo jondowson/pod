@@ -1,5 +1,4 @@
-# author:        jondowson
-# about:         preperation functions for 'pod_DSE'
+# about:    preperation functions for pod_DSE
 
 # ------------------------------------------
 

@@ -1,5 +1,4 @@
-# author:        jondowson
-# about:         help on pod_DSE usage and flags
+# about:    help on pod_DSE usage and flags
 
 # ------------------------------------------
 

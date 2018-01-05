@@ -1,15 +1,5 @@
 #!/usr/local/bin/bash
 
-# author:        jondowson
-# about:         script run on each server to install configured software for Macs
-
-# ------------------------------------------
-
-# uncomment to see full bash trace (debug)
-# set -x
-
-# ------------------------------------------
-
 ## determine OS of this computer
 
 os=$(uname -a)
@@ -102,3 +92,4 @@ fi
 # [5] tidy up
 
 prepare_generic_misc_clearTheDecks
+rm -rf ${INSTALL_FOLDER_POD}        # this folder is empty on a mac so tidy it up

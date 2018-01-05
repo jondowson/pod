@@ -1,4 +1,3 @@
-# author: jondowson
 # about: generic bash string manipulation functions
 
 # ---------------------------------------

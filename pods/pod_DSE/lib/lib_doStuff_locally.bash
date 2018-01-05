@@ -1,5 +1,4 @@
-# author:        jondowson
-# about:         functions executed on local server on files destined for remote servers
+# about:     functions executed on local server on files destined for remote servers
 
 # ---------------------------------------
 

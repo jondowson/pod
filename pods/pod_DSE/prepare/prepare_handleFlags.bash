@@ -1,5 +1,4 @@
-# author:        jondowson
-# about:         flag handling for pod_DSE
+# about:    flag handling for pod_DSE
 
 # ------------------------------------------
 

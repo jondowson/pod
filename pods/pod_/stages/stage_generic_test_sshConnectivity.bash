@@ -1,5 +1,4 @@
-# author:        jondowson
-# about:         test connectivity and write-paths for all servers in servers json definition
+# about:    test connectivity and write-paths for all servers in servers json definition
 
 #-------------------------------------------
 

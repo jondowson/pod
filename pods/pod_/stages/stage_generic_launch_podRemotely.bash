@@ -1,5 +1,4 @@
-# author:        jondowson
-# about:         run 'pod_launch_remote.sh' on each server in the cluster
+# about:         run 'scripts_launchPodRemotely.sh' on each server
 
 # ------------------------------------------
 

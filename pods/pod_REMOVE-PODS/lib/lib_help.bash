@@ -1,5 +1,4 @@
-# author:        jondowson
-# about:         help on pod usage and flags
+# about:    help on this pod's usage and flags
 
 # ------------------------------------------
 

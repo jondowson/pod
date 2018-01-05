@@ -39,19 +39,15 @@
 
 function pod_DSE(){
 
-## create arrays used by pod_DSE
+## create pod specific arrays used by its stages
 
-declare -A ifsDelimArray
-declare -A pod_test_connect_error_array
-declare -A pod_test_send_error_array_1
-declare -A pod_test_send_error_array_2
-declare -A pod_test_send_error_array_3
-declare -A pod_build_send_error_array
-declare -A pod_software_send_pid_array
-declare -A pod_build_run_pid_array
-declare -A pod_build_launch_pid_array
-declare -A pod_start_dse_error_array
-declare -A pod_stop_dse_error_array
+declare -A pod_test_write_error_array_1   # test write path for folders
+declare -A pod_test_write_error_array_2   # test write path for data folders
+declare -A pod_test_write_error_array_3   # test write path for dsefs data folders
+declare -A pod_build_send_error_array     # test send pod build
+declare -A pod_build_launch_pid_array     # test launch pod scripts remotely
+declare -A pod_start_dse_error_array      # test starting dse remotely
+declare -A pod_stop_dse_error_array       # test stopping dse remotely
 
 # ------------------------------------------
 
@@ -107,6 +103,7 @@ if [[ "${clusterstateFlag}" == "true" ]]; then
   # change WHICH_POD to alter final message displayed by pod_ generic function
   WHICH_POD=${WHICH_POD}_rollingStartStop
 
+# installing pod_DSE
 else
 
   # ------------------------------------------

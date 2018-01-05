@@ -1,5 +1,4 @@
-# author:        jondowson
-# about:         rules for handling flags for pod_DSE
+# about:    rules for handling flags for this pod
 
 # ------------------------------------------
 
@@ -16,11 +15,11 @@ clusterStateValueErrMsg="You must specify --clusterstate as either ${yellow}stop
 if [[ "${clusterstateFlag}" == "true" ]]; then
 
     # PART 1: check flag combinations are acceptable for this mode of operation
-    if [[ "${buildFlag}" != "true" ]] || [[ "${serversFlag}" != "true" ]]; then 
+    if [[ "${buildFlag}" != "true" ]] || [[ "${serversFlag}" != "true" ]]; then
       lib_generic_display_msgColourSimple "ERROR-->" "${buildServerErrMsg}" && exit 1;
     elif [[ ${sendsoftFlag} == "true" ]]  || [[ ${regenresourcesFlag} == "true" ]]; then
       lib_generic_display_msgColourSimple "ERROR-->" "${defaultErrMsg}" && exit 1;
-    
+
     # PART 2: check values are acceptable for this mode of operation
     elif [[ "${CLUSTER_STATE}" != "stop" ]] && [[ ${CLUSTER_STATE} != "restart" ]]; then
       lib_generic_display_msgColourSimple "ERROR-->" "${clusterStateValueErrMsg}" && exit 1;
@@ -28,11 +27,11 @@ if [[ "${clusterstateFlag}" == "true" ]]; then
 
 # MODE 2: installing DSE on cluster using pod_DSE
 else
-  
+
   # PART 1: check flag combinations are acceptable for this mode of operation
-  if [[ "${buildFlag}" != "true" ]] || [[ ${serversFlag} != "true" ]]; then  
+  if [[ "${buildFlag}" != "true" ]] || [[ ${serversFlag} != "true" ]]; then
     lib_generic_display_msgColourSimple "ERROR-->" "${defaultErrMsg}" && exit 1;
-  
+
   # PART 2: check values are acceptable for this mode of operation
   elif [[ "${BUILD_FOLDER}" == "" ]] || [[ "${SERVERS_JSON}" == "" ]]; then
     lib_generic_display_msgColourSimple "ERROR-->" "${defaultErrMsg}" && exit 1;

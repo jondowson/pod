@@ -1,5 +1,4 @@
-# author:        jondowson
-# about:         prepare dse 'resources' folder by removing all non-configuration files
+# about:   prepare dse 'resources' folder by removing all non-configuration files
 
 # -------------------------------------------
 

@@ -39,15 +39,14 @@ do
 # -----
 
   # [1] clear any existing values with first entry (i.e. '>')
-  printf "%s\n" "TARGET_FOLDER=${target_folder}"            > "${tmp_suitcase_file_path}"
-  # [2] append variables from build_settings.bash that are dependent of TARGET_FOLDER
-  printf "%s\n" "INSTALL_FOLDER=${INSTALL_FOLDER}" >> "${tmp_suitcase_file_path}"
-  # [3] append variables from build_settings.bash that are independent of TARGET_FOLDER
-  # [4] append variables from server json definition file
-  # [5] append variables determined from flags
-  printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}"             >> "${tmp_suitcase_file_path}"
-  printf "%s\n" "REMOVE_POD=${REMOVE_POD}"                 >> "${tmp_suitcase_file_path}"
-  printf "%s\n" "build_folder_path=${TARGET_FOLDER}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"  >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "TARGET_FOLDER=${target_folder}"                 > "${tmp_suitcase_file_path}"
+  # [2] append variables from server json definition file
+  # [3] append variables determined from flags
+  printf "%s\n" "WHICH_POD=${WHICH_POD}"                        >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "REMOVE_POD=${REMOVE_POD}"                      >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}"                  >> "${tmp_suitcase_file_path}"
+  build_folder_path_string="${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"
+  printf "%s\n" "build_folder_path=${build_folder_path_string}" >> "${tmp_suitcase_file_path}"
 
 # -----
 

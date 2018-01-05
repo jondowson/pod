@@ -1,5 +1,4 @@
-# author:        jondowson
-# about:         for each server build and then send a configured version of pod
+# about:    for each server build and then send a configured version of pod
 
 # ------------------------------------------
 

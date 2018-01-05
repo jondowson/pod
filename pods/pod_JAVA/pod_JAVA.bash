@@ -1,5 +1,4 @@
-# author:        jondowson
-# about:         configure dse software and distribute to all servers in cluster
+# about:         distribute + configure Java to all servers in cluster
 
 # ------------------------------------------
 
@@ -32,17 +31,11 @@
 
 function pod_JAVA(){
 
-## create arrays for capturing errors
+## create pod specific arrays used by its stages
 
-declare -A ifsDelimArray
-declare -A pod_test_connect_error_array
-declare -A pod_test_send_error_array_1
-declare -A pod_build_send_error_array
-declare -A pod_software_send_pid_array
-declare -A pod_build_run_pid_array
-declare -A pod_build_launch_pid_array
-declare -A pod_remove_pod_report_array
-declare -A pod_remove_pod_error_array
+declare -A pod_test_write_error_array     # test write path for folders
+declare -A pod_build_send_error_array     # test send pod build
+declare -A pod_build_launch_pid_array     # test launch pod scripts remotely
 
 # ------------------------------------------
 

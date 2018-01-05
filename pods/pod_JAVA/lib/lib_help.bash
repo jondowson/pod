@@ -1,7 +1,4 @@
-#!/bin/bash
-
-# author:        jondowson
-# about:         help on pod_JAVA usage and flags
+# about:    help on pod_JAVA usage and flags
 
 # ------------------------------------------
 

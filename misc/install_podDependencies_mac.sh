@@ -2,7 +2,7 @@
 
 POD_VERSION="1.3.1"
 script_name="install_podDependencies_mac.sh"
-script_author="jondowson"
+script_author="JRD"
 script_about="install mac dependencies for the pod application"
 script_start=$(date +%s)
 

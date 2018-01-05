@@ -1,4 +1,3 @@
-# author:        jondowson
 # about:         help on pod usage and flags
 
 # ------------------------------------------
@@ -34,7 +33,7 @@ else
   lib_generic_display_msgColourSimple "TASK==>" "builds: ${green}${WHICH_POD}${reset}"
   availableBuilds=$(ls ${pod_home_path}/pods/${WHICH_POD}/builds)
   printf "%s\n" ${availableBuilds}
-  
+
   lib_generic_display_msgColourSimple "TASK==>" "servers: ${green}all pods${reset}"
   availableServers=$(ls ${pod_home_path}/servers)
   printf "%s\n" ${availableServers}

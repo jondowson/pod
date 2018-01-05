@@ -1,7 +1,4 @@
-#!/bin/bash
-
-# author:        jondowson
-# about:         preperation functions for 'pod_JAVA'
+# about:    preperation functions for this pod
 
 # ------------------------------------------
 

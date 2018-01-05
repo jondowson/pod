@@ -1,5 +1,4 @@
-# author:        jondowson
-# about:         send entire POD_SOFTWARE folder to each server to its specified target folder
+# about:    send POD_SOFTWARE/$PACKAGE folder to each server on its specified target folder
 
 # ------------------------------------------
 

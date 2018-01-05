@@ -1,5 +1,4 @@
-# author:        jondowson
-# about:         functions executed on remote server
+# about:    functions executed on remote server
 
 # ---------------------------------------
 

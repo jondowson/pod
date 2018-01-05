@@ -1,15 +1,5 @@
 #!/bin/bash
 
-# author:        jondowson
-# about:         script run on each server to install configured software
-
-# ------------------------------------------
-
-# uncomment to see full bash trace (debug)
-# set -x
-
-# ------------------------------------------
-
 ## determine OS of this computer
 
 os=$(uname -a)
@@ -92,5 +82,6 @@ else
 
   # [2] tidy up
   prepare_generic_misc_clearTheDecks
+  rm -rf ${INSTALL_FOLDER_POD}        # this folder is empty so tidy it up
 
 fi

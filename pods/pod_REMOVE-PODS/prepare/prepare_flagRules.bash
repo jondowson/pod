@@ -1,7 +1,4 @@
-#!/bin/bash
-
-# author:        jondowson
-# about:         rules for handling flags for pod_JAVA
+# about:    rules for handling flags for this pod
 
 # ------------------------------------------
 
