@@ -1,15 +1,5 @@
 #!/usr/local/bin/bash
 
-# author:        jondowson
-# about:         script run on each server to install configured software for Macs
-
-# ------------------------------------------
-
-# uncomment to see full bash trace (debug)
-# set -x
-
-# ------------------------------------------
-
 ## determine OS of this computer
 
 os=$(uname -a)
@@ -39,9 +29,9 @@ source "${pod_home_path}/misc/.suitcase"
 
 # ------------------------------------------
 
-## source pod_ + pod_DSE-SECURITY scripts
+## source pod_ + pod_DSE lib scripts
 
-files="$(find ${pod_home_path}/pods/pod_/lib -name "*.bash" | grep -v "lib_generic_display.bash")"
+files="$(find ${pod_home_path}/pods/pod_/lib -name "*.bash")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
@@ -51,7 +41,7 @@ for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
 
-files="$(find ${pod_home_path}/pods/pod_DSE-SECURITY/lib/ -name "*.bash")"
+files="$(find ${pod_home_path}/pods/pod_DSE/lib/ -name "*.bash")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
@@ -60,7 +50,6 @@ done
 
 ## source the pod-specific 'builds' folder to use
 
-# build_folder_path specified in suitcase
 build_file_path="${build_folder_path}build_settings.bash"
 if [[ -f ${build_file_path} ]]; then
   source ${build_file_path}
@@ -70,9 +59,53 @@ fi
 
 # ------------------------------------------
 
-## edit DSE config files
+## install dse + agents on each server
 
-# [1] delete any previous java install folder with the same version
+# [1] delete any previous pod build folder with the same name
 
-lib_doStuff_remotely_dseYamlTDE
-lib_doStuff_remotely_dseYamlAuditLogging
+rm -rf ${INSTALL_FOLDER_POD}${BUILD_FOLDER}
+
+# [2] make folders
+
+lib_doStuff_remotely_createDseFolders
+
+# -----
+
+# [3] un-compress software
+
+lib_doStuff_remotely_installDseTar
+lib_doStuff_remotely_installAgentTar
+
+# -----
+
+# [4] merge the copied over 'resources' folder to the untarred one
+
+cp -R "${build_folder_path}resources" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}/${DSE_VERSION}"
+
+# -----
+
+# [5] update the datastax-agent address.yaml to point to opscenter and environment to find JAVA_HOME
+
+lib_doStuff_remotely_agentAddressYaml
+lib_doStuff_remotely_agentEnvironment
+
+# -----
+
+# [6] rename this redundant and meddlesome file !!
+
+lib_doStuff_remotely_cassandraTopologyProperties
+
+# -----
+
+# [7] configure local environment
+
+lib_doStuff_remotely_dseBashProfile
+
+if [[ ${os} == *"Ubuntu"* ]]; then
+  lib_doStuff_remotely_bashrc
+fi
+
+# -----
+
+# [7] tidy up
+prepare_generic_misc_clearTheDecks

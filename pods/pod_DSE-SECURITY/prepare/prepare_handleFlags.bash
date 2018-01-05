@@ -1,7 +1,4 @@
-#!/bin/bash
-
-# author:        jondowson
-# about:         flag handling for pod_DSE
+# about:    flag handling for pod_DSE
 
 # ------------------------------------------
 
@@ -25,6 +22,16 @@ while test $# -gt 0; do
     -ss|--sendsoft)
         SEND_POD_SOFTWARE=$value
         sendsoftFlag="true"
+        break
+        ;;
+    -rr|--regenresources)
+        REGENERATE_RESOURCES=$value
+        regenresourcesFlag="true"
+        break
+        ;;
+    -cs|--clusterstate)
+        CLUSTER_STATE=$value
+        clusterstateFlag="true"
         break
         ;;
     *)
