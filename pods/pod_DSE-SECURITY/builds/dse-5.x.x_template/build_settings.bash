@@ -4,7 +4,7 @@
 # DO-NOT-EDIT-THIS-BLOCK !!
 source ${pod_home_path}/misc/.suitcase
 POD_SOFTWARE="${TARGET_FOLDER}POD_SOFTWARE/"
-PACKAGE="DATASTAX"
+PACKAGE="n/a"
 PACKAGES="${POD_SOFTWARE}${PACKAGE}/"
 INSTALL_FOLDER="${TARGET_FOLDER}POD_INSTALLS/"
 INSTALL_FOLDER_POD="${INSTALL_FOLDER}${WHICH_POD}/"
@@ -16,33 +16,54 @@ INSTALL_FOLDER_POD="${INSTALL_FOLDER}${WHICH_POD}/"
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # EDIT-THIS-BLOCK !!
 
-## [1] BASIC CASSANDRA SETTINGS
-
-CLUSTER_NAME="My Kluster"                       # avoid special characters !!
-ENDPOINT_SNITCH="GossipingPropertyFileSnitch"   # 'GossipingPropertyFileSnitch' should be the default !!
-VNODES="8"                                      # specify a value (8,16,32) for vnodes or "false" for assigned tokens (picked up from servers' .json definition file)
+# [1] DSE version to configure
+DSE_VERSION="dse-5.x.x"
 
 # -----
 
-## [2] DSE VERSIONS
+## [2] dse.yaml
 
-DSE_VERSION="dse-5.1.5"
-DSE_TARBALL="${DSE_VERSION}-bin.tar.gz"
-AGENT_VERSION="datastax-agent-6.1.5"
-AGENT_TARBALL="${AGENT_VERSION}.tar.gz"
+# audit logging settings
+audit_logging_enabled="true"
+audit_logging_included_categories="DML,DDL,DCL,AUTH,ADMIN,ERROR"
+audit_logging_included_keyspaces="acme_accounts,acme_payauth,acme_paysub"
+
+# at rest TDE encryption settings
+tde_encryption_system_info_enabled="true"
+tde_encryption_cipher_algorithm="AES"
+tde_encryption_secret_key_strength="256"
+tde_encryption_chunk_length_kb="64"
 
 # -----
 
-# [3] DATA + LOG + TMP FOLDER LOCATIONS
+## [3] cassandra.yaml
 
-# note: cassandra sstable data folders are specified in the <servers.json> definition file
-# this data folder is where the supporting persistence files will go such as commitlogs and hinted-handoffs
-# on spinning disks it is recommended to locate these on seperate mount points to sstable data folders
-PARENT_DATA_FOLDER="${INSTALL_FOLDER_POD}${dse_version}data/"
-PARENT_LOG_FOLDER="${INSTALL_FOLDER_POD}${dse_version}logs/"
+# server_encryption_options
+server_encryption_internode_encryption="all"
+server_encryption_keystore="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/etc/dse/conf/acme.keystore.jks"
+server_encryption_keystore_password="changeit"
+server_encryption_truststore="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/etc/dse/conf/acme.truststore.jks"
+server_encryption_truststore_password="changeit"
+server_encryption_protocol=""    # "TLS"
+server_encryption_algorithm=""   # "SunX509"
+server_encryption_store_type=""  # "JKS"
+server_encryption_cipher_suites="[TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA,TLS_DHE_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA]"
+server_encryption_require_client_auth="true"
+server_encryption_require_endpoint_verification="" # "false"
 
-# temp folder - can be anywhere with suffcient permissions
-TEMP_FOLDER="${INSTALL_FOLDER}tmp/"
+# enable or disable client/server encryption
+client_encryption_enabled="false"
+client_encryption_optional="false"
+client_encryption_keystore_client_server="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/etc/dse/conf/acme.keystore.jks"
+client_encryption_keystore_client_server_password="changeit"
+client_encryption_require_client_auth=""   # "false"
+client_encryption_truststore=""            # "resources/dse/conf/.truststore"
+client_encryption_truststore_password=""   # "cassandra"
+client_encryption_protocol=""              # "TLS"
+client_encryption_algorithm=""             # "SunX509"
+client_encryption_store_type=""            # "JKS"
+client_encryption_cipher_suites=""         # "[TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA,TLS_DHE_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA]"
+
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
@@ -50,34 +71,7 @@ TEMP_FOLDER="${INSTALL_FOLDER}tmp/"
 
 # //////////////////////////////////////////
 # DO-NOT-EDIT-THIS-BLOCK !!
-# dse
-dse_tar_folder="${PACKAGES}dse/"
-dse_tar_file="${dse_tar_folder}${DSE_TARBALL}"
-dse_untar_config_folder="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/${DSE_VERSION}/resources/dse/conf/"
-dse_untar_bin_folder="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/${DSE_VERSION}/bin/"
-# datastax-agent
-agent_tar_folder="${PACKAGES}datastax-agent/"
-agent_tar_file="${agent_tar_folder}${AGENT_TARBALL}"
-agent_untar_folder="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/${AGENT_VERSION}"
-agent_untar_config_folder="${agent_untar_folder}/conf/"
-agent_untar_bin_folder="${agent_untar_folder}/bin/"
-# required for java
-Djava_tmp_folder="${TEMP_FOLDER}"
-# cassandra
-cassandra_log_folder="${PARENT_LOG_FOLDER}cassandra/"
-commitlog_directory="${PARENT_DATA_FOLDER}commitlog/"
-cdc_raw_directory="${PARENT_DATA_FOLDER}cdc_raw/"
-saved_caches_directory="${PARENT_DATA_FOLDER}saved_caches/"
-hints_directory="${PARENT_DATA_FOLDER}hints/"
-# spark data and log folders
-spark_local_data="${PARENT_DATA_FOLDER}spark/rdd/"
-spark_worker_data="${PARENT_DATA_FOLDER}spark/worker/"
-spark_master_log_folder="${PARENT_LOG_FOLDER}spark/master/"
-spark_worker_log_folder="${PARENT_LOG_FOLDER}spark/worker/"
-# dsefs
-dsefs_untar_folder="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/${DSE_VERSION}/resources/dsefs/"
-# gremlin logs
-gremlin_log_folder="${PARENT_LOG_FOLDER}gremlin/"
-# tomcat logs
-tomcat_log_folder="${PARENT_LOG_FOLDER}tomcat/"
+dse_config_folder="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/${DSE_VERSION}/resources/"
+config_folder_dseYaml="${dse_config_folder}dse/conf/"
+config_folder_cassandraYaml="${dse_config_folder}cassandra/conf/"
 # //////////////////////////////////////////

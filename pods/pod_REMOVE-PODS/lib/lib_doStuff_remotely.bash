@@ -4,7 +4,7 @@
 
 function lib_doStuff_remotely_removeThisPod(){
 
-## uncompress tar on remote machine
+## remove this pod on remote machine
 
 rm -rf ${INSTALL_FOLDER}${REMOVE_POD}
 }

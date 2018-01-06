@@ -53,92 +53,11 @@ do
   # [1] TARGET_FOLDER determines many of the settings in build_settings.bash and can be different for each server
   printf "%s\n" "TARGET_FOLDER=${target_folder}"                  > "${tmp_suitcase_file_path}"    # clear any existing values with first entry (i.e. '>')
   # [2] append variables derived from server json definition file
-  printf "%s\n" "STOMP_INTERFACE=${stomp_interface}"             >> "${tmp_suitcase_file_path}"
   # [3] append variables derived from flags
   printf "%s\n" "WHICH_POD=${WHICH_POD}"                         >> "${tmp_suitcase_file_path}"
   printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}"                   >> "${tmp_suitcase_file_path}"
   build_folder_path_string="${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"
   printf "%s\n" "build_folder_path=${build_folder_path_string}"  >> "${tmp_suitcase_file_path}"
-
-# -----
-
-  # edit the local copy of the dse config files
-  lib_doStuff_locally_cassandraEnv
-  lib_doStuff_locally_jvmOptions
-  lib_doStuff_locally_cassandraYaml
-  lib_doStuff_locally_dseSparkEnv
-  lib_doStuff_locally_cassandraRackDcProperties
-
-# -----
-
-  # calculate number of cassandra data folders specified in json
-  # -3? - one for each bracket line and another 'cos the array starts at zero
-  numberOfDataFolders=$(($(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.cass_data' | wc -l)-3))
-
-# CAT/EOF cannot be indented !!
-cat << EOF >> "${tmp_suitcase_file_path}"
-declare -a data_file_directories_array
-EOF
-
-for j in `seq 0 ${numberOfDataFolders}`;
-do
-data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.cass_data['${j}']' | tr -d '"')
-cat << EOF >> "${tmp_suitcase_file_path}"
-data_file_directories_array[${j}]="${data_path}"
-EOF
-done
-
-# -----
-
-  declare -a data_file_directories_array
-  for j in $(seq 0 ${numberOfDataFolders});
-  do
-    data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.cass_data['${j}']' | tr -d '"')
-    data_file_directories_array[${j}]=${data_path}
-  done
-  lib_doStuff_locally_cassandraYamlData
-
-# -----
-
-  if [[ "${analytics}" == "true" ]] || [[ "${dsefs}" == "true" ]]; then
-
-    # calculate number of cassandra data folders specified in json
-    # -3? - one for each bracket line and another 'cos the array starts at zero
-    numberOfDataFolders=$(($(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.dsefs_data' | wc -l)-3))
-
-# CAT/EOF cannot be indented !!
-cat << EOF >> "${tmp_suitcase_file_path}"
-declare -a dsefs_data_file_directories_array
-EOF
-
-for j in $(seq 0 ${numberOfDataFolders});
-do
-data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.dsefs_data['${j}']' | tr -d '"')
-cat << EOF >> "${tmp_suitcase_file_path}"
-dsefs_data_file_directories_array[${j}]="${data_path}"
-EOF
-done
-  fi
-
-# -----
-
-  declare -a dsefs_data_file_directories_array
-  for j in $(seq 0 ${numberOfDataFolders});
-  do
-    data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.dsefs_data['${j}']' | tr -d '"')
-    dsefs_data_file_directories_array[${j}]=${data_path}
-  done
-
-  if [[ "${analytics}" == "true" ]] || [[ "${dsefs}" == "true" ]]; then
-    lib_doStuff_locally_dseYamlDsefs
-  fi
-
-# -----
-
-  # set node specific settings for 'seeds:' and 'listen_address:'
-  lib_doStuff_locally_cassandraYamlNodeSpecific
-
-# -----
 
   lib_generic_display_msgColourSimple "INFO-->" "sending:     bespoke pod build"
   printf "%s\n" "${red}"

@@ -13,7 +13,7 @@ centos_cmd=${3}
 redhat_cmd=${4}
 
 if [[ "${os}" == "Mac" ]];then
-  printf "%s" ${mac_cmd}
+  printf "%s" /usr/local/bin/${mac_cmd}
 elif [[ "${os}" == "Ubuntu" ]];then
   printf "%s" ${ubuntu_cmd}
 elif [[ "${os}" == "Centos" ]];then

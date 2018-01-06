@@ -41,7 +41,7 @@ for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
 
-files="$(find ${pod_home_path}/pods/pod_DSE/lib/ -name "*.bash")"
+files="$(find ${pod_home_path}/pods/${WHICH_POD}/lib/ -name "*.bash")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
@@ -54,58 +54,21 @@ build_file_path="${build_folder_path}build_settings.bash"
 if [[ -f ${build_file_path} ]]; then
   source ${build_file_path}
 else
-  lib_generic_checks_fileExists "scripts_launchPodRemotely#1" "true" "${build_file_path}"
+  lib_generic_checks_fileExists ".scripts_launchPodRemotely#1" "true" "${build_file_path}"
 fi
 
 # ------------------------------------------
 
-## install dse + agents on each server
+## configure audit + security settings
 
-# [1] delete any previous pod build folder with the same name
+# [1] edit dse config file
 
-rm -rf ${INSTALL_FOLDER_POD}${BUILD_FOLDER}
-
-# [2] make folders
-
-lib_doStuff_remotely_createDseFolders
+lib_doStuff_remotely_dseYamlTDE
+lib_doStuff_remotely_dseYamlAuditLogging
 
 # -----
 
-# [3] un-compress software
+# [3] tidy up
 
-lib_doStuff_remotely_installDseTar
-lib_doStuff_remotely_installAgentTar
-
-# -----
-
-# [4] merge the copied over 'resources' folder to the untarred one
-
-cp -R "${build_folder_path}resources" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}/${DSE_VERSION}"
-
-# -----
-
-# [5] update the datastax-agent address.yaml to point to opscenter and environment to find JAVA_HOME
-
-lib_doStuff_remotely_agentAddressYaml
-lib_doStuff_remotely_agentEnvironment
-
-# -----
-
-# [6] rename this redundant and meddlesome file !!
-
-lib_doStuff_remotely_cassandraTopologyProperties
-
-# -----
-
-# [7] configure local environment
-
-lib_doStuff_remotely_dseBashProfile
-
-if [[ ${os} == *"Ubuntu"* ]]; then
-  lib_doStuff_remotely_bashrc
-fi
-
-# -----
-
-# [7] tidy up
 prepare_generic_misc_clearTheDecks
+rm -rf ${INSTALL_FOLDER_POD}        # this folder is empty so tidy it up
