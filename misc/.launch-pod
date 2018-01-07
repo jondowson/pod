@@ -13,7 +13,7 @@ script_start=$(date +%s)
 ## [1] discover pod path and assign TARGET_FOLDER
 
 # [1.1] discover pod path
-parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; cd ..; pwd -P )
 cd "${parent_path}"
 pod_home_path="$(pwd)"
 
@@ -116,7 +116,7 @@ prepare_flagRules
 
 # [5.1] check it is valid
 servers_json_path="${pod_home_path}/servers/${SERVERS_JSON}"
-catchError "launch-pod#2" "true" "false" "${jq_folder}jq [.] ${servers_json_path}"
+catchError "launch-pod#2" "true" "true" "${jq_folder}jq [.] ${servers_json_path}"
 
 # [5.2] check at least one server is defined
 numberOfServers=$(${jq_folder}jq [.] ${servers_json_path} | tr '"' '\n' | grep 'server_' | wc -l)

@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+
 ## determine OS of this computer
 
 os=$(uname -a)
@@ -72,6 +72,13 @@ else
 
   lib_doStuff_remotely_dseYamlTDE
   lib_doStuff_remotely_dseYamlAuditLogging
+
+  # -----
+
+  # [2] edit cassandra config file
+
+  lib_doStuff_remotely_cassandraYamlServerEncryption
+  lib_doStuff_remotely_cassandraYamlClientEncryption
 
   # -----
 

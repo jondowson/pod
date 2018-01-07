@@ -68,6 +68,13 @@ lib_doStuff_remotely_dseYamlAuditLogging
 
 # -----
 
+# [2] edit cassandra config file
+
+lib_doStuff_remotely_cassandraYamlServerEncryption
+lib_doStuff_remotely_cassandraYamlClientEncryption
+
+# -----
+
 # [3] tidy up
 
 prepare_generic_misc_clearTheDecks

@@ -16,54 +16,92 @@ INSTALL_FOLDER_POD="${INSTALL_FOLDER}${WHICH_POD}/"
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # EDIT-THIS-BLOCK !!
 
-# [1] DSE version to configure
+## [1] DSE version to configure
+
 DSE_VERSION="dse-5.1.5"
 pod_DSE_build_folder="dse-5.1.5_practice"
 
 # -----
 
-## [2] dse.yaml
-
-# audit logging settings
+## [2] dse.yaml - audit_logging
 audit_logging_enabled="true"
 audit_logging_included_categories="DML,DDL,DCL,AUTH,ADMIN,ERROR"
 audit_logging_included_keyspaces="acme_accounts,acme_payauth,acme_paysub"
 
-# at rest TDE encryption settings
-tde_encryption_system_info_enabled="true"
-tde_encryption_cipher_algorithm="AES"
-tde_encryption_secret_key_strength="256"
-tde_encryption_chunk_length_kb="64"
+# -----
+
+## [3] dse.yaml - at rest TDE encryption settings
+tde_system_info_enabled="true"
+tde_cipher_algorithm="AES"
+tde_secret_key_strength="256"
+tde_chunk_length_kb="64"
 
 # -----
 
-## [3] cassandra.yaml
+## [4] cassandra.yaml - server_encryption_options - null settings will not be set !!
+se_internode_encryption="all"
+se_keystore="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/etc/dse/conf/acme.keystore.jks"
+se_keystore_password="changeit"
+se_truststore="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/etc/dse/conf/acme.truststore.jks"
+se_truststore_password="changeit"
+# More advanced defaults below:
+se_protocol=""
+se_algorithm=""
+se_store_type=""
+se_cipher_suites="[TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA,TLS_DHE_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA]"
+se_require_client_auth="true"
+se_require_endpoint_verification=""
 
-# server_encryption_options
-server_encryption_internode_encryption="all"
-server_encryption_keystore="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/etc/dse/conf/acme.keystore.jks"
-server_encryption_keystore_password="changeit"
-server_encryption_truststore="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/etc/dse/conf/acme.truststore.jks"
-server_encryption_truststore_password="changeit"
-server_encryption_protocol=""    # "TLS"
-server_encryption_algorithm=""   # "SunX509"
-server_encryption_store_type=""  # "JKS"
-server_encryption_cipher_suites="[TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA,TLS_DHE_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA]"
-server_encryption_require_client_auth="true"
-server_encryption_require_endpoint_verification="" # "false"
+# note: this commented out block shows the default server_encryption_options !!
 
-# enable or disable client/server encryption
-client_encryption_enabled="false"
-client_encryption_optional="false"
-client_encryption_keystore_client_server="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/etc/dse/conf/acme.keystore.jks"
-client_encryption_keystore_client_server_password="changeit"
-client_encryption_require_client_auth=""   # "false"
-client_encryption_truststore=""            # "resources/dse/conf/.truststore"
-client_encryption_truststore_password=""   # "cassandra"
-client_encryption_protocol=""              # "TLS"
-client_encryption_algorithm=""             # "SunX509"
-client_encryption_store_type=""            # "JKS"
-client_encryption_cipher_suites=""         # "[TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA,TLS_DHE_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA]"
+# server_encryption_options:
+#  internode_encryption: none
+#  keystore: resources/dse/conf/.keystore
+#  keystore_password: cassandra
+#  truststore: resources/dse/conf/.truststore
+#  truststore_password: cassandra
+# More advanced defaults below:
+#  protocol: TLS
+#  algorithm: SunX509
+#  store_type: JKS
+#  cipher_suites: [TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA,TLS_DHE_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA]
+#  require_client_auth: false
+#  require_endpoint_verification: false
+
+# -----
+
+## [5] cassandra.yaml - client/server encryption options - null settings will not be set !!
+ce_enabled="false"
+ce_optional="false"
+ce_keystore="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/etc/dse/conf/acme.keystore.jks"
+ce_keystore_password="changeit"
+ce_require_client_auth="false"
+ce_truststore="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/etc/dse/conf/acme.keystore.jks"
+ce_truststore_password="changeit"
+# More advanced defaults below:
+ce_protocol=""
+ce_algorithm=""
+ce_store_type=""
+ce_cipher_suites=""
+
+# note: this commented out block shows the default client/server encryption options !!
+
+#client_encryption_options:
+  # enabled: false
+  # If enabled and optional is set to true, encrypted and unencrypted connections over native transport are handled.
+  # optional: false
+  # keystore: resources/dse/conf/.keystore
+  # keystore_password: cassandra
+  # require_client_auth: false
+  # Set trustore and truststore_password if require_client_auth is true
+  # truststore: resources/dse/conf/.truststore
+  # truststore_password: cassandra
+  # More advanced defaults below:
+  # protocol: TLS
+  # algorithm: SunX509
+  # store_type: JKS
+  # cipher_suites: [TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA,TLS_DHE_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA]
+
 
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
