@@ -137,13 +137,14 @@ else
 
 # note: a build definition file must always be specified !
 
+  # [6.1] sourve the build settings for the named pod build folder
   prepare_generic_misc_sourceThisPodBuild
 
 # ==========
 
 ## [7] create tmp folder - used for configuration
 
-  # [7.1 ]create configurable temporary version of pod
+  # [7.1] create configurable temporary version of pod
   catchError "launch-pod#4" "true" "true" prepare_generic_misc_podBuildTempFolder
 
 # ==========
@@ -156,7 +157,7 @@ else
   # [8.2] source the pod's init script
   source "pods/${WHICH_POD}/${WHICH_POD}.bash"
 
-  # [8.3] call the chosen pod's init function
+  # [8.3] call the pod's init function
   "${WHICH_POD}"
 
 
