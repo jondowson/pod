@@ -13,6 +13,7 @@ function catchError(){  # short name allowed to break naming convention as it wi
 tagMsg=${1}
 # if unsuccessful choose whether to abort the script
 abort=${2}
+# set to true to suppress output of command
 quiet=${3}
 
 # run the command and check its return code

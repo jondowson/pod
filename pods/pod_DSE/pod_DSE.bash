@@ -1,4 +1,3 @@
-# author:        jondowson
 # about:         configure dse software and distribute to all servers in cluster
 
 # ------------------------------------------
