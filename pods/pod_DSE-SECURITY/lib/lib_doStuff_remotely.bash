@@ -249,9 +249,9 @@ ${dynamic_cmd} "$(($matchC+7))i \    truststore: ${ce_truststore}"              
 ${dynamic_cmd} "$(($matchC+8))i \    truststore_password: ${ce_truststore_password}"      ${file}
 nextLine="9"
 # optional adnaced options - check if set
-if [ ${ce_protocol} ];            then ${dynamic_cmd} "$(($matchC+$nextLine))i \    protocol: ${se_protocol}"                         ${file} && nextLine="$(($nextLine+1))"; fi
-if [ ${ce_algorithm} ];           then ${dynamic_cmd} "$(($matchC+$nextLine))i \    algorithm: ${se_algorithm}"                       ${file} && nextLine="$(($nextLine+1))"; fi
-if [ ${ce_store_type} ];          then ${dynamic_cmd} "$(($matchC+$nextLine))i \    store_type: ${se_store_type}"                     ${file} && nextLine="$(($nextLine+1))"; fi
-if [ ${ce_cipher_suites} ];       then ${dynamic_cmd} "$(($matchC+$nextLine))i \    cipher_suites: ${se_cipher_suites}"               ${file} && nextLine="$(($nextLine+1))"; fi
+if [ ${ce_protocol} ];            then ${dynamic_cmd} "$(($matchC+$nextLine))i \    protocol: ${ce_protocol}"                         ${file} && nextLine="$(($nextLine+1))"; fi
+if [ ${ce_algorithm} ];           then ${dynamic_cmd} "$(($matchC+$nextLine))i \    algorithm: ${ce_algorithm}"                       ${file} && nextLine="$(($nextLine+1))"; fi
+if [ ${ce_store_type} ];          then ${dynamic_cmd} "$(($matchC+$nextLine))i \    store_type: ${ce_store_type}"                     ${file} && nextLine="$(($nextLine+1))"; fi
+if [ ${ce_cipher_suites} ];       then ${dynamic_cmd} "$(($matchC+$nextLine))i \    cipher_suites: ${ce_cipher_suites}"               ${file} && nextLine="$(($nextLine+1))"; fi
 ${dynamic_cmd} "$(($matchC+$nextLine))i #>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'"     ${file}
 }
