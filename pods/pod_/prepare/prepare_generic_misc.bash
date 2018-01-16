@@ -21,7 +21,7 @@ tmp_folder="${pod_home_path}/tmp/" && \
 rm -rf "${tmp_folder}" && \
 
 # duplicate 'pod' folder to working directory '/tmp'
-tmp_working_folder="${pod_home_path}/tmp/pod/" && \
+tmp_working_folder="${pod_home_path}/tmp/pod" && \
 mkdir -p "${tmp_working_folder}" && \
 cp -rp "${pod_home_path}/misc"         "${tmp_working_folder}" && \
 cp -rp "${pod_home_path}/pods"         "${tmp_working_folder}" && \

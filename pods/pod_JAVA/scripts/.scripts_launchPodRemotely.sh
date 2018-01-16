@@ -31,7 +31,7 @@ source "${pod_home_path}/misc/.suitcase"
 
 ## source pod_ + pod_JAVA lib scripts
 
-files="$(find ${pod_home_path}/pods/pod_/lib/ -name "*.bash")" #| grep -v "lib_generic_display.bash")"
+files="$(find ${pod_home_path}/pods/pod_/lib/ -name "*.bash")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
@@ -41,7 +41,7 @@ for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
 
-files="$(find ${pod_home_path}/pods/pod_JAVA/lib/ -name "*.bash")"
+files="$(find ${pod_home_path}/pods/${WHICH_POD}/lib/ -name "*.bash")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done

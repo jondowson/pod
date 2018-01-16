@@ -29,14 +29,14 @@ source "${pod_home_path}/misc/.suitcase"
 
 if [[ "${os}" == "Mac" ]]; then
 
-  chmod +x ${pod_home_path}/pods/pod_JAVA/scripts/.scripts_launchPodRemotely.sh
-  . ${pod_home_path}/pods/pod_JAVA/scripts/.scripts_launchPodRemotely.sh
+  chmod +x ${pod_home_path}/pods/${WHICH_POD}/scripts/.scripts_launchPodRemotely.sh
+  . ${pod_home_path}/pods/${WHICH_POD}/scripts/.scripts_launchPodRemotely.sh
 
 else
 
 # ------------------------------------------
 
-  ## source pod_ + pod_JAVA lib scripts
+  ## source pod_ + this pod's lib scripts
 
   files="$(find ${pod_home_path}/pods/pod_/lib -name "*.bash" | grep -v "lib_generic_display.bash")"
   for file in $(printf "%s\n" "$files"); do
@@ -48,7 +48,7 @@ else
       [ -f $file ] && . $file
   done
 
-  files="$(find ${pod_home_path}/pods/pod_JAVA/lib/ -name "*.bash*")"
+  files="$(find ${pod_home_path}/pods/${WHICH_POD}/lib/ -name "*.bash")"
   for file in $(printf "%s\n" "$files"); do
       [ -f $file ] && . $file
   done

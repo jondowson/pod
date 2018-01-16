@@ -29,7 +29,7 @@ if [[ "${matchB}" != "" ]]; then
   for i in `seq $start $finish`
   do
     # grab 1st char from this line
-    lineContent=$(${dynamic_cmd} ${i}p ${file}d)
+    lineContent=$(${dynamic_cmd} ${i}p ${file})
     # search following lines until a blankline or commented-out line is found
     if [ "${lineContent}" == "" ]; then
       lastEntry=$(($i-1))

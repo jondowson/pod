@@ -7,7 +7,7 @@ POD_SOFTWARE="${TARGET_FOLDER}POD_SOFTWARE/"
 PACKAGE="n/a"
 PACKAGES="${POD_SOFTWARE}${PACKAGE}/"
 INSTALL_FOLDER="${TARGET_FOLDER}POD_INSTALLS/"
-INSTALL_FOLDER_POD="${INSTALL_FOLDER}${WHICH_POD}/"
+INSTALL_FOLDER_POD="${INSTALL_FOLDER}pod/${WHICH_POD}/"
 # //////////////////////////////////////////
 
 
@@ -41,9 +41,9 @@ tde_chunk_length_kb="64"
 ## [4] cassandra.yaml - server_encryption_options - null settings will not be set !!
 se_internode_encryption="all"
 se_keystore="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/etc/dse/conf/acme.keystore.jks"
-se_keystore_password="changeit"
+se_keystore_password="changeme"
 se_truststore="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/etc/dse/conf/acme.truststore.jks"
-se_truststore_password="changeit"
+se_truststore_password="changeme"
 # More advanced defaults below:
 se_protocol=""
 se_algorithm=""
@@ -70,7 +70,7 @@ se_require_endpoint_verification=""
 
 # -----
 
-## [5] cassandra.yaml - client/server encryption options - null settings will not be set !!
+## [5] cassandra.yaml - client encryption options - null settings will not be set !!
 ce_enabled="false"
 ce_optional="false"
 ce_keystore="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/etc/dse/conf/acme.keystore.jks"
@@ -104,7 +104,6 @@ ce_cipher_suites=""
 
 
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
 
 
 
