@@ -43,13 +43,13 @@ case ${messageType} in
                     printf "%s\n\n" "${b}${cyan}____________________________________${reset}"
                     printf "%s\n\n" "${b}${yellow}==> ${message}${reset}" ;;
     "ALERT-->" )
-                    printf "\n%s\n" "${b}${yellow}--> ${message} !!${reset}" ;;
+                    printf "\n%s\n" "${b}${yellow}--> ${message} ${yellow}!!${reset}" ;;
     "ERROR-->" )
-                    printf "\n%s\n" "${b}${red}--> ${message} !!${reset}" ;;
+                    printf "\n%s\n" "${b}${red}--> ${message} ${red}!!${reset}" ;;
     "SUCCESS" )
-                    printf "%s\n\n" "${tick}${b}${green} ${message} !!${reset}" ;;
+                    printf "%s\n\n" "${tick}${b}${green} ${message} ${green}!!${reset}" ;;
     "FAILURE" )
-                    printf "%s\n\n" "${cross}${b}${green} ${message} !!${reset}" ;;
+                    printf "%s\n\n" "${cross}${b}${green} ${message} ${red}!!${reset}" ;;
 
 # ----- no-spacing
 
@@ -64,7 +64,7 @@ case ${messageType} in
     "INFO-BOLD-->" )
                     printf "%s\n"   "${b}${white}--> ${message} ${reset}" ;;
     "ERROR-TIGHT-->" )
-                    printf "%s\n"   "${b}${red}--> ${message} !!${reset}" ;;
+                    printf "%s\n"   "${b}${red}--> ${message} ${red}!!${reset}" ;;
 esac
 }
 

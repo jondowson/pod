@@ -6,29 +6,11 @@ function lib_generic_strings_ifsStringDelimeter(){
 
 ## split a string by delimeter (any number of delimiters !)
 
-# example usage: call function and then handle as follows
-
-# declare -A ifsDelimArray                                                          # declare reusable associative array once
-# pod_generic_strings_ifsStringDelimeter "hello/path/;12345;!cluster999@" ";"       # call function passing string and char to delimit on
-# KEYS=(${!ifsDelimArray[@]})                                                       # assign all values of array to KEYS and then to individual variables
-# _D1_=${ifsDelimArray[${KEYS[0]}]}                                                 # hello/path/
-# _D2_=${ifsDelimArray[${KEYS[1]}]}                                                 # 12345
-# _D3_=${ifsDelimArray[${KEYS[2]}]}                                                 # cluster999@
-#  ... etc
-# unset ifsDelimArray && declare -A ifsDelimArray                                   # clear array for next use
-
-string="${1}"
-delim="${2}"
+delim=$1
+string=$2
 
 IFS=${delim} read -r -a array <<< "${string}"
-
 arraySize=${#array[@]}
-for x in $(seq 1 $arraySize);
-do
-  y=$(($x-1))
-  declare tmp${x}="${array[$y]}" && var=tmp${x}
-  ifsDelimArray["${y}"]="$(echo ${!var})"
-  done
 }
 
 # ---------------------------------------

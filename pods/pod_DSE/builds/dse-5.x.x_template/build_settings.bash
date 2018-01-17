@@ -1,10 +1,23 @@
 # about:  set software versions, paths and homogenous settings ( i.e non server.json settings)
 
+
+
+
+# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+# EDIT-THIS-BLOCK !!
+
+## [1] capitalised sub-folder of POD_SOFTWARE where is stored the tarball - e.g. DATASTAX, JAVA ...
+
+# leave empty if pod does not involve tarball !
+PACKAGE="DATASTAX"
+
+
+
+
 # //////////////////////////////////////////
 # DO-NOT-EDIT-THIS-BLOCK !!
 source ${pod_home_path}/misc/.suitcase
 POD_SOFTWARE="${TARGET_FOLDER}POD_SOFTWARE/"
-PACKAGE="DATASTAX"
 PACKAGES="${POD_SOFTWARE}${PACKAGE}/"
 INSTALL_FOLDER="${TARGET_FOLDER}POD_INSTALLS/"
 INSTALL_FOLDER_POD="${INSTALL_FOLDER}${WHICH_POD}/"
@@ -16,7 +29,7 @@ INSTALL_FOLDER_POD="${INSTALL_FOLDER}${WHICH_POD}/"
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # EDIT-THIS-BLOCK !!
 
-## [1] BASIC CASSANDRA SETTINGS
+## [2] BASIC CASSANDRA SETTINGS
 
 CLUSTER_NAME="My Kluster"                       # avoid special characters !!
 ENDPOINT_SNITCH="GossipingPropertyFileSnitch"   # 'GossipingPropertyFileSnitch' should be the default !!
@@ -24,7 +37,7 @@ VNODES="8"                                      # specify a value (8,16,32) for 
 
 # -----
 
-## [2] DSE VERSIONS
+## [3] DSE VERSIONS
 
 DSE_VERSION="dse-5.1.5"
 DSE_TARBALL="${DSE_VERSION}-bin.tar.gz"
@@ -33,7 +46,7 @@ AGENT_TARBALL="${AGENT_VERSION}.tar.gz"
 
 # -----
 
-# [3] DATA + LOG + TMP FOLDER LOCATIONS
+# [4] DATA + LOG + TMP FOLDER LOCATIONS
 
 # note: cassandra sstable data folders are specified in the <servers.json> definition file
 # this data folder is where the supporting persistence files will go such as commitlogs and hinted-handoffs

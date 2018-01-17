@@ -7,29 +7,54 @@ function catchError(){  # short name allowed to break naming convention as it wi
 ##  catch return code of any command and if failure exit with code
 
 # usage example
-# catchError "message" "true" "true" "commandToRun"
+# catchError "launch-pod#1" "json parsing error" "true" "true" "jq server.json"
 
+# tag to identify calling script
+callingScriptTag=${1}
 # a helpful tag message outputted to screen
-tagMsg=${1}
+tagMsg=${2}
 # if unsuccessful choose whether to abort the script
-abort=${2}
+abort=${3}
 # set to true to suppress output of command
-quiet=${3}
+quiet=${4}
+# command to test
+command=${5}
 
 # run the command and check its return code
 if [[ ${quiet} == "true" ]]; then
-  ${4} &> /dev/null
+  ${command} &> /dev/null
 else
-  ${4}
+  ${command}
 fi
 ret=$?
 
 if [[ $ret != 0 ]]; then
-  lib_generic_display_msgColourSimple "ERROR-->" "Error: command failed: ${yellow}[ $3 ]${red} with return value: ${yellow}[ $ret ]${red} tag: ${yellow}[ ${tagMsg} ]${red}"
+  lib_generic_display_msgColourSimple "ERROR-->" "Error: ${tagMsg} with return value: [ ${ret} ] ${yellow}[ ${callingScriptTag} ]"
   if [[ ${abort}  == "true" ]]; then
     prepare_generic_misc_clearTheDecks
-    exit $ret;
+    exit ${ret};
   fi
+fi
+}
+
+# ---------------------------------------
+
+function lib_generic_checks_freeTest(){
+
+# tag to identify calling script
+callingScriptTag=${1}
+# a helpful tag message outputted to screen
+tagMsg=${2}
+# test to run
+value="$3"
+test="$4"
+testAgainst="$5"
+
+## ensure there are more than 0 servers
+if [ $value $test $testAgainst ]; then
+  lib_generic_display_msgColourSimple "ERROR-->" "Error: ${tagMsg}: ${yellow}[ ${callingScriptTag} ]"
+  prepare_generic_misc_clearTheDecks
+  exit 1;
 fi
 }
 
@@ -141,6 +166,21 @@ if [[ "${notFound}" != "false" ]]; then
     exit 1;
   fi
 fi
+
+# alternate approach
+#shopt -s nullglob && shopt -s dotglob && array=(${pod_home_path}/pods/*)
+#podExists="false"
+#for p in "${array[@]}";
+#do
+#  if [[ "${pod_home_path}/pods/${WHICH_POD}" == "${p}" ]]; then
+#    podExists="true"
+#    break;
+#  fi
+#done
+#if [[ "${podExists}" == "false" ]]; then
+#  lib_generic_display_msgColourSimple "ERROR-->" "${removePodErrMsg}"   && exit 1;
+#fi
+#shopt -u nullglob && shopt -u dotglob
 }
 
 # ---------------------------------------
@@ -150,19 +190,4 @@ function lib_generic_checks_localIpMatch(){
 ## check if an ip is a local ip
 ipToCheck=${1}
 ip addr | grep -wq "${ipToCheck}" &&  printf "%s\n" "true"
-}
-
-# ---------------------------------------
-
-function lib_generic_checks_noOfServers(){
-
-noOfServers="${1}"
-tagMsg="${2}"
-
-## ensure there are more than 0 servers
-if [[ "$noOfServers" -eq 0 ]]; then
-  lib_generic_display_msgColourSimple "ERROR-->" "Error: number of servers is empty: ${yellow}[ ${noOfServers} ]${red} tag: ${yellow}[ ${tagMsg} ]${red}"
-  prepare_generic_misc_clearTheDecks
-  exit 1;
-fi
 }

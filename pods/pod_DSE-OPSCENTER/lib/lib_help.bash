@@ -1,4 +1,4 @@
-# about:    help on pod_JAVA usage and flags
+# about:    help on usage and flags for this pod
 
 # ------------------------------------------
 
@@ -12,6 +12,6 @@ printf "%s\n"   ".. scp POD_SOFTWARE folder to servers    | -ss --sendsoft      
 printf "%s\n"
 printf "%s\n"   "${b}example:${reset}"
 printf "%s\n"   "--------------------------------------------------------------------------------------------------"
-printf "%s\n"   "${yellow}$ ./launch-pod -p ${WHICH_POD} -s myServers.json -b oracle-jre1.8.152_practice -ss false ${reset}"
+printf "%s\n"   "${yellow}$ ./launch-pod -p ${WHICH_POD} -s myServers.json -b opscenter-6.1.5_practice -ss false ${reset}"
 printf "%s\n"   "--------------------------------------------------------------------------------------------------"
 }

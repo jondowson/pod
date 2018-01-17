@@ -1,4 +1,4 @@
-# about:    preperation functions for this pod
+# about:    preperation functions for this pod prior to running
 
 # ------------------------------------------
 

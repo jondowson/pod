@@ -79,7 +79,7 @@ do
           lib_generic_display_msgColourSimple "ERROR-->" "Exiting pod: ${yellow}${task_file}${red} with ${yellow}--strict true${red} - java unavailable"
           exit 1;
         fi
-        pod_start_dse_error_array["${tag}"]="${status};${pubIp}"
+        start_dse_error_array["${tag}"]="${status};${pubIp}"
         break;
       else
         ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_cmd} && ${start_agent}"
@@ -89,7 +89,7 @@ do
         else
           lib_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}(retry ${retry}/5)"
         fi
-        pod_start_dse_error_array["${tag}"]="${status};${pubIp}"
+        start_dse_error_array["${tag}"]="${status};${pubIp}"
         ((retry++))
       fi
     done
@@ -106,21 +106,21 @@ function task_rollingStart_report(){
 
 lib_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Restart DSE + agent on each server"
 
-declare -a pod_start_dse_report_array
+declare -a start_dse_report_array
 count=0
-for k in "${!pod_start_dse_error_array[@]}"
+for k in "${!start_dse_error_array[@]}"
 do
-  lib_generic_strings_expansionDelimiter ${pod_start_dse_error_array[$k]} ";" "1"
+  lib_generic_strings_expansionDelimiter ${start_dse_error_array[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
-    pod_start_dse_fail="true"
-    pod_start_dse_report_array["${count}"]="${yellow}${k}${white} at address ${yellow}${_D2_}${white} with code ${red}${_D1_}${reset}"
+    start_dse_fail="true"
+    start_dse_report_array["${count}"]="${yellow}${k}${white} at address ${yellow}${_D2_}${white} with code ${red}${_D1_}${reset}"
     (( count++ ))
   fi
 done
 
-if [[ "${pod_start_dse_fail}" == "true" ]]; then
+if [[ "${start_dse_fail}" == "true" ]]; then
   printf "%s\n"
-  for k in "${pod_start_dse_report_array[@]}"
+  for k in "${start_dse_report_array[@]}"
   do
     lib_generic_display_msgColourSimple "INFO" "${cross} ${k}"
   done

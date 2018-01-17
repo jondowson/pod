@@ -1,8 +1,10 @@
-# about:    rules for handling flags for pod_JAVA
+# about:    rules for handling user supplied flags for this pod
 
 # ------------------------------------------
 
 function prepare_flagRules(){
+
+## rules for accepting flags
 
 # pre-canned formatted messages
 defaultErrMsg="You must supply the correct combination of flags - please check the help: ${yellow}./launch-pod --help"

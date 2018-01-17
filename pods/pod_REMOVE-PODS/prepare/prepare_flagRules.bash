@@ -5,23 +5,22 @@
 function prepare_flagRules(){
 
 ## rules for accepting flags
-errorTag="prepare_flagRules()"
 
 # pre-canned formatted messages
-defaultErrMsg="You must supply the correct combination of flags - please check the help: ${yellow}./launch-pod --help${red}"
-servJsonErrMsg="You must supply a server .json definition file - please check the help: ${yellow}./launch-pod --help${red}"
+defaultErrMsg="You must supply the correct combination of flags - please check the help: ${yellow}./launch-pod --help"
+buildFolderErrMsg="You must supply a value for ${yellow}--build${red} --> please check this pod's help: ${yellow}./launch-pod -p ${WHICH_POD} --help"
+servJsonErrMsg="You must supply a value for ${yellow}--servers${red} --> please check this pod's help: ${yellow}./launch-pod -p ${WHICH_POD} --help"
+removePodErrMsg="You must supply valid values for ${yellow}--removepod${red} --> please check this pod's help: ${yellow}./launch-pod -p ${WHICH_POD} --help"
 
 # part 1 - check flag combinations
 if [[ ${buildFlag} != "true" ]] || [[ ${serversFlag} != "true" ]]; then
-  lib_generic_display_msgColourSimple "ERROR-->" "${defaultErrMsg}" && exit 1;
+  lib_generic_display_msgColourSimple "ERROR-->" "${defaultErrMsg}"       && exit 1;
 # part 2 - check values are acceptable
-elif [[ ${BUILD_FOLDER} == "" ]] && [[ ${removepodFlag} != "true" ]]; then
-  lib_generic_display_msgColourSimple "ERROR-->" "You must supply a value for ${yellow}--builds${red} - please check the help: ${yellow}./launch-pod --help${red}" && exit 1;
+elif [[ ${BUILD_FOLDER} == "" ]]; then
+  lib_generic_display_msgColourSimple "ERROR-->" "${buildFolderErrMsg}"   && exit 1;
 elif [[ ${SERVERS_JSON} == "" ]]; then
-  lib_generic_display_msgColourSimple "ERROR-->" "You must supply a value for ${yellow}--servers${red} - please check the help: ${yellow}./launch-pod --help${red}" && exit 1;
-elif [[ ${removepodFlag} != "true" ]] || [[ ${removepodFlag} == "true" ]] && [[ "${REMOVE_POD}" == "" ]]; then
-  lib_generic_display_msgColourSimple "ERROR-->" "You must supply a value for ${yellow}--removepod${red} flag - please check the help: ${yellow}./launch-pod --help${red}" && exit 1;
-elif [[ ${removepodFlag} == "true" ]] && [[ "${REMOVE_POD}" != "pod_DSE" ]] && [[ "${REMOVE_POD}" != "pod_JAVA" ]]; then
-  lib_generic_display_msgColourSimple "ERROR-->" "You must supply valid values for ${yellow}--removepod${red} flag - please check the help: ${yellow}./launch-pod --help${red}" && exit 1;
+  lib_generic_display_msgColourSimple "ERROR-->" "${buildFolderErrMsg}"   && exit 1;
+elif [[ ${removepodFlag} != "true" ]] || [[ "${REMOVE_POD}" == "" ]]; then
+  lib_generic_display_msgColourSimple "ERROR-->" "${removePodErrMsg}"     && exit 1;
 fi
 }

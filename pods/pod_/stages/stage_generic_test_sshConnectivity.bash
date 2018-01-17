@@ -80,6 +80,6 @@ if [[ "${pod_test_connect_fail}" == "true" ]]; then
   lib_generic_display_msgColourSimple "ERROR" "Aborting script as not all servers are reachable"
   exit 1;
 else
-  lib_generic_display_msgColourSimple "SUCCESS" "Connect successfully to all servers"
+  lib_generic_display_msgColourSimple "SUCCESS" "All Servers: ssh connected successfully"
 fi
 }

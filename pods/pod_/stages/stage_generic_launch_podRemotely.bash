@@ -12,7 +12,6 @@ do
   sshKey=$(cat ${servers_json_path}        | ${jq_folder}jq '.server_'${id}'.sshKey'         | tr -d '"')
   target_folder=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.target_folder'  | tr -d '"')
   pubIp=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.pubIp'          | tr -d '"')
-  prvIp=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.prvIp'          | tr -d '"')
 
 # -----
 
@@ -29,7 +28,7 @@ do
   # grab pid and capture owner in array
   pid=$!
   lib_generic_display_msgColourSimple "INFO-->" "pid id:      ${yellow}${pid}${reset}"
-  pod_build_launch_pid_array["${pid}"]="${tag};${pubIp}"
+  build_launch_pid_array["${pid}"]="${tag};${pubIp}"
   runBuild_pids+=" $pid"
 
 # -----
@@ -76,10 +75,10 @@ lib_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Launch pod 
 if [[ ! -z $runBuild_pid_failures ]]; then
   lib_generic_display_msgColourSimple "INFO-->" "${cross} Problems executing pod build on servers"
   printf "%s\n"
-  for k in "${!pod_build_launch_pid_array[@]}"
+  for k in "${!build_launch_pid_array[@]}"
   do
     if [[ "${runBuild_pid_failures}" == *"$k"* ]]; then
-      lib_generic_strings_expansionDelimiter "${pod_build_launch_pid_array[$k]}" ";" "1"
+      lib_generic_strings_expansionDelimiter "${build_launch_pid_array[$k]}" ";" "1"
       server="$_D1_"
       ip=$_D2_
       lib_generic_display_msgColourSimple "ERROR-TIGHT" "pid ${yellow}${k}${red} failed for ${yellow}${server}@${ip}${red}"
@@ -87,6 +86,6 @@ if [[ ! -z $runBuild_pid_failures ]]; then
   done
   printf "%s\n"
 else
-  lib_generic_display_msgColourSimple "SUCCESS" "Execute bespoke pod build on all servers"
+  lib_generic_display_msgColourSimple "SUCCESS" "All servers: executed remote pod build"
 fi
 }

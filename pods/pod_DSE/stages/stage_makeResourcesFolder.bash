@@ -111,4 +111,5 @@ lib_generic_display_msgColourSimple "INFO" "move to:      ${green}${destination_
 printf "%s\n"
 cp -rp ${source_folder_path} ${destination_folder_path}
 rm -rf "${pod_home_path}tmp/"
+prepare_generic_misc_podBuildTempFolder
 }

@@ -33,9 +33,9 @@ function pod_JAVA(){
 
 ## create pod specific arrays used by its stages
 
-declare -A pod_test_write_error_array     # test write path for folders
-declare -A pod_build_send_error_array     # test send pod build
-declare -A pod_build_launch_pid_array     # test launch pod scripts remotely
+declare -A test_write_error_array     # test write path for folders
+declare -A build_send_error_array     # test send pod build
+declare -A build_launch_pid_array     # test launch pod scripts remotely
 
 # ------------------------------------------
 

@@ -1,4 +1,4 @@
-# about:         for each server build and then send a configured version of pod
+# about:    for each server build and then send a configured version of pod
 
 # ------------------------------------------
 
@@ -14,18 +14,6 @@ do
   sshKey=$(cat ${servers_json_path}          | ${jq_folder}jq '.server_'${id}'.sshKey'           | tr -d '"')
   target_folder=$(cat ${servers_json_path}   | ${jq_folder}jq '.server_'${id}'.target_folder'    | tr -d '"')
   pubIp=$(cat ${servers_json_path}           | ${jq_folder}jq '.server_'${id}'.pubIp'            | tr -d '"')
-  prvIp=$(cat ${servers_json_path}           | ${jq_folder}jq '.server_'${id}'.prvIp'            | tr -d '"')
-  listen_address=$(cat ${servers_json_path}  | ${jq_folder}jq '.server_'${id}'.listen_address'   | tr -d '"')
-  rpc_address=$(cat ${servers_json_path}     | ${jq_folder}jq '.server_'${id}'.rpc_address'      | tr -d '"')
-  stomp_interface=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.stomp_interface'  | tr -d '"')
-  seeds=$(cat ${servers_json_path}           | ${jq_folder}jq '.server_'${id}'.seeds'            | tr -d '"')
-  token=$(cat ${servers_json_path}           | ${jq_folder}jq '.server_'${id}'.token'            | tr -d '"')
-  dc=$(cat ${servers_json_path}              | ${jq_folder}jq '.server_'${id}'.dc'               | tr -d '"')
-  rack=$(cat ${servers_json_path}            | ${jq_folder}jq '.server_'${id}'.rack'             | tr -d '"')
-  search=$(cat ${servers_json_path}          | ${jq_folder}jq '.server_'${id}'.mode.search'      | tr -d '"')
-  analytics=$(cat ${servers_json_path}       | ${jq_folder}jq '.server_'${id}'.mode.analytics'   | tr -d '"')
-  graph=$(cat ${servers_json_path}           | ${jq_folder}jq '.server_'${id}'.mode.graph'       | tr -d '"')
-  dsefs=$(cat ${servers_json_path}           | ${jq_folder}jq '.server_'${id}'.mode.dsefs'       | tr -d '"')
 
 # -----
 
@@ -35,7 +23,7 @@ do
 # -----
 
   lib_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
-  printf "\n%s"
+  printf "%s\n"
   remote_os=$(ssh -q -o Forwardx11=no ${user}@${pubIp} 'bash -s' < ${pod_home_path}/pods/pod_/scripts/scripts_generic_identifyOs.sh)
   lib_generic_display_msgColourSimple "INFO-->" "detected os: ${green}${remote_os}${reset}"
   lib_generic_display_msgColourSimple "INFO-->" "making:      bespoke pod build"
@@ -43,25 +31,27 @@ do
 # -----
 
   # assign build settings per the TARGET_FOLDER specified for this server
-  printf "%s\n" "TARGET_FOLDER=${target_folder}"            > "${suitcase_file_path}"
+  printf "%s\n" "TARGET_FOLDER=${target_folder}"                 > "${suitcase_file_path}"       # local .suitcase !!
   source "${tmp_build_settings_file_path}"
 
 # -----
 
-  ## pack the suitcase !! - the tmp_suitcase becomes the suitcase on each server
+  ## pack the suitcase: [1] + [2] are always required !!!
 
-  # [1] TARGET_FOLDER determines many of the settings in build_settings.bash and can be different for each server
-  printf "%s\n" "TARGET_FOLDER=${target_folder}"                  > "${tmp_suitcase_file_path}"    # clear any existing values with first entry (i.e. '>')
-  # [2] append variables derived from server json definition file
-  # [3] append variables derived from flags
-  printf "%s\n" "WHICH_POD=${WHICH_POD}"                         >> "${tmp_suitcase_file_path}"
-  printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}"                   >> "${tmp_suitcase_file_path}"
+  # [1] append target_folder - clear any existing values with first entry (i.e. '>')
+  printf "%s\n" "TARGET_FOLDER=${target_folder}"                 > "${tmp_suitcase_file_path}"   # remote .suitcase !!
+  # [2] append variables gathered from flags
+  printf "%s\n" "WHICH_POD=${WHICH_POD}"                        >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}"                  >> "${tmp_suitcase_file_path}"
   build_folder_path_string="${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"
-  printf "%s\n" "build_folder_path=${build_folder_path_string}"  >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "build_folder_path=${build_folder_path_string}" >> "${tmp_suitcase_file_path}"
+  # [3] append variables from server json definition file
+
+  # -----
 
   lib_generic_display_msgColourSimple "INFO-->" "sending:     bespoke pod build"
-  printf "%s\n" "${red}"
 
+  printf "%s\n" "${red}"
   # check if server is local server - so not to delete itself !!
   localServer="false"
   localServer=$(lib_generic_checks_localIpMatch "${pubIp}")
@@ -70,7 +60,7 @@ do
   else
     cp "${tmp_suitcase_file_path}" ${pod_home_path}/.suitcase.tmp
   fi
-  # send the updated pod
+  # send the updated pod folder
   scp -q -o LogLevel=QUIET -i ${sshKey} -r "${tmp_working_folder}" "${user}@${pubIp}:${target_folder}POD_SOFTWARE/POD/"
   status=${?}
   build_send_error_array["${tag}"]="${status};${pubIp}"
@@ -117,6 +107,6 @@ if [[ "${build_send_fail}" == "true" ]]; then
   lib_generic_display_msgColourSimple "ERROR-->" "Aborting script as not all paths are writeable"
   prepare_generic_misc_clearTheDecks && exit 1;
 else
-  lib_generic_display_msgColourSimple "SUCCESS" "Create and send bespoke pod build to all servers"
+  lib_generic_display_msgColourSimple "SUCCESS" "All servers: make and send pod build"
 fi
 }

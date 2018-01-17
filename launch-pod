@@ -125,11 +125,11 @@ else
 
   # [5.1] check it is valid
   servers_json_path="${pod_home_path}/servers/${SERVERS_JSON}"
-  catchError "launch-pod#2" "true" "true" "${jq_folder}jq [.] ${servers_json_path}"
+  catchError "launch-pod#2" "jq error on server json" "true" "false" "jq [.] ${servers_json_path}"
 
   # [5.2] check at least one server is defined
-  numberOfServers=$(${jq_folder}jq [.] ${servers_json_path} | tr '"' '\n' | grep 'server_' | wc -l)
-  lib_generic_checks_noOfServers "${numberOfServers}" "launch-pod#3"
+  numberOfServers=$(jq [.] $servers_json_path | tr '"' '\n' | grep 'server_' | wc -l)
+  lib_generic_checks_freeTest "launch-pod#3" "zero number of servers" "$numberOfServers" "-eq" "0"
 
 # ==========
 
@@ -137,7 +137,7 @@ else
 
 # note: a build definition file must always be specified !
 
-  # [6.1] sourve the build settings for the named pod build folder
+  # [6.1] source the build settings for the named pod build folder
   prepare_generic_misc_sourceThisPodBuild
 
 # ==========
@@ -145,7 +145,7 @@ else
 ## [7] create tmp folder - used for configuration
 
   # [7.1] create configurable temporary version of pod
-  catchError "launch-pod#4" "true" "true" prepare_generic_misc_podBuildTempFolder
+  prepare_generic_misc_podBuildTempFolder
 
 # ==========
 

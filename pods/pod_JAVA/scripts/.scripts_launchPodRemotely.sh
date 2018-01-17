@@ -59,37 +59,7 @@ fi
 
 # ------------------------------------------
 
-## install java on each server - as thisis the mac version do nothing !!
-
-# [1] delete any previous java install folder with the same version
-
-#rm -rf ${java_untar_folder}
-
-# [2] make folders
-
-#lib_doStuff_remotely_createJavaFolders
-
-# -----
-
-# [3] un-compress software
-
-#lib_doStuff_remotely_installJavaTar
-
-# -----
-
-# [4] configure local environment
-
-#if [[ ${os} != *"Mac"* ]]; then
-#  lib_doStuff_remotely_javaBashProfile
-#fi
-
-#if [[ ${os} == *"Ubuntu"* ]]; then
-#  lib_doStuff_remotely_bashrc
-#fi
-
-# -----
-
-# [5] tidy up
+## install java on each server - as this is the mac version do nothing !!
 
 prepare_generic_misc_clearTheDecks
 rm -rf ${INSTALL_FOLDER_POD}        # this folder is empty on a mac so tidy it up

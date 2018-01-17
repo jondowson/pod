@@ -89,7 +89,7 @@ function prepare_generic_misc_sourceThisPod(){
 ## source pod-specific lib scripts
 
 # check pod exists
-lib_generic_checks_fileFolderExists "pod folder does not exist" "true" "${pod_home_path}/pods/" "folder" "${WHICH_POD}"
+lib_generic_checks_fileFolderExists "pod does not exist" "true" "${pod_home_path}/pods/" "folder" "${WHICH_POD}"
 
 files="$(find ${pod_home_path}/pods/${WHICH_POD}/ -name "*.bash" -not -path "*builds/*" -not -path "*scripts/*")"
 for file in $(printf "%s\n" "$files"); do
@@ -114,7 +114,9 @@ function prepare_generic_misc_setDefaults(){
 
 ## generic default settings for all pods
 
-STAGE_PAUSE="5"      # pauses between STAGES
+STAGE_PAUSE="5"                  # pauses between STAGES
+SEND_POD_SOFTWARE="true"         # send POD_SOFTWARE tarball bundle on each run
+STRICT_START="true"              # exit pod if any server cannot be reached or dependencies are not available
 }
 
 # ------------------------------------------
@@ -125,4 +127,17 @@ function prepare_generic_misc_clearTheDecks(){
 
 > ${pod_home_path}/misc/.suitcase
 rm -rf ${pod_home_path}/tmp
+}
+
+# ------------------------------------------
+
+function prepare_generic_misc_checkSoftwareExists(){
+
+## test software exists
+
+# test POD_SOFTWARE folder and software tar file are available
+if [[ "${SEND_POD_SOFTWARE}" == "true" ]]; then
+  lib_generic_checks_folderExists "prepare_generic_misc.sh#1" "true" "${POD_SOFTWARE}"
+  lib_generic_checks_fileExists   "prepare_generic_misc.sh#2" "true" "${TAR_FILE}"
+fi
 }

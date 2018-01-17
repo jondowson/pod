@@ -154,7 +154,7 @@ done
   # send the updated pod
   scp -q -o LogLevel=QUIET -i ${sshKey} -r "${tmp_working_folder}" "${user}@${pubIp}:${target_folder}POD_SOFTWARE/POD/"
   status=${?}
-  pod_build_send_error_array["${tag}"]="${status};${pubIp}"
+  build_send_error_array["${tag}"]="${status};${pubIp}"
 done
 
 # assign the local target_folder value to the suitcase
@@ -171,26 +171,26 @@ function task_buildSend_report(){
 
 lib_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Create pod for each server"
 
-declare -a pod_build_send_report_array
+declare -a build_send_report_array
 count=0
-for k in "${!pod_build_send_error_array[@]}"
+for k in "${!build_send_error_array[@]}"
 do
-  lib_generic_strings_expansionDelimiter ${pod_build_send_error_array[$k]} ";" "1"
+  lib_generic_strings_expansionDelimiter ${build_send_error_array[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
-    pod_build_send_fail="true"
-    pod_build_send_report_array["${count}"]="could not transfer: ${yellow}${k} ${white}on server ${yellow}${_D2_}${reset}"
+    build_send_fail="true"
+    build_send_report_array["${count}"]="could not transfer: ${yellow}${k} ${white}on server ${yellow}${_D2_}${reset}"
     (( count++ ))
   fi
 done
 
 # -----
 
-if [[ "${pod_build_send_fail}" == "true" ]]; then
+if [[ "${build_send_fail}" == "true" ]]; then
   printf "%s\n"
   lib_generic_display_msgColourSimple "INFO-BOLD" "--> ${red}Write build error report:"
   printf "%s\n"
 
-  for k in "${pod_build_send_report_array[@]}"
+  for k in "${build_send_report_array[@]}"
   do
     lib_generic_display_msgColourSimple "INFO-BOLD" "${cross} ${k}"
   done

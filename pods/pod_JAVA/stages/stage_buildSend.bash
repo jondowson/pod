@@ -14,7 +14,6 @@ do
   sshKey=$(cat ${servers_json_path}          | ${jq_folder}jq '.server_'${id}'.sshKey'           | tr -d '"')
   target_folder=$(cat ${servers_json_path}   | ${jq_folder}jq '.server_'${id}'.target_folder'    | tr -d '"')
   pubIp=$(cat ${servers_json_path}           | ${jq_folder}jq '.server_'${id}'.pubIp'            | tr -d '"')
-  prvIp=$(cat ${servers_json_path}           | ${jq_folder}jq '.server_'${id}'.prvIp'            | tr -d '"')
 
 # -----
 
@@ -37,21 +36,21 @@ do
 # -----
 
   # assign build settings per the TARGET_FOLDER specified for this server
-  printf "%s\n" "TARGET_FOLDER=${target_folder}"            > "${suitcase_file_path}"
+  printf "%s\n" "TARGET_FOLDER=${target_folder}"                 > "${suitcase_file_path}"       # local .suitcase !!
   source "${tmp_build_settings_file_path}"
 
-# -----
+  # -----
 
-## pack the suitcase !!!
+  ## pack the suitcase: [1] + [2] are always required !!!
 
-  # [1] clear any existing values with first entry (i.e. '>')
-  printf "%s\n" "TARGET_FOLDER=${target_folder}"                 > "${tmp_suitcase_file_path}"
-  # [2] append variables from server json definition file
-  # [3] append variables gathered from flags
+  # [1] append target_folder - clear any existing values with first entry (i.e. '>')
+  printf "%s\n" "TARGET_FOLDER=${target_folder}"                 > "${tmp_suitcase_file_path}"   # remote .suitcase !!
+  # [2] append variables gathered from flags
   printf "%s\n" "WHICH_POD=${WHICH_POD}"                        >> "${tmp_suitcase_file_path}"
   printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}"                  >> "${tmp_suitcase_file_path}"
   build_folder_path_string="${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"
   printf "%s\n" "build_folder_path=${build_folder_path_string}" >> "${tmp_suitcase_file_path}"
+  # [3] append variables from server json definition file
 
   # -----
 
@@ -73,7 +72,7 @@ do
   # send the updated pod folder
   scp -q -o LogLevel=QUIET -i ${sshKey} -r "${tmp_working_folder}" "${user}@${pubIp}:${target_folder}POD_SOFTWARE/POD/"
   status=${?}
-  pod_build_send_error_array["${tag}"]="${status};${pubIp}"
+  build_send_error_array["${tag}"]="${status};${pubIp}"
 done
 
 # assign the local target_folder value to the suitcase
@@ -90,26 +89,26 @@ function task_buildSend_report(){
 
 lib_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Create pod for each server"
 
-declare -a pod_build_send_report_array
+declare -a build_send_report_array
 count=0
-for k in "${!pod_build_send_error_array[@]}"
+for k in "${!build_send_error_array[@]}"
 do
-  lib_generic_strings_expansionDelimiter ${pod_build_send_error_array[$k]} ";" "1"
+  lib_generic_strings_expansionDelimiter ${build_send_error_array[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
-    pod_build_send_fail="true"
-    pod_build_send_report_array["${count}"]="could not transfer: ${yellow}${k} ${white}on server ${yellow}${_D2_}${reset}"
+    build_send_fail="true"
+    build_send_report_array["${count}"]="could not transfer: ${yellow}${k} ${white}on server ${yellow}${_D2_}${reset}"
     (( count++ ))
   fi
 done
 
 # -----
 
-if [[ "${pod_build_send_fail}" == "true" ]]; then
+if [[ "${build_send_fail}" == "true" ]]; then
   printf "%s\n"
   lib_generic_display_msgColourSimple "INFO-BOLD" "--> ${red}Write build error report:"
   printf "%s\n"
 
-  for k in "${pod_build_send_report_array[@]}"
+  for k in "${build_send_report_array[@]}"
   do
     lib_generic_display_msgColourSimple "INFO-BOLD" "${cross} ${k}"
   done

@@ -30,7 +30,7 @@ do
   lib_generic_display_msgColourSimple "INFO-->" "sending:     POD_SOFTWARE/${PACKAGE} folder"
 
   # target folder must exist on target machine !!
-  catchError "cannot make target folder" "true" "true" "ssh -o ForwardX11=no ${user}@${pubIp} mkdir -p ${target_folder}"
+  catchError "stage_generic_POD_SOFTWARE#1" "cannot make target folder" "true" "true" "ssh -o ForwardX11=no ${user}@${pubIp} mkdir -p ${target_folder}"
 
   # check if server is local server - no point sending software if local +  no delete locally of existing pod folder
   localServer="false"
@@ -104,6 +104,6 @@ if [[ ! -z $POD_SOFTWARE_pid_failures ]]; then
   done
   printf "%s\n"
 else
-  lib_generic_display_msgColourSimple "SUCCESS" "Distributed 'POD_SOFTWARE/${PACKAGE}' to all servers"
+  lib_generic_display_msgColourSimple "SUCCESS" "All Servers: 'POD_SOFTWARE/${PACKAGE}' distributed"
 fi
 }

@@ -40,13 +40,13 @@ function pod_DSE(){
 
 ## create pod specific arrays used by its stages
 
-declare -A pod_test_write_error_array_1   # test write path for folders
-declare -A pod_test_write_error_array_2   # test write path for data folders
-declare -A pod_test_write_error_array_3   # test write path for dsefs data folders
-declare -A pod_build_send_error_array     # test send pod build
-declare -A pod_build_launch_pid_array     # test launch pod scripts remotely
-declare -A pod_start_dse_error_array      # test starting dse remotely
-declare -A pod_stop_dse_error_array       # test stopping dse remotely
+declare -A test_write_error_array_1   # test write path for folders
+declare -A test_write_error_array_2   # test write path for data folders
+declare -A test_write_error_array_3   # test write path for dsefs data folders
+declare -A build_send_error_array     # test send pod build
+declare -A build_launch_pid_array     # test launch pod scripts remotely
+declare -A start_dse_error_array      # test starting dse remotely
+declare -A stop_dse_error_array       # test stopping dse remotely
 
 # ------------------------------------------
 

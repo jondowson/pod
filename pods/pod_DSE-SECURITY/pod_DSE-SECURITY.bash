@@ -31,8 +31,8 @@ function pod_DSE-SECURITY(){
 
 ## create pod specific arrays used by its stages
 
-declare -A pod_build_send_error_array     # test send pod build
-declare -A pod_build_launch_pid_array     # test launch pod scripts remotely
+declare -A build_send_error_array     # test send pod build
+declare -A build_launch_pid_array     # test launch pod scripts remotely
 
 # ------------------------------------------
 

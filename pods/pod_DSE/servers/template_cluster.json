@@ -8,7 +8,6 @@
 # sshKey:         full path to local copy of server authentication file to use to access remote server
 # target_folder:  where 'POD_SOFTWARE' is put on server
 # pubIp:          specify here what will be used to connect - could be internal 'private ip'!
-# prvIp:          the private address of the server (e.g. AWS internal ips)
 # listen_address  specify either the 'pubIp' or 'prvIp' to use in cassandra.yaml (use prvIp on aws)
 # rpc_address     specify either the pubIp or prvIp (use prvIp on aws) or use default value of localhost
 # stomp_interface specify the address of the opscenter - or leave default setting of 127.0.0.1
@@ -35,7 +34,6 @@
       "sshKey": "/home/<user>/.ssh/id_rsa",
       "target_folder": "/home/<user>/Desktop/",
       "pubIp": "172.0.0.1",
-      "prvIp": "127.0.0.1",
       "listen_address": "172.0.0.1",
       "rpc_address": "172.0.0.1",
       "stomp_interface": "127.0.0.1",
@@ -64,7 +62,6 @@
       "sshKey": "/home/<user>/.ssh/id_rsa",
       "target_folder": "/home/<user>/Desktop/",
       "pubIp": "172.0.0.2",
-      "prvIp": "127.0.0.2",
       "listen_address": "172.0.0.2",
       "rpc_address": "172.0.0.2",
       "seeds": "172.0.0.1,172.0.0.2",
@@ -85,61 +82,5 @@
         "/home/<user>/Desktop/POD_INSTALLS/data.logs/data/dsefs1/;1.0;5368709",
         "/home/<user>/Desktop/POD_INSTALLS/data.logs/data/dsefs2/;1.0;5368709"
       ]
-    },
-    "server_3":{
-      "tag": "storage_3",
-      "user": "<user>",
-      "sshKey": "/home/<user>/.ssh/id_rsa",
-      "target_folder": "/home/<user>/Desktop/",
-      "pubIp": "172.0.0.3",
-      "prvIp": "127.0.0.3",
-      "listen_address": "172.0.0.3",
-      "rpc_address": "172.0.0.3",
-      "seeds": "172.0.0.1,172.0.0.2",
-      "token": "",
-      "dc": "dc1",
-      "rack": "rack1",
-      "mode": {
-        "search": "false",
-        "analytics": "false",
-        "graph": "false",
-        "dsefs": "false"
-      },
-      "cass_data": [
-        "/home/<user>/Desktop/POD_INSTALLS/data.logs/data",
-        "/home/<user>/Desktop/POD_INSTALLS/data.logs/data2"
-      ],
-      "dsefs_data": [
-        "/home/<user>/Desktop/POD_INSTALLS/data.logs/data/dsefs1/;1.0;5368709",
-        "/home/<user>/Desktop/POD_INSTALLS/data.logs/data/dsefs2/;1.0;5368709"
-      ]
-  },
-  "server_4":{
-    "tag": "search_analytics_1",
-    "user": "<user>",
-    "sshKey": "/home/<user>/.ssh/id_rsa",
-    "target_folder": "/home/<user>/Desktop/",
-    "pubIp": "172.0.0.4",
-    "prvIp": "127.0.0.4",
-    "listen_address": "172.0.0.4",
-    "rpc_address": "172.0.0.4",
-    "seeds": "172.0.0.1,172.0.0.2",
-    "token": "",
-    "dc": "dc1",
-    "rack": "rack1",
-    "mode": {
-      "search": "true",
-      "analytics": "true",
-      "graph": "false",
-      "dsefs": "false"
-    },
-    "cass_data": [
-      "/home/<user>/Desktop/POD_INSTALLS/data.logs/data",
-      "/home/<user>/Desktop/POD_INSTALLS/data.logs/data2"
-    ],
-    "dsefs_data": [
-      "/home/<user>/Desktop/POD_INSTALLS/data.logs/data/dsefs1/;1.0;5368709",
-      "/home/<user>/Desktop/POD_INSTALLS/data.logs/data/dsefs2/;1.0;5368709"
-    ]
-  }
+    }
 }

@@ -70,7 +70,7 @@ do
       do
         ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir -p ${i}dummyFolder && rm -rf ${i}dummyFolder" exit
         status=${?}
-        pod_test_write_error_array_1["${i}"]="${status};${tag}"
+        test_write_error_array_1["${i}"]="${status};${tag}"
         ((retry++))
       done
     fi
@@ -100,7 +100,7 @@ do
       do
         ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir -p ${writeFolder}dummyFolder && rm -rf ${writeFolder}dummyFolder" exit
         status=${?}
-        pod_test_write_error_array_2["${writeFolder}"]="${status};${tag}"
+        test_write_error_array_2["${writeFolder}"]="${status};${tag}"
         ((retry++))
       done
     fi
@@ -132,7 +132,7 @@ do
       do
         ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir -p ${writeFolder}dummyFolder && rm -rf ${writeFolder}dummyFolder" exit
         status=${?}
-        pod_test_write_error_array_3["${writeFolder}"]="${status};${tag}"
+        test_write_error_array_3["${writeFolder}"]="${status};${tag}"
         ((retry++))
       done
     fi
@@ -146,65 +146,65 @@ done
 function task_testWritePaths_report(){
 
 ## generate a report of all failed write-path attempts
-declare -a pod_test_send_report_array_1
+declare -a test_send_report_array_1
 count=0
-for k in "${!pod_test_send_error_array_1[@]}"
+for k in "${!test_send_error_array_1[@]}"
 do
-  lib_generic_strings_expansionDelimiter ${pod_test_send_error_array_1[$k]} ";" "1"
+  lib_generic_strings_expansionDelimiter ${test_send_error_array_1[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
-    pod_test_write_fail="true"
-    pod_test_write_report_array_1["${count}"]="could not make folder: ${yellow}${k} ${white}on server ${yellow}${_D2_}${reset}"
+    test_write_fail="true"
+    test_write_report_array_1["${count}"]="could not make folder: ${yellow}${k} ${white}on server ${yellow}${_D2_}${reset}"
     (( count++ ))
   fi
 done
 
 # ----------
 
-declare -a pod_test_send_report_array_2
+declare -a test_send_report_array_2
 count=0
-for k in "${!pod_test_send_error_array_2[@]}"
+for k in "${!test_send_error_array_2[@]}"
 do
-  lib_generic_strings_expansionDelimiter ${pod_test_send_error_array_2[$k]} ";" "1"
+  lib_generic_strings_expansionDelimiter ${test_send_error_array_2[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
-    pod_test_write_fail="true"
-    pod_test_write_report_array_2["${count}"]="could not make folder: ${yellow}${k} ${white}on server ${yellow}${_D2_}${reset}"
+    test_write_fail="true"
+    test_write_report_array_2["${count}"]="could not make folder: ${yellow}${k} ${white}on server ${yellow}${_D2_}${reset}"
     (( count++ ))
   fi
 done
 
 # ----------
 
-declare -a pod_test_send_report_array_3
+declare -a test_send_report_array_3
 count=0
-for k in "${!pod_test_send_error_array_3[@]}"
+for k in "${!test_send_error_array_3[@]}"
 do
-  lib_generic_strings_expansionDelimiter ${pod_test_send_error_array_3[$k]} ";" "1"
+  lib_generic_strings_expansionDelimiter ${test_send_error_array_3[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
-    pod_test_write_fail="true"
-    pod_test_write_report_array_3["${count}"]="could not make folder: ${yellow}${k} ${white}on server ${yellow}${_D2_}${reset}"
+    test_write_fail="true"
+    test_write_report_array_3["${count}"]="could not make folder: ${yellow}${k} ${white}on server ${yellow}${_D2_}${reset}"
     (( count++ ))
   fi
 done
 
 # ----------
 
-if [[ "${pod_test_write_fail}" == "true" ]]; then
+if [[ "${test_write_fail}" == "true" ]]; then
   printf "%s\n"
   lib_generic_display_msgColourSimple "INFO-BOLD" "--> ${red}Write-paths error report:"
   printf "%s\n"
 
-  for k in "${pod_test_write_report_array_1[@]}"
+  for k in "${test_write_report_array_1[@]}"
   do
     lib_generic_display_msgColourSimple "INFO" "${cross} ${k}"
   done
   printf "%s\n"
 
-  for k in "${pod_test_write_report_array_2[@]}"
+  for k in "${test_write_report_array_2[@]}"
   do
     lib_generic_display_msgColourSimple "INFO" "${cross} ${k}"
   done
 
-  for k in "${pod_test_write_report_array_3[@]}"
+  for k in "${test_write_report_array_3[@]}"
   do
     lib_generic_display_msgColourSimple "INFO" "${cross} ${k}"
   done

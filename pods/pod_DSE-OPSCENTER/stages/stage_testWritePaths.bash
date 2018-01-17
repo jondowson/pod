@@ -68,7 +68,7 @@ declare -a test_send_report_array
 count=0
 for k in "${!test_write_error_array[@]}"
 do
-  lib_generic_strings_expansionDelimiter ${pod_test_write_error_array[$k]} ";" "1"
+  lib_generic_strings_expansionDelimiter ${test_write_error_array[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
     test_write_fail="true"
     test_send_report_array["${count}"]="could not make folder: ${yellow}${k} ${white}on server ${yellow}${_D2_}${reset}"
@@ -91,6 +91,6 @@ if [[ "${test_write_fail}" == "true" ]]; then
   lib_generic_display_msgColourSimple "ERROR-->" "Aborting script as not all paths are writeable"
   exit 1;
 else
-  lib_generic_display_msgColourSimple "SUCCESS" "Write-paths test passed for all servers"
+  lib_generic_display_msgColourSimple "SUCCESS" "All Servers: write-path test passed"
 fi
 }

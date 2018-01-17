@@ -59,7 +59,7 @@ do
         lib_generic_display_msgColourSimple "INFO-->" "killing dse:     ungracefully"
         ssh -q -i ${sshKey} ${user}@${pubIp} "ps aux | grep cassandra | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
       fi
-      pod_stop_dse_error_array["${tag}"]="${status};${pubIp}"
+      stop_dse_error_array["${tag}"]="${status};${pubIp}"
       ((retry++))
     done
     printf "%s\n"
@@ -75,21 +75,21 @@ function task_rollingStop_report(){
 
 lib_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Stop DSE + agent on each server"
 
-declare -a pod_stop_dse_report_array
+declare -a stop_dse_report_array
 count=0
-for k in "${!pod_stop_dse_error_array[@]}"
+for k in "${!stop_dse_error_array[@]}"
 do
-  lib_generic_strings_expansionDelimiter ${pod_stop_dse_error_array[$k]} ";" "1"
+  lib_generic_strings_expansionDelimiter ${stop_dse_error_array[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
-    pod_stop_dse_fail="true"
-    pod_stop_dse_report_array["${count}"]="${yellow}${k}${white} at address ${yellow}${_D2_}${white} with error code ${red}${_D1_}${reset}"
+    stop_dse_fail="true"
+    stop_dse_report_array["${count}"]="${yellow}${k}${white} at address ${yellow}${_D2_}${white} with error code ${red}${_D1_}${reset}"
     (( count++ ))
   fi
 done
 
-if [[ "${pod_stop_dse_fail}" == "true" ]]; then
+if [[ "${stop_dse_fail}" == "true" ]]; then
   printf "%s\n"
-  for k in "${pod_stop_dse_report_array[@]}"
+  for k in "${stop_dse_report_array[@]}"
   do
     lib_generic_display_msgColourSimple "INFO" "${cross} ${k}"
   done

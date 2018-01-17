@@ -29,19 +29,19 @@ source "${pod_home_path}/misc/.suitcase"
 
 # ------------------------------------------
 
-## source pod_ + pod_DSE lib scripts
+## source pod_ + pod_JAVA lib scripts
 
-files="$(find ${pod_home_path}/pods/pod_/lib -name "*.bash")"
+files="$(find ${pod_home_path}/pods/pod_/lib/ -name "*.bash")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
 
-files="$(find ${pod_home_path}/pods/pod_/prepare -name "*.bash")"
+files="$(find ${pod_home_path}/pods/pod_/prepare/ -name "*.bash")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
 
-files="$(find ${pod_home_path}/pods/pod_DSE/lib/ -name "*.bash")"
+files="$(find ${pod_home_path}/pods/${WHICH_POD}/lib/ -name "*.bash")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
@@ -59,47 +59,27 @@ fi
 
 # ------------------------------------------
 
-## install dse + agents on each server
+## install application on server
 
-# [1] delete any previous pod build folder with the same name
+# [1] delete any previous install folder with the same version
 
-rm -rf ${INSTALL_FOLDER_POD}${BUILD_FOLDER}
+rm -rf ${UNTAR_FOLDER}
 
 # [2] make folders
 
-lib_doStuff_remotely_createDseFolders
+lib_generic_doStuff_remotely_createFolders "${UNTAR_FOLDER}${SOFTWARE_VERSION}"
 
 # -----
 
 # [3] un-compress software
 
-lib_doStuff_remotely_installDseTar
-lib_doStuff_remotely_installAgentTar
+lib_generic_doStuff_remotely_unpackTar "${TAR_FILE}" "${UNTAR_FOLDER}"
 
 # -----
 
-# [4] merge the copied over 'resources' folder to the untarred one
+# [4] configure local environment
 
-cp -R "${build_folder_path}resources" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}/${DSE_VERSION}"
-
-# -----
-
-# [5] update the datastax-agent address.yaml to point to opscenter and environment to find JAVA_HOME
-
-lib_doStuff_remotely_agentAddressYaml
-lib_doStuff_remotely_agentEnvironment
-
-# -----
-
-# [6] rename this redundant and meddlesome file !!
-
-lib_doStuff_remotely_cassandraTopologyProperties
-
-# -----
-
-# [7] configure local environment
-
-lib_doStuff_remotely_dseBashProfile
+lib_generic_doStuff_remotely_updatePathBashProfile "${SOFTWARE_NAME}"
 
 if [[ ${os} == *"Ubuntu"* ]]; then
   lib_generic_doStuff_remotely_bashrc
@@ -107,5 +87,5 @@ fi
 
 # -----
 
-# [7] tidy up
+# [5] tidy up
 prepare_generic_misc_clearTheDecks

@@ -70,25 +70,28 @@ else
 
   # [1] delete any previous java install folder with the same version
 
-  rm -rf ${java_untar_folder}
+  rm -rf ${UNTAR_FOLDER}
 
   # [2] make folders
 
-  lib_doStuff_remotely_createJavaFolders
+  lib_generic_doStuff_remotely_createFolders "${UNTAR_FOLDER}${SOFTWARE_VERSION}"
+  lib_generic_doStuff_remotely_createFolders "${UNTAR_FOLDER}${SOFTWARE_VERSION}/lib/security"
 
 # -----
 
   # [3] un-compress software
 
-  lib_doStuff_remotely_installJavaTar
+  lib_generic_doStuff_remotely_unpackTar "${TAR_FILE}" "${UNTAR_FOLDER}"
+  lib_doStuff_remotely_installJavaSecurity
 
 # -----
 
   # [4] configure local environment
 
-  lib_doStuff_remotely_javaBashProfile
+  lib_generic_doStuff_remotely_updatePathBashProfile "${PACKAGE}"
+
   if [[ ${os} == *"Ubuntu"* ]]; then
-    lib_doStuff_remotely_bashrc
+    lib_generic_doStuff_remotely_bashrc
   fi
 
 # -----
