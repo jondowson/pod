@@ -61,7 +61,6 @@
       "sshKey": "/home/ubuntu/.ssh/id_rsa",
       "target_folder": "/home/redhat/",
       "pubIp": "192.168.1.74",
-      "prvIp": "",
       "listen_address": "192.168.1.74",
       "rpc_address": "192.168.1.74",
       "stomp_interface": "192.168.1.64",
