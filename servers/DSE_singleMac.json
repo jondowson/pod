@@ -5,7 +5,6 @@
       "sshKey": "/Users/macuser/.ssh/id_rsa",
       "target_folder": "/Users/macuser/Desktop/",
       "pubIp": "127.0.0.1",
-      "prvIp": "127.0.0.1",
       "listen_address": "127.0.0.1",
       "rpc_address": "127.0.0.1",
       "stomp_interface": "127.0.0.1",
