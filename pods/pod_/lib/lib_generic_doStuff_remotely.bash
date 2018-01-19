@@ -54,7 +54,7 @@ a=$(<$file); printf "%s\n" "$a" > $file
 cat << EOF >> ${file}
 
 #>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'
-export ${program_home}="${UNTAR_FOLDER}${OPSCENTER_VERSION}/bin"
+export ${program_home}="${UNTAR_FOLDER}${SOFTWARE_VERSION}/bin"
 export PATH=\$${program_home}:\$PATH
 #>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'
 EOF

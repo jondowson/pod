@@ -43,23 +43,6 @@ mkdir -p ${spark_worker_data}
 
 # ---------------------------------------
 
-function lib_doStuff_remotely_installDseTar(){
-
-## uncompress tar on remote machine and rename it to name of build folder
-tar -xf "${dse_tar_file}" -C "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
-}
-
-# ---------------------------------------
-
-function lib_doStuff_remotely_installAgentTar(){
-
-## uncompress tar on remote machine
-
-tar -xf "${agent_tar_file}" -C "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
-}
-
-# ---------------------------------------
-
 function lib_doStuff_remotely_cassandraTopologyProperties(){
 
 ## rename the deprecated cassandra-topology.properties to stop it interfering !!
