@@ -17,7 +17,7 @@ Its first 'pod' makes it easy to set up and run a DSE cluster from **tarballs**.
 
 **The latest stable version is:**
 ```diff
-+ pod-version-1.3.1
++ pod-version-1.3.2
 ```    
 The master branch is in sync with the latest stable version.    
 
@@ -133,7 +133,7 @@ This copied folder is stripped of all **non-config files** - the remainder are t
 
 The settings specified in **build_settings.bash** and the **<servers.json>** are edited into this copied resources folder.    
 But for all the settings they do not cover, you can manually edit any of them.    
-So if required, hit **\<ctrl-c\>** at the end of this initial stage - you will have 10 seconds!   
+So if required, hit **\<ctrl-c\>** at the end of this initial stage - by default you will have 5 seconds!   
 Then edit any DSE config file in the build's **resources** folder and re-launch **pod_DSE**.       
 
 All servers will receive a bespoke version of the resources folder + all required software.     
