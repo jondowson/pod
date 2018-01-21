@@ -54,38 +54,6 @@ mv "${topology_file_path}" "${topology_file_path}_old" 2>/dev/null
 
 # ---------------------------------------
 
-function lib_doStuff_remotely_dseBashProfile(){
-
-## configure bash_profile to set paths in an idempotent 'manner'
-
-# file to edit
-file="${HOME}/.bash_profile"
-touch ${file}
-
-# search for and remove any lines starting with:
-lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export OPSC_JVM_OPTS=" "dummy"
-lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export CASSANDRA_HOME=" "dummy"
-lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export PATH=\$PATH:\$CASSANDRA_HOME" "dummy"
-
-# search for and remove any pre-canned blocks containing a label:
-label="dse_bash_profile"
-lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
-
-# remove any empty blank lines at end of file
-a=$(<$file); printf "%s\n" "$a" > $file
-
-cat << EOF >> ${file}
-
-#>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'
-export OPSC_JVM_OPTS="-Djava.io.tmpdir=${Djava_tmp_folder}"
-export CASSANDRA_HOME="${dse_untar_bin_folder}"
-export PATH=\$PATH:\$CASSANDRA_HOME
-#>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'
-EOF
-}
-
-# ---------------------------------------
-
 function lib_doStuff_remotely_agentAddressYaml(){
 
 ## configure bashrc to source bash_profile everytime a new terminal is started (on ubuntu/centos)

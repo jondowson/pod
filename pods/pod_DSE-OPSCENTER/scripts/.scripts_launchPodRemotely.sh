@@ -79,7 +79,7 @@ lib_generic_doStuff_remotely_unpackTar "${TAR_FILE}" "${UNTAR_FOLDER}"
 
 # [4] configure local environment
 
-lib_generic_doStuff_remotely_updatePathBashProfile "${SOFTWARE_NAME}"
+lib_generic_doStuff_remotely_updatePathBashProfile "${SOFTWARE_NAME}" "${UNTAR_EXEC_FOLDER}"
 
 if [[ ${os} == *"Ubuntu"* ]]; then
   lib_generic_doStuff_remotely_bashrc
