@@ -98,7 +98,7 @@ lib_doStuff_remotely_cassandraTopologyProperties
 
 # [7] configure local environment
 
-lib_generic_doStuff_remotely_updatePathBashProfile "CASSANDRA" "${dse_untar_bin_folder}"
+lib_generic_doStuff_remotely_updatePathBashProfile "CASSANDRA_HOME" "${dse_untar_bin_folder}"
 
 if [[ ${os} == *"Ubuntu"* ]]; then
   lib_generic_doStuff_remotely_bashrc

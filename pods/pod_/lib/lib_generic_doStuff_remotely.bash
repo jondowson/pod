@@ -32,7 +32,7 @@ function lib_generic_doStuff_remotely_updatePathBashProfile(){
 
 ## configure bash_profile to set paths in an idempotent 'manner'
 
-program_home=$(tr [:lower:] [:upper:] <<< "${1}")_HOME
+program_home=$(tr [:lower:] [:upper:] <<< "${1}")
 soft_exec_path="${2}"
 
 # file to edit
