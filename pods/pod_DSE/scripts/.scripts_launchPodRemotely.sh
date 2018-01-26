@@ -73,13 +73,12 @@ lib_doStuff_remotely_createDseFolders
 
 # [3] un-compress software
 
-lib_doStuff_remotely_installDseTar
-lib_doStuff_remotely_installAgentTar
+lib_generic_doStuff_remotely_unpackTar "${dse_tar_file}" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
+lib_generic_doStuff_remotely_unpackTar "${agent_tar_file}" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
 
 # -----
 
 # [4] merge the copied over 'resources' folder to the untarred one
-
 cp -R "${build_folder_path}resources" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}/${DSE_VERSION}"
 
 # -----
