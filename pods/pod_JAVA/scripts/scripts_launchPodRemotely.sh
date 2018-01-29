@@ -88,7 +88,7 @@ else
 
   # [4] configure local environment
 
-  lib_generic_doStuff_remotely_updatePathBashProfile "${PACKAGE}"
+  lib_generic_doStuff_remotely_updatePathBashProfile "JAVA_HOME" "${UNTAR_EXEC_FOLDER}"
 
   if [[ ${os} == *"Ubuntu"* ]]; then
     lib_generic_doStuff_remotely_bashrc

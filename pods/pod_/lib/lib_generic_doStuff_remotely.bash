@@ -32,16 +32,17 @@ function lib_generic_doStuff_remotely_updatePathBashProfile(){
 
 ## configure bash_profile to set paths in an idempotent 'manner'
 
-program_home="$(tr [:lower:] [:upper:] <<< ${1})_HOME"
+program_home=$(tr [:lower:] [:upper:] <<< "${1}")
+soft_exec_path="${2}"
 
 # file to edit
 file="${HOME}/.bash_profile"
-touch ${file}
+touch "${file}"
 
 # search for and remove any lines starting with:
-lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export ${program_home}=" "dummy"
-lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export PATH=\$${program_home}:\$PATH" "dummy"
-lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export PATH=\$PATH:\$${program_home}" "dummy"
+lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" "${file}" "export ${program_home}=" "dummy"
+lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" "${file}" "export PATH=\$${program_home}:\$PATH" "dummy"
+lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" "${file}" "export PATH=\$PATH:\$${program_home}" "dummy"
 
 # search for and remove any pre-canned blocks containing a label:
 label="${program_home}_bash_profile"
@@ -54,7 +55,7 @@ a=$(<$file); printf "%s\n" "$a" > $file
 cat << EOF >> ${file}
 
 #>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'
-export ${program_home}="${UNTAR_FOLDER}${OPSCENTER_VERSION}/bin"
+export ${program_home}="${soft_exec_path}"
 export PATH=\$${program_home}:\$PATH
 #>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'
 EOF

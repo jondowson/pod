@@ -58,6 +58,7 @@ TEMP_FOLDER="${INSTALL_FOLDER}tmp/"
 TAR_FOLDER="${PACKAGES}${SOFTWARE_NAME}/"
 TAR_FILE="${TAR_FOLDER}${SOFTWARE_TARBALL}"
 UNTAR_FOLDER="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/"
+UNTAR_EXEC_FOLDER="${UNTAR_FOLDER}bin"
 java_security_folder="${PACKAGES}${JAVA_SECURITY_DISTRIBUTION}/"
 java_security_zip_file="${java_security_folder}${JAVA_SECURITY_ZIP}"
 # //////////////////////////////////////////
