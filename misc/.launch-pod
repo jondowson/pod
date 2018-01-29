@@ -1,6 +1,6 @@
 #!/usr/local/bin/bash
 
-POD_VERSION="1.3.3"
+POD_VERSION="1.3.4"
 script_name=".launch-pod"
 script_author="JRD"
 script_about="launch a chosen pod with passed flags - mac version"
@@ -115,11 +115,12 @@ prepare_flagRules
 
 # [5.1] check it is valid
 servers_json_path="${pod_home_path}/servers/${SERVERS_JSON}"
-catchError "launch-pod#2" "jq error on server json" "true" "false" "jq [.] ${servers_json_path}"
+lib_generic_checks_fileExists "launch-pod#5.1.1" "true" ${servers_json_path}
+catchError "launch-pod#5.1.2" "jq error on server json" "true" "false" "jq 'keys' ${servers_json_path}"
 
 # [5.2] check at least one server is defined
-numberOfServers=$(jq [.] $servers_json_path | tr '"' '\n' | grep 'server_' | wc -l)
-lib_generic_checks_freeTest "launch-pod#3" "zero number of servers" "$numberOfServers" "-eq" "0"
+numberOfServers=$(jq 'keys' $servers_json_path | tr '"' '\n' | grep 'server_' | wc -l)
+lib_generic_checks_freeTest "launch-pod#5.2.1" "zero number of servers" "$numberOfServers" "-eq" "0"
 
 # ==========
 

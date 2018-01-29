@@ -1,6 +1,6 @@
 #!/bin/bash
 
-POD_VERSION="1.3.3"
+POD_VERSION="1.3.4"
 script_name=".launch-pod"
 script_author="JRD"
 script_about="launch a chosen pod with passed flags"
@@ -58,7 +58,7 @@ else
   # [3.1] jq - bash jason parser
   jq_folder="${pod_home_path}/third_party/jq-linux64/"
   jq_file_path="${jq_folder}jq"
-  lib_generic_checks_fileExists "launch-pod#1" "true" "${jq_file_path}"
+  lib_generic_checks_fileExists "launch-pod#3.1.1" "true" "${jq_file_path}"
   # [3.2] ensure third party packages are executable
   chmod -R +x "${pod_home_path}/third_party"
   PATH=$jq_folder:$PATH
@@ -126,12 +126,12 @@ else
 
   # [5.1] check it is valid
   servers_json_path="${pod_home_path}/servers/${SERVERS_JSON}"
-  lib_generic_checks_fileExists "launch-pod#2.1" "true" ${servers_json_path}
-  catchError "launch-pod#2.2" "jq error on server json" "true" "false" "jq 'keys' ${servers_json_path}"
+  lib_generic_checks_fileExists "launch-pod#5.1.1" "true" ${servers_json_path}
+  catchError "launch-pod#5.1.2" "jq error on server json" "true" "false" "jq 'keys' ${servers_json_path}"
 
   # [5.2] check at least one server is defined
   numberOfServers=$(jq 'keys' $servers_json_path | tr '"' '\n' | grep 'server_' | wc -l)
-  lib_generic_checks_freeTest "launch-pod#3" "zero number of servers" "$numberOfServers" "-eq" "0"
+  lib_generic_checks_freeTest "launch-pod#5.2.1" "zero number of servers" "$numberOfServers" "-eq" "0"
 
 # ==========
 
