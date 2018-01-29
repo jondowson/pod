@@ -118,7 +118,7 @@ The **.json** defintion file captures server specific settings such as login cre
 $ ./launch-pod --help    
 `       
 
-10) Finally run '**launch-pod**' passing in the required parameters.  
+10) Finally run '**launch-pod**' passing in the required parameters (without directory names).  
 `   
 $ chmod +x launch-pod   
 `  
