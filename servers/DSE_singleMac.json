@@ -1,9 +1,9 @@
 {
     "server_1":{
       "tag": "storage_1",
-      "user": "macuser",
-      "sshKey": "/Users/macuser/.ssh/id_rsa",
-      "target_folder": "/Users/macuser/Desktop/",
+      "user": "jondowson",
+      "sshKey": "/Users/jondowson/.ssh/id_rsa",
+      "target_folder": "/Users/jondowson/Desktop/",
       "pubIp": "127.0.0.1",
       "listen_address": "127.0.0.1",
       "rpc_address": "127.0.0.1",
@@ -19,12 +19,12 @@
         "dsefs": "false"
       },
       "cass_data": [
-        "/Users/macuser/Desktop/POD_INSTALLS/pod_DSE/data/sstables/",
-        "/Users/macuser/Desktop/POD_INSTALLS/pod_DSE/data/sstables2/"
+        "/Users/jondowson/Desktop/POD_INSTALLS/pod_DSE/data/sstables/",
+        "/Users/jondowson/Desktop/POD_INSTALLS/pod_DSE/data/sstables2/"
       ],
       "dsefs_data": [
-        "/Users/macuser/Desktop/POD_INSTALLS/pod_DSE/data/dsefs/;1.0;5368709",
-        "/Users/macuser/Desktop/POD_INSTALLS/pod_DSE/data2/dsefs2/;1.0;5368709"
+        "/Users/jondowson/Desktop/POD_INSTALLS/pod_DSE/data/dsefs/;1.0;5368709",
+        "/Users/jondowson/Desktop/POD_INSTALLS/pod_DSE/data2/dsefs2/;1.0;5368709"
       ]
     }
 }
