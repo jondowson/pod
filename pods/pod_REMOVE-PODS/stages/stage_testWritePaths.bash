@@ -68,7 +68,7 @@ declare -a test_send_report_array
 count=0
 for k in "${!test_write_error_array[@]}"
 do
-  lib_generic_strings_expansionDelimiter ${pod_test_write_error_array[$k]} ";" "1"
+  lib_generic_strings_expansionDelimiter ${test_write_error_array[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
     test_write_fail="true"
     test_send_report_array["${count}"]="could not make folder: ${yellow}${k} ${white}on server ${yellow}${_D2_}${reset}"
