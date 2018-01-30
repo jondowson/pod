@@ -116,10 +116,10 @@ prepare_flagRules
 # [5.1] check it is valid
 servers_json_path="${pod_home_path}/servers/${SERVERS_JSON}"
 lib_generic_checks_fileExists "launch-pod#5.1.1" "true" "${servers_json_path}"
-catchError "launch-pod#5.1.2" "jq error on server json" "true" "false" "jq 'keys' ${servers_json_path}"
+catchError "launch-pod#5.1.2" "jq error on server json" "true" "false" "jq keys ${servers_json_path}"
 
 # [5.2] check at least one server is defined
-numberOfServers=$(jq 'keys' $servers_json_path | tr '"' '\n' | grep 'server_' | wc -l)
+numberOfServers=$(jq keys $servers_json_path | tr '"' '\n' | grep 'server_' | wc -l)
 lib_generic_checks_freeTest "launch-pod#5.2.1" "zero number of servers" "$numberOfServers" "-eq" "0"
 
 # ==========
