@@ -61,7 +61,7 @@ else
   lib_generic_checks_fileExists "launch-pod#3.1.1" "true" "${jq_file_path}"
   # [3.2] ensure third party packages are executable
   chmod -R +x "${pod_home_path}/third_party"
-  PATH=$jq_folder:$PATH
+  PATH=${jq_folder}:$PATH
 
 # ==========
 
@@ -126,7 +126,7 @@ else
 
   # [5.1] check it is valid
   servers_json_path="${pod_home_path}/servers/${SERVERS_JSON}"
-  lib_generic_checks_fileExists "launch-pod#5.1.1" "true" ${servers_json_path}
+  lib_generic_checks_fileExists "launch-pod#5.1.1" "true" "${servers_json_path}"
   catchError "launch-pod#5.1.2" "jq error on server json" "true" "false" "jq 'keys' ${servers_json_path}"
 
   # [5.2] check at least one server is defined

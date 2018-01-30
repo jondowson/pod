@@ -137,7 +137,6 @@ function prepare_generic_misc_checkSoftwareExists(){
 
 # test POD_SOFTWARE folder and software tar file are available
 if [[ "${SEND_POD_SOFTWARE}" == "true" ]]; then
-  lib_generic_checks_folderExists "prepare_generic_misc.sh#1" "true" "${POD_SOFTWARE}"
-  lib_generic_checks_fileExists   "prepare_generic_misc.sh#2" "true" "${TAR_FILE}"
+  lib_generic_checks_folderExists "prepare_generic_misc.bash#3" "true" "${POD_SOFTWARE}"
 fi
 }

@@ -87,7 +87,7 @@ else
   # [4] configure local environment
 
   lib_generic_doStuff_remotely_updatePathBashProfile "OPSC_HOME" "${UNTAR_EXEC_FOLDER}"
-  lib_generic_doStuff_remotely_updatePathBashProfile "OPSC_JVM_OPTS" "-Djava.io.tmpdir=${Djava_tmp_folder}"
+  #lib_generic_doStuff_remotely_updatePathBashProfile "OPSC_JVM_OPTS" "-Djava.io.tmpdir=${Djava_tmp_folder}"
 
   if [[ ${os} == *"Ubuntu"* ]]; then
     lib_generic_doStuff_remotely_bashrc
