@@ -25,6 +25,9 @@ WHICH_POD=${REMOVE_POD}
 label=""
 lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock2" ${file} "${label}" "dummy"
 WHICH_POD=${WHICH_POD_TMP}
+
+# remove any empty blank lines at end of file
+a=$(<$file); printf "%s\n" "$a" > $file
 }
 
 # ---------------------------------------
