@@ -26,29 +26,43 @@ INSTALL_FOLDER_POD="${INSTALL_FOLDER}pod/${WHICH_POD}/"
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # EDIT-THIS-BLOCK !!
 
-## [1] DSE version to configure
+## General settings
 
-DSE_VERSION="dse-5.x.x"
-pod_DSE_build_folder="dse-5.x.x_name"
+# [1.1] DSE version to configure
+DSE_VERSION="dse-5.1.x"
+
+# [1.2] pod_DSE build folder to configure
+pod_DSE_build_folder="dse-5.1.5_practice"
+
+# [1.3] name to give 'application' key used for encrypting non-system tables
+application_key_name="app_key"
+
+# [1.4] name to give 'application' key used for encrypting non-system tables
+system_key_flag="true"
 
 # -----
 
-## [2] dse.yaml - audit_logging
+## dse.yaml
+
+## [2.1] location of system + 'application' encryption keys
+system_key_directory="/Users/jondowson/Desktop/key/"
+
+## [2.2] transparent data encryption settings
+tde_system_info_enabled="true"
+tde_cipher_algorithm="AES"
+tde_secret_key_strength="256"
+tde_chunk_length_kb="64"
+
+## [2.3] audit_logging
 audit_logging_enabled="true"
 audit_logging_included_categories="DML,DDL,DCL,AUTH,ADMIN,ERROR"
 audit_logging_included_keyspaces="acme_accounts,acme_payauth,acme_paysub"
 
 # -----
 
-## [3] dse.yaml - at rest TDE encryption settings
-tde_system_info_enabled="true"
-tde_cipher_algorithm="AES"
-tde_secret_key_strength="256"
-tde_chunk_length_kb="64"
+## cassandra.yaml
 
-# -----
-
-## [4] cassandra.yaml - server_encryption_options - null settings will not be set !!
+## [3.1] server_encryption_options - empty settings will be left commented out !
 se_internode_encryption="all"
 se_keystore="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/etc/dse/conf/acme.keystore.jks"
 se_keystore_password="changeme"
@@ -80,7 +94,7 @@ se_require_endpoint_verification=""
 
 # -----
 
-## [5] cassandra.yaml - client encryption options - null settings will not be set !!
+## [3.2] client encryption options - empty settings will be left commented out !
 ce_enabled="false"
 ce_optional="false"
 ce_keystore="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/etc/dse/conf/acme.keystore.jks"

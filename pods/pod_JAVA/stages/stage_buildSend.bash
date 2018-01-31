@@ -70,7 +70,7 @@ do
     cp "${tmp_suitcase_file_path}" ${pod_home_path}/.suitcase.tmp
   fi
   # send the updated pod folder
-  scp -q -o LogLevel=QUIET -i ${sshKey} -r "${tmp_working_folder}" "${user}@${pubIp}:${target_folder}POD_SOFTWARE/POD/"
+  scp -q -o LogLevel=QUIET -i ${sshKey} -r "${tmp_working_folder}" "${user}@${pubIp}:${target_folder}POD_SOFTWARE/POD/pod"
   status=${?}
   build_send_error_array["${tag}"]="${status};${pubIp}"
 done

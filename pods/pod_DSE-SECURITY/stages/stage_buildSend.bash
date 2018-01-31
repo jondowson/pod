@@ -19,6 +19,7 @@ do
 
   # add trailing '/' to path if not present
   target_folder="$(lib_generic_strings_addTrailingSlash ${target_folder})"
+  system_key_directory="$(lib_generic_strings_addTrailingSlash ${system_key_directory})"
 
 # -----
 
@@ -31,7 +32,7 @@ do
 # -----
 
   # assign build settings per the TARGET_FOLDER specified for this server
-  printf "%s\n" "TARGET_FOLDER=${target_folder}"            > "${suitcase_file_path}"
+  printf "%s\n" "TARGET_FOLDER=${target_folder}"                    > "${suitcase_file_path}"        # local suitacase !
   source "${tmp_build_settings_file_path}"
 
 # -----
@@ -39,13 +40,17 @@ do
   ## pack the suitcase !! - the tmp_suitcase becomes the suitcase on each server
 
   # [1] TARGET_FOLDER determines many of the settings in build_settings.bash and can be different for each server
-  printf "%s\n" "TARGET_FOLDER=${target_folder}"                  > "${tmp_suitcase_file_path}"    # clear any existing values with first entry (i.e. '>')
+  printf "%s\n" "TARGET_FOLDER=${target_folder}"                    > "${tmp_suitcase_file_path}"    # remote suitcase !
+  printf "%s\n" "generate_keys=${generate_keys}"                   >> "${tmp_suitcase_file_path}"
   # [2] append variables derived from server json definition file
+  if [[ "${id}" == "1" ]]; then
+    printf "%s\n" "first_server_flag=true"                         >> "${tmp_suitcase_file_path}"
+  fi
   # [3] append variables derived from flags
-  printf "%s\n" "WHICH_POD=${WHICH_POD}"                         >> "${tmp_suitcase_file_path}"
-  printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}"                   >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "WHICH_POD=${WHICH_POD}"                           >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}"                     >> "${tmp_suitcase_file_path}"
   build_folder_path_string="${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"
-  printf "%s\n" "build_folder_path=${build_folder_path_string}"  >> "${tmp_suitcase_file_path}"
+  printf "%s\n" "build_folder_path=${build_folder_path_string}"    >> "${tmp_suitcase_file_path}"
 
   lib_generic_display_msgColourSimple "INFO-->" "sending:     bespoke pod build"
   printf "%s\n" "${red}"

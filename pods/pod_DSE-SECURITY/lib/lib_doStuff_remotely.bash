@@ -61,6 +61,61 @@ ${dynamic_cmd} "$(($matchC+6))i #>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'"   
 
 # ---------------------------------------
 
+function lib_doStuff_remotely_dseYamlSystemKeyDirectory(){
+
+## configure dse.yaml for location of system + application encryption keys
+
+# file to edit
+file="${config_folder_dseYaml}dse.yaml"
+label="system_key_directory"
+
+IFS='%'
+dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -n' 'sed -n' 'sed -n' 'sed -n')"
+unset IFS
+
+# find line number of pod_DSE_SECURITY block
+matchA=$(${dynamic_cmd} /\#\>\>\>\>\>\ BEGIN-ADDED-BY__\'${WHICH_POD}@${label}\'/= "${file}")
+# search for and remove any pod_DSE-SECURITY pre-canned blocks containing this label
+lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
+# search again for line number of setting
+matchB=$(${dynamic_cmd} /system_key_directory:/= "${file}")
+
+# if there is still a block then it was not added by pod_DSE-SECURITY - so delete it
+if [[ "${matchB}" != "" ]]; then
+  # define line number range to erase
+  start=$(($matchB))
+  finish=$(($start+30))
+  for i in `seq $start $finish`
+  do
+    # grab 1st char from this line
+    lineContent=$(${dynamic_cmd} ${i}p ${file})
+    # search following lines until a blankline or commented-out line is found
+    if [[ -z $linecontent ]] || [ $lineContent == "" ] || [ $lineContent == "#" ]; then
+      lastEntry=$(($i-1))
+      break;
+    fi
+  done
+  # remove any previous setitng that was not added by pod_DSE-SECURITY
+  IFS='%'
+  dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
+  unset IFS
+  ${dynamic_cmd} "${file}" -re "${start},${lastEntry}d"
+  matchC=${matchB}
+else
+  matchC=${matchA}
+fi
+
+IFS='%'
+dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
+unset IFS
+# insert block to define encryption settings at correct line number
+${dynamic_cmd} "$(($matchC))i #>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'"            ${file}
+${dynamic_cmd} "$(($matchC+1))i system_key_directory: ${system_key_directory}"           ${file}
+${dynamic_cmd} "$(($matchC+2))i #>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'"            ${file}
+}
+
+# ---------------------------------------
+
 function lib_doStuff_remotely_dseYamlAuditLogging(){
 
 ## configure dse.yaml for audit logging
@@ -254,4 +309,26 @@ if [ ${ce_algorithm} ];           then ${dynamic_cmd} "$(($matchC+$nextLine))i \
 if [ ${ce_store_type} ];          then ${dynamic_cmd} "$(($matchC+$nextLine))i \    store_type: ${ce_store_type}"                     ${file} && nextLine="$(($nextLine+1))"; fi
 if [ ${ce_cipher_suites} ];       then ${dynamic_cmd} "$(($matchC+$nextLine))i \    cipher_suites: ${ce_cipher_suites}"               ${file} && nextLine="$(($nextLine+1))"; fi
 ${dynamic_cmd} "$(($matchC+$nextLine))i #>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'"     ${file}
+}
+
+# ---------------------------------------
+
+function lib_doStuff_remotely_dsetoolCreateSystemKey(){
+
+key_name="${1}"
+
+# add trailing '/' to path if not present
+system_key_directory="$(lib_generic_strings_addTrailingSlash ${system_key_directory})"
+
+# move any existing key with this name to a backup file
+if [[ -f ${system_key_directory}${key_name} ]]; then
+  timestamp=$(lib_generic_misc_timestamp)
+  mv ${system_key_directory}${key_name} ${system_key_directory}${key_name}_backup_${timestamp}
+fi
+
+# source profile so dsetool command is found
+source ~/.bash_profile
+# generate a key into the system_key_directory (specified in build_settings.bash / dse.yaml)
+dsetool createsystemkey AES/ECB/PKCS5Padding 256 ${key_name}       # don't wrap in quotes !!
+chmod 600 ${system_key_directory}${key_name}
 }

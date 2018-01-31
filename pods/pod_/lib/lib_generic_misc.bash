@@ -28,6 +28,14 @@ fi
 
 # ---------------------------------------
 
+function lib_generic_misc_timestamp(){
+
+# generate a timestamp
+date +%F_%T
+}
+
+# ---------------------------------------
+
 function lib_generic_misc_timecount(){
 min=0
 sec=${1}

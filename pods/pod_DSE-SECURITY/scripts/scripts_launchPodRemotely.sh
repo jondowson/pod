@@ -68,21 +68,39 @@ else
 
   ## configure audit + security settings
 
-  # [1] edit dse config file
+  # [1] create folders
+
+  lib_generic_doStuff_remotely_createFolders "${system_key_directory}"
+
+  # [2] edit dse.yaml config file
 
   lib_doStuff_remotely_dseYamlTDE
   lib_doStuff_remotely_dseYamlAuditLogging
 
   # -----
 
-  # [2] edit cassandra config file
+  # [3] edit cassandra.yaml config file
 
   lib_doStuff_remotely_cassandraYamlServerEncryption
   lib_doStuff_remotely_cassandraYamlClientEncryption
 
   # -----
 
-  # [3] tidy up
+  # [4] create keys / distribute keys
+
+  if [[ "${generate_keys}" ==  "true" ]]; then
+    if [[ "${first_server_flag}" ==  "true" ]]; then
+      lib_doStuff_remotely_dseYamlSystemKeyDirectory
+      if [[ "${system_key_flag}" ==  "true" ]]; then
+        lib_doStuff_remotely_dsetoolCreateSystemKey "system_key"
+      fi
+      lib_doStuff_remotely_dsetoolCreateSystemKey "${application_key_name}"
+    fi
+  fi
+
+  # -----
+
+  # [5] tidy up
 
   prepare_generic_misc_clearTheDecks
   rm -rf ${INSTALL_FOLDER_POD}        # this folder is empty so tidy it up
