@@ -30,7 +30,7 @@ do
   lib_generic_display_msgColourSimple "INFO-->" "sending:     POD_SOFTWARE/${PACKAGE} folder"
 
   # target folder must exist on target machine !!
-  catchError "stage_generic_POD_SOFTWARE#1" "cannot make target folder" "true" "true" "ssh -o ForwardX11=no ${user}@${pubIp} mkdir -p ${target_folder}"
+  catchError "stage_generic_POD_SOFTWARE#1" "cannot make target folder" "true" "true" "ssh -o ForwardX11=no ${user}@${pubIp} mkdir -p ${target_folder}POD_SOFTWARE"
 
   # check if server is local server - no point sending software if local +  no delete locally of existing pod folder
   localServer="false"
@@ -39,8 +39,6 @@ do
   if [[ "${localServer}" == "true" ]]; then
     lib_generic_display_msgColourSimple "INFO-->" "Not sending to local machine ! ${reset}"
   else
-    # remove any existing pod software from target server
-    ssh -q -i ${sshKey} ${user}@${pubIp} "rm -rf ${target_folder}POD_SOFTWARE/POD/pod"              #&>/dev/null"
     # copy the POD_SOFTWARE for this pod from this server to remote server
     scp -q -o LogLevel=QUIET -i ${sshKey} -r "${PACKAGES}" "${user}@${pubIp}:${target_folder}POD_SOFTWARE" &    # run in parallel
     # grab pid and capture owner in array

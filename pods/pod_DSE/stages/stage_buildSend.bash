@@ -151,7 +151,8 @@ done
   else
     cp "${tmp_suitcase_file_path}" ${pod_home_path}/.suitcase.tmp
   fi
-  # send the updated pod
+  # (re)create folder and send over updated pod software
+  ssh -q -i ${sshKey} ${user}@${pubIp} "mkdir -p ${target_folder}POD_SOFTWARE/POD/pod/"
   scp -q -o LogLevel=QUIET -i ${sshKey} -r "${tmp_working_folder}" "${user}@${pubIp}:${target_folder}POD_SOFTWARE/POD/"
   status=${?}
   build_send_error_array["${tag}"]="${status};${pubIp}"
