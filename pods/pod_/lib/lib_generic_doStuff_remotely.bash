@@ -87,7 +87,7 @@ function lib_generic_doStuff_remotely_unpackTar(){
 file="${1}"
 folder="${2}"
 
-tar -xf "${file}" -C "${folder}"
+tar -xvf "${file}" -C "${folder}"
 }
 
 # ---------------------------------------
