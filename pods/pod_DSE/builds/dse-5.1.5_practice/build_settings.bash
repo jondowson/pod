@@ -51,8 +51,8 @@ AGENT_TARBALL="${AGENT_VERSION}.tar.gz"
 # note: cassandra sstable data folders are specified in the <servers.json> definition file
 # this data folder is where the supporting persistence files will go such as commitlogs and hinted-handoffs
 # on spinning disks it is recommended to locate these on seperate mount points to sstable data folders
-PARENT_DATA_FOLDER="${INSTALL_FOLDER_POD}${dse_version}data/"
-PARENT_LOG_FOLDER="${INSTALL_FOLDER_POD}${dse_version}logs/"
+PARENT_DATA_FOLDER="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/data/"
+PARENT_LOG_FOLDER="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/logs/"
 
 # temp folder - can be anywhere with suffcient permissions
 TEMP_FOLDER="${INSTALL_FOLDER}tmp/"

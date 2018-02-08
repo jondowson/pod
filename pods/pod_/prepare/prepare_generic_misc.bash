@@ -127,6 +127,7 @@ function prepare_generic_misc_clearTheDecks(){
 
 > ${pod_home_path}/misc/.suitcase
 rm -rf ${pod_home_path}/tmp
+rm -rf ${pod_home_path}/.suitcase
 }
 
 # ------------------------------------------
