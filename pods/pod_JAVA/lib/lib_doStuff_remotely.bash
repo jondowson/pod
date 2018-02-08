@@ -8,12 +8,8 @@
 
 function lib_doStuff_remotely_installJavaSecurity(){
 
-## install from local tar to the designated java folder
-
-unzip ${java_security_zip_file} &>/dev/null
-mv UnlimitedJCEPolicyJDK8/*.jar  ${UNTAR_FOLDER}${SOFTWARE_VERSION}/lib/security/
-chmod 0644 ${UNTAR_FOLDER}${SOFTWARE_VERSION}/lib/security/*.jar
-rm -rf UnlimitedJCEPolicyJDK8/
+    ## Uncomment corresponding line in the security policy
+    sed -i '' -e 's|^#crypto.policy=unlimited|crypto.policy=unlimited|' ${UNTAR_FOLDER}${SOFTWARE_VERSION}/lib/security/java.security
 }
 
 # ---------------------------------------
