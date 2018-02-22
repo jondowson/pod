@@ -77,30 +77,23 @@ do
   done
 
 # ----------
-
+set -x
   # calculate number of cassandra data folders specified in json
   # -3? - one for each bracket line and another 'cos the array starts at zero
-  numberOfDataFolders=$(($(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.cass_data' | wc -l)-3))
-
-  declare -a data_file_directories_array
-  for j in $(seq 0 ${numberOfDataFolders});
+  #numberOfDataFolders=$(jq -r '.server_'${id}'.cass_data[]' "${servers_json_path}" | wc -l)
+  #writeFolder=$(jq -r '.server_'${id}'.cass_data[]' "${servers_json_path}")
+  writeFolder=$(jq -r --arg bf "${BUILD_FOLDER}" '.server_'${id}'.cass_data[] | sub("\\${BUILD_FOLDER}";$bf)' "${servers_json_path}")
+  for folder in $writeFolder
   do
-    data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.cass_data['${j}']' | tr -d '"')
-    data_file_directories_array[${j}]=${data_path}
-  done
-
-  for i in "${data_file_directories_array[@]}"
-  do
-    lib_generic_strings_expansionDelimiter "$i" ";" "2";
-    writeFolder="${_D1_}"
+    echo $folder
     status="999"
     if [[ "${status}" != "0" ]]; then
       retry=0
       until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
       do
-        ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir -p ${writeFolder}dummyFolder && rm -rf ${writeFolder}dummyFolder" exit
+        ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir -p ${folder}dummyFolder && rm -rf ${folder}dummyFolder" exit
         status=${?}
-        test_write_error_array_2["${writeFolder}"]="${status};${tag}"
+        test_write_error_array_2["${folder}"]="${status};${tag}"
         ((retry++))
       done
     fi
@@ -112,7 +105,7 @@ do
 
     # calculate number of cassandra data folders specified in json
     # -3? - one for each bracket line and another 'cos the array starts at zero
-    numberOfDataFolders=$(($(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.dsefs_data' | wc -l)-3))
+    numberOfDataFolders=$(jq -r '.server_'${id}'.dsefs_data[]' "${servers_json_path}" | wc -l)
 
     declare -a dsefs_data_file_directories_array
     for j in $(seq 0 ${numberOfDataFolders});
