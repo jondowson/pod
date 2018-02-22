@@ -61,16 +61,16 @@ do
 
 # ----------
 
-  for i in "${mkdir_array[@]}"
+  for folder in "${mkdir_array[@]}"
   do
     status="999"
     if [[ "${status}" != "0" ]]; then
       retry=0
       until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
       do
-        ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir -p ${i}dummyFolder && rm -rf ${i}dummyFolder" exit
+        ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir -p ${folder}dummyFolder && rm -rf ${folder}dummyFolder" exit
         status=${?}
-        test_write_error_array_1["${i}"]="${status};${tag}"
+        test_write_error_array_1["${folder}"]="${status};${tag}"
         ((retry++))
       done
     fi
@@ -78,10 +78,10 @@ do
 
 # ----------
 
+  # if path contains ${BUILD_FOLDER} variable then substitute in the user supplied value
   writeFolder=$(jq -r --arg bf "${BUILD_FOLDER}" '.server_'${id}'.cass_data[] | sub("\\${BUILD_FOLDER}";$bf)' "${servers_json_path}")
   for folder in $writeFolder
   do
-    echo $folder
     status="999"
     if [[ "${status}" != "0" ]]; then
       retry=0
@@ -99,32 +99,23 @@ do
 
   if [[ "${analytics}" == "true" ]] || [[ "${dsefs}" == "true" ]]; then
 
-    # calculate number of cassandra data folders specified in json
-    # -3? - one for each bracket line and another 'cos the array starts at zero
-    numberOfDataFolders=$(jq -r '.server_'${id}'.dsefs_data[]' "${servers_json_path}" | wc -l)
-
-    declare -a dsefs_data_file_directories_array
-    for j in $(seq 0 ${numberOfDataFolders});
+    # if path contains ${BUILD_FOLDER} variable then substitute in the user supplied value
+    writeFolder=$(jq -r --arg bf "${BUILD_FOLDER}" '.server_'${id}'.dsefs_data[] | sub("\\${BUILD_FOLDER}";$bf)' "${servers_json_path}")
+    for folder in $writeFolder
     do
-      data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.dsefs_data['${j}']' | tr -d '"')
-      dsefs_data_file_directories_array[${j}]=${data_path}
-    done
-
-    for i in "${dsefs_data_file_directories_array[@]}"
-    do
-    lib_generic_strings_expansionDelimiter "$i" ";" "2";
-    writeFolder="${_D1_}"
-    status="999"
-    if [[ "${status}" != "0" ]]; then
-      retry=0
-      until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
-      do
-        ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir -p ${writeFolder}dummyFolder && rm -rf ${writeFolder}dummyFolder" exit
-        status=${?}
-        test_write_error_array_3["${writeFolder}"]="${status};${tag}"
-        ((retry++))
-      done
-    fi
+      lib_generic_strings_expansionDelimiter "$folder" ";" "2";
+      folder="${_D1_}"
+      status="999"
+      if [[ "${status}" != "0" ]]; then
+        retry=0
+        until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
+        do
+          ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir -p ${folder}dummyFolder && rm -rf ${folder}dummyFolder" exit
+          status=${?}
+          test_write_error_array_2["${folder}"]="${status};${tag}"
+          ((retry++))
+        done
+      fi
     done
   fi
 done
