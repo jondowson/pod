@@ -77,11 +77,7 @@ do
   done
 
 # ----------
-set -x
-  # calculate number of cassandra data folders specified in json
-  # -3? - one for each bracket line and another 'cos the array starts at zero
-  #numberOfDataFolders=$(jq -r '.server_'${id}'.cass_data[]' "${servers_json_path}" | wc -l)
-  #writeFolder=$(jq -r '.server_'${id}'.cass_data[]' "${servers_json_path}")
+
   writeFolder=$(jq -r --arg bf "${BUILD_FOLDER}" '.server_'${id}'.cass_data[] | sub("\\${BUILD_FOLDER}";$bf)' "${servers_json_path}")
   for folder in $writeFolder
   do
