@@ -12,22 +12,21 @@ task_file="task_rollingStart.bash"
 for id in $(seq 1 ${numberOfServers});
 do
 
-  tag=$(cat ${servers_json_path}           | ${jq_folder}jq '.server_'${id}'.tag'            | tr -d '"')
-  user=$(cat ${servers_json_path}          | ${jq_folder}jq '.server_'${id}'.user'           | tr -d '"')
-  sshKey=$(cat ${servers_json_path}        | ${jq_folder}jq '.server_'${id}'.sshKey'         | tr -d '"')
-  target_folder=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.target_folder'  | tr -d '"')
-  pubIp=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.pubIp'          | tr -d '"')
-  prvIp=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.prvIp'          | tr -d '"')
-  listen_address=$(cat ${servers_json_path}| ${jq_folder}jq '.server_'${id}'.listen_address' | tr -d '"')
-  rpc_address=$(cat ${servers_json_path}   | ${jq_folder}jq '.server_'${id}'.rpc_address'    | tr -d '"')
-  seeds=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.seeds'          | tr -d '"')
-  token=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.token'          | tr -d '"')
-  dc=$(cat ${servers_json_path}            | ${jq_folder}jq '.server_'${id}'.dc'             | tr -d '"')
-  rack=$(cat ${servers_json_path}          | ${jq_folder}jq '.server_'${id}'.rack'           | tr -d '"')
-  search=$(cat ${servers_json_path}        | ${jq_folder}jq '.server_'${id}'.mode.search'    | tr -d '"')
-  analytics=$(cat ${servers_json_path}     | ${jq_folder}jq '.server_'${id}'.mode.analytics' | tr -d '"')
-  graph=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.mode.graph'     | tr -d '"')
-  dsefs=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.mode.dsefs'     | tr -d '"')
+  tag=$(jq            -r '.server_'${id}'.tag'            "${servers_json_path}")
+  user=$(jq           -r '.server_'${id}'.user'           "${servers_json_path}")
+  sshKey=$(jq         -r '.server_'${id}'.sshKey'         "${servers_json_path}")
+  target_folder=$(jq  -r '.server_'${id}'.target_folder'  "${servers_json_path}")
+  pubIp=$(jq          -r '.server_'${id}'.pubIp'          "${servers_json_path}")
+  listen_address=$(jq -r '.server_'${id}'.listen_address' "${servers_json_path}")
+  rpc_address=$(jq    -r '.server_'${id}'.rpc_address'    "${servers_json_path}")
+  seeds=$(jq          -r '.server_'${id}'.seeds'          "${servers_json_path}")
+  token=$(jq          -r '.server_'${id}'.token'          "${servers_json_path}")
+  dc=$(jq             -r '.server_'${id}'.dc'             "${servers_json_path}")
+  rack=$(jq           -r '.server_'${id}'.rack'           "${servers_json_path}")
+  search=$(jq         -r '.server_'${id}'.mode.search'    "${servers_json_path}")
+  analytics=$(jq      -r '.server_'${id}'.mode.analytics' "${servers_json_path}")
+  graph=$(jq          -r '.server_'${id}'.mode.graph'     "${servers_json_path}")
+  dsefs=$(jq          -r '.server_'${id}'.mode.dsefs'     "${servers_json_path}")
 
 # ----------
 
