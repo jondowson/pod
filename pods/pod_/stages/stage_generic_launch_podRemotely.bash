@@ -7,11 +7,11 @@ function task_generic_launchPodRemotely(){
 for id in $(seq 1 ${numberOfServers});
 do
 
-  tag=$(cat ${servers_json_path}           | ${jq_folder}jq '.server_'${id}'.tag'            | tr -d '"')
-  user=$(cat ${servers_json_path}          | ${jq_folder}jq '.server_'${id}'.user'           | tr -d '"')
-  sshKey=$(cat ${servers_json_path}        | ${jq_folder}jq '.server_'${id}'.sshKey'         | tr -d '"')
-  target_folder=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.target_folder'  | tr -d '"')
-  pubIp=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.pubIp'          | tr -d '"')
+  tag=$(jq            -r '.server_'${id}'.tag'            "${servers_json_path}")
+  user=$(jq           -r '.server_'${id}'.user'           "${servers_json_path}")
+  sshKey=$(jq         -r '.server_'${id}'.sshKey'         "${servers_json_path}")
+  target_folder=$(jq  -r '.server_'${id}'.target_folder'  "${servers_json_path}")
+  pubIp=$(jq          -r '.server_'${id}'.pubIp'          "${servers_json_path}")
 
 # -----
 
