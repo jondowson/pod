@@ -166,21 +166,6 @@ if [[ "${notFound}" != "false" ]]; then
     exit 1;
   fi
 fi
-
-# alternate approach
-#shopt -s nullglob && shopt -s dotglob && array=(${pod_home_path}/pods/*)
-#podExists="false"
-#for p in "${array[@]}";
-#do
-#  if [[ "${pod_home_path}/pods/${WHICH_POD}" == "${p}" ]]; then
-#    podExists="true"
-#    break;
-#  fi
-#done
-#if [[ "${podExists}" == "false" ]]; then
-#  lib_generic_display_msgColourSimple "ERROR-->" "${removePodErrMsg}"   && exit 1;
-#fi
-#shopt -u nullglob && shopt -u dotglob
 }
 
 # ---------------------------------------

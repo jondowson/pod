@@ -31,7 +31,7 @@ INSTALL_FOLDER_POD="${INSTALL_FOLDER}${WHICH_POD}/"
 
 ## [2] BASIC CASSANDRA SETTINGS
 
-CLUSTER_NAME="My practice Kluster"              # avoid special characters !!
+CLUSTER_NAME="My Kluster"                       # avoid special characters !!
 ENDPOINT_SNITCH="GossipingPropertyFileSnitch"   # 'GossipingPropertyFileSnitch' should be the default !!
 VNODES="8"                                      # specify a value (8,16,32) for vnodes or "false" for assigned tokens (picked up from servers' .json definition file)
 

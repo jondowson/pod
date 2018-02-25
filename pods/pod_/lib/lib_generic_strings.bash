@@ -4,7 +4,7 @@
 
 function lib_generic_strings_ifsStringDelimeter(){
 
-## split a string by delimeter (any number of delimiters !)
+## split a string by any number of delimiters and insert into an array
 
 delim=$1
 string=$2

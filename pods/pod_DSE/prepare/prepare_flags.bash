@@ -2,7 +2,7 @@
 
 # ------------------------------------------
 
-function prepare_flagRules(){
+function prepare_flags_rules(){
 
 # pre-canned formatted messages
 defaultErrMsg="You must supply the correct combination of flags and values - please check the help: ${yellow}./launch-pod --pod ${WHICH_POD} --help${red}"
@@ -42,4 +42,47 @@ else
   fi
 
 fi
+}
+
+# ------------------------------------------
+
+function prepare_flags_handle(){
+
+flag=${1}
+value=${2}
+
+while test $# -gt 0; do
+  case "$flag" in
+    -s|--servers)
+        SERVERS_JSON=$value
+        serversFlag="true"
+        break
+        ;;
+    -b|--build)
+        BUILD_FOLDER=$value
+        buildFlag="true"
+        break
+        ;;
+    -ss|--sendsoft)
+        SEND_POD_SOFTWARE=$value
+        sendsoftFlag="true"
+        break
+        ;;
+    -rr|--regenresources)
+        REGENERATE_RESOURCES=$value
+        regenresourcesFlag="true"
+        break
+        ;;
+    -cs|--clusterstate)
+        CLUSTER_STATE=$value
+        clusterstateFlag="true"
+        break
+        ;;
+    *)
+      printf "%s\n"
+      lib_generic_display_msgColourSimple "ERROR-->" "Not a recognised flag ${yellow}${1}${red}"
+      exit 1;
+        ;;
+  esac
+done
 }

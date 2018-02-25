@@ -12,7 +12,7 @@ function prepare_misc_checkFileFolderExist(){
 
 function prepare_misc_setDefaults(){
 
-## pod_DSE default settings
+## pod specific default settings
 
-STRICT_START="true"              # exit pod_DSE if any server cannot be reached or dependencies are not available
+:
 }

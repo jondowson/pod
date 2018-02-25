@@ -17,7 +17,7 @@ Its first 'pod' makes it easy to set up and run a DSE cluster from **tarballs**.
 
 **The latest stable version is:**
 ```diff
-+ pod-version-1.3.4
++ pod-version-1.3.5
 ```    
 The master branch is in sync with the latest stable version.    
 
@@ -79,7 +79,7 @@ Quick Instructions (to work out of the box):
 4) git clone https://github.com/jondowson/pod or download + uncompress zip here.  
 5) On Macs (both running pod and in a cluster) - first run the dependencies script from the root folder of the repo.  
 `  
-$ ./misc/install_podDependencies_mac.sh
+$ ./misc/mac_dependencies.sh
 `
 
 6) Setup passwordless access to all servers (including local machine).        
