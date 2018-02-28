@@ -1,6 +1,6 @@
 #!/bin/bash
 
-POD_VERSION="1.3.4"
+POD_VERSION="1.3.5"
 script_name=".launch-pod"
 script_author="JRD"
 script_about="launch a chosen pod with passed flags"
@@ -107,7 +107,7 @@ else
       *)
         thisFlag=${1}
         flagValue=$(shift && echo $1)
-        prepare_handleFlags ${thisFlag} ${flagValue}
+        prepare_flags_handle ${thisFlag} ${flagValue}
         shift
         shift
           ;;
@@ -116,7 +116,7 @@ else
 
   # [4.3] ensure flags have been passed correctly for this pod
   # this will call the version of this function for the chosen pod
-  prepare_flagRules
+  prepare_flags_rules
 
 # ==========
 

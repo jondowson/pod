@@ -2,7 +2,7 @@
 
 # ------------------------------------------
 
-function prepare_flagRules(){
+function prepare_flags_rules(){
 
 # pre-canned formatted messages
 defaultErrMsg="You must supply the correct combination of flags - please check the help: ${yellow}./launch-pod --help"
@@ -22,4 +22,37 @@ elif [[ ${SERVERS_JSON} == "" ]]; then
 elif [[ ${sendsoftFlag} == "true" ]] && [[ "${SEND_POD_SOFTWARE}" != "true" ]] && [[ "${SEND_POD_SOFTWARE}" != "false" ]]; then
   lib_generic_display_msgColourSimple "ERROR-->" "${sendSoftErrMsg}"    && exit 1;
 fi
+}
+
+# ------------------------------------------
+
+function prepare_flags_handle(){
+
+flag=${1}
+value=${2}
+
+while test $# -gt 0; do
+  case "$flag" in
+    -s|--servers)
+        SERVERS_JSON=$value
+        serversFlag="true"
+        break
+        ;;
+    -b|--build)
+        BUILD_FOLDER=$value
+        buildFlag="true"
+        break
+        ;;
+    -ss|--sendsoft)
+        SEND_POD_SOFTWARE=$value
+        sendsoftFlag="true"
+        break
+        ;;
+    *)
+      printf "%s\n"
+      lib_generic_display_msgColourSimple "ERROR-->" "Not a recognised flag ${yellow}${1}${red}"
+      exit 1;
+        ;;
+  esac
+done
 }

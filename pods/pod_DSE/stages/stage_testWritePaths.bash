@@ -9,22 +9,21 @@ function task_testWritePaths(){
 for id in $(seq 1 ${numberOfServers});
 do
 
-  tag=$(cat ${servers_json_path}           | ${jq_folder}jq '.server_'${id}'.tag'            | tr -d '"')
-  user=$(cat ${servers_json_path}          | ${jq_folder}jq '.server_'${id}'.user'           | tr -d '"')
-  sshKey=$(cat ${servers_json_path}        | ${jq_folder}jq '.server_'${id}'.sshKey'         | tr -d '"')
-  target_folder=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.target_folder'  | tr -d '"')
-  pubIp=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.pubIp'          | tr -d '"')
-  prvIp=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.prvIp'          | tr -d '"')
-  listen_address=$(cat ${servers_json_path}| ${jq_folder}jq '.server_'${id}'.listen_address' | tr -d '"')
-  rpc_address=$(cat ${servers_json_path}   | ${jq_folder}jq '.server_'${id}'.rpc_address'    | tr -d '"')
-  seeds=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.seeds'          | tr -d '"')
-  token=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.token'          | tr -d '"')
-  dc=$(cat ${servers_json_path}            | ${jq_folder}jq '.server_'${id}'.dc'             | tr -d '"')
-  rack=$(cat ${servers_json_path}          | ${jq_folder}jq '.server_'${id}'.rack'           | tr -d '"')
-  search=$(cat ${servers_json_path}        | ${jq_folder}jq '.server_'${id}'.mode.search'    | tr -d '"')
-  analytics=$(cat ${servers_json_path}     | ${jq_folder}jq '.server_'${id}'.mode.analytics' | tr -d '"')
-  graph=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.mode.graph'     | tr -d '"')
-  dsefs=$(cat ${servers_json_path}         | ${jq_folder}jq '.server_'${id}'.mode.dsefs'     | tr -d '"')
+  tag=$(jq            -r '.server_'${id}'.tag'            "${servers_json_path}")
+  user=$(jq           -r '.server_'${id}'.user'           "${servers_json_path}")
+  sshKey=$(jq         -r '.server_'${id}'.sshKey'         "${servers_json_path}")
+  target_folder=$(jq  -r '.server_'${id}'.target_folder'  "${servers_json_path}")
+  pubIp=$(jq          -r '.server_'${id}'.pubIp'          "${servers_json_path}")
+  listen_address=$(jq -r '.server_'${id}'.listen_address' "${servers_json_path}")
+  rpc_address=$(jq    -r '.server_'${id}'.rpc_address'    "${servers_json_path}")
+  seeds=$(jq          -r '.server_'${id}'.seeds'          "${servers_json_path}")
+  token=$(jq          -r '.server_'${id}'.token'          "${servers_json_path}")
+  dc=$(jq             -r '.server_'${id}'.dc'             "${servers_json_path}")
+  rack=$(jq           -r '.server_'${id}'.rack'           "${servers_json_path}")
+  search=$(jq         -r '.server_'${id}'.mode.search'    "${servers_json_path}")
+  analytics=$(jq      -r '.server_'${id}'.mode.analytics' "${servers_json_path}")
+  graph=$(jq          -r '.server_'${id}'.mode.graph'     "${servers_json_path}")
+  dsefs=$(jq          -r '.server_'${id}'.mode.dsefs'     "${servers_json_path}")
 
 # ----------
 
@@ -61,16 +60,16 @@ do
 
 # ----------
 
-  for i in "${mkdir_array[@]}"
+  for folder in "${mkdir_array[@]}"
   do
     status="999"
     if [[ "${status}" != "0" ]]; then
       retry=0
       until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
       do
-        ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir -p ${i}dummyFolder && rm -rf ${i}dummyFolder" exit
+        ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir -p ${folder}dummyFolder && rm -rf ${folder}dummyFolder" exit
         status=${?}
-        test_write_error_array_1["${i}"]="${status};${tag}"
+        test_write_error_array_1["${folder}"]="${status};${tag}"
         ((retry++))
       done
     fi
@@ -78,29 +77,18 @@ do
 
 # ----------
 
-  # calculate number of cassandra data folders specified in json
-  # -3? - one for each bracket line and another 'cos the array starts at zero
-  numberOfDataFolders=$(($(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.cass_data' | wc -l)-3))
-
-  declare -a data_file_directories_array
-  for j in $(seq 0 ${numberOfDataFolders});
+  # if path contains ${BUILD_FOLDER} variable then substitute in the user supplied value
+  jq -r --arg bf "${BUILD_FOLDER}" '.server_'${id}'.cass_data[] | sub("\\${BUILD_FOLDER}";$bf)' "${servers_json_path}" |
+  while read -r writeFolder
   do
-    data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.cass_data['${j}']' | tr -d '"')
-    data_file_directories_array[${j}]=${data_path}
-  done
-
-  for i in "${data_file_directories_array[@]}"
-  do
-    lib_generic_strings_expansionDelimiter "$i" ";" "2";
-    writeFolder="${_D1_}"
     status="999"
     if [[ "${status}" != "0" ]]; then
       retry=0
       until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
       do
-        ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir -p ${writeFolder}dummyFolder && rm -rf ${writeFolder}dummyFolder" exit
+        ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir -p ${folder}dummyFolder && rm -rf ${folder}dummyFolder" exit
         status=${?}
-        test_write_error_array_2["${writeFolder}"]="${status};${tag}"
+        test_write_error_array_2["${folder}"]="${status};${tag}"
         ((retry++))
       done
     fi
@@ -110,32 +98,23 @@ do
 
   if [[ "${analytics}" == "true" ]] || [[ "${dsefs}" == "true" ]]; then
 
-    # calculate number of cassandra data folders specified in json
-    # -3? - one for each bracket line and another 'cos the array starts at zero
-    numberOfDataFolders=$(($(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.dsefs_data' | wc -l)-3))
-
-    declare -a dsefs_data_file_directories_array
-    for j in $(seq 0 ${numberOfDataFolders});
+    # if path contains ${BUILD_FOLDER} variable then substitute in the user supplied value
+    jq -r --arg bf "${BUILD_FOLDER}" '.server_'${id}'.dsefs_data[] | sub("\\${BUILD_FOLDER}";$bf)' "${servers_json_path}" |
+    while read -r writeFolder
     do
-      data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.dsefs_data['${j}']' | tr -d '"')
-      dsefs_data_file_directories_array[${j}]=${data_path}
-    done
-
-    for i in "${dsefs_data_file_directories_array[@]}"
-    do
-    lib_generic_strings_expansionDelimiter "$i" ";" "2";
-    writeFolder="${_D1_}"
-    status="999"
-    if [[ "${status}" != "0" ]]; then
-      retry=0
-      until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
-      do
-        ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir -p ${writeFolder}dummyFolder && rm -rf ${writeFolder}dummyFolder" exit
-        status=${?}
-        test_write_error_array_3["${writeFolder}"]="${status};${tag}"
-        ((retry++))
-      done
-    fi
+      lib_generic_strings_expansionDelimiter "$folder" ";" "2";
+      folder="${_D1_}"
+      status="999"
+      if [[ "${status}" != "0" ]]; then
+        retry=0
+        until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
+        do
+          ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir -p ${folder}dummyFolder && rm -rf ${folder}dummyFolder" exit
+          status=${?}
+          test_write_error_array_3["${folder}"]="${status};${tag}"
+          ((retry++))
+        done
+      fi
     done
   fi
 done

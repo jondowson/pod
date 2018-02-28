@@ -67,7 +67,7 @@ rm -rf ${INSTALL_FOLDER_POD}${BUILD_FOLDER}
 
 # [2] make folders
 
-lib_doStuff_remotely_createDseFolders
+lib_generic_doStuff_remotely_createFolders "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
 
 # -----
 
@@ -86,7 +86,6 @@ cp -R "${build_folder_path}resources" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}/${DS
 # [5] update the datastax-agent address.yaml to point to opscenter and environment to find JAVA_HOME
 
 lib_doStuff_remotely_agentAddressYaml
-#lib_doStuff_remotely_agentEnvironment
 
 # -----
 

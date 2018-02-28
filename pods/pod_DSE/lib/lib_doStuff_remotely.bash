@@ -6,47 +6,6 @@
 
 # ---------------------------------------
 
-function lib_doStuff_remotely_createDseFolders(){
-
-## create required folders
-
-# assume here that the mount has been pre-created and assigned to 'the user'
-
-# make dse build folder
-mkdir -p "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
-
-# create log folders
-mkdir -p ${cassandra_log_folder}
-mkdir -p ${gremlin_log_folder}
-mkdir -p ${tomcat_log_folder}
-mkdir -p ${spark_master_log_folder}
-mkdir -p ${spark_worker_log_folder}
-
-# create cassandra sstable folder(s)
-for i in "${data_file_directories_array[@]}"
-do
-  mkdir -p $i
-done
-mkdir -p ${commitlog_directory}
-mkdir -p ${cdc_raw_directory}
-mkdir -p ${saved_caches_directory}
-mkdir -p ${hints_directory}
-
-# create dsefs folders
-mkdir -p ${dsefs_untar_folder}
-for i in "${dsefs_data_file_directories_array[@]}"
-do
-  lib_generic_strings_expansionDelimiter "$i" ";" "2"
-  mkdir -p $_D1_
-done
-
-# dse spark
-mkdir -p ${spark_local_data}
-mkdir -p ${spark_worker_data}
-}
-
-# ---------------------------------------
-
 function lib_doStuff_remotely_cassandraTopologyProperties(){
 
 ## rename the deprecated cassandra-topology.properties to stop it interfering !!

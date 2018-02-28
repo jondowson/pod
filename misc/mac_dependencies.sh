@@ -1,7 +1,7 @@
 #!/bin/bash
 
-POD_VERSION="1.3.1"
-script_name="install_podDependencies_mac.sh"
+POD_VERSION="1.3.5"
+script_name="mac_dependencies.sh"
 script_author="JRD"
 script_about="install mac dependencies for the pod application"
 script_start=$(date +%s)
@@ -43,9 +43,9 @@ lib_generic_display_msgColourSimple "TASK==>"    "TASK: Install / update homebre
 brewList=$(brew list)
 
 if [[ $brewList == *"command not found"* ]]; then
-  lib_generic_display_msgColourSimple "alert" "Installing homebrew"
+  lib_generic_display_msgColourSimple "ALERT-->" "Installing homebrew"
 else
-  lib_generic_display_msgColourSimple "alert" "Fetching latest homebrew"
+  lib_generic_display_msgColourSimple "ALERT-->" "Fetching latest homebrew"
 fi
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 printf "%s\n"
@@ -60,12 +60,12 @@ lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2${white} 3 4 ]
 lib_generic_display_msgColourSimple "TASK==>"    "TASK: Install brew packages"
 
 if [[ $brewList == *"coreutils"* ]]; then
-  lib_generic_display_msgColourSimple "alert" "Fetching latest core-utils"
+  lib_generic_display_msgColourSimple "ALERT-->" "Fetching latest core-utils"
   printf "%s\t" "$ brew upgrade coreutils"
   brew upgrade coreutils > /dev/null 2>&1
   printf "%s\n" "${tick}"
 else
-  lib_generic_display_msgColourSimple "alert" "Installing core-utils"
+  lib_generic_display_msgColourSimple "ALERT-->" "Installing core-utils"
   printf "%s\t" "$ brew install coreutils"
   brew install coreutils > /dev/null 2>&1
   printf "%s\n" "${tick}"
@@ -74,12 +74,12 @@ fi
 # -----
 
 if [[ $brewList == *"bash"* ]]; then
-  lib_generic_display_msgColourSimple "alert" "Fetching latest bash"
+  lib_generic_display_msgColourSimple "ALERT-->" "Fetching latest bash"
   printf "%s\t\t" "$ brew upgrade bash"
   brew upgrade bash > /dev/null 2>&1
   printf "%s\n" "${tick}"
 else
-  lib_generic_display_msgColourSimple "alert" "Installing bash"
+  lib_generic_display_msgColourSimple "ALERT-->" "Installing bash"
   printf "%s\t\t" "$ brew install bash"
   brew install bash > /dev/null 2>&1
   printf "%s\n" "${tick}"
@@ -88,12 +88,12 @@ fi
 # -----
 
 if [[ $brewList == *"gnu-sed"* ]]; then
-  lib_generic_display_msgColourSimple "alert" "Fetching latest gnu-sed"
+  lib_generic_display_msgColourSimple "ALERT-->" "Fetching latest gnu-sed"
   printf "%s\t\t" "$ brew upgrade gnu-sed"
   brew upgrade gnu-sed > /dev/null 2>&1
   printf "%s\n" "${tick}"
 else
-  lib_generic_display_msgColourSimple "alert" "Installing gnu-sed"
+  lib_generic_display_msgColourSimple "ALERT-->" "Installing gnu-sed"
   printf "%s\t\t" "$ brew install gnu-sed"
   brew install gnu-sed > /dev/null 2>&1
   printf "%s\n" "${tick}"
@@ -102,12 +102,12 @@ fi
 # -----
 
 if [[ $brewList == *"iproute2mac"* ]]; then
-  lib_generic_display_msgColourSimple "alert" "Fetching latest iproute2mac"
+  lib_generic_display_msgColourSimple "ALERT-->" "Fetching latest iproute2mac"
   printf "%s\t" "$ brew upgrade iproute2mac"
   brew upgrade iproute2mac > /dev/null 2>&1
   printf "%s\n" "${tick}"
 else
-  lib_generic_display_msgColourSimple "alert" "Installing iproute2mac"
+  lib_generic_display_msgColourSimple "ALERT-->" "Installing iproute2mac"
   printf "%s\t" "$ brew install iproute2mac"
   brew install iproute2mac > /dev/null 2>&1
   printf "%s\n" "${tick}"
@@ -116,12 +116,12 @@ fi
 # -----
 
 if [[ $brewList == *"awk"* ]]; then
-  lib_generic_display_msgColourSimple "alert" "Fetching latest awk"
+  lib_generic_display_msgColourSimple "ALERT-->" "Fetching latest awk"
   printf "%s\t\t" "$ brew upgrade awk"
   brew upgrade awk > /dev/null 2>&1
   printf "%s\n" "${tick}"
 else
-  lib_generic_display_msgColourSimple "alert" "Installing awk"
+  lib_generic_display_msgColourSimple "ALERT-->" "Installing awk"
   printf "%s\t\t" "$ brew install awk"
   brew install awk > /dev/null 2>&1
   printf "%s\n" "${tick}"
@@ -130,12 +130,12 @@ fi
 # -----
 
 if [[ $brewList == *"jq"* ]]; then
-  lib_generic_display_msgColourSimple "alert" "Fetching latest jq"
+  lib_generic_display_msgColourSimple "ALERT-->" "Fetching latest jq"
   printf "%s\t\t" "$ brew upgrade jq"
   brew upgrade jq > /dev/null 2>&1
   printf "%s\n" "${tick}"
 else
-  lib_generic_display_msgColourSimple "alert" "Installing jq"
+  lib_generic_display_msgColourSimple "ALERT-->" "Installing jq"
   printf "%s\t\t" "$ brew install jq"
   brew install jq > /dev/null 2>&1
   printf "%s\n" "${tick}"
@@ -144,12 +144,12 @@ fi
 # -----
 
 if [[ $brewList == *"ssh-copy-id"* ]]; then
-  lib_generic_display_msgColourSimple "alert" "Fetching latest ssh-copy-id"
+  lib_generic_display_msgColourSimple "ALERT-->" "Fetching latest ssh-copy-id"
   printf "%s\t" "$ brew upgrade ssh-copy-id"
   brew upgrade ssh-copy-id > /dev/null 2>&1
   printf "%s\n" "${tick}"
 else
-  lib_generic_display_msgColourSimple "alert" "Installing ssh-copy-id"
+  lib_generic_display_msgColourSimple "ALERT-->" "Installing ssh-copy-id"
   printf "%s\t" "$ brew install ssh-copy-id"
   brew install ssh-copy-id > /dev/null 2>&1
   printf "%s\n" "${tick}"
