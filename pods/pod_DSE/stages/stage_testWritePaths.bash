@@ -79,7 +79,7 @@ do
 
   # if path contains ${BUILD_FOLDER} variable then substitute in the user supplied value
   jq -r --arg bf "${BUILD_FOLDER}" '.server_'${id}'.cass_data[] | sub("\\${BUILD_FOLDER}";$bf)' "${servers_json_path}" |
-  while read -r writeFolder
+  while read -r folder
   do
     status="999"
     if [[ "${status}" != "0" ]]; then
@@ -100,7 +100,7 @@ do
 
     # if path contains ${BUILD_FOLDER} variable then substitute in the user supplied value
     jq -r --arg bf "${BUILD_FOLDER}" '.server_'${id}'.dsefs_data[] | sub("\\${BUILD_FOLDER}";$bf)' "${servers_json_path}" |
-    while read -r writeFolder
+    while read -r folder
     do
       lib_generic_strings_expansionDelimiter "$folder" ";" "2";
       folder="${_D1_}"
