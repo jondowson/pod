@@ -1,9 +1,0 @@
-cassandra.YAML
-incremental_backups
-
-mkdir /cassandra/data/var/lib/commitlog_backup
-
-datastax-agent/bin/start-cassandra
-datastax-agent/bin/stop-cassandra
-
-commitlog_archiving.properties
