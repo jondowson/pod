@@ -65,9 +65,9 @@ fi
 ## STAGE [1]
 
 lib_generic_display_banner
-lib_generic_display_msgColourSimple "STAGE"      "STAGE: Test cluster connections"
-lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1${white} 2 3 4 5 ]${reset}"
-lib_generic_display_msgColourSimple "TASK==>"    "TASK: Testing server connectivity"
+prepare_generic_display_msgColourSimple "STAGE"      "STAGE: Test cluster connections"
+prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1${white} 2 3 4 5 ]${reset}"
+prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Testing server connectivity"
 task_generic_testConnectivity
 task_generic_testConnectivity_report
 lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
@@ -77,9 +77,9 @@ lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 ## STAGE [2]
 
 lib_generic_display_banner
-lib_generic_display_msgColourSimple "STAGE"      "STAGE: Build and send bespoke pod"
-lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2${white} 3 4 5 ]${reset}"
-lib_generic_display_msgColourSimple "TASK==>"    "TASK: Configure locally and distribute"
+prepare_generic_display_msgColourSimple "STAGE"      "STAGE: Build and send bespoke pod"
+prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2${white} 3 4 5 ]${reset}"
+prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Configure locally and distribute"
 task_buildSend
 task_buildSend_report
 lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
@@ -89,9 +89,9 @@ lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 ## STAGE [3]
 
 lib_generic_display_banner
-lib_generic_display_msgColourSimple "STAGE"      "STAGE: Launch pod remotely"
-lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3${white} 4 5 ]${reset}"
-lib_generic_display_msgColourSimple "TASK==>"    "TASK: Execute launch script on each server"
+prepare_generic_display_msgColourSimple "STAGE"      "STAGE: Launch pod remotely"
+prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3${white} 4 5 ]${reset}"
+prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Execute launch script on each server"
 task_generic_launchPodRemotely
 task_generic_launchPodRemotely_report
 lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
@@ -101,9 +101,9 @@ lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 ## STAGE [4]
 
 lib_generic_display_banner
-lib_generic_display_msgColourSimple "STAGE"      "STAGE: Distribute encryption keys"
-lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3 4${white} 5 ]${reset}"
-lib_generic_display_msgColourSimple "TASK==>"    "TASK: Copy keys to all servers"
+prepare_generic_display_msgColourSimple "STAGE"      "STAGE: Distribute encryption keys"
+prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3 4${white} 5 ]${reset}"
+prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Copy keys to all servers"
 task_copyKeys
 task_copyKeys_report
 lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
@@ -113,8 +113,8 @@ lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 ## [5] Summary
 
 lib_generic_display_banner
-lib_generic_display_msgColourSimple "STAGE"      "Summary"
-lib_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3 4 5${white} ]${reset}"
+prepare_generic_display_msgColourSimple "STAGE"      "Summary"
+prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3 4 5${white} ]${reset}"
 task_generic_testConnectivity_report
 task_buildSend_report
 task_generic_launchPodRemotely_report

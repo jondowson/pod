@@ -22,11 +22,11 @@ do
 
 # -----
 
-  lib_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
+  prepare_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
   printf "%s\n"
   remote_os=$(ssh -q -o Forwardx11=no ${user}@${pubIp} 'bash -s' < ${pod_home_path}/pods/pod_/scripts/scripts_generic_identifyOs.sh)
-  lib_generic_display_msgColourSimple "INFO-->" "detected os: ${green}${remote_os}${reset}"
-  lib_generic_display_msgColourSimple "INFO-->" "making:      bespoke pod build"
+  prepare_generic_display_msgColourSimple "INFO-->" "detected os: ${green}${remote_os}${reset}"
+  prepare_generic_display_msgColourSimple "INFO-->" "making:      bespoke pod build"
 
 # -----
 
@@ -49,7 +49,7 @@ do
 
   # -----
 
-  lib_generic_display_msgColourSimple "INFO-->" "sending:     bespoke pod build"
+  prepare_generic_display_msgColourSimple "INFO-->" "sending:     bespoke pod build"
 
   printf "%s\n" "${red}"
   # check if server is local server - so not to delete itself !!
@@ -79,7 +79,7 @@ function task_buildSend_report(){
 
 ## generate a report of all failed sends of pod build
 
-lib_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Create pod for each server"
+prepare_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Create pod for each server"
 
 declare -a build_send_report_array
 count=0
@@ -97,17 +97,17 @@ done
 
 if [[ "${build_send_fail}" == "true" ]]; then
   printf "%s\n"
-  lib_generic_display_msgColourSimple "INFO-BOLD" "--> ${red}Write build error report:"
+  prepare_generic_display_msgColourSimple "INFO-BOLD" "--> ${red}Write build error report:"
   printf "%s\n"
 
   for k in "${build_send_report_array[@]}"
   do
-    lib_generic_display_msgColourSimple "INFO-BOLD" "${cross} ${k}"
+    prepare_generic_display_msgColourSimple "INFO-BOLD" "${cross} ${k}"
   done
   printf "%s\n"
-  lib_generic_display_msgColourSimple "ERROR-->" "Aborting script as not all paths are writeable"
+  prepare_generic_display_msgColourSimple "ERROR-->" "Aborting script as not all paths are writeable"
   prepare_generic_misc_clearTheDecks && exit 1;
 else
-  lib_generic_display_msgColourSimple "SUCCESS" "All servers: make and send pod build"
+  prepare_generic_display_msgColourSimple "SUCCESS" "All servers: make and send pod build"
 fi
 }

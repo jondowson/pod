@@ -20,14 +20,14 @@ do
 
 # -----
 
-  lib_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
+  prepare_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
   printf "\n%s"
-  lib_generic_display_msgColourSimple "INFO-->" "launch:      pod remotely"
+  prepare_generic_display_msgColourSimple "INFO-->" "launch:      pod remotely"
 
   ssh -ttq -o "BatchMode yes" -o "ForwardX11=no" ${user}@${pubIp} "chmod -R 700 ${target_folder}POD_SOFTWARE/POD && ${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/scripts/scripts_launchPodRemotely.sh" > /dev/null 2>&1 &                # run in parallel
   # grab pid and capture owner in array
   pid=$!
-  lib_generic_display_msgColourSimple "INFO-->" "pid id:      ${yellow}${pid}${reset}"
+  prepare_generic_display_msgColourSimple "INFO-->" "pid id:      ${yellow}${pid}${reset}"
   build_launch_pid_array["${pid}"]="${tag};${pubIp}"
   runBuild_pids+=" $pid"
 
@@ -46,8 +46,8 @@ done
 
 # -----
 
-lib_generic_display_msgColourSimple "INFO-BOLD" "awaiting ssh pids:${reset}"
-lib_generic_display_msgColourSimple "INFO" "${yellow}$runBuild_pids${reset}"
+prepare_generic_display_msgColourSimple "INFO-BOLD" "awaiting ssh pids:${reset}"
+prepare_generic_display_msgColourSimple "INFO" "${yellow}$runBuild_pids${reset}"
 printf "\n%s"
 
 # -----
@@ -70,10 +70,10 @@ done
 
 function task_generic_launchPodRemotely_report(){
 
-lib_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Launch pod on each server"
+prepare_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Launch pod on each server"
 
 if [[ ! -z $runBuild_pid_failures ]]; then
-  lib_generic_display_msgColourSimple "INFO-->" "${cross} Problems executing pod build on servers"
+  prepare_generic_display_msgColourSimple "INFO-->" "${cross} Problems executing pod build on servers"
   printf "%s\n"
   for k in "${!build_launch_pid_array[@]}"
   do
@@ -81,11 +81,11 @@ if [[ ! -z $runBuild_pid_failures ]]; then
       lib_generic_strings_expansionDelimiter "${build_launch_pid_array[$k]}" ";" "1"
       server="$_D1_"
       ip=$_D2_
-      lib_generic_display_msgColourSimple "ERROR-TIGHT" "pid ${yellow}${k}${red} failed for ${yellow}${server}@${ip}${red}"
+      prepare_generic_display_msgColourSimple "ERROR-TIGHT" "pid ${yellow}${k}${red} failed for ${yellow}${server}@${ip}${red}"
     fi
   done
   printf "%s\n"
 else
-  lib_generic_display_msgColourSimple "SUCCESS" "All servers: executed remote pod build"
+  prepare_generic_display_msgColourSimple "SUCCESS" "All servers: executed remote pod build"
 fi
 }

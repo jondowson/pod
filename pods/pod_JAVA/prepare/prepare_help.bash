@@ -2,9 +2,9 @@
 
 # ------------------------------------------
 
-function lib_help(){
+function prepare_help(){
 
-lib_generic_display_msgColourSimple "TASK==>" "${WHICH_POD} flags:"
+prepare_generic_display_msgColourSimple "TASK==>" "${WHICH_POD} flags:"
 printf "%s\n"   "--------------------------------------------------------------------------------------------------"
 printf "%s\n"   ".. specify servers .json defintion       | -s  --servers          |  <servers.json>   |   yes"
 printf "%s\n"   ".. specify build folder                  | -b  --build            |  <build_folder>   |   yes"

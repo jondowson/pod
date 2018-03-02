@@ -14,15 +14,15 @@ sendSoftErrMsg="You must supply valid values for ${yellow}--sendsoft${red} --> p
 
 # PART 1: check all required flags have been passed
 if [[ ${buildFlag} != "true" ]] || [[ ${serversFlag} != "true" ]]; then
-  lib_generic_display_msgColourSimple "ERROR-->" "${defaultErrMsg}"     && exit 1;
+  prepare_generic_display_msgColourSimple "ERROR-->" "${defaultErrMsg}"     && exit 1;
 
 # PART 2: check passed flag values are acceptable
 elif [[ ${BUILD_FOLDER} == "" ]]; then
-  lib_generic_display_msgColourSimple "ERROR-->" "${buildFolderErrMsg}" && exit 1;
+  prepare_generic_display_msgColourSimple "ERROR-->" "${buildFolderErrMsg}" && exit 1;
 elif [[ ${SERVERS_JSON} == "" ]]; then
-  lib_generic_display_msgColourSimple "ERROR-->" "${servJsonErrMsg}"    && exit 1;
+  prepare_generic_display_msgColourSimple "ERROR-->" "${servJsonErrMsg}"    && exit 1;
 elif [[ ${sendsoftFlag} == "true" ]] && [[ "${SEND_POD_SOFTWARE}" != "true" ]] && [[ "${SEND_POD_SOFTWARE}" != "false" ]]; then
-  lib_generic_display_msgColourSimple "ERROR-->" "${sendSoftErrMsg}"    && exit 1;
+  prepare_generic_display_msgColourSimple "ERROR-->" "${sendSoftErrMsg}"    && exit 1;
 fi
 }
 
@@ -52,7 +52,7 @@ while test $# -gt 0; do
         ;;
     *)
       printf "%s\n"
-      lib_generic_display_msgColourSimple "ERROR-->" "Not a recognised flag ${yellow}${1}${red}"
+      prepare_generic_display_msgColourSimple "ERROR-->" "Not a recognised flag ${yellow}${1}${red}"
       exit 1;
         ;;
   esac

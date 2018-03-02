@@ -32,12 +32,12 @@ do
 
 # ----------
 
-  lib_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
+  prepare_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
 
 # ----------
 
-  lib_generic_display_msgColourSimple "INFO-->" "stopping dse:      gracefully"
-  lib_generic_display_msgColourSimple "INFO-->" "killing agent:     ungracefully"
+  prepare_generic_display_msgColourSimple "INFO-->" "stopping dse:      gracefully"
+  prepare_generic_display_msgColourSimple "INFO-->" "killing agent:     ungracefully"
 
 # ----------
 
@@ -52,10 +52,10 @@ do
       ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${stop_cmd}"
       status=${?}
       if [[ "${status}" == "0" ]]; then
-        lib_generic_display_msgColourSimple "INFO-->" "ssh return code: ${green}${status}"
+        prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${green}${status}"
       else
-        lib_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}(retry ${retry}/3)"
-        lib_generic_display_msgColourSimple "INFO-->" "killing dse:     ungracefully"
+        prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}(retry ${retry}/3)"
+        prepare_generic_display_msgColourSimple "INFO-->" "killing dse:     ungracefully"
         ssh -q -i ${sshKey} ${user}@${pubIp} "ps aux | grep cassandra | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
       fi
       stop_dse_error_array["${tag}"]="${status};${pubIp}"
@@ -72,7 +72,7 @@ function task_rollingStop_report(){
 
 ## generate a report of all failed ssh connectivity attempts
 
-lib_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Stop DSE + agent on each server"
+prepare_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Stop DSE + agent on each server"
 
 declare -a stop_dse_report_array
 count=0
@@ -90,9 +90,9 @@ if [[ "${stop_dse_fail}" == "true" ]]; then
   printf "%s\n"
   for k in "${stop_dse_report_array[@]}"
   do
-    lib_generic_display_msgColourSimple "INFO" "${cross} ${k}"
+    prepare_generic_display_msgColourSimple "INFO" "${cross} ${k}"
   done
 else
-  lib_generic_display_msgColourSimple "SUCCESS" "DSE stopped for all servers"
+  prepare_generic_display_msgColourSimple "SUCCESS" "DSE stopped for all servers"
 fi
 }

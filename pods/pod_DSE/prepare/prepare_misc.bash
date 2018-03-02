@@ -25,5 +25,6 @@ function prepare_misc_setDefaults(){
 
 ## pod specific default settings
 
-REGENERATE_RESOURCES="false"     # generate new /builds/pod_dse/dse-x.x.x_name/resources' folder - this action will remove any existing one for this build folder !!
+# generate new /builds/pod_dse/dse-x.x.x_name/resources' folder - this action will remove any existing one from this build folder !!
+REGENERATE_RESOURCES="false"
 }

@@ -34,7 +34,7 @@ elif [[ "${noOfDelims}" == "2" ]]; then
   _a_=${string#*;}
   _D2_=${_a_%${delim}*}
 else
-  lib_generic_display_msgColourSimple "ERROR-->" "functions_generic.sh | pod_generic_strings_expansionDelimiter --> 'Unsupported no. of delimeted values'"
+  prepare_generic_display_msgColourSimple "ERROR-->" "functions_generic.sh | pod_generic_strings_expansionDelimiter --> 'Unsupported no. of delimeted values'"
   exit 1;
 fi
 }

@@ -2,7 +2,7 @@
 
 # ------------------------------------------
 
-function lib_generic_help(){
+function prepare_generic_help(){
 
 printf "%s%s\n" "${b}description                              | flag(s)                | values[default]   | required?  " "${reset}"
 printf "%s\n"     "--------------------------------------------------------------------------------------------------"
@@ -20,21 +20,21 @@ printf "%s\n"     "-------------------------------------------------------------
 
 # ------------------------------------------
 
-function lib_generic_helpFinish(){
+function prepare_generic_helpFinish(){
 
 if [[ "${podFlag}" != "true" ]]; then
 
-  lib_generic_display_msgColourSimple "TASK==>" "pod list:"
+  prepare_generic_display_msgColourSimple "TASK==>" "pod list:"
   availablePods=$(ls ${pod_home_path}/pods | grep -vw "pod_")
   printf "%s\n" ${availablePods}
 
 else
 
-  lib_generic_display_msgColourSimple "TASK==>" "builds: ${green}${WHICH_POD}${reset}"
+  prepare_generic_display_msgColourSimple "TASK==>" "builds: ${green}${WHICH_POD}${reset}"
   availableBuilds=$(ls ${pod_home_path}/pods/${WHICH_POD}/builds)
   printf "%s\n" ${availableBuilds}
 
-  lib_generic_display_msgColourSimple "TASK==>" "servers: ${green}all pods${reset}"
+  prepare_generic_display_msgColourSimple "TASK==>" "servers: ${green}all pods${reset}"
   availableServers=$(ls ${pod_home_path}/servers)
   printf "%s\n" ${availableServers}
 

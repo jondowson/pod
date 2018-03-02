@@ -29,7 +29,7 @@ fi
 ret=$?
 
 if [[ $ret != 0 ]]; then
-  lib_generic_display_msgColourSimple "ERROR-->" "Error: ${tagMsg} with return value: [ ${ret} ] ${yellow}[ ${callingScriptTag} ]"
+  prepare_generic_display_msgColourSimple "ERROR-->" "Error: ${tagMsg} with return value: [ ${ret} ] ${yellow}[ ${callingScriptTag} ]"
   if [[ ${abort}  == "true" ]]; then
     prepare_generic_misc_clearTheDecks
     exit ${ret};
@@ -52,7 +52,7 @@ testAgainst="$5"
 
 ## ensure there are more than 0 servers
 if [ $value $test $testAgainst ]; then
-  lib_generic_display_msgColourSimple "ERROR-->" "Error: ${tagMsg}: ${yellow}[ ${callingScriptTag} ]"
+  prepare_generic_display_msgColourSimple "ERROR-->" "Error: ${tagMsg}: ${yellow}[ ${callingScriptTag} ]"
   prepare_generic_misc_clearTheDecks
   exit 1;
 fi
@@ -75,7 +75,7 @@ abort=$2
 file=${3}
 
 if [[ ! -f ${file} ]]; then
-  lib_generic_display_msgColourSimple "ERROR-->" "Error: file not found: ${yellow}[ ${file} ]${red} tag: ${yellow}[ ${tagMsg} ]${red}"
+  prepare_generic_display_msgColourSimple "ERROR-->" "Error: file not found: ${yellow}[ ${file} ]${red} tag: ${yellow}[ ${tagMsg} ]${red}"
   if [[ "${abort}"  == "true" ]]; then
     prepare_generic_misc_clearTheDecks
     exit 1;
@@ -100,7 +100,7 @@ abort=$2
 folder=${3}
 
 if [[ ! -d ${folder} ]]; then
-  lib_generic_display_msgColourSimple "ERROR-->" "Error: folder not found: ${yellow}[ ${folder} ]${red} tag: ${yellow}[ ${tagMsg} ]${red}"
+  prepare_generic_display_msgColourSimple "ERROR-->" "Error: folder not found: ${yellow}[ ${folder} ]${red} tag: ${yellow}[ ${tagMsg} ]${red}"
   if [[ ${abort}  == "true" ]]; then
     prepare_generic_misc_clearTheDecks
     exit 1;
@@ -160,7 +160,7 @@ done
 # -----
 
 if [[ "${notFound}" != "false" ]]; then
-  lib_generic_display_msgColourSimple "ERROR-->" "Error: not found: ${yellow}[ '${checkThis}' ]${red} tag: ${yellow}[ ${tagMsg} ]${red}"
+  prepare_generic_display_msgColourSimple "ERROR-->" "Error: not found: ${yellow}[ '${checkThis}' ]${red} tag: ${yellow}[ ${tagMsg} ]${red}"
   if [[ "${abort}" == "true" ]]; then
     prepare_generic_misc_clearTheDecks
     exit 1;

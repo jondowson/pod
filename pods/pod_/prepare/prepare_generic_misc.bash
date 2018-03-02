@@ -53,7 +53,7 @@ elif [[ "$(cat /etc/system-release-cpe)" == *"redhat"* ]]; then
   os="Redhat"
 else
   os="Bad"
-  lib_generic_display_msgColourSimple "ERROR-->" "OS Not Supported"
+  prepare_generic_display_msgColourSimple "ERROR-->" "OS Not Supported"
   exit 1;
 fi
 }

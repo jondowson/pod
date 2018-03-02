@@ -25,20 +25,20 @@ lib_generic_checks_folderExists "${thisFunction}#1" "true" "${destination_folder
 
 if [ -d "${destination_folder_path}" ]; then
 
-  lib_generic_display_msgColourSimple "INFO-->" "Existing ${yellow}'${BUILD_FOLDER}/resources'${white} will be deleted"
+  prepare_generic_display_msgColourSimple "INFO-->" "Existing ${yellow}'${BUILD_FOLDER}/resources'${white} will be deleted"
   printf "%s\n"
-  lib_generic_display_msgColourSimple "ALERT" "Are you sure ?"
+  prepare_generic_display_msgColourSimple "ALERT" "Are you sure ?"
   printf "%s\n"
   lib_generic_misc_timecount "${STAGE_PAUSE}" "<ctrl-c> to abort now.."
   rm -rf ${destination_folder_path}
   lib_generic_display_banner
-  lib_generic_display_msgColourSimple "TASK==>" "Preparing 'resources' folder"
+  prepare_generic_display_msgColourSimple "TASK==>" "Preparing 'resources' folder"
 fi
 
-lib_generic_display_msgColourSimple "INFO" "Unzip from:   ${red}${dse_tar_file}${reset}"
-lib_generic_display_msgColourSimple "INFO" "Unzip to:     ${yellow}${source_folder_path}${reset}"
+prepare_generic_display_msgColourSimple "INFO" "Unzip from:   ${red}${dse_tar_file}${reset}"
+prepare_generic_display_msgColourSimple "INFO" "Unzip to:     ${yellow}${source_folder_path}${reset}"
 printf "%s\n"
-lib_generic_display_msgColourSimple "ALERT" "Strip files from 'resources' folder"
+prepare_generic_display_msgColourSimple "ALERT" "Strip files from 'resources' folder"
 
 mkdir -p "${pod_home_path}/tmp"
 tar -xf "${dse_tar_file}" -C "${pod_home_path}/tmp/"
@@ -104,10 +104,10 @@ printf "%s\t\t\t%s\n\n" "${b}Folder size after:"  "$(du -sh ${source_folder_path
 # -----
 
 ## copy source folder to destination folder
-lib_generic_display_msgColourSimple "ALERT" "Move stripped 'resources' folder into the pod_DSE 'build' folder"
+prepare_generic_display_msgColourSimple "ALERT" "Move stripped 'resources' folder into the pod_DSE 'build' folder"
 printf "%s\n"
-lib_generic_display_msgColourSimple "INFO" "move from:    ${yellow}${source_folder_path}${reset}"
-lib_generic_display_msgColourSimple "INFO" "move to:      ${green}${destination_folder_path}${reset}"
+prepare_generic_display_msgColourSimple "INFO" "move from:    ${yellow}${source_folder_path}${reset}"
+prepare_generic_display_msgColourSimple "INFO" "move to:      ${green}${destination_folder_path}${reset}"
 printf "%s\n"
 cp -rp ${source_folder_path} ${destination_folder_path}
 rm -rf "${pod_home_path}tmp/"

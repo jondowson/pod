@@ -16,13 +16,13 @@ if [[ "${clusterstateFlag}" == "true" ]]; then
 
     # PART 1: check flag combinations are acceptable for this mode of operation
     if [[ "${buildFlag}" != "true" ]] || [[ "${serversFlag}" != "true" ]]; then
-      lib_generic_display_msgColourSimple "ERROR-->" "${buildServerErrMsg}" && exit 1;
+      prepare_generic_display_msgColourSimple "ERROR-->" "${buildServerErrMsg}" && exit 1;
     elif [[ ${sendsoftFlag} == "true" ]]  || [[ ${regenresourcesFlag} == "true" ]]; then
-      lib_generic_display_msgColourSimple "ERROR-->" "${defaultErrMsg}" && exit 1;
+      prepare_generic_display_msgColourSimple "ERROR-->" "${defaultErrMsg}" && exit 1;
 
     # PART 2: check values are acceptable for this mode of operation
     elif [[ "${CLUSTER_STATE}" != "stop" ]] && [[ ${CLUSTER_STATE} != "restart" ]]; then
-      lib_generic_display_msgColourSimple "ERROR-->" "${clusterStateValueErrMsg}" && exit 1;
+      prepare_generic_display_msgColourSimple "ERROR-->" "${clusterStateValueErrMsg}" && exit 1;
     fi
 
 # MODE 2: installing DSE on cluster using pod_DSE
@@ -30,15 +30,15 @@ else
 
   # PART 1: check flag combinations are acceptable for this mode of operation
   if [[ "${buildFlag}" != "true" ]] || [[ ${serversFlag} != "true" ]]; then
-    lib_generic_display_msgColourSimple "ERROR-->" "${defaultErrMsg}" && exit 1;
+    prepare_generic_display_msgColourSimple "ERROR-->" "${defaultErrMsg}" && exit 1;
 
   # PART 2: check values are acceptable for this mode of operation
   elif [[ ${BUILD_FOLDER} == "" ]]; then
-    lib_generic_display_msgColourSimple "ERROR-->" "${buildFolderErrMsg}" && exit 1;
+    prepare_generic_display_msgColourSimple "ERROR-->" "${buildFolderErrMsg}" && exit 1;
   elif [[ ${SERVERS_JSON} == "" ]]; then
-    lib_generic_display_msgColourSimple "ERROR-->" "${servJsonErrMsg}"    && exit 1;
+    prepare_generic_display_msgColourSimple "ERROR-->" "${servJsonErrMsg}"    && exit 1;
   elif [[ "${regenresourcesFlag}" == "true" ]] && [[ "${REGENERATE_RESOURCES}" == "" ]] || [[ ${sendsoftFlag} == "true" ]] && [[ "${SEND_POD_SOFTWARE}" == "" ]]; then
-     lib_generic_display_msgColourSimple "ERROR-->" "${defaultErrMsg}" && exit 1;
+     prepare_generic_display_msgColourSimple "ERROR-->" "${defaultErrMsg}" && exit 1;
   fi
 
 fi
@@ -80,7 +80,7 @@ while test $# -gt 0; do
         ;;
     *)
       printf "%s\n"
-      lib_generic_display_msgColourSimple "ERROR-->" "Not a recognised flag ${yellow}${1}${red}"
+      prepare_generic_display_msgColourSimple "ERROR-->" "Not a recognised flag ${yellow}${1}${red}"
       exit 1;
         ;;
   esac

@@ -21,7 +21,7 @@ elif [[ "${os}" == "Centos" ]];then
 elif [[ "${os}" == "Redhat" ]];then
   printf "%s" ${redhat_cmd}
 else
-  lib_generic_display_msgColourSimple "ERROR-->" "lib_generic_misc.bash | generic_dynamic_os_command --> 'Unsupported OS'"
+  prepare_generic_display_msgColourSimple "ERROR-->" "lib_generic_misc.bash | generic_dynamic_os_command --> 'Unsupported OS'"
   exit 1;
 fi
 }

@@ -96,7 +96,7 @@ a=$(<$file); printf "%s\n" "$a" > $file
 cat << EOF >> ${file}
 
 #>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'
--Djna.tmpdir=${Djava_tmp_folder}
+-Djna.tmpdir=${TEMP_FOLDER}
 #>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'
 EOF
 }

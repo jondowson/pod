@@ -29,15 +29,17 @@ TARGET_FOLDER="${LOCAL_TARGET_FOLDER}"
 
 # [2.1] source generic pod_ preperation script
 source pods/pod_/prepare/prepare_generic_misc.bash
-# [2.2] identify local os
+# [2.2] remove any existing temp files
+prepare_generic_misc_clearTheDecks
+# [2.3] identify local os
 prepare_generic_misc_identifyOs
-# [2.3] source all generic pod_ scripts
+# [2.4] source all generic pod_ scripts
 prepare_generic_misc_sourceGeneric
-# [2.4] set all generic pod_ default settings
+# [2.5] set all generic pod_ default settings
 prepare_generic_misc_setDefaults
-# [2.5] change local permissions to assist later pod folder copy
+# [2.6] change local permissions to assist later pod folder copy
 chmod -R 777 ${pod_home_path}/.git
-# [2.6] declare global arrays used by generic pod_ stages / functions
+# [2.7] declare global arrays used by generic pod_ stages / functions
 declare -A ifsDelimArray
 declare -A pod_test_connect_error_array
 declare -A pod_software_send_pid_array
@@ -59,7 +61,7 @@ chmod -R +x "${pod_home_path}/third_party"
 # [4.1] ensure --pod | -p flag is passed first (if not using help flag on its own)
 if [[ "${1}" != "-p" ]] && [[ "${1}" != "--pod" ]] && [[ "${1}" != "-h" ]] && [[ "${1}" != "--help" ]]; then
   printf "%s\n"
-  lib_generic_display_msgColourSimple "ERROR-->" "always specify the pod flag first ${yellow}-p | --pod${red}"
+  prepare_generic_display_msgColourSimple "ERROR-->" "always specify the pod flag first ${yellow}-p | --pod${red}"
   printf "%s\n"
   exit 1;
 fi
@@ -73,14 +75,14 @@ while test $# -gt 0; do
   case "$1" in
     -h|--help)
         if [[ ${podFlag} == "true" ]]; then
-          lib_generic_display_banner
-          lib_generic_help
-          lib_help
-          lib_generic_helpFinish
+          prepare_generic_display_banner
+          prepare_generic_help
+          prepare_help
+          prepare_generic_helpFinish
         else
-          lib_generic_display_banner
-          lib_generic_help
-          lib_generic_helpFinish
+          prepare_generic_display_banner
+          prepare_generic_help
+          prepare_generic_helpFinish
         fi
         exit 0;
         ;;
@@ -161,5 +163,5 @@ lib_generic_display_finalMessage "${WHICH_POD}"
 
 # [9.2] calculate and display script timings
 lib_generic_misc_timePod
-lib_generic_display_msgColourSimple "INFO" "pod took: ${diff}[s]"
+prepare_generic_display_msgColourSimple "INFO" "pod took: ${diff}[s]"
 printf "%s\n"

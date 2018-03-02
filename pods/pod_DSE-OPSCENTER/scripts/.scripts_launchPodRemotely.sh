@@ -13,7 +13,7 @@ elif [[ "$(cat /etc/system-release-cpe)" == *"redhat"* ]]; then
   os="Redhat"
 else
   os="Bad"
-  lib_generic_display_msgColourSimple "ERROR-->" "OS Not Supported"
+  prepare_generic_display_msgColourSimple "ERROR-->" "OS Not Supported"
   exit 1;
 fi
 
@@ -80,7 +80,6 @@ lib_generic_doStuff_remotely_unpackTar "${TAR_FILE}" "${UNTAR_FOLDER}"
 # [4] configure local environment
 
 lib_generic_doStuff_remotely_updatePathBashProfile "OPSC_HOME" "${UNTAR_EXEC_FOLDER}"
-#lib_generic_doStuff_remotely_updatePathBashProfile "OPSC_JVM_OPTS" "-Djava.io.tmpdir=${Djava_tmp_folder}"
 
 if [[ ${os} == *"Ubuntu"* ]]; then
   lib_generic_doStuff_remotely_bashrc

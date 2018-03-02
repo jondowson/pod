@@ -37,10 +37,10 @@ do
 
 # ----------
 
-  lib_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
+  prepare_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
   printf "\n%s"
-  lib_generic_display_msgColourSimple "INFO-->" "configuring:    bespoke server paths"
-  lib_generic_display_msgColourSimple "INFO-->" "writing-to:     bespoke server paths"
+  prepare_generic_display_msgColourSimple "INFO-->" "configuring:    bespoke server paths"
+  prepare_generic_display_msgColourSimple "INFO-->" "writing-to:     bespoke server paths"
   printf "%s\n" "${red}"
 
   declare -a mkdir_array
@@ -169,27 +169,27 @@ done
 
 if [[ "${test_write_fail}" == "true" ]]; then
   printf "%s\n"
-  lib_generic_display_msgColourSimple "INFO-BOLD" "--> ${red}Write-paths error report:"
+  prepare_generic_display_msgColourSimple "INFO-BOLD" "--> ${red}Write-paths error report:"
   printf "%s\n"
 
   for k in "${test_write_report_array_1[@]}"
   do
-    lib_generic_display_msgColourSimple "INFO" "${cross} ${k}"
+    prepare_generic_display_msgColourSimple "INFO" "${cross} ${k}"
   done
   printf "%s\n"
 
   for k in "${test_write_report_array_2[@]}"
   do
-    lib_generic_display_msgColourSimple "INFO" "${cross} ${k}"
+    prepare_generic_display_msgColourSimple "INFO" "${cross} ${k}"
   done
 
   for k in "${test_write_report_array_3[@]}"
   do
-    lib_generic_display_msgColourSimple "INFO" "${cross} ${k}"
+    prepare_generic_display_msgColourSimple "INFO" "${cross} ${k}"
   done
-  lib_generic_display_msgColourSimple "ERROR-->" "Aborting script as not all paths are writeable"
+  prepare_generic_display_msgColourSimple "ERROR-->" "Aborting script as not all paths are writeable"
   prepare_generic_misc_clearTheDecks && exit 1;
 else
-  lib_generic_display_msgColourSimple "SUCCESS" "Write-paths test passed for all servers"
+  prepare_generic_display_msgColourSimple "SUCCESS" "Write-paths test passed for all servers"
 fi
 }

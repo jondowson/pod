@@ -70,7 +70,7 @@ else
   # [4.1] ensure --pod | -p flag is passed first (if not using help flag on its own)
   if [[ "${1}" != "-p" ]] && [[ "${1}" != "--pod" ]] && [[ "${1}" != "-h" ]] && [[ "${1}" != "--help" ]]; then
     printf "%s\n"
-    lib_generic_display_msgColourSimple "ERROR-->" "always specify the pod flag first ${yellow}-p | --pod${red}"
+    prepare_generic_display_msgColourSimple "ERROR-->" "always specify the pod flag first ${yellow}-p | --pod${red}"
     printf "%s\n"
     exit 1;
   fi
@@ -84,14 +84,14 @@ else
     case "$1" in
       -h|--help)
           if [[ ${podFlag} == "true" ]]; then
-            lib_generic_display_banner
-            lib_generic_help
-            lib_help
-            lib_generic_helpFinish
+            prepare_generic_display_banner
+            prepare_generic_help
+            prepare_help
+            prepare_generic_helpFinish
           else
-            lib_generic_display_banner
-            lib_generic_help
-            lib_generic_helpFinish
+            prepare_generic_display_banner
+            prepare_generic_help
+            prepare_generic_helpFinish
           fi
           exit 0;
           ;;
@@ -173,7 +173,7 @@ else
 
   # [9.2] calculate and display script timings
   lib_generic_misc_timePod
-  lib_generic_display_msgColourSimple "INFO" "pod took: ${diff}[s]"
+  prepare_generic_display_msgColourSimple "INFO" "pod took: ${diff}[s]"
   printf "%s\n"
 
 fi

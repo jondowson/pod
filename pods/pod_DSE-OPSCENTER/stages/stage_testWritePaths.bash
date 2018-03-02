@@ -27,10 +27,10 @@ do
 
 # -----
 
-  lib_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
+  prepare_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
   printf "\n%s"
-  lib_generic_display_msgColourSimple "INFO-->" "configuring:    bespoke server paths"
-  lib_generic_display_msgColourSimple "INFO-->" "writing-to:     bespoke server paths"
+  prepare_generic_display_msgColourSimple "INFO-->" "configuring:    bespoke server paths"
+  prepare_generic_display_msgColourSimple "INFO-->" "writing-to:     bespoke server paths"
   printf "%s\n" "${red}"
 
   declare -a mkdir_array
@@ -62,7 +62,7 @@ function task_testWritePaths_report(){
 
 ## generate a report of all failed write-path attempts
 
-lib_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Test write paths on each server"
+prepare_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Test write paths on each server"
 
 declare -a test_send_report_array
 count=0
@@ -80,17 +80,17 @@ done
 
 if [[ "${test_write_fail}" == "true" ]]; then
   printf "%s\n"
-  lib_generic_display_msgColourSimple "INFO-BOLD" "--> ${red}Write-paths error report:"
+  prepare_generic_display_msgColourSimple "INFO-BOLD" "--> ${red}Write-paths error report:"
   printf "%s\n"
 
   for k in "${test_send_report_array[@]}"
   do
-    lib_generic_display_msgColourSimple "INFO" "${cross} ${k}"
+    prepare_generic_display_msgColourSimple "INFO" "${cross} ${k}"
   done
   printf "%s\n"
-  lib_generic_display_msgColourSimple "ERROR-->" "Aborting script as not all paths are writeable"
+  prepare_generic_display_msgColourSimple "ERROR-->" "Aborting script as not all paths are writeable"
   exit 1;
 else
-  lib_generic_display_msgColourSimple "SUCCESS" "All Servers: write-path test passed"
+  prepare_generic_display_msgColourSimple "SUCCESS" "All Servers: write-path test passed"
 fi
 }

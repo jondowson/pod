@@ -35,7 +35,7 @@ do
 
 # ----------
 
-  lib_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
+  prepare_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
 
 # ----------
 
@@ -58,9 +58,9 @@ do
 # ----------
 
   if [[ "${flags}" == "" ]]; then
-    lib_generic_display_msgColourSimple "INFO-->" "starting dse + agent:      cassandra only"
+    prepare_generic_display_msgColourSimple "INFO-->" "starting dse + agent:      cassandra only"
   else
-    lib_generic_display_msgColourSimple "INFO-->" "starting dse + agent:      with flags ${flags}"
+    prepare_generic_display_msgColourSimple "INFO-->" "starting dse + agent:      with flags ${flags}"
   fi
 
 # ----------
@@ -73,9 +73,9 @@ do
       ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && java -version"
       status=${?}
       if [[ "${status}" != "0" ]]; then
-        lib_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status}"
+        prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status}"
         if [[ "${STRICT_START}" ==  "true" ]]; then
-          lib_generic_display_msgColourSimple "ERROR-->" "Exiting pod: ${yellow}${task_file}${red} with ${yellow}--strict true${red} - java unavailable"
+          prepare_generic_display_msgColourSimple "ERROR-->" "Exiting pod: ${yellow}${task_file}${red} with ${yellow}--strict true${red} - java unavailable"
           exit 1;
         fi
         start_dse_error_array["${tag}"]="${status};${pubIp}"
@@ -84,9 +84,9 @@ do
         ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_cmd} && ${start_agent}"
         status=${?}
         if [[ "${status}" == "0" ]]; then
-          lib_generic_display_msgColourSimple "INFO-->" "ssh return code: ${green}${status}"
+          prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${green}${status}"
         else
-          lib_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}(retry ${retry}/5)"
+          prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}(retry ${retry}/5)"
         fi
         start_dse_error_array["${tag}"]="${status};${pubIp}"
         ((retry++))
@@ -103,7 +103,7 @@ function task_rollingStart_report(){
 
 ## generate a report of all failed ssh connectivity attempts
 
-lib_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Restart DSE + agent on each server"
+prepare_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Restart DSE + agent on each server"
 
 declare -a start_dse_report_array
 count=0
@@ -121,9 +121,9 @@ if [[ "${start_dse_fail}" == "true" ]]; then
   printf "%s\n"
   for k in "${start_dse_report_array[@]}"
   do
-    lib_generic_display_msgColourSimple "INFO" "${cross} ${k}"
+    prepare_generic_display_msgColourSimple "INFO" "${cross} ${k}"
   done
 else
-  lib_generic_display_msgColourSimple "SUCCESS" "DSE + agent started for all servers"
+  prepare_generic_display_msgColourSimple "SUCCESS" "DSE + agent started for all servers"
 fi
 }
