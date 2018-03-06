@@ -8,7 +8,7 @@ function prepare_flags_rules(){
 errorTag="prepare_flagRules()"
 
 # pre-canned formatted messages
-defaultErrMsg="You must supply the correct combination of flags and values - please check the help: ${yellow}./launch-pod --pod ${WHICH_POD} --help${red}"
+defaultErrMsg="You must supply the correct combination of flags and values - please check the help: ${yellow}pod --pod ${WHICH_POD} --help${red}"
 
 # PART 1: check flag combinations are acceptable for this mode of operation
 if [[ "${buildFlag}" != "true" ]] || [[ ${serversFlag} != "true" ]]; then

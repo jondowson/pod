@@ -7,10 +7,10 @@ function prepare_flags_rules(){
 ## rules for accepting flags
 
 # pre-canned formatted messages
-defaultErrMsg="You must supply the correct combination of flags - please check the help: ${yellow}./launch-pod --help"
-buildFolderErrMsg="You must supply a value for ${yellow}--build${red} --> please check this pod's help: ${yellow}./launch-pod -p ${WHICH_POD} --help"
-servJsonErrMsg="You must supply a value for ${yellow}--servers${red} --> please check this pod's help: ${yellow}./launch-pod -p ${WHICH_POD} --help"
-sendSoftErrMsg="You must supply valid values for ${yellow}--sendsoft${red} --> please check this pod's help: ${yellow}./launch-pod -p ${WHICH_POD} --help"
+defaultErrMsg="You must supply the correct combination of flags - please check the help: ${yellow}pod --help"
+buildFolderErrMsg="You must supply a value for ${yellow}--build${red} --> please check this pod's help: ${yellow}pod -p ${WHICH_POD} --help"
+servJsonErrMsg="You must supply a value for ${yellow}--servers${red} --> please check this pod's help: ${yellow}pod -p ${WHICH_POD} --help"
+sendSoftErrMsg="You must supply valid values for ${yellow}--sendsoft${red} --> please check this pod's help: ${yellow}pod -p ${WHICH_POD} --help"
 
 # PART 1: check all required flags have been passed
 if [[ ${buildFlag} != "true" ]] || [[ ${serversFlag} != "true" ]]; then

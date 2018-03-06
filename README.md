@@ -17,7 +17,7 @@ Its first 'pod' makes it easy to set up and run a DSE cluster from **tarballs**.
 
 **The latest stable version is:**
 ```diff
-+ pod-version-1.3.6
++ pod-version-1.4.0
 ```    
 The master branch is in sync with the latest stable version.    
 
@@ -77,10 +77,14 @@ Quick Instructions (to work out of the box):
 
 3) cd to POD_SOFTWARE/POD folder
 4) git clone https://github.com/jondowson/pod or download + uncompress zip here.  
-5) On Macs (both running pod and in a cluster) - first run the dependencies script from the root folder of the repo.  
+5) run the dependencies script from the root folder of the repo.  
 `  
-$ ./misc/mac_dependencies.sh
+$ ./misc/pod_dependencies.sh
 `
+
+**Note:**  
+On a Mac this will install/refresh homebrew package manager and retrieve a number of packages.    
+On all OS, it will add pod to the path, so pod can be run from any folder.   
 
 6) Setup passwordless access to all servers (including local machine).        
 `    
@@ -115,7 +119,7 @@ The **.json** defintion file captures server specific settings such as login cre
 
 9) For help run '**launch-pod**' passing '**-h**' or '**--help**'.  
 `   
-$ ./launch-pod --help    
+$ pod --help    
 `       
 
 10) Finally run '**launch-pod**' passing in the required parameters (without directory names).  
@@ -123,7 +127,7 @@ $ ./launch-pod --help
 $ chmod +x launch-pod   
 `  
 `   
-$ ./launch-pod --pod pod_DSE --servers nameIt.json --build dse-x.x.x_nameIt    
+$ pod --pod pod_DSE --servers nameIt.json --build dse-x.x.x_nameIt    
 `   
 
 **Note:**    

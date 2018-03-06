@@ -29,7 +29,7 @@ cp -rp "${pod_home_path}/servers"      "${tmp_working_folder}" && \
 cp -rp "${pod_home_path}/third_party"  "${tmp_working_folder}" && \
 cp -p  "${pod_home_path}/README.md"    "${tmp_working_folder}" && \
 cp -p  "${pod_home_path}/.gitignore"   "${tmp_working_folder}" && \
-cp -p  "${pod_home_path}/launch-pod"   "${tmp_working_folder}"
+cp -p  "${pod_home_path}/pod"          "${tmp_working_folder}"
 
 # check these paths have been created
 lib_generic_checks_fileExists   "prepare_generic_misc.bash#1" "true" "${suitcase_file_path}"

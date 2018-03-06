@@ -1,7 +1,7 @@
 #!/usr/local/bin/bash
 
-POD_VERSION="1.3.6"
-script_name=".launch-pod"
+POD_VERSION="1.4.0"
+script_name=".pod"
 script_author="JRD"
 script_about="launch a chosen pod with passed flags - mac version"
 script_start=$(date +%s)

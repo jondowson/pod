@@ -11,6 +11,6 @@ printf "%s\n"   ".. specify build folder                  | -b  --build         
 printf "%s\n"
 printf "%s\n"   "${b}examples:${reset}"
 printf "%s\n"   "--------------------------------------------------------------------------------------------------"
-printf "%s\n"   "${yellow}$ ./launch-pod -p pod_DSE-SECURITY -s myServers.json -b dse-5.1.5_security${reset}"
+printf "%s\n"   "${yellow}$ pod -p pod_DSE-SECURITY -s myServers.json -b dse-5.1.5_security${reset}"
 printf "%s\n"   "--------------------------------------------------------------------------------------------------"
 }

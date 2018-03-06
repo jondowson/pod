@@ -14,7 +14,7 @@ printf "%s\n"   ".. rolling stop/start of cluster         | -cs --clusterstate  
 printf "%s\n"
 printf "%s\n"   "${b}examples:${reset}"
 printf "%s\n"   "--------------------------------------------------------------------------------------------------"
-printf "%s\n"   "${yellow}$ ./launch-pod -p pod_DSE -s myServers.json -b dse-5.0.5_pre-prod -ss false --rr true${reset}"
-printf "%s\n"   "${yellow}$ ./launch-pod -p pod_DSE -s myServers.json --clusterstate restart${reset}"
+printf "%s\n"   "${yellow}$ pod -p pod_DSE -s myServers.json -b dse-5.0.5_pre-prod -ss false --rr true${reset}"
+printf "%s\n"   "${yellow}$ pod -p pod_DSE -s myServers.json --clusterstate restart${reset}"
 printf "%s\n"   "--------------------------------------------------------------------------------------------------"
 }

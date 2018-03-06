@@ -12,6 +12,6 @@ printf "%s\n"   ".. scp POD_SOFTWARE folder to servers    | -ss --sendsoft      
 printf "%s\n"
 printf "%s\n"   "${b}example:${reset}"
 printf "%s\n"   "--------------------------------------------------------------------------------------------------"
-printf "%s\n"   "${yellow}$ ./launch-pod -p ${WHICH_POD} -s myServers.json -b opscenter-6.1.5_practice -ss false ${reset}"
+printf "%s\n"   "${yellow}$ pod -p ${WHICH_POD} -s myServers.json -b opscenter-6.1.5_practice -ss false ${reset}"
 printf "%s\n"   "--------------------------------------------------------------------------------------------------"
 }

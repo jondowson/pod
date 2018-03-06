@@ -12,6 +12,6 @@ printf "%s\n"   ".. remove this pod from POD_INSTALLS     | -rp --removepod     
 printf "%s\n"
 printf "%s\n"   "${b}examples:${reset}"
 printf "%s\n"   "--------------------------------------------------------------------------------------------------"
-printf "%s\n"   "${yellow}$ ./launch-pod -p ${WHICH_POD} -s myServers.json -b remove_pods --rp pod_DSE${reset}"
+printf "%s\n"   "${yellow}$ pod -p ${WHICH_POD} -s myServers.json -b remove_pods --rp pod_DSE${reset}"
 printf "%s\n"   "--------------------------------------------------------------------------------------------------"
 }

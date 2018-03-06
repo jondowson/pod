@@ -91,7 +91,7 @@ case ${which_pod} in
           printf "%s\n"
           prepare_generic_display_msgColourSimple "TASK==>"      "To start the entire cluster:"
           prepare_generic_display_msgColourSimple "INFO-BOLD" "--> based on mode settings in servers .json defintion file."
-          prepare_generic_display_msgColourSimple "INFO"      "$ ./launch-pod --pod pod_DSE --servers ${SERVERS_JSON} --build ${BUILD_FOLDER} --clusterstate restart"
+          prepare_generic_display_msgColourSimple "INFO"      "$ pod --pod pod_DSE --servers ${SERVERS_JSON} --build ${BUILD_FOLDER} --clusterstate restart"
         elif [[ "${JAVA_INSTALL_TYPE}" == "tar" ]]; then
           prepare_generic_display_msgColourSimple "TASK==>"      "To run dse locally:"
           prepare_generic_display_msgColourSimple "INFO-BOLD" "(a) Source '.bash_profile' (or open new terminal):"
@@ -106,7 +106,7 @@ case ${which_pod} in
           printf "%s\n"
           prepare_generic_display_msgColourSimple "TASK==>"      "To start the entire cluster:"
           prepare_generic_display_msgColourSimple "INFO-BOLD" "--> based on mode settings in servers .json defintion file."
-          prepare_generic_display_msgColourSimple "INFO"      "$ ./launch-pod --pod pod_DSE --servers ${SERVERS_JSON} --clusterstate start"
+          prepare_generic_display_msgColourSimple "INFO"      "$ pod --pod pod_DSE --servers ${SERVERS_JSON} --clusterstate start"
         fi
         printf "%s\n" ;;
 

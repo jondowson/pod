@@ -13,8 +13,8 @@ printf "%s\n"     ".. specific pod help                     | -p  -h            
 printf "%s\n"     "--------------------------------------------------------------------------------------------------"
 printf "%s\n"     "${b}examples:${reset}"
 printf "%s\n"     "--------------------------------------------------------------------------------------------------"
-printf "%s\n"     "${yellow}$ ./launch-pod -h${reset}"
-printf "%s\n"     "${yellow}$ ./launch-pod -p pod_NAME -h${reset}"
+printf "%s\n"     "${yellow}$ pod -h${reset}"
+printf "%s\n"     "${yellow}$ pod -p pod_NAME -h${reset}"
 printf "%s\n"     "--------------------------------------------------------------------------------------------------"
 }
 
