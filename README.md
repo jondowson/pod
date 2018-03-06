@@ -117,14 +117,14 @@ $ vi servers/nameIt.json
 
 The **.json** defintion file captures server specific settings such as login credentials and ip addresses.    
 
-9) For help run '**launch-pod**' passing '**-h**' or '**--help**'.  
+9) For help run '**pod**' passing '**-h**' or '**--help**'.  
 `   
 $ pod --help    
 `       
 
-10) Finally run '**launch-pod**' passing in the required parameters (without directory names).  
+10) Finally run '**pod**' passing in the required parameters (without directory names).  
 `   
-$ chmod +x launch-pod   
+$ chmod +x pod   
 `  
 `   
 $ pod --pod pod_DSE --servers nameIt.json --build dse-x.x.x_nameIt    
