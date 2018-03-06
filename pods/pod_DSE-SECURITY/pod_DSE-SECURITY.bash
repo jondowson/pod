@@ -64,7 +64,7 @@ fi
 
 ## STAGE [1]
 
-lib_generic_display_banner
+prepare_generic_display_banner
 prepare_generic_display_msgColourSimple "STAGE"      "STAGE: Test cluster connections"
 prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1${white} 2 3 4 5 ]${reset}"
 prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Testing server connectivity"
@@ -76,7 +76,7 @@ lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 
 ## STAGE [2]
 
-lib_generic_display_banner
+prepare_generic_display_banner
 prepare_generic_display_msgColourSimple "STAGE"      "STAGE: Build and send bespoke pod"
 prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2${white} 3 4 5 ]${reset}"
 prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Configure locally and distribute"
@@ -88,7 +88,7 @@ lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 
 ## STAGE [3]
 
-lib_generic_display_banner
+prepare_generic_display_banner
 prepare_generic_display_msgColourSimple "STAGE"      "STAGE: Launch pod remotely"
 prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3${white} 4 5 ]${reset}"
 prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Execute launch script on each server"
@@ -100,7 +100,7 @@ lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 
 ## STAGE [4]
 
-lib_generic_display_banner
+prepare_generic_display_banner
 prepare_generic_display_msgColourSimple "STAGE"      "STAGE: Distribute encryption keys"
 prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3 4${white} 5 ]${reset}"
 prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Copy keys to all servers"
@@ -112,7 +112,7 @@ lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 
 ## [5] Summary
 
-lib_generic_display_banner
+prepare_generic_display_banner
 prepare_generic_display_msgColourSimple "STAGE"      "Summary"
 prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3 4 5${white} ]${reset}"
 task_generic_testConnectivity_report

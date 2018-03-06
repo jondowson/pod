@@ -26,6 +26,7 @@
 #                 --> 'full_path;storage_weight;min_free_space'
 #                 --> free space in bytes
 
+# Note:           you can use the variable ${BUILD_FOLDER} as part of your cass_data and dsefs_data paths
 # FINALLY:        in the copy of this template, delete all these instructions, leaving just the json !!
 {
     "server_1":{
@@ -48,12 +49,12 @@
         "dsefs": "false"
       },
       "cass_data": [
-        "/home/<user>/Desktop/POD_INSTALLS/data.logs/data",
-        "/home/<user>/Desktop/POD_INSTALLS/data.logs/data2"
+        "/Users/me/Desktop/POD_INSTALLS/pod_DSE/${BUILD_FOLDER}/data/sstables/",
+        "/Users/me/Desktop/POD_INSTALLS/pod_DSE/${BUILD_FOLDER}/data/sstables2/"
       ],
       "dsefs_data": [
-        "/home/<user>/Desktop/POD_INSTALLS/data.logs/data/dsefs1/;1.0;5368709",
-        "/home/<user>/Desktop/POD_INSTALLS/data.logs/data/dsefs2/;1.0;5368709"
+        "/Users/me/Desktop/POD_INSTALLS/pod_DSE/${BUILD_FOLDER}/data/dsefs/;1.0;5368709",
+        "/Users/me/Desktop/POD_INSTALLS/pod_DSE/${BUILD_FOLDER}/data/dsefs2/;1.0;5368709"
       ]
     },
     "server_2":{
@@ -75,12 +76,12 @@
         "dsefs": "false"
       },
       "cass_data": [
-        "/home/<user>/Desktop/POD_INSTALLS/data.logs/data",
-        "/home/<user>/Desktop/POD_INSTALLS/data.logs/data2"
+        "/Users/me/Desktop/POD_INSTALLS/pod_DSE/${BUILD_FOLDER}/data/sstables/",
+        "/Users/me/Desktop/POD_INSTALLS/pod_DSE/${BUILD_FOLDER}/data/sstables2/"
       ],
       "dsefs_data": [
-        "/home/<user>/Desktop/POD_INSTALLS/data.logs/data/dsefs1/;1.0;5368709",
-        "/home/<user>/Desktop/POD_INSTALLS/data.logs/data/dsefs2/;1.0;5368709"
+        "/Users/me/Desktop/POD_INSTALLS/pod_DSE/${BUILD_FOLDER}/data/dsefs/;1.0;5368709",
+        "/Users/me/Desktop/POD_INSTALLS/pod_DSE/${BUILD_FOLDER}/data/dsefs2/;1.0;5368709"
       ]
     }
 }

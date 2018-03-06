@@ -22,7 +22,7 @@ do
   system_key_directory="$(lib_generic_strings_addTrailingSlash ${system_key_directory})"
 
 # -----
-
+set -x
   prepare_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
   printf "\n%s"
   remote_os=$(ssh -q -o Forwardx11=no ${user}@${pubIp} 'bash -s' < ${pod_home_path}/pods/pod_/scripts/scripts_generic_identifyOs.sh)

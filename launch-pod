@@ -169,7 +169,7 @@ else
 ## [9] display generic pod_ closing messages
 
   # [9.1] display generic final message
-  lib_generic_display_finalMessage "${WHICH_POD}"
+  prepare_generic_display_finalMessage "${WHICH_POD}"
 
   # [9.2] calculate and display script timings
   lib_generic_misc_timePod

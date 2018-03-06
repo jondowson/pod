@@ -30,18 +30,15 @@ lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLin
 
 # search for and remove any pre-canned blocks containing a label:
 label="set_stomp_opscenter"
-lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
-
-# remove any empty blank lines at end of file
-a=$(<$file); printf "%s\n" "$a" > $file
+lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
 
 # add line sourcing .bashrc - no need on a Mac
 cat << EOF >> ${file}
 
-#>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'
+#>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}
 stomp_interface: ${STOMP_INTERFACE}
 use_ssl: 0
-#>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'
+#>>>>>END-ADDED-BY__${WHICH_POD}@${label}
 EOF
 }
 
@@ -49,7 +46,7 @@ EOF
 
 function lib_doStuff_remotely_agentEnvironment(){
 
-## configure JAVA_HOME for datastax-agent-env.sh
+## configure JAVA_HOME for datastax-agent-env.sh - this function is not called on a Mac !!
 
 # file to edit
 file="${agent_untar_config_folder}datastax-agent-env.sh"
@@ -57,8 +54,9 @@ touch ${file}
 
 # search for and remove any pre-canned blocks containing a label:
 label="set_java_agent"
-lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
+lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
 
+# add line sourcing .bashrc
 source ~/.bash_profile &>/dev/null
 agent_java_home=$(echo ${JAVA_HOME})
 if [[ "${agent_java_home}" == "" ]]; then
@@ -66,14 +64,10 @@ if [[ "${agent_java_home}" == "" ]]; then
 fi
 agent_java_home=$(echo ${agent_java_home} | sed 's/bin.*//')
 
-# remove any empty blank lines at end of file
-a=$(<$file); printf "%s\n" "$a" > $file
-
-# add line sourcing .bashrc - no need on a Mac
 cat << EOF >> ${file}
 
-#>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'
+#>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}
 export JAVA_HOME="${agent_java_home}"
-#>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'
+#>>>>>END-ADDED-BY__${WHICH_POD}@${label}
 EOF
 }

@@ -9,21 +9,22 @@ function task_buildSend(){
 for id in $(seq 1 ${numberOfServers});
 do
 
-  tag=$(jq            -r '.server_'${id}'.tag'            "${servers_json_path}")
-  user=$(jq           -r '.server_'${id}'.user'           "${servers_json_path}")
-  sshKey=$(jq         -r '.server_'${id}'.sshKey'         "${servers_json_path}")
-  target_folder=$(jq  -r '.server_'${id}'.target_folder'  "${servers_json_path}")
-  pubIp=$(jq          -r '.server_'${id}'.pubIp'          "${servers_json_path}")
-  listen_address=$(jq -r '.server_'${id}'.listen_address' "${servers_json_path}")
-  rpc_address=$(jq    -r '.server_'${id}'.rpc_address'    "${servers_json_path}")
-  seeds=$(jq          -r '.server_'${id}'.seeds'          "${servers_json_path}")
-  token=$(jq          -r '.server_'${id}'.token'          "${servers_json_path}")
-  dc=$(jq             -r '.server_'${id}'.dc'             "${servers_json_path}")
-  rack=$(jq           -r '.server_'${id}'.rack'           "${servers_json_path}")
-  search=$(jq         -r '.server_'${id}'.mode.search'    "${servers_json_path}")
-  analytics=$(jq      -r '.server_'${id}'.mode.analytics' "${servers_json_path}")
-  graph=$(jq          -r '.server_'${id}'.mode.graph'     "${servers_json_path}")
-  dsefs=$(jq          -r '.server_'${id}'.mode.dsefs'     "${servers_json_path}")
+  tag=$(jq             -r '.server_'${id}'.tag'             "${servers_json_path}")
+  user=$(jq            -r '.server_'${id}'.user'            "${servers_json_path}")
+  sshKey=$(jq          -r '.server_'${id}'.sshKey'          "${servers_json_path}")
+  target_folder=$(jq   -r '.server_'${id}'.target_folder'   "${servers_json_path}")
+  pubIp=$(jq           -r '.server_'${id}'.pubIp'           "${servers_json_path}")
+  listen_address=$(jq  -r '.server_'${id}'.listen_address'  "${servers_json_path}")
+  rpc_address=$(jq     -r '.server_'${id}'.rpc_address'     "${servers_json_path}")
+  stomp_interface=$(jq -r '.server_'${id}'.stomp_interface' "${servers_json_path}")
+  seeds=$(jq           -r '.server_'${id}'.seeds'           "${servers_json_path}")
+  token=$(jq           -r '.server_'${id}'.token'           "${servers_json_path}")
+  dc=$(jq              -r '.server_'${id}'.dc'              "${servers_json_path}")
+  rack=$(jq            -r '.server_'${id}'.rack'            "${servers_json_path}")
+  search=$(jq          -r '.server_'${id}'.mode.search'     "${servers_json_path}")
+  analytics=$(jq       -r '.server_'${id}'.mode.analytics'  "${servers_json_path}")
+  graph=$(jq           -r '.server_'${id}'.mode.graph'      "${servers_json_path}")
+  dsefs=$(jq           -r '.server_'${id}'.mode.dsefs'      "${servers_json_path}")
 
 # -----
 
@@ -68,67 +69,29 @@ do
 
 # -----
 
-  # calculate number of cassandra data folders specified in json
-  # -3? - one for each bracket line and another 'cos the array starts at zero
-  numberOfDataFolders=$(($(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.cass_data' | wc -l)-3))
-
-# CAT/EOF cannot be indented !!
-cat << EOF >> "${tmp_suitcase_file_path}"
-declare -a data_file_directories_array
-EOF
-
-for j in `seq 0 ${numberOfDataFolders}`;
-do
-data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.cass_data['${j}']' | tr -d '"')
-cat << EOF >> "${tmp_suitcase_file_path}"
-data_file_directories_array[${j}]="${data_path}"
-EOF
-done
-
-# -----
-
+  # write the cassandra data path(s) specified in the json to cassandra.yaml - handle ${BUILD_FOLDER} variable if present in path
+  data_path=$(jq -r --arg bf "${BUILD_FOLDER}" '.server_'${id}'.cass_data[] | sub("\\${BUILD_FOLDER}";$bf)' "${servers_json_path}")
   declare -a data_file_directories_array
-  for j in $(seq 0 ${numberOfDataFolders});
+  COUNTER=0
+  for path in ${data_path};
   do
-    data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.cass_data['${j}']' | tr -d '"')
-    data_file_directories_array[${j}]=${data_path}
+    data_file_directories_array[${COUNTER}]=${path}
+    (( COUNTER++ ))
   done
   lib_doStuff_locally_cassandraYamlData
 
 # -----
 
-  if [[ "${analytics}" == "true" ]] || [[ "${dsefs}" == "true" ]]; then
-
-    # calculate number of cassandra data folders specified in json
-    # -3? - one for each bracket line and another 'cos the array starts at zero
-    numberOfDataFolders=$(($(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.dsefs_data' | wc -l)-3))
-
-# CAT/EOF cannot be indented !!
-cat << EOF >> "${tmp_suitcase_file_path}"
-declare -a dsefs_data_file_directories_array
-EOF
-
-for j in $(seq 0 ${numberOfDataFolders});
-do
-data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.dsefs_data['${j}']' | tr -d '"')
-cat << EOF >> "${tmp_suitcase_file_path}"
-dsefs_data_file_directories_array[${j}]="${data_path}"
-EOF
-done
-  fi
-
-# -----
-
+  # write the dsefs data path(s) specified in the json to cassandra.yaml - handle ${BUILD_FOLDER} variable if present in path
+  data_path=$(jq -r --arg bf "${BUILD_FOLDER}" '.server_'${id}'.dsefs_data[] | sub("\\${BUILD_FOLDER}";$bf)' "${servers_json_path}")
   declare -a dsefs_data_file_directories_array
-  for j in $(seq 0 ${numberOfDataFolders});
+  COUNTER=0
+  for path in ${data_path};
   do
-    data_path=$(cat ${servers_json_path} | ${jq_folder}jq '.server_'${id}'.dsefs_data['${j}']' | tr -d '"')
-    dsefs_data_file_directories_array[${j}]=${data_path}
+    dsefs_data_file_directories_array[${COUNTER}]=${path}
+    (( COUNTER++ ))
   done
-
-  if [[ "${analytics}" == "true" ]] || [[ "${dsefs}" == "true" ]]; then
-    lib_doStuff_locally_dseYamlDsefs
-  fi
+  lib_doStuff_locally_dseYamlDsefs
 
 # -----
 

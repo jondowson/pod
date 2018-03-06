@@ -36,7 +36,8 @@ lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLin
 
 # search for and remove any pre-canned blocks containing a label:
 label="${program_home}_bash_profile"
-lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
+#lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
+lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
 
 # remove any empty blank lines at end of file
 a=$(<$file); printf "%s\n" "$a" > $file

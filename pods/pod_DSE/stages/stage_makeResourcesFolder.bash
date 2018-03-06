@@ -31,12 +31,12 @@ if [ -d "${destination_folder_path}" ]; then
   printf "%s\n"
   lib_generic_misc_timecount "${STAGE_PAUSE}" "<ctrl-c> to abort now.."
   rm -rf ${destination_folder_path}
-  lib_generic_display_banner
+  prepare_generic_display_banner
   prepare_generic_display_msgColourSimple "TASK==>" "Preparing 'resources' folder"
 fi
 
 prepare_generic_display_msgColourSimple "INFO" "Unzip from:   ${red}${dse_tar_file}${reset}"
-prepare_generic_display_msgColourSimple "INFO" "Unzip to:     ${yellow}${source_folder_path}${reset}"
+prepare_generic_display_msgColourSimple "INFO" "Unzip to:     ${yellow}${destination_folder_path}/resources${reset}"
 printf "%s\n"
 prepare_generic_display_msgColourSimple "ALERT" "Strip files from 'resources' folder"
 

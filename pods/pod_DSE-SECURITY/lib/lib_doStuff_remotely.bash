@@ -17,7 +17,8 @@ unset IFS
 # find line number of pod_DSE_SECURITY block
 matchA=$(${dynamic_cmd} /\#\>\>\>\>\>\ BEGIN-ADDED-BY__\'${WHICH_POD}@${label}\'/= "${file}")
 # search for and remove any pod_DSE-SECURITY pre-canned blocks containing this label
-lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
+#lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
+lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
 # search again for line number of setting
 matchB=$(${dynamic_cmd} /system_info_encryption:/= "${file}")
 
@@ -76,7 +77,8 @@ unset IFS
 # find line number of pod_DSE_SECURITY block
 matchA=$(${dynamic_cmd} /\#\>\>\>\>\>\ BEGIN-ADDED-BY__\'${WHICH_POD}@${label}\'/= "${file}")
 # search for and remove any pod_DSE-SECURITY pre-canned blocks containing this label
-lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
+#lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
+lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
 # search again for line number of setting
 matchB=$(${dynamic_cmd} /system_key_directory:/= "${file}")
 
@@ -131,7 +133,8 @@ unset IFS
 # find line number of setting heading
 matchA=$(${dynamic_cmd} /\#\>\>\>\>\>\ BEGIN-ADDED-BY__\'${WHICH_POD}@${label}\'/= "${file}")
 # search for and remove any pod_DSE-SECURITY pre-canned blocks containing this label
-lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
+#lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
+lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
 # search again for line number of setting
 matchB=$(${dynamic_cmd} /audit_logging_options:/= "${file}")
 
@@ -190,7 +193,8 @@ unset IFS
 # find line number of setting heading
 matchA=$(${dynamic_cmd} /\#\>\>\>\>\>\ BEGIN-ADDED-BY__\'${WHICH_POD}@${label}\'/= "${file}")
 # search for and remove any pod_DSE-SECURITY pre-canned blocks containing this label
-lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
+#lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
+lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
 # search again for line number of setting
 matchB=$(${dynamic_cmd} /server_encryption_options:/= "${file}")
 
@@ -259,7 +263,8 @@ unset IFS
 # find line number of setting heading
 matchA=$(${dynamic_cmd} /\#\>\>\>\>\>\ BEGIN-ADDED-BY__\'${WHICH_POD}@${label}\'/= "${file}")
 # search for and remove any pod_DSE-SECURITY pre-canned blocks containing this label
-lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
+#lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
+lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
 # search again for line number of setting
 matchB=$(${dynamic_cmd} /client_encryption_options:/= "${file}")
 

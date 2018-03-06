@@ -43,7 +43,7 @@ declare -A build_launch_pid_array     # test launch pod scripts remotely
 
 ## STAGE [1]
 
-lib_generic_display_banner
+prepare_generic_display_banner
 prepare_generic_display_msgColourSimple "STAGE"      "STAGE: Test server connectivity"
 prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 ${white}2 3 4 5 6 ]${reset}"
 prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Testing server connectivity"
@@ -55,7 +55,7 @@ lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 
 ## STAGE [2]
 
-lib_generic_display_banner
+prepare_generic_display_banner
 prepare_generic_display_msgColourSimple "STAGE"      "STAGE: Test cluster write-paths"
 prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 ${white}3 4 5 6 ]${reset}"
 prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Testing server write-paths"
@@ -67,7 +67,7 @@ lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 
 ## STAGE [3]
 
-lib_generic_display_banner
+prepare_generic_display_banner
 prepare_generic_display_msgColourSimple "STAGE"      "STAGE: Send POD_SOFTWARE folder"
 prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3 ${white}4 5 6 ]${reset}"
 prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Send software in parallel"
@@ -85,7 +85,7 @@ lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 
 ## STAGE [4]
 
-lib_generic_display_banner
+prepare_generic_display_banner
 prepare_generic_display_msgColourSimple "STAGE"      "STAGE: Build and send bespoke pod"
 prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3 4 ${white}5 6 ]${reset}"
 prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Configure locally and distribute"
@@ -97,7 +97,7 @@ lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 
 ## STAGE [5]
 
-lib_generic_display_banner
+prepare_generic_display_banner
 prepare_generic_display_msgColourSimple "STAGE"      "STAGE: Launch pod remotely"
 prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3 4 5 ${white}6 ]${reset}"
 prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Execute launch script on each server"
@@ -109,7 +109,7 @@ lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 
 ## STAGE [6] FINISH
 
-lib_generic_display_banner
+prepare_generic_display_banner
 prepare_generic_display_msgColourSimple "STAGE"      "Summary"
 prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3 4 5 6${white} ]${reset}"
 task_generic_testConnectivity_report

@@ -4,7 +4,7 @@
 
 function lib_generic_doStuff_remotely_bashrc(){
 
-## configure bashrc to source bash_profile everytime a new terminal is started (on ubuntu/centos)
+## configure bashrc to source bash_profile everytime a new terminal is started (on ubuntu)
 
 # file to edit
 file="${HOME}/.bashrc"
@@ -12,17 +12,14 @@ touch ${file}
 
 # search for and remove any pre-canned blocks containing a label:
 label="source_bash_rc"
-lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
+lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
 
-# remove any empty blank lines at end of file
-a=$(<$file); printf "%s\n" "$a" > $file
-
-# add line sourcing .bashrc - no need on a Mac
+# add line sourcing .bashrc
 cat << EOF >> ${file}
 
-#>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'
+#>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}
 if [ -r ~/.bash_profile ]; then source ~/.bash_profile; fi
-#>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'
+#>>>>>END-ADDED-BY__${WHICH_POD}@${label}
 EOF
 }
 
@@ -46,18 +43,15 @@ lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLin
 
 # search for and remove any pre-canned blocks containing a label:
 label="${program_home}_bash_profile"
-lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
-
-# remove any empty blank lines at end of file
-a=$(<$file); printf "%s\n" "$a" > $file
+lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
 
 # append to end of files
 cat << EOF >> ${file}
 
-#>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'
+#>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}
 export ${program_home}="${soft_exec_path}"
 export PATH=\$${program_home}:\$PATH
-#>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'
+#>>>>>END-ADDED-BY__${WHICH_POD}@${label}
 EOF
 }
 
@@ -89,5 +83,3 @@ folder="${2}"
 
 tar -xvf "${file}" -C "${folder}"
 }
-
-# ---------------------------------------

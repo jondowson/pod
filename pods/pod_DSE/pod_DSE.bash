@@ -57,7 +57,7 @@ if [[ "${clusterstateFlag}" == "true" ]]; then
 
   ## STAGE [1]
 
-  lib_generic_display_banner
+  prepare_generic_display_banner
   prepare_generic_display_msgColourSimple "STAGE"      "STAGE: Test server connectivity"
   prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1${white} 2 3 ]${reset}"
   prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Testing server connectivity"
@@ -70,7 +70,7 @@ if [[ "${clusterstateFlag}" == "true" ]]; then
   ## STAGE [2]
 
   if [[ "${CLUSTER_STATE}" == "restart" ]]; then
-    lib_generic_display_banner
+    prepare_generic_display_banner
     prepare_generic_display_msgColourSimple "STAGE" "STAGE: Restarting DSE Cluster"
     prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2${white} 3 ]${reset}"
     prepare_generic_display_msgColourSimple "TASK==>"  "TASK: Restarting each server in cluster"
@@ -78,7 +78,7 @@ if [[ "${clusterstateFlag}" == "true" ]]; then
     task_rollingStart
     task_rollingStart_report
   else
-    lib_generic_display_banner
+    prepare_generic_display_banner
     prepare_generic_display_msgColourSimple "STAGE" "STAGE: Stopping DSE Cluster"
     prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2${white} 3 ]${reset}"
     prepare_generic_display_msgColourSimple "TASK==>"  "TASK: Stopping each server in cluster"
@@ -90,7 +90,7 @@ if [[ "${clusterstateFlag}" == "true" ]]; then
 
   ## FINISH
 
-  lib_generic_display_banner
+  prepare_generic_display_banner
   prepare_generic_display_msgColourSimple "STAGE"      "Summary"
   prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3${white} ]${reset}"
   task_generic_testConnectivity_report
@@ -112,7 +112,7 @@ else
   # prepare local copy of dse 'resources' folder - the basis for each distributed pod build
   destination_folder_parent_path="${pod_home_path}/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"
   destination_folder_path="${destination_folder_parent_path}resources/"
-  lib_generic_display_banner
+  prepare_generic_display_banner
   prepare_generic_display_msgColourSimple "STAGE" "STAGE: Prepare 'resources' Folder"
   prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1${white} 2 3 4 5 6 ]${reset}"
   prepare_generic_display_msgColourSimple "TASK==>"  "TASK: Strip out all non config files"
@@ -134,7 +134,7 @@ else
 
   ## STAGE [2]
 
-  lib_generic_display_banner
+  prepare_generic_display_banner
   prepare_generic_display_msgColourSimple "STAGE"      "STAGE: Test cluster connections"
   prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2${white} 3 4 5 6 ]${reset}"
   prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Testing server connectivity"
@@ -146,7 +146,7 @@ else
 
   ## STAGE [3]
 
-  lib_generic_display_banner
+  prepare_generic_display_banner
   prepare_generic_display_msgColourSimple "STAGE"      "STAGE: Test cluster write-paths"
   prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3${white} 4 5 6 ]${reset}"
   prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Testing server write-paths"
@@ -158,7 +158,7 @@ else
 
   ## STAGE [4]
 
-  lib_generic_display_banner
+  prepare_generic_display_banner
   prepare_generic_display_msgColourSimple "STAGE"      "STAGE: Send POD_SOFTWARE folder"
   prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3 4${white} 5 6 ]${reset}"
   prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Send software in parallel"
@@ -176,7 +176,7 @@ else
 
   ## STAGE [5]
 
-  lib_generic_display_banner
+  prepare_generic_display_banner
   prepare_generic_display_msgColourSimple "STAGE"      "STAGE: Build and send bespoke pod"
   prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3 4 5${white} 6 ]${reset}"
   prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Configure locally and distribute"
@@ -188,7 +188,7 @@ else
 
   ## STAGE [6]
 
-  lib_generic_display_banner
+  prepare_generic_display_banner
   prepare_generic_display_msgColourSimple "STAGE"      "STAGE: Launch pod remotely"
   prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3 4 5 6${white} ]${reset}"
   prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Execute launch script on each server"
@@ -200,7 +200,7 @@ else
 
   ## FINISH
 
-  lib_generic_display_banner
+  prepare_generic_display_banner
   prepare_generic_display_msgColourSimple "STAGE"      "Summary"
   prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3 4 5 6${white} ]${reset}"
   if [[ "${SEND_POD_SOFTWARE}" == true ]]; then task_generic_sendPodSoftware_report; fi

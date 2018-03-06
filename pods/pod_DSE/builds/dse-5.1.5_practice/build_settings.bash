@@ -31,7 +31,7 @@ INSTALL_FOLDER_POD="${INSTALL_FOLDER}${WHICH_POD}/"
 
 ## [2] BASIC CASSANDRA SETTINGS
 
-CLUSTER_NAME="My Kluster"                       # avoid special characters !!
+CLUSTER_NAME="Practice Kluster"                 # avoid special characters !!
 ENDPOINT_SNITCH="GossipingPropertyFileSnitch"   # 'GossipingPropertyFileSnitch' should be the default !!
 VNODES="8"                                      # specify a value (8,16,32) for vnodes or "false" for assigned tokens (picked up from servers' .json definition file)
 
@@ -48,14 +48,16 @@ AGENT_TARBALL="${AGENT_VERSION}.tar.gz"
 
 # [4] DATA + LOG + TMP FOLDER LOCATIONS
 
-# note: cassandra sstable data folders are specified in the <servers.json> definition file
-# this data folder is where the supporting persistence files will go such as commitlogs and hinted-handoffs
-# on spinning disks it is recommended to locate these on seperate mount points to sstable data folders
-PARENT_DATA_FOLDER="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/data/"
-PARENT_LOG_FOLDER="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/logs/"
-
+# note:
+# + cassandra sstable data folders are specified in the <servers.json> definition file
+# + this data folder is where the supporting persistence files will go such as commitlogs and hinted-handoffs
+# + on spinning disks it is recommended to locate these on seperate mount points to sstable data folders
+# + by default DATA and LOGS folders are created inside the POD_INSTALLS desktop folder
+# ++  this seperation means that if pod_DSE is rerun or removed using pod_REMOVE-PODS, existing data will be retained
+PARENT_DATA_FOLDER="${INSTALL_FOLDER_POD}/DATA/${BUILD_FOLDER}/"
+PARENT_LOG_FOLDER="${INSTALL_FOLDER_POD}/LOGS/${BUILD_FOLDER}/"
 # temp folder - can be anywhere with suffcient permissions
-TEMP_FOLDER="${INSTALL_FOLDER}tmp/"
+TEMP_FOLDER="${INSTALL_FOLDER}TEMP/"
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 

@@ -86,6 +86,7 @@ else
   # -----
 
   # [4] merge the copied over 'resources' folder to the untarred one
+
   cp -R "${build_folder_path}resources" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}/${DSE_VERSION}"
 
   # -----

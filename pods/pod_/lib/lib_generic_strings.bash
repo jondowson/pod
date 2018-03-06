@@ -66,9 +66,9 @@ case "${1}" in
   "searchFromLineStartAndRemoveEntireLine" )
       ${cmd} "/${searchString}/d" "${file}" ;;
   "searchAndReplaceLabelledBlock" )
-      ${cmd} "/#>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${searchString}'/,/#>>>>> END-ADDED-BY__'${WHICH_POD}@${searchString}'/d" ${file} ;;
+      ${cmd} "/#>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${searchString}/,/#>>>>>END-ADDED-BY__${WHICH_POD}@${searchString}/d" ${file} ;;
   "searchAndReplaceLabelledBlock2" )
-      ${cmd} "/#>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@/,/#>>>>> END-ADDED-BY__'${WHICH_POD}@/d" ${file} ;;
+      ${cmd} "/#>>>>>BEGIN-ADDED-BY__${WHICH_POD}@/,/#>>>>>END-ADDED-BY__${WHICH_POD}@/d" ${file} ;;
   "deleteEverythingAfterIncludingSubstring" )
       ${cmd} "/${searchString}/,$d" ${file} ;;
   "hashCommentOutMatchingLine" )
@@ -80,6 +80,65 @@ case "${1}" in
   "removeLastLineFromFile" )
       ${cmd} "$ d" ${file} ;;
 esac
+}
+
+# ---------------------------------------
+
+function lib_generic_strings_removePodBlockAndEmptyLines(){
+
+## cleanly remove an existing pod insertion block, leaving no following blank line gaps
+
+#usage example
+#lib_generic_strings_removePodBlockAndEmptyLines "thisFile" "pod_XXX@<label>"
+
+# file to search and the pod block label
+file="${1}"
+blockLabel="${2}"
+
+# define block to remove from file
+beginBlockTag=$(printf "%q" "#>>>>>BEGIN-ADDED-BY__${blockLabel}")
+endBlockTag=$(printf "%q" "#>>>>>END-ADDED-BY__${blockLabel}")
+
+# find line numbers of begin and end of block
+beginMatch=$(sed -n /"${beginBlockTag}"/= "${file}")
+endMatch=$(sed -n /"${endBlockTag}"/= "${file}")
+
+# remove any empty blank lines at end of file
+a=$(<$file); printf "%s\n" "$a" > $file
+
+# if the block already exists - determine its position and also delete any blank lines following it (leave one blank line if any exist)
+if [[ ${beginMatch} != "" ]] && [[ ${endMatch} != "" ]]; then
+
+  # identify continous blank lines after inserted block and delete all but one
+  start=$(($endMatch+1))
+  finish=$(($start+20)) # unlikely to be close to 20 blank lines but increase number if necessary !!
+
+  for i in `seq $start $finish`
+  do
+    # search following lines until a non empty line is found
+    if [[ ! $(sed "${i}q;d" "${file}") == "" ]]; then
+
+      if [[ "${i}" == "${start}" ]]; then
+        lastEntry=${endMatch}
+      else
+        lastEntry=$(($i-1))
+      fi
+      break;
+    else
+      lastEntry=${endMatch}
+    fi
+  done
+
+  IFS='%'
+  dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
+  unset IFS
+
+  # delete any existing block and unneccessary empty lines
+  ${dynamic_cmd} "${beginMatch},${lastEntry}d" ${file}
+
+  # remove any empty blank lines at end of file
+  a=$(<$file); printf "%s\n" "$a" > $file
+fi
 }
 
 # ---------------------------------------

@@ -35,7 +35,7 @@ WHICH_POD="pod_MAC-SETUP"
 # ////////////////////////////////////////// INSTALL MAC DEPENDENCY MANAGER
 
 
-lib_generic_display_banner
+prepare_generic_display_banner
 prepare_generic_display_msgColourSimple "STAGE"      "STAGE: Prepare Mac dependency manager"
 prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1${white} 2 3 4 ]${reset}"
 prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Install / update homebrew package manager"
@@ -54,7 +54,7 @@ lib_generic_misc_timecount "5" "Proceeding to next STAGE..."
 
 # ////////////////////////////////////////// INSTALL PACKAGES
 
-lib_generic_display_banner
+prepare_generic_display_banner
 prepare_generic_display_msgColourSimple "STAGE"      "STAGE: Install Mac dependencies"
 prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2${white} 3 4 ]${reset}"
 prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Install brew packages"
@@ -159,7 +159,7 @@ lib_generic_misc_timecount "5" "Proceeding to next STAGE..."
 
 # ////////////////////////////////////////// EXPORT MAC JAVA HOME
 
-lib_generic_display_banner
+prepare_generic_display_banner
 prepare_generic_display_msgColourSimple "STAGE"      "STAGE: Ensure JAVA_HOME is locatable"
 prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3${white} 4 ]${reset}"
 prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Export Java Home in bash_profile"
@@ -174,7 +174,8 @@ echo "#>>>>> END-ADDED-BY__'pod_MAC-SETUP@define_java_home'"
 file="${HOME}/.bash_profile"
 # search for and remove any pre-canned blocks containing this label
 label="define_java_home"
-lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" "${file}" "${label}" "dummy"
+#lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" "${file}" "${label}" "dummy"
+lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
 
 # remove any empty blank lines at end of file
 a=$(<$file); printf "%s\n" "$a" > $file
@@ -191,7 +192,7 @@ lib_generic_misc_timecount "5" "Proceeding to next STAGE..."
 
 # ////////////////////////////////////////// FINISH
 
-lib_generic_display_banner
+prepare_generic_display_banner
 prepare_generic_display_msgColourSimple "STAGE"      "STAGE: Finish"
 prepare_generic_display_msgColourSimple "STAGECOUNT" "[ ${cyan}${b}1 2 3 4 ${white}]${reset}"
 prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Confirm bash version > 4.0"
@@ -202,6 +203,7 @@ brew list
 
 prepare_generic_display_msgColourSimple "TASK==>"    "Final tasks to complete Mac setup:"
 prepare_generic_display_msgColourSimple "INFO-BOLD" "[1] Confirm above bash version is 4 or greater:"
+prepare_generic_display_msgColourSimple "INFO"      "$ bash --version"
 prepare_generic_display_msgColourSimple "INFO-BOLD" "[2] If not, then point to homebrew version of bash:"
 prepare_generic_display_msgColourSimple "INFO"      "Open Mac settings --> Users&Groups --> right-click --> advanced options"
 prepare_generic_display_msgColourSimple "INFO"      "Change 'login shell' to use /usr/local/bin/bash"

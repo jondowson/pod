@@ -19,12 +19,12 @@
         "dsefs": "false"
       },
       "cass_data": [
-        "/Users/jondowson/Desktop/POD_INSTALLS/pod_DSE/${BUILD_FOLDER}/data/sstables/",
-        "/Users/jondowson/Desktop/POD_INSTALLS/pod_DSE/${BUILD_FOLDER}/data/sstables2/"
+        "/Users/jondowson/Desktop/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/sstables/",
+        "/Users/jondowson/Desktop/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/sstables2/"
       ],
       "dsefs_data": [
-        "/Users/jondowson/Desktop/POD_INSTALLS/pod_DSE/${BUILD_FOLDER}/data/dsefs/;1.0;5368709",
-        "/Users/jondowson/Desktop/POD_INSTALLS/pod_DSE/${BUILD_FOLDER}/data/dsefs2/;1.0;5368709"
+        "/Users/jondowson/Desktop/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/dsefs/;1.0;5368709",
+        "/Users/jondowson/Desktop/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/dsefs2/;1.0;5368709"
       ]
     }
 }

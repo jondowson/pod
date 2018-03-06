@@ -9,21 +9,22 @@ function task_testWritePaths(){
 for id in $(seq 1 ${numberOfServers});
 do
 
-  tag=$(jq            -r '.server_'${id}'.tag'            "${servers_json_path}")
-  user=$(jq           -r '.server_'${id}'.user'           "${servers_json_path}")
-  sshKey=$(jq         -r '.server_'${id}'.sshKey'         "${servers_json_path}")
-  target_folder=$(jq  -r '.server_'${id}'.target_folder'  "${servers_json_path}")
-  pubIp=$(jq          -r '.server_'${id}'.pubIp'          "${servers_json_path}")
-  listen_address=$(jq -r '.server_'${id}'.listen_address' "${servers_json_path}")
-  rpc_address=$(jq    -r '.server_'${id}'.rpc_address'    "${servers_json_path}")
-  seeds=$(jq          -r '.server_'${id}'.seeds'          "${servers_json_path}")
-  token=$(jq          -r '.server_'${id}'.token'          "${servers_json_path}")
-  dc=$(jq             -r '.server_'${id}'.dc'             "${servers_json_path}")
-  rack=$(jq           -r '.server_'${id}'.rack'           "${servers_json_path}")
-  search=$(jq         -r '.server_'${id}'.mode.search'    "${servers_json_path}")
-  analytics=$(jq      -r '.server_'${id}'.mode.analytics' "${servers_json_path}")
-  graph=$(jq          -r '.server_'${id}'.mode.graph'     "${servers_json_path}")
-  dsefs=$(jq          -r '.server_'${id}'.mode.dsefs'     "${servers_json_path}")
+  tag=$(jq             -r '.server_'${id}'.tag'             "${servers_json_path}")
+  user=$(jq            -r '.server_'${id}'.user'            "${servers_json_path}")
+  sshKey=$(jq          -r '.server_'${id}'.sshKey'          "${servers_json_path}")
+  target_folder=$(jq   -r '.server_'${id}'.target_folder'   "${servers_json_path}")
+  pubIp=$(jq           -r '.server_'${id}'.pubIp'           "${servers_json_path}")
+  listen_address=$(jq  -r '.server_'${id}'.listen_address'  "${servers_json_path}")
+  rpc_address=$(jq     -r '.server_'${id}'.rpc_address'     "${servers_json_path}")
+  stomp_interface=$(jq -r '.server_'${id}'.stomp_interface' "${servers_json_path}")
+  seeds=$(jq           -r '.server_'${id}'.seeds'           "${servers_json_path}")
+  token=$(jq           -r '.server_'${id}'.token'           "${servers_json_path}")
+  dc=$(jq              -r '.server_'${id}'.dc'              "${servers_json_path}")
+  rack=$(jq            -r '.server_'${id}'.rack'            "${servers_json_path}")
+  search=$(jq          -r '.server_'${id}'.mode.search'     "${servers_json_path}")
+  analytics=$(jq       -r '.server_'${id}'.mode.analytics'  "${servers_json_path}")
+  graph=$(jq           -r '.server_'${id}'.mode.graph'      "${servers_json_path}")
+  dsefs=$(jq           -r '.server_'${id}'.mode.dsefs'      "${servers_json_path}")
 
 # ----------
 
@@ -57,6 +58,9 @@ do
   mkdir_array[10]="${dsefs_untar_folder}"
   mkdir_array[11]="${spark_local_data}"
   mkdir_array[12]="${spark_worker_data}"
+  mkdir_array[13]="${TEMP_FOLDER}"
+  mkdir_array[14]="${PARENT_DATA_FOLDER}"
+  mkdir_array[15]="${PARENT_LOG_FOLDER}"
 
 # ----------
 
@@ -78,8 +82,10 @@ do
 # ----------
 
   # if path contains ${BUILD_FOLDER} variable then substitute in the user supplied value
-  jq -r --arg bf "${BUILD_FOLDER}" '.server_'${id}'.cass_data[] | sub("\\${BUILD_FOLDER}";$bf)' "${servers_json_path}" |
-  while read -r folder
+  # for cassandra data folders - specified in json file
+  folders=$(jq -r --arg bf "${BUILD_FOLDER}" '.server_'${id}'.cass_data[] | sub("\\${BUILD_FOLDER}";$bf)' "${servers_json_path}")
+  #while read -r folder
+  for folder in ${folders}
   do
     status="999"
     if [[ "${status}" != "0" ]]; then
@@ -88,7 +94,7 @@ do
       do
         ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir -p ${folder}dummyFolder && rm -rf ${folder}dummyFolder" exit
         status=${?}
-        test_write_error_array_2["${folder}"]="${status};${tag}"
+        test_write_error_array_2[${folder}]="${status};${tag}"
         ((retry++))
       done
     fi
@@ -99,8 +105,10 @@ do
   if [[ "${analytics}" == "true" ]] || [[ "${dsefs}" == "true" ]]; then
 
     # if path contains ${BUILD_FOLDER} variable then substitute in the user supplied value
-    jq -r --arg bf "${BUILD_FOLDER}" '.server_'${id}'.dsefs_data[] | sub("\\${BUILD_FOLDER}";$bf)' "${servers_json_path}" |
-    while read -r folder
+    # for dsefs data folders - specified in json file
+    folders=$(jq -r --arg bf "${BUILD_FOLDER}" '.server_'${id}'.dsefs_data[] | sub("\\${BUILD_FOLDER}";$bf)' "${servers_json_path}")
+    #while read -r folder
+    for folder in ${folders}
     do
       lib_generic_strings_expansionDelimiter "$folder" ";" "2";
       folder="${_D1_}"
@@ -111,7 +119,7 @@ do
         do
           ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir -p ${folder}dummyFolder && rm -rf ${folder}dummyFolder" exit
           status=${?}
-          test_write_error_array_3["${folder}"]="${status};${tag}"
+          test_write_error_array_3[${folder}]="${status};${tag}"
           ((retry++))
         done
       fi
