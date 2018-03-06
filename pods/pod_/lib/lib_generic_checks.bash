@@ -41,6 +41,11 @@ fi
 
 function lib_generic_checks_freeTest(){
 
+## generic function to test two values against each other
+
+# usage example
+# lib_generic_checks_freeTest "launch-pod#5.2.1" "zero number of servers" "$numberOfServers" "-eq" "0"
+
 # tag to identify calling script
 callingScriptTag=${1}
 # a helpful tag message outputted to screen
@@ -117,7 +122,7 @@ function lib_generic_checks_fileFolderExists(){
 # note: returns return code 0 if file/folder found or error message
 
 # usage examples
-# lib_generic_checks_folderExistsCaseSensitive "message" "true" "pathToParentFolder" "folder" "file/folderTChec"
+# lib_generic_checks_folderExistsCaseSensitive "message" "true" "pathToParentFolder" "folder" "file/folderTCheck"
 # lib_generic_checks_folderExistsCaseSensitive "message" "false" "pathToParentFolder" "file" "file/folderTCheck"
 
 # a helpful tag message outputted to screen
@@ -173,6 +178,10 @@ fi
 function lib_generic_checks_localIpMatch(){
 
 ## check if an ip is a local ip
+
+# usage example
+# lib_generic_checks_localIpMatch "${pubIp}"s
+
 ipToCheck=${1}
 ip addr | grep -wq "${ipToCheck}" &&  printf "%s\n" "true"
 }

@@ -17,7 +17,7 @@ Its first 'pod' makes it easy to set up and run a DSE cluster from **tarballs**.
 
 **The latest stable version is:**
 ```diff
-+ pod-version-1.3.5
++ pod-version-1.3.6
 ```    
 The master branch is in sync with the latest stable version.    
 
