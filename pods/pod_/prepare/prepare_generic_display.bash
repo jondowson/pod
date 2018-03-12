@@ -135,7 +135,7 @@ function prepare_generic_display_banner(){
 
 clear
 printf "%s"  "${b}${cyan}"
-cat << "EOF"
+cat << EOF
                      __    _  _
     ____  ____  ____/ /  _(_)(_)_
    / __ \/ __ \/ __  /  (_)    (_)
@@ -143,8 +143,8 @@ cat << "EOF"
  / .___/\____/\__,_/      (_)(_)
 /_/
 EOF
-printf "%s" "${reset}"
-printf "%s\n" "${cyan}----------------------------------"
+
+printf "%s\n" "----------------------------------"
 if [[ "${WHICH_POD}" != "" ]]; then
   printf "%s\n" "${yellow}version: ${reset}${POD_VERSION} | ${green}running: ${reset}${WHICH_POD}"
   printf "%s\n" "${cyan}----------------------------------${reset}"

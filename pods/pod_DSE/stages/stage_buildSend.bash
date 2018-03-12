@@ -48,7 +48,7 @@ do
 
   ## pack the suitcase !! - the tmp_suitcase becomes the suitcase on each server
 
-  # [1] TARGET_FOLDER determines many of the settings in build_settings.bash and can be different for each server
+  # [1] TARGET_FOLDER determines many of the paths in build_settings.bash and can be different for each server
   printf "%s\n" "TARGET_FOLDER=${target_folder}"                  > "${tmp_suitcase_file_path}"    # clear any existing values with first entry (i.e. '>')
   # [2] append variables derived from server json definition file
   printf "%s\n" "STOMP_INTERFACE=${stomp_interface}"             >> "${tmp_suitcase_file_path}"
@@ -66,6 +66,7 @@ do
   lib_doStuff_locally_cassandraYaml
   lib_doStuff_locally_dseSparkEnv
   lib_doStuff_locally_cassandraRackDcProperties
+  lib_doStuff_locally_cassandraYamlNodeSpecific
 
 # -----
 
@@ -92,11 +93,6 @@ do
     (( COUNTER++ ))
   done
   lib_doStuff_locally_dseYamlDsefs
-
-# -----
-
-  # set node specific settings for 'seeds:' and 'listen_address:'
-  lib_doStuff_locally_cassandraYamlNodeSpecific
 
 # -----
 

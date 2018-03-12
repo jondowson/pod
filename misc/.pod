@@ -52,7 +52,7 @@ declare -A pod_software_send_pid_array
 jq_folder=""
 jq_file_path="jq"
 # [3.2] ensure third party packages are executable
-chmod -R +x "${pod_home_path}/third_party"
+chmod -R +x "${pod_home_path}/third_party/"
 
 # ==========
 
@@ -121,12 +121,12 @@ lib_generic_checks_fileExists "launch-pod#5.1.1" "true" "${servers_json_path}"
 catchError "launch-pod#5.1.2" "jq error on server json" "true" "false" "jq keys ${servers_json_path}"
 
 # [5.2] check at least one server is defined
-numberOfServers=$(jq keys $servers_json_path | tr '"' '\n' | grep 'server_' | wc -l)
+numberOfServers=$(jq -r keys $servers_json_path | grep 'server_' | wc -l)
 lib_generic_checks_freeTest "launch-pod#5.2.1" "zero number of servers" "$numberOfServers" "-eq" "0"
 
 # ==========
 
-## [6] source the specified pod's build folder
+## [6] source the specified pods build folder
 
 # note: a build definition file must always be specified !
 
@@ -134,7 +134,7 @@ prepare_generic_misc_sourceThisPodBuild
 
 # ==========
 
-## [7] create tmp folder - used for configuration
+## [7] create tmp folder - this holds a copy of pod that can be edited and distributed to the servers
 
 # [7.1 ]create configurable temporary version of pod
 prepare_generic_misc_podBuildTempFolder
@@ -158,7 +158,7 @@ source "pods/${WHICH_POD}/${WHICH_POD}.bash"
 
 ## [9] display generic pod_ closing messages
 
-# [9.1] display generic final message
+# [9.1] display generic final message + end message for this pod
 prepare_generic_display_finalMessage "${WHICH_POD}"
 
 # [9.2] calculate and display script timings
