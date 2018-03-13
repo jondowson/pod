@@ -10,6 +10,7 @@ delim=$1
 string=$2
 
 IFS=${delim} read -r -a array <<< "${string}"
+unset IFS
 arraySize=${#array[@]}
 }
 

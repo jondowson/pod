@@ -52,7 +52,7 @@ declare -A pod_software_send_pid_array
 jq_folder=""
 jq_file_path="jq"
 # [3.2] ensure third party packages are executable
-chmod -R +x "${pod_home_path}/third_party/"
+chmod -R 777 "${pod_home_path}/third_party/"
 
 # ==========
 
@@ -159,8 +159,7 @@ source "pods/${WHICH_POD}/${WHICH_POD}.bash"
 ## [9] display generic pod_ closing messages
 
 # [9.1] display generic final message + end message for this pod
-prepare_generic_display_finalMessage "${WHICH_POD}"
-
+prepare_help_finish
 # [9.2] calculate and display script timings
 lib_generic_misc_timePod
 prepare_generic_display_msgColourSimple "INFO" "pod took: ${diff}[s]"

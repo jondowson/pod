@@ -85,8 +85,6 @@ function task_generic_sendPodSoftware_report(){
 
 # display report
 
-prepare_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Send POD_SOFTWARE/${PACKAGE} to each server"
-
 if [[ ! -z $POD_SOFTWARE_pid_failures ]]; then
   prepare_generic_display_msgColourSimple "INFO-->" "${cross} Problems distributing POD_SOFTWARE/${PACKAGE} to servers"
   printf "%s\n"
@@ -101,6 +99,6 @@ if [[ ! -z $POD_SOFTWARE_pid_failures ]]; then
   done
   printf "%s\n"
 else
-  prepare_generic_display_msgColourSimple "SUCCESS" "All Servers: 'POD_SOFTWARE/${PACKAGE}' distributed"
+  prepare_generic_display_msgColourSimple "SUCCESS" "All SERVERS:  distributed POD_SOFTWARE/${PACKAGE}"
 fi
 }

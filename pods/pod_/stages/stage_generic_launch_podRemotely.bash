@@ -70,8 +70,6 @@ done
 
 function task_generic_launchPodRemotely_report(){
 
-prepare_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Launch pod on each server"
-
 if [[ ! -z $runBuild_pid_failures ]]; then
   prepare_generic_display_msgColourSimple "INFO-->" "${cross} Problems executing pod build on servers"
   printf "%s\n"
@@ -86,6 +84,6 @@ if [[ ! -z $runBuild_pid_failures ]]; then
   done
   printf "%s\n"
 else
-  prepare_generic_display_msgColourSimple "SUCCESS" "All servers: executed remote pod build"
+  prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  launched remote pod build"
 fi
 }

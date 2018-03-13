@@ -60,7 +60,7 @@ else
   jq_file_path="${jq_folder}jq"
   lib_generic_checks_fileExists "launch-pod#3.1.1" "true" "${jq_file_path}"
   # [3.2] ensure third party packages are executable
-  chmod -R +x "${pod_home_path}/third_party/"
+  chmod -R 777 "${pod_home_path}/third_party/"
   PATH=${jq_folder}:$PATH
 
 # ==========
@@ -169,7 +169,7 @@ else
 ## [9] display generic pod_ closing messages
 
   # [9.1] display generic final message + end message for this pod
-  prepare_generic_display_finalMessage "${WHICH_POD}"
+  prepare_help_finish
 
   # [9.2] calculate and display script timings
   lib_generic_misc_timePod

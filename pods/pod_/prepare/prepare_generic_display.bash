@@ -35,26 +35,28 @@ message="${2}"
 
 case ${messageType} in
     "STAGECOUNT" )
-                    printf "\n%s\n" "${b}${white}${message}${reset}" ;;
+                    printf "%s\n" "${b}${white}${message}${reset}" ;;
     "TASK==>" )
-                    printf "%s\n\n" "${b}${cyan}____________________________________${reset}"
-                    printf "%s\n\n" "${b}${cyan}==> ${message}${reset}" ;;
+                    printf "\n%s\n\n" "${b}${cyan}==> ${message}${reset}" ;;
     "REPORT" )
-                    printf "%s\n\n" "${b}${cyan}____________________________________${reset}"
-                    printf "%s\n\n" "${b}${yellow}==> ${message}${reset}" ;;
+                    printf "\n%s\n\n" "${b}${yellow}==> ${message}${reset}" ;;
     "ALERT-->" )
                     printf "\n%s\n" "${b}${yellow}--> ${message} ${yellow}!!${reset}" ;;
     "ERROR-->" )
                     printf "\n%s\n" "${b}${red}--> ${message} ${red}!!${reset}" ;;
     "SUCCESS" )
-                    printf "%s\n\n" "${tick}${b}${green} ${message} ${green}!!${reset}" ;;
+                    printf "%s\n" "${tick}${b}${green} ${message} ${green}!!${reset}" ;;
     "FAILURE" )
-                    printf "%s\n\n" "${cross}${b}${green} ${message} ${red}!!${reset}" ;;
+                    printf "%s\n" "${cross}${b}${green} ${message} ${red}!!${reset}" ;;
 
 # ----- no-spacing
 
     "STAGE" )
                     printf "%s\n"   "${b}${white}${message}${reset}" ;;
+    "TASK" )
+                    printf "%s\n"   "${b}${cyan}==> ${message}${reset}" ;;
+    "ALERT" )
+                    printf "%s\n"   "${b}${yellow}--> ${message} ${yellow}!!${reset}" ;;
     "INFO" )
                     printf "%s\n"   "${white}${message} ${reset}" ;;
     "INFO-->" )
@@ -70,6 +72,26 @@ esac
 
 # ---------------------------------------
 
+function prepare_generic_display_stageCount(){
+
+stageTitle=${1}
+stageCount=${2}
+stageTotal=${3}
+
+prepare_generic_display_banner
+prepare_generic_display_msgColourSimple "STAGECOUNT" "STAGE: [ ${b}${cyan}${stageCount}${reset} of ${b}${cyan}${stageTotal}${white} ] ${stageTitle}"
+}
+
+# ---------------------------------------
+
+function prepare_generic_display_stageTimeCount(){
+
+printf "%s\n"
+lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
+}
+
+# ---------------------------------------
+
 function prepare_generic_display_finalMessage(){
 
 ## at the end of each pod - display a message
@@ -81,34 +103,7 @@ case ${which_pod} in
 
     "pod_DSE" )
 
-        if [[ ${os} == "Mac" ]] || [[ ${JAVA_INSTALL_TYPE} != "tar" ]]; then
-          prepare_generic_display_msgColourSimple "TASK==>"      "To run dse locally:"
-          prepare_generic_display_msgColourSimple "INFO-BOLD" "(a) Source '.bash_profile' (or open new terminal):"
-          prepare_generic_display_msgColourSimple "INFO"      "$ . ~/.bash_profile"
-          prepare_generic_display_msgColourSimple "INFO-BOLD" "(b) Run dse:"
-          prepare_generic_display_msgColourSimple "INFO"      "$ dse cassandra            # start dse storage"
-          prepare_generic_display_msgColourSimple "INFO"      "$ dse cassandra -s -k -g   # start dse storage with search, analytics, graph (pick any combination)"
-          printf "%s\n"
-          prepare_generic_display_msgColourSimple "TASK==>"      "To start the entire cluster:"
-          prepare_generic_display_msgColourSimple "INFO-BOLD" "--> based on mode settings in servers .json defintion file."
-          prepare_generic_display_msgColourSimple "INFO"      "$ pod --pod pod_DSE --servers ${SERVERS_JSON} --build ${BUILD_FOLDER} --clusterstate restart"
-        elif [[ "${JAVA_INSTALL_TYPE}" == "tar" ]]; then
-          prepare_generic_display_msgColourSimple "TASK==>"      "To run dse locally:"
-          prepare_generic_display_msgColourSimple "INFO-BOLD" "(a) Source '.bash_profile' (or open new terminal):"
-          prepare_generic_display_msgColourSimple "INFO"      "$ . ~/.bash_profile"
-          prepare_generic_display_msgColourSimple "INFO-BOLD" "(b) Add java tar to system java alternatives - you may have to alter yellow portion of path:"
-          prepare_generic_display_msgColourSimple "INFO"      "$ sudo update-alternatives --install /usr/bin/java java ${yellow}${java_untar_folder}${white}${JAVA_VERSION}/bin/java 100"
-          prepare_generic_display_msgColourSimple "INFO-BOLD" "(c) Select this java tar from list:"
-          prepare_generic_display_msgColourSimple "INFO"      "$ sudo update-alternatives --config java"
-          prepare_generic_display_msgColourSimple "INFO-BOLD" "(d) Run dse:"
-          prepare_generic_display_msgColourSimple "INFO"      "$ dse cassandra            # start dse storage"
-          prepare_generic_display_msgColourSimple "INFO"      "$ dse cassandra -s -k -g   # start dse storage with search, analytics, graph (pick any combination)"
-          printf "%s\n"
-          prepare_generic_display_msgColourSimple "TASK==>"      "To start the entire cluster:"
-          prepare_generic_display_msgColourSimple "INFO-BOLD" "--> based on mode settings in servers .json defintion file."
-          prepare_generic_display_msgColourSimple "INFO"      "$ pod --pod pod_DSE --servers ${SERVERS_JSON} --clusterstate start"
-        fi
-        printf "%s\n" ;;
+        prepare_helpFinish ;;
 
     "pod_DSE_rollingStartStop" )
           prepare_generic_display_msgColourSimple "TASK==>" "To Check Status of Cluster:"

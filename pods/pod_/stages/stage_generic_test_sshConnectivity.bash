@@ -53,8 +53,6 @@ function task_generic_testConnectivity_report(){
 
 ## generate a report of all failed ssh connectivity attempts
 
-prepare_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Test connectivity for each server"
-
 declare -a pod_test_connect_report_array
 count=0
 for k in "${!pod_test_connect_error_array[@]}"
@@ -79,6 +77,6 @@ if [[ "${pod_test_connect_fail}" == "true" ]]; then
   prepare_generic_display_msgColourSimple "ERROR" "Aborting script as not all servers are reachable"
   exit 1;
 else
-  prepare_generic_display_msgColourSimple "SUCCESS" "All Servers: ssh connected successfully"
+  prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  connectivity test passed"
 fi
 }
