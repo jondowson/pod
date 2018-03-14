@@ -92,6 +92,6 @@ if [[ "${stop_dse_fail}" == "true" ]]; then
     prepare_generic_display_msgColourSimple "INFO" "${cross} ${k}"
   done
 else
-  prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS: dse + agent stopped"
+  prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  dse + agent stopped"
 fi
 }

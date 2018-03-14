@@ -12,11 +12,12 @@ printf "%s\n"   "---------------------------------------------------------------
 printf "%s\n"   ".. specify servers .json defintion       | -s  --servers          |  <servers.json>   |   yes"
 printf "%s\n"   ".. specify build folder                  | -b  --build            |  <build_folder>   |   yes"
 printf "%s\n"   ".. scp POD_SOFTWARE folder to servers    | -ss --sendsoft         |  false [true]     |   no"
-printf "%s\n"   ".. re-generate build resources folder    | -rr --regenresources   |  true  [false]    |   no"
+printf "%s\n"   ".. re-generate build resources folder    | -rr --regenresources   | true edit [false] |   no"
 printf "%s\n"   ".. rolling stop/start of cluster         | -cs --clusterstate     |  restart stop     |   no"
 printf "%s\n"   "--------------------------------------------------------------------------------------------------"
 printf "%s\n"   "${b}examples:${reset}"
 printf "%s\n"   "${yellow}$ pod -p pod_DSE -s myServers.json -b dse-5.0.5_pre-prod -ss false --rr true${reset}"
+printf "%s\n"   "${yellow}$ pod -p pod_DSE -s myServers.json -b dse-5.0.5_pre-prod -rr edit${reset} (automatic exit after -rr stage)"
 printf "%s\n"   "${yellow}$ pod -p pod_DSE -s myServers.json --clusterstate restart${reset}"
 printf "%s\n"   "--------------------------------------------------------------------------------------------------"
 }
@@ -38,6 +39,7 @@ prepare_generic_display_msgColourSimple "INFO"      "$ pod --pod pod_DSE --serve
 
 function pod_DSE-rollingStart_finalMessage(){
 
-prepare_generic_display_msgColourSimple "TASK==>" "To check status of cluster:"
-prepare_generic_display_msgColourSimple "INFO"    "$ nodetool status"
+prepare_generic_display_msgColourSimple "TASK==>"   "Finish:"
+prepare_generic_display_msgColourSimple "INFO-BOLD" "(1) To check status of cluster"
+prepare_generic_display_msgColourSimple "INFO"      "$ nodetool status"
 }

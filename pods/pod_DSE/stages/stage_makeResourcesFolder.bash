@@ -31,14 +31,14 @@ if [ -d "${destination_folder_path}" ]; then
   printf "%s\n"
   lib_generic_misc_timecount "${STAGE_PAUSE}" "<ctrl-c> to abort now.."
   rm -rf ${destination_folder_path}
-  prepare_generic_display_banner
-  prepare_generic_display_msgColourSimple "TASK==>" "Preparing 'resources' folder"
+  prepare_generic_display_stageCount      "Prepare 'resources' Folder" "1" "7"
+  prepare_generic_display_msgColourSimple "TASK==>"  "TASK: Strip out all non config files"
 fi
 
-prepare_generic_display_msgColourSimple "INFO" "Unzip from:   ${red}${dse_tar_file}${reset}"
-prepare_generic_display_msgColourSimple "INFO" "Unzip to:     ${yellow}${destination_folder_path}/resources${reset}"
-printf "%s\n"
-prepare_generic_display_msgColourSimple "ALERT" "Strip files from 'resources' folder"
+prepare_generic_display_msgColourSimple "INFO" "Unpack from:   ${red}${dse_tar_file}${reset}"
+prepare_generic_display_msgColourSimple "INFO" "Unpack to:     ${yellow}${destination_folder_path}/resources${reset}"
+#printf "%s\n"
+#prepare_generic_display_msgColourSimple "ALERT" "Strip files from 'resources' folder"
 
 mkdir -p "${pod_home_path}/tmp"
 tar -xf "${dse_tar_file}" -C "${pod_home_path}/tmp/"
@@ -84,7 +84,7 @@ array_file_extensions_to_strip[29]="war"
 ## display stats on removed files
 
 printf "%s\n"
-printf "%s\t%s\t%s\t%s\t%s\n" "${b}Extension" "|" "No." "|" "Bytes${reset}"
+printf "%s\t%s\t%s\t\t%s\t%s\n" "${b}Extension" "|" "No." "|" "Bytes${reset}"
 printf "%s\n" "--------------------------------------------------"
 sleep 5 # for the benefit of macs - otherwise file permission errors !!
 before_size=$(du -sh "${source_folder_path}" | awk '{ print $1 }')
@@ -98,8 +98,8 @@ do
 done
 
 printf "%s\n" "--------------------------------------------------"
-printf "%s\t\t\t%s\n"   "${b}Folder size before:" "${before_size}"
-printf "%s\t\t\t%s\n\n" "${b}Folder size after:"  "$(du -sh ${source_folder_path} | awk '{ print $1 }')${reset}"
+printf "%s\t\t\t\t%s\n"   "${b}Folder size before:" "${before_size}"
+printf "%s\t\t\t\t%s\n\n" "${b}Folder size after:"  "$(du -sh ${source_folder_path} | awk '{ print $1 }')${reset}"
 
 # -----
 

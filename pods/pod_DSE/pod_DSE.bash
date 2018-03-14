@@ -42,6 +42,7 @@
 function pod_DSE(){
 
 ## globally declare arrays utilised by this pod
+
 declare -A build_send_error_array     # stage_buildSend
 declare -A start_dse_error_array      # stage_rollingStart
 declare -A stop_dse_error_array       # stage_rollingStop
@@ -55,8 +56,8 @@ if [[ "${clusterstateFlag}" == "true" ]]; then
 
   ## STAGE [1]
 
-  prepare_generic_display_stageCount      "Test server connectivity" "1" "3"
-  prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Testing server connectivity"
+  prepare_generic_display_stageCount        "Test server connectivity" "1" "3"
+  prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Testing server connectivity"
   task_generic_testConnectivity
   task_generic_testConnectivity_report
   prepare_generic_display_stageTimeCount
@@ -66,14 +67,14 @@ if [[ "${clusterstateFlag}" == "true" ]]; then
   ## STAGE [2]
 
   if [[ "${CLUSTER_STATE}" == "restart" ]]; then
-    prepare_generic_display_stageCount      "Restarting DSE Cluster" "2" "3"
-    prepare_generic_display_msgColourSimple "TASK==>"  "TASK: Restarting each server in cluster"
+    prepare_generic_display_stageCount        "Restarting DSE Cluster" "2" "3"
+    prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Restarting each server in cluster"
     task_rollingStop
     task_rollingStart
     task_rollingStart_report
   else
-    prepare_generic_display_stageCount      "Stopping DSE Cluster" "2" "3"
-    prepare_generic_display_msgColourSimple "TASK==>"  "TASK: Stopping each server in cluster"
+    prepare_generic_display_stageCount        "Stopping DSE Cluster" "2" "3"
+    prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Stopping each server in cluster"
     task_rollingStop
     task_rollingStop_report
   fi
@@ -82,8 +83,8 @@ if [[ "${clusterstateFlag}" == "true" ]]; then
 
   ## STAGE [3]
 
-  prepare_generic_display_stageCount      "Summary" "3" "3"
-  prepare_generic_display_msgColourSimple "REPORT" "STAGE REPORT:${reset}"
+  prepare_generic_display_stageCount        "Summary" "3" "3"
+  prepare_generic_display_msgColourSimple   "REPORT" "STAGE REPORT:${reset}"
   task_generic_testConnectivity_report
   if [[ "${CLUSTER_STATE}" == "restart" ]]; then
     task_rollingStart_report
@@ -105,8 +106,8 @@ else # installing pod_DSE
   destination_folder_parent_path="${pod_home_path}/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"
   destination_folder_path="${destination_folder_parent_path}resources/"
 
-  prepare_generic_display_stageCount      "Prepare 'resources' Folder" "1" "7"
-  prepare_generic_display_msgColourSimple "TASK==>"  "TASK: Strip out all non config files"
+  prepare_generic_display_stageCount        "Prepare 'resources' Folder" "1" "7"
+  prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Strip out all non config files"
 
   if [[ "${REGENERATE_RESOURCES}" == "true" ]] || [[ "${REGENERATE_RESOURCES}" == "edit" ]] || [[ ! -d ${destination_folder_path} ]]; then
     task_makeResourcesFolder
@@ -118,7 +119,6 @@ else # installing pod_DSE
     fi
   else
     prepare_generic_display_msgColourSimple "ALERT" "You have opted to skip this STAGE"
-    printf "%s\n"
   fi
   prepare_generic_display_stageTimeCount
 
@@ -126,8 +126,8 @@ else # installing pod_DSE
 
   ## STAGE [2]
 
-  prepare_generic_display_stageCount      "Test cluster connections" "2" "7"
-  prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Testing server connectivity"
+  prepare_generic_display_stageCount        "Test cluster connections" "2" "7"
+  prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Testing server connectivity"
   task_generic_testConnectivity
   task_generic_testConnectivity_report
   prepare_generic_display_stageTimeCount
@@ -136,8 +136,8 @@ else # installing pod_DSE
 
   ## STAGE [3]
 
-  prepare_generic_display_stageCount      "Test cluster write-paths" "3" "7"
-  prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Testing server write-paths"
+  prepare_generic_display_stageCount        "Test cluster write-paths" "3" "7"
+  prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Testing server write-paths"
   # semi-colon delimeter any elements containing paths to be write tested: "from build_settings.bash" "from server json"
   task_generic_testWritePaths "TEMP_FOLDER;PARENT_DATA_FOLDER;PARENT_LOG_FOLDER" "cass_data;dsefs_data"
   task_generic_testWritePaths_report
@@ -147,8 +147,8 @@ else # installing pod_DSE
 
   ## STAGE [4]
 
-  prepare_generic_display_stageCount      "Send POD_SOFTWARE folder" "4" "7"
-  prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Send software in parallel"
+  prepare_generic_display_stageCount        "Send POD_SOFTWARE folder" "4" "7"
+  prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Send software in parallel"
 
   if [[ "${SEND_POD_SOFTWARE}" == "true" ]]; then
     task_generic_sendPodSoftware
@@ -163,8 +163,8 @@ else # installing pod_DSE
 
   ## STAGE [5]
 
-  prepare_generic_display_stageCount      "Build and send bespoke pod" "5" "7"
-  prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Configure locally and distribute"
+  prepare_generic_display_stageCount        "Build and send bespoke pod" "5" "7"
+  prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Configure locally and distribute"
   task_buildSend
   task_buildSend_report
   prepare_generic_display_stageTimeCount
@@ -173,8 +173,8 @@ else # installing pod_DSE
 
   ## STAGE [6]
 
-  prepare_generic_display_stageCount      "Launch pod remotely" "6" "7"
-  prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Execute launch script on each server"
+  prepare_generic_display_stageCount        "Launch pod remotely" "6" "7"
+  prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Execute launch script on each server"
   task_generic_launchPodRemotely
   task_generic_launchPodRemotely_report
   prepare_generic_display_stageTimeCount

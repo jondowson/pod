@@ -28,5 +28,5 @@ prepare_generic_display_msgColourSimple "TASK==>"   "Finish:"
 prepare_generic_display_msgColourSimple "INFO-BOLD" "(1) Source '.bash_profile' (or open new terminal):"
 prepare_generic_display_msgColourSimple "INFO"      "$ . ~/.bash_profile"
 prepare_generic_display_msgColourSimple "INFO-BOLD" "(2) Check java version"
-prepare_generic_display_msgColourSimple "INFO"      "$ java --version"
+prepare_generic_display_msgColourSimple "INFO"      "$ java -version"
 }

@@ -47,7 +47,7 @@ JAVA_SECURITY_ZIP="jce_policy-8.zip"
 # [3] TMP FOLDER LOCATIONS
 
 # temp folder - can be anywhere with suffcient permissions
-TEMP_FOLDER="${INSTALL_FOLDER}tmp/"
+TEMP_FOLDER="${INSTALL_FOLDER}TEMP/"
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
