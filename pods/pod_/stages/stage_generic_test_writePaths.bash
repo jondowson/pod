@@ -7,7 +7,8 @@ function task_generic_testWritePaths(){
 ## for each server test ability to write to all required dse paths (data, logs etc)
 
 # if json contains nested paths to test, these will have been passed in
-nestedPaths="${1}"
+buildFolderPaths="${1}"
+serverJsonPaths="${2}"
 
 for id in $(seq 1 ${numberOfServers});
 do
@@ -38,18 +39,21 @@ do
 
 # ----------
 
-  # (1) test all paths specified in the writeTest_array + test the target_folder too
-  writeTest_array+=(${target_folder})
-  for folder in "${writeTest_array[@]}"
+  # (1) test all buildFolderPaths
+  # delimit the buildFolderPaths string into an array
+  buildFolderPaths="target_folder;${buildFolderPaths}"              #prepend the target_folder for this server
+  lib_generic_strings_ifsStringDelimeter ";" "${buildFolderPaths}"
+  # for each element in the array
+  for folder in "${array[@]}"
   do
     status="999"
     if [[ "${status}" != "0" ]]; then
       retry=0
       until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
       do
-        ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir -p ${folder}dummyFolder && rm -rf ${folder}dummyFolder" exit
+        ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir -p ${!folder}dummyFolder && rm -rf ${!folder}dummyFolder" exit
         status=${?}
-        test_write_error_array_1["${folder}"]="${status};${tag}"
+        test_write_error_array_1["${!folder}"]="${status};${tag}"
         ((retry++))
       done
     fi
@@ -59,9 +63,9 @@ do
 
   # (2) test json elements that have nested paths - these will be passed here as a delimited string
   # e.g. "cass_data;dsefs_data"
-  if [[ ${nestedPaths} != "" ]]; then
+  if [[ ${serverJsonPaths} != "" ]]; then
     # delimit the json element(s) into an array
-    lib_generic_strings_ifsStringDelimeter ";" "${nestedPaths}"
+    lib_generic_strings_ifsStringDelimeter ";" "${serverJsonPaths}"
     # for each element in the array e.g. cass_data
     for element in "${array[@]}"
     do

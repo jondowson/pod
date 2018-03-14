@@ -168,7 +168,7 @@ else
 
 ## [9] display generic pod_ closing messages
 
-  # [9.1] display generic final message + end message for this pod
+  # [9.1] display final message for this pod
   prepare_help_finish
 
   # [9.2] calculate and display script timings

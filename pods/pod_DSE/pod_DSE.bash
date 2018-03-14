@@ -44,11 +44,7 @@ function pod_DSE(){
 ## globally declare arrays utilised by this pod
 
 # (1) array to write_test that holds the 'parent' folders specified in the BUILD_FOLDER
-declare -a writeTest_array
-writeTest_array[0]="${TEMP_FOLDER}"
-writeTest_array[1]="${PARENT_DATA_FOLDER}"
-writeTest_array[2]="${PARENT_LOG_FOLDER}"
-
+#
 # (2) generic arrays to hold results of actions performed by pod_ functions
 declare -A test_write_error_array_1   # stage_generic_testWritePaths      - test writeTest_array paths (specified above)
 declare -A test_write_error_array_2   # stage_generic_testWritePaths      - test paths specified in json
@@ -150,9 +146,8 @@ else # installing pod_DSE
 
   prepare_generic_display_stageCount      "Test cluster write-paths" "3" "7"
   prepare_generic_display_msgColourSimple "TASK==>"    "TASK: Testing server write-paths"
-
-  # semi-colon delimeter any elements containing paths to be write tested
-  task_generic_testWritePaths "cass_data;dsefs_data"
+  # semi-colon delimeter any elements containing paths to be write tested: "from build_settings.bash" "from server json"
+  task_generic_testWritePaths "TEMP_FOLDER;PARENT_DATA_FOLDER;PARENT_LOG_FOLDER" "cass_data;dsefs_data"
   task_generic_testWritePaths_report
   prepare_generic_display_stageTimeCount
 
