@@ -8,9 +8,9 @@
 
 # pod_DSE makes use of 2 user defined files and has 7 STAGES.
 
-# --> ${SERVERS_JSON}
+# --> ${SERVERS_JSON}xyz.json
 # --> ${BUILD_FOLDER}build_settings.sh
-# and a DSE version specific prepared 'resources' folder.
+# + a DSE version specific prepared 'resources' folder is sent over to each server.
 # --> ${BUILD_FOLDER}resources
 
 # STAGE [1] - optionally prepare local 'resources' folder
@@ -25,7 +25,7 @@
 # --> test that ssh can connect and create a dummy folder to each specified write path.
 
 # STAGE [4] - build and send software tarballs
-# --> copy over the 'POD_SOFTWARE' folder to each server.
+# --> copy over the 'POD_SOFTWARE/DATASTAX' folder to each server.
 
 # STAGE [5] - build and send pod build
 # --> duplicate 'pod 'project to a temporary folder and configure for each server.
@@ -139,6 +139,7 @@ else # installing pod_DSE
   prepare_generic_display_stageCount        "Test cluster write-paths" "3" "7"
   prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Testing server write-paths"
   # semi-colon delimeter any elements containing paths to be write tested: "from build_settings.bash" "from server json"
+  # note: paths specified here from json need to be put in nested [] brackets - even if only one path exists 
   task_generic_testWritePaths "TEMP_FOLDER;PARENT_DATA_FOLDER;PARENT_LOG_FOLDER" "cass_data;dsefs_data"
   task_generic_testWritePaths_report
   prepare_generic_display_stageTimeCount

@@ -80,8 +80,6 @@ function task_buildSend_report(){
 
 ## generate a report of all failed sends of pod build
 
-prepare_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Create pod for each server"
-
 declare -a build_send_report_array
 count=0
 for k in "${!build_send_error_array[@]}"
@@ -109,6 +107,6 @@ if [[ "${build_send_fail}" == "true" ]]; then
   prepare_generic_display_msgColourSimple "ERROR-->" "Aborting script as not all paths are writeable"
   prepare_generic_misc_clearTheDecks && exit 1;
 else
-  prepare_generic_display_msgColourSimple "SUCCESS" "Create and send bespoke pod build to all servers"
+  prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  distributed bespoke pod build"
 fi
 }

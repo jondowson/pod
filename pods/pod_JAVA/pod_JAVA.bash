@@ -8,7 +8,7 @@
 
 # pod_JAVA makes use of 2 user defined files and has 6 STAGES.
 
-# --> ${SERVERS_JSON}
+# --> ${SERVERS_JSON}xyz.json
 # --> ${BUILD_FOLDER}build_settings.bash
 
 # STAGE [1] - test cluster connections
@@ -18,7 +18,7 @@
 # --> test that ssh can connect and create a dummy folder to each specified write path.
 
 # STAGE [3] - build and send software tarballs
-# --> copy over the 'POD_SOFTWARE' folder to each server.
+# --> copy over the 'POD_SOFTWARE/JAVA' folder to each server.
 
 # STAGE [4] - build and send pod build
 # --> duplicate 'pod 'project to a temporary folder and configure for each server.
@@ -57,6 +57,7 @@ prepare_generic_display_stageTimeCount
 prepare_generic_display_stageCount        "Test cluster write-paths" "2" "6"
 prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Testing server write-paths"
 # semi-colon delimeter any elements containing paths to be write tested: "from build_settings.bash" "from server json"
+# note: paths specified here from json need to be put in nested [] brackets - even if only one path exists 
 task_generic_testWritePaths "TEMP_FOLDER" ""
 task_generic_testWritePaths_report
 prepare_generic_display_stageTimeCount
