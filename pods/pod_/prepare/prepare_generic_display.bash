@@ -74,6 +74,8 @@ esac
 
 function prepare_generic_display_stageCount(){
 
+## display which is the currect stage being executed
+
 stageTitle=${1}
 stageCount=${2}
 stageTotal=${3}
@@ -86,47 +88,17 @@ prepare_generic_display_msgColourSimple "STAGECOUNT" "STAGE: [ ${b}${cyan}${stag
 
 function prepare_generic_display_stageTimeCount(){
 
+## display timer and message at end of stage and before next stage
+
 printf "%s\n"
 lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 }
 
 # ---------------------------------------
 
-function prepare_generic_display_finalMessage(){
-
-## at the end of each pod - display a message
-
-which_pod="${1}"
-# now is a good time to remove the temp files created during pod
-prepare_generic_misc_clearTheDecks
-case ${which_pod} in
-
-    "pod_DSE" )
-
-        prepare_helpFinish ;;
-
-    "pod_DSE_rollingStartStop" )
-          prepare_generic_display_msgColourSimple "TASK==>" "To Check Status of Cluster:"
-          prepare_generic_display_msgColourSimple "INFO" "$ nodetool status"
-          printf "%s\n" ;;
-
-    "pod_JAVA" )
-          prepare_generic_display_msgColourSimple "TASK==>" "Optional Java Security Instructions:"
-          prepare_generic_display_msgColourSimple "INFO" "$ dsetool createsystemkey 'AES/ECB/PKCS5Padding'256 ob_key"
-          prepare_generic_display_msgColourSimple "INFO" "$ stat /etc/dse/conf/ob_key     # chmod 700"
-          prepare_generic_display_msgColourSimple "INFO" "Perform a rolling restart of cluster"
-          prepare_generic_display_msgColourSimple "INFO" "Upgrade SSTABLES for encryption:"
-          prepare_generic_display_msgColourSimple "$ nodetool upgradesstables -a system batchlog paxos"
-          printf "%s\n" ;;
-
-      *)
-      printf "%s\n" "" ;;
-esac
-}
-
-# ---------------------------------------
-
 function prepare_generic_display_banner(){
+
+## display logo and header
 
 clear
 printf "%s"  "${b}${cyan}"

@@ -73,8 +73,6 @@ function task_rollingStop_report(){
 
 ## generate a report of all failed ssh connectivity attempts
 
-prepare_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Stop DSE + agent on each server"
-
 declare -a stop_dse_report_array
 count=0
 for k in "${!stop_dse_error_array[@]}"
@@ -94,6 +92,6 @@ if [[ "${stop_dse_fail}" == "true" ]]; then
     prepare_generic_display_msgColourSimple "INFO" "${cross} ${k}"
   done
 else
-  prepare_generic_display_msgColourSimple "SUCCESS" "DSE stopped for all servers"
+  prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS: dse + agent stopped"
 fi
 }

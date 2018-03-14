@@ -104,8 +104,6 @@ function task_rollingStart_report(){
 
 ## generate a report of all failed ssh connectivity attempts
 
-prepare_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Restart DSE + agent on each server"
-
 declare -a start_dse_report_array
 count=0
 for k in "${!start_dse_error_array[@]}"
@@ -125,6 +123,6 @@ if [[ "${start_dse_fail}" == "true" ]]; then
     prepare_generic_display_msgColourSimple "INFO" "${cross} ${k}"
   done
 else
-  prepare_generic_display_msgColourSimple "SUCCESS" "DSE + agent started for all servers"
+  prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  dse + agent started"
 fi
 }

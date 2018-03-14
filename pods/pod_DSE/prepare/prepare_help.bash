@@ -8,6 +8,7 @@ function prepare_help(){
 ## e.g. pod -p pod_DSE -h
 
 prepare_generic_display_msgColourSimple "TASK" "Flags: pod_DSE"
+printf "%s\n"   "--------------------------------------------------------------------------------------------------"
 printf "%s\n"   ".. specify servers .json defintion       | -s  --servers          |  <servers.json>   |   yes"
 printf "%s\n"   ".. specify build folder                  | -b  --build            |  <build_folder>   |   yes"
 printf "%s\n"   ".. scp POD_SOFTWARE folder to servers    | -ss --sendsoft         |  false [true]     |   no"
@@ -22,7 +23,7 @@ printf "%s\n"   "---------------------------------------------------------------
 
 # ------------------------------------------
 
-function prepare_help_finish(){
+function pod_DSE_finalMessage(){
 
 ## final helpful message displayed at the end of running this pod
 
@@ -31,5 +32,12 @@ prepare_generic_display_msgColourSimple "INFO-BOLD" "(1) Source '.bash_profile' 
 prepare_generic_display_msgColourSimple "INFO"      "$ . ~/.bash_profile"
 prepare_generic_display_msgColourSimple "INFO-BOLD" "(2) Start cluster (DSE workload determined by mode settings in json file)"
 prepare_generic_display_msgColourSimple "INFO"      "$ pod --pod pod_DSE --servers ${SERVERS_JSON} --build ${BUILD_FOLDER} --clusterstate restart"
-printf "%s\n"
+}
+
+# ------------------------------------------
+
+function pod_DSE-rollingStart_finalMessage(){
+
+prepare_generic_display_msgColourSimple "TASK==>" "To check status of cluster:"
+prepare_generic_display_msgColourSimple "INFO"    "$ nodetool status"
 }

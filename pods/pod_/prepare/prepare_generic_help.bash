@@ -4,11 +4,12 @@
 
 function prepare_generic_help(){
 
-printf "%s%s\n" "${b}description                              | flag(s)                | values[default]   | required?" "${reset}"
+printf "%s%s\n" "${b}                                         | flag(s)                | values[default]   | required?" "${reset}"
 printf "%s\n"     "--------------------------------------------------------------------------------------------------"
 prepare_generic_display_msgColourSimple "TASK" "Flags: pod_"
-printf "%s\n"     ".. specify pod to run                    | -p  --pod              |  <pod_NAME>       |   yes"
+printf "%s\n"   "--------------------------------------------------------------------------------------------------"
 printf "%s\n"     ".. this help                             | -h  --help             |      no           |   no"
+printf "%s\n"     ".. specify pod to run                    | -p  --pod              |  <pod_NAME>       |   yes"
 printf "%s\n"     ".. specific pod help                     | -p  -h                 |  <pod_NAME>       |   no"
 printf "%s\n"     "--------------------------------------------------------------------------------------------------"
 printf "%s\n"     "${b}examples:${reset}"
@@ -19,7 +20,7 @@ printf "%s\n"     "-------------------------------------------------------------
 
 # ------------------------------------------
 
-function prepare_generic_helpFinish(){
+function prepare_generic_help_lists(){
 
 if [[ "${podFlag}" != "true" ]]; then
 

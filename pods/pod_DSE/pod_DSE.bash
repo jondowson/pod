@@ -83,14 +83,15 @@ if [[ "${clusterstateFlag}" == "true" ]]; then
   ## STAGE [3]
 
   prepare_generic_display_stageCount      "Summary" "3" "3"
+  prepare_generic_display_msgColourSimple "REPORT" "STAGE REPORT:${reset}"
   task_generic_testConnectivity_report
   if [[ "${CLUSTER_STATE}" == "restart" ]]; then
     task_rollingStart_report
   else
     task_rollingStop_report
   fi
-  # change WHICH_POD to alter final message displayed by pod_ generic function
-  WHICH_POD=${WHICH_POD}_rollingStartStop
+  # change WHICH_POD to alter final message
+  WHICH_POD=${WHICH_POD}-rollingStart
 
   # ------------------------------------------
 

@@ -78,11 +78,11 @@ while test $# -gt 0; do
           prepare_generic_display_banner
           prepare_generic_help
           prepare_help
-          prepare_generic_helpFinish
+          prepare_generic_help_lists
         else
           prepare_generic_display_banner
           prepare_generic_help
-          prepare_generic_helpFinish
+          prepare_generic_help_lists
         fi
         exit 0;
         ;;
@@ -169,8 +169,9 @@ source "pods/${WHICH_POD}/${WHICH_POD}.bash"
 ## [9] display generic pod_ closing messages
 
 # [9.1] display final message for this pod
-prepare_help_finish
+${WHICH_POD}_finalMessage
 # [9.2] calculate and display script timings
 lib_generic_misc_timePod
+printf "%s\n"
 prepare_generic_display_msgColourSimple "INFO" "pod took: ${diff}[s]"
 printf "%s\n"
