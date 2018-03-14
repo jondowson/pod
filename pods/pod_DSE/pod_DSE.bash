@@ -42,15 +42,6 @@
 function pod_DSE(){
 
 ## globally declare arrays utilised by this pod
-
-# (1) array to write_test that holds the 'parent' folders specified in the BUILD_FOLDER
-#
-# (2) generic arrays to hold results of actions performed by pod_ functions
-declare -A test_write_error_array_1   # stage_generic_testWritePaths      - test writeTest_array paths (specified above)
-declare -A test_write_error_array_2   # stage_generic_testWritePaths      - test paths specified in json
-declare -A build_launch_pid_array     # stage_generic_launch_podRemotely  - did script launch successfully on remote server
-
-## (3) specific arrays utilised by this pod
 declare -A build_send_error_array     # stage_buildSend
 declare -A start_dse_error_array      # stage_rollingStart
 declare -A stop_dse_error_array       # stage_rollingStop

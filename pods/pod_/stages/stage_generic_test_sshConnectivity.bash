@@ -39,7 +39,7 @@ do
       else
         prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}(retry ${retry}/5)"
       fi
-      pod_test_connect_error_array["${tag}"]="${status};${pubIp}"
+      test_connect_error_array["${tag}"]="${status};${pubIp}"
       ((retry++))
     done
     printf "%s\n"
@@ -55,9 +55,9 @@ function task_generic_testConnectivity_report(){
 
 declare -a pod_test_connect_report_array
 count=0
-for k in "${!pod_test_connect_error_array[@]}"
+for k in "${!test_connect_error_array[@]}"
 do
-  lib_generic_strings_expansionDelimiter ${pod_test_connect_error_array[$k]} ";" "1"
+  lib_generic_strings_expansionDelimiter ${test_connect_error_array[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
     pod_test_connect_fail="true"
     pod_test_connect_report_array["${count}"]="${yellow}${k}${white} at address ${yellow}${_D2_}${white} with error code ${red}${_D1_}${reset}"

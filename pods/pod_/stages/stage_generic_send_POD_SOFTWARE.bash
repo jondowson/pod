@@ -43,7 +43,7 @@ do
     # grab pid and capture owner in array
     pid=${!}
     prepare_generic_display_msgColourSimple "INFO-->" "pid id:      ${yellow}${pid}${reset}"
-    pod_software_send_pid_array["${pid}"]="${tag};${pubIp}"
+    send_pod_software_pid_array["${pid}"]="${tag};${pubIp}"
     DSE_pids+=" $pid"
   fi
 
@@ -91,7 +91,7 @@ if [[ ! -z $POD_SOFTWARE_pid_failures ]]; then
   for k in "${!POD_SOFTWARE_server_pid_array[@]}"
   do
     if [[ "${POD_SOFTWARE_pid_failures}" == *"$k"* ]]; then
-      lib_generic_strings_expansionDelimiter "${pod_software_send_pid_array[$k]}" ";" "1"
+      lib_generic_strings_expansionDelimiter "${send_pod_software_pid_array[$k]}" ";" "1"
       server="$_D1_"
       ip=$_D2_
       prepare_generic_display_msgColourSimple "ERROR-TIGHT" "pid ${yellow}${k}${red} failed for ${yellow}${server}@${ip}${red}"

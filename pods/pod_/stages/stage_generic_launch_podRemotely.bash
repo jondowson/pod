@@ -28,7 +28,7 @@ do
   # grab pid and capture owner in array
   pid=$!
   prepare_generic_display_msgColourSimple "INFO-->" "pid id:      ${yellow}${pid}${reset}"
-  build_launch_pid_array["${pid}"]="${tag};${pubIp}"
+  launch_pod_pid_array["${pid}"]="${tag};${pubIp}"
   runBuild_pids+=" $pid"
 
 # -----
@@ -73,10 +73,10 @@ function task_generic_launchPodRemotely_report(){
 if [[ ! -z $runBuild_pid_failures ]]; then
   prepare_generic_display_msgColourSimple "INFO-->" "${cross} Problems executing pod build on servers"
   printf "%s\n"
-  for k in "${!build_launch_pid_array[@]}"
+  for k in "${!launch_pod_pid_array[@]}"
   do
     if [[ "${runBuild_pid_failures}" == *"$k"* ]]; then
-      lib_generic_strings_expansionDelimiter "${build_launch_pid_array[$k]}" ";" "1"
+      lib_generic_strings_expansionDelimiter "${launch_pod_pid_array[$k]}" ";" "1"
       server="$_D1_"
       ip=$_D2_
       prepare_generic_display_msgColourSimple "ERROR-TIGHT" "pid ${yellow}${k}${red} failed for ${yellow}${server}@${ip}${red}"

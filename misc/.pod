@@ -141,15 +141,25 @@ prepare_generic_misc_podBuildTempFolder
 
 # ==========
 
-## [8] pod specific checks and call
+## [8] globally declare arrays used by generic stages
 
-# [8.1] test pod specific required files/folders exist
+declare -A test_connect_error_array     # stage_generic_test_sshConnectivity - test passwordless connectivity
+declare -A test_write_error_array_1     # stage_generic_test_writePaths      - test writeTest_array paths
+declare -A test_write_error_array_2     # stage_generic_test_writePaths      - test paths specified in json
+declare -A send_pod_software_pid_array  # stage_generic_send_POD_SOFTWARE    - send POD_SOFTWARE folder to server(s)
+declare -A launch_pod_pid_array         # stage_generic_launch_podRemotely   - did script launch successfully on remote server?
+
+# ==========
+
+## [9] pod specific checks and call
+
+# [9.1] test pod specific required files/folders exist
 prepare_misc_checkFileFolderExist
 
-# [8.2] source the pod's init script
+# [9.2] source the pod's init script
 source "pods/${WHICH_POD}/${WHICH_POD}.bash"
 
-# [8.3] call the chosen pod's init function
+# [9.3] call the pod's init function
 "${WHICH_POD}"
 
 
