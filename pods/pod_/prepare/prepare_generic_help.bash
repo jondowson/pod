@@ -9,7 +9,7 @@ printf "%s\n"     "-------------------------------------------------------------
 prepare_generic_display_msgColourSimple "TASK" "Flags: pod_"
 printf "%s\n"   "--------------------------------------------------------------------------------------------------"
 printf "%s\n"     ".. this help                             | -h  --help             |      no           |   no"
-printf "%s\n"     ".. specify pod to run                    | -p  --pod              |  <pod_NAME>       |   yes"
+printf "%s\n"     ".. specify pod to run                    | -p  --pod              |  <pod_NAME>       |   no"
 printf "%s\n"     ".. specific pod help                     | -p  -h                 |  <pod_NAME>       |   no"
 printf "%s\n"     "--------------------------------------------------------------------------------------------------"
 printf "%s\n"     "${b}examples:${reset}"

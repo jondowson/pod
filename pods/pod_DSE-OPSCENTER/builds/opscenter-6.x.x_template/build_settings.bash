@@ -33,15 +33,15 @@ INSTALL_FOLDER_POD="${INSTALL_FOLDER}${WHICH_POD}/"
 
 # match to name of folder in POD_SOFTWARE/${PACKAGE} holding the software tarball
 SOFTWARE_NAME="opscenter"
-SOFTWARE_VERSION="opscenter-6.1.5"
-SOFTWARE_TARBALL="opscenter-6.1.5.tar.gz"
+SOFTWARE_VERSION="opscenter-6.1.x"
+SOFTWARE_TARBALL="opscenter-6.1.x.tar.gz"
 
 # -----
 
 # [3] TMP FOLDER LOCATION
 
 # temp folder - can be anywhere with suffcient permissions
-TEMP_FOLDER="${INSTALL_FOLDER}tmp/"
+TEMP_FOLDER="${INSTALL_FOLDER}TEMP/"
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 

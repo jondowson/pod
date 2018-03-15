@@ -46,6 +46,7 @@ do
   build_folder_path_string="${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"
   printf "%s\n" "build_folder_path=${build_folder_path_string}" >> "${tmp_suitcase_file_path}"
   # [3] append variables from server json definition file
+  #
 
   # -----
 
@@ -79,8 +80,6 @@ function task_buildSend_report(){
 
 ## generate a report of all failed sends of pod build
 
-prepare_generic_display_msgColourSimple "REPORT" "STAGE SUMMARY: ${reset}Create pod for each server"
-
 declare -a build_send_report_array
 count=0
 for k in "${!build_send_error_array[@]}"
@@ -108,6 +107,6 @@ if [[ "${build_send_fail}" == "true" ]]; then
   prepare_generic_display_msgColourSimple "ERROR-->" "Aborting script as not all paths are writeable"
   prepare_generic_misc_clearTheDecks && exit 1;
 else
-  prepare_generic_display_msgColourSimple "SUCCESS" "All servers: make and send pod build"
+  prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  distributed bespoke pod build"
 fi
 }

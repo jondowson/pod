@@ -41,7 +41,7 @@ SOFTWARE_TARBALL="opscenter-6.1.5.tar.gz"
 # [3] TMP FOLDER LOCATION
 
 # temp folder - can be anywhere with suffcient permissions
-TEMP_FOLDER="${INSTALL_FOLDER}tmp/"
+TEMP_FOLDER="${INSTALL_FOLDER}TEMP/"
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
@@ -53,4 +53,7 @@ TAR_FOLDER="${PACKAGES}${SOFTWARE_NAME}/"
 TAR_FILE="${TAR_FOLDER}${SOFTWARE_TARBALL}"
 UNTAR_FOLDER="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/"
 UNTAR_EXEC_FOLDER="${UNTAR_FOLDER}bin"
+opscenter_untar_folder="${UNTAR_FOLDER}${SOFTWARE_VERSION}"
+opscenter_untar_config_folder="$opscenter_untar_folder}/conf/"
+opscenter_untar_bin_folder="${opscenter_untar_folder}/bin/"
 # //////////////////////////////////////////
