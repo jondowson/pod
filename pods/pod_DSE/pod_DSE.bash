@@ -1,41 +1,4 @@
-# about:         configure dse software and distribute to all servers in cluster
-
-# ------------------------------------------
-
-## pod desription: pod_DSE
-
-# note: a pod consists of STAGE(S), which consist of TASK(S), which contain actions.
-
-# pod_DSE makes use of 2 user defined files and has 7 STAGES.
-
-# --> ${SERVERS_JSON}xyz.json
-# --> ${BUILD_FOLDER}build_settings.sh
-# + a DSE version specific prepared 'resources' folder is sent over to each server.
-# --> ${BUILD_FOLDER}resources
-
-# STAGE [1] - optionally prepare local 'resources' folder
-# --> will strip all non-config files from the 'resources' folder in the dse-<version> tarball.
-# --> copy to ${BUILD_FOLDER}resources.
-# --> OPTIONAL if one already exists.
-
-# STAGE [2] - test cluster connections
-# --> test defined paths can be written to.
-
-# STAGE [3] - test cluster write paths
-# --> test that ssh can connect and create a dummy folder to each specified write path.
-
-# STAGE [4] - build and send software tarballs
-# --> copy over the 'POD_SOFTWARE/DATASTAX' folder to each server.
-
-# STAGE [5] - build and send pod build
-# --> duplicate 'pod 'project to a temporary folder and configure for each server.
-# --> copy the duplicated and configured version - the pod 'build' - to each server.
-
-# STAGE [6] - execute pod remotely
-# --> remotely run 'launch-pod.sh' on each server.
-
-# STAGE [7] - pod summary
-# --> report for each stage.
+# about:    call in order the stages for this pod
 
 # ------------------------------------------
 
@@ -43,7 +6,6 @@ function pod_DSE(){
 
 ## globally declare arrays utilised by this pod
 
-declare -A build_send_error_array     # stage_buildSend
 declare -A start_dse_error_array      # stage_rollingStart
 declare -A stop_dse_error_array       # stage_rollingStop
 
@@ -51,150 +13,26 @@ declare -A stop_dse_error_array       # stage_rollingStop
 
 ## STAGES
 
-# if using pod_DSE rolling start or stop feature - 3 stages are used.
+## note:
+#     generic stages are composed in:   pod_/stages/stage_generic_stubs.bash
+# non-generic stages are composed in:   pod_DSE/stages/stage_stubs.bash
+
+# stopping/starting dse nodes
 if [[ "${clusterstateFlag}" == "true" ]]; then
 
-  ## STAGE [1]
+  stage_generic_stubs_testConnectivity  "1" "3"
+  stage_stubs_stopStartCluster          "2" "3"
+  stage_stubs_finish                    "3" "3"
 
-  prepare_generic_display_stageCount        "Test server connectivity" "1" "3"
-  prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Testing server connectivity"
-  task_generic_testConnectivity
-  task_generic_testConnectivity_report
-  prepare_generic_display_stageTimeCount
+# installing pod_DSE
+else
 
-  # ------------------------------------------
-
-  ## STAGE [2]
-
-  if [[ "${CLUSTER_STATE}" == "restart" ]]; then
-    prepare_generic_display_stageCount        "Restarting DSE Cluster" "2" "3"
-    prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Restarting each server in cluster"
-    task_rollingStop
-    task_rollingStart
-    task_rollingStart_report
-  else
-    prepare_generic_display_stageCount        "Stopping DSE Cluster" "2" "3"
-    prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Stopping each server in cluster"
-    task_rollingStop
-    task_rollingStop_report
-  fi
-
-  # ------------------------------------------
-
-  ## STAGE [3]
-
-  prepare_generic_display_stageCount        "Summary" "3" "3"
-  prepare_generic_display_msgColourSimple   "REPORT" "STAGE REPORT:${reset}"
-  task_generic_testConnectivity_report
-  if [[ "${CLUSTER_STATE}" == "restart" ]]; then
-    task_rollingStart_report
-  else
-    task_rollingStop_report
-  fi
-  # change WHICH_POD to alter final message
-  WHICH_POD=${WHICH_POD}-rollingStart
-
-  # ------------------------------------------
-
-
-
-else # installing pod_DSE
-
-  ## STAGE [1] - optional
-
-  # prepare local copy of dse 'resources' folder - the basis for each distributed pod build
-  destination_folder_parent_path="${pod_home_path}/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"
-  destination_folder_path="${destination_folder_parent_path}resources/"
-
-  prepare_generic_display_stageCount        "Prepare 'resources' Folder" "1" "7"
-  prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Strip out all non config files"
-
-  if [[ "${REGENERATE_RESOURCES}" == "true" ]] || [[ "${REGENERATE_RESOURCES}" == "edit" ]] || [[ ! -d ${destination_folder_path} ]]; then
-    task_makeResourcesFolder
-    rr_flag="true"
-    if [[ "${REGENERATE_RESOURCES}" == "edit" ]]; then
-      prepare_generic_display_msgColourSimple "STAGE" "You can now edit each dse config in the folder ${yellow}${destination_folder_path}${reset}"
-      printf "%s\n"
-      exit 0;
-    fi
-  else
-    prepare_generic_display_msgColourSimple "ALERT" "You have opted to skip this STAGE"
-  fi
-  prepare_generic_display_stageTimeCount
-
-  # ------------------------------------------
-
-  ## STAGE [2]
-
-  prepare_generic_display_stageCount        "Test cluster connections" "2" "7"
-  prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Testing server connectivity"
-  task_generic_testConnectivity
-  task_generic_testConnectivity_report
-  prepare_generic_display_stageTimeCount
-
-  # ------------------------------------------
-
-  ## STAGE [3]
-
-  prepare_generic_display_stageCount        "Test cluster write-paths" "3" "7"
-  prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Testing server write-paths"
-  # semi-colon delimeter any elements containing paths to be write tested: "from build_settings.bash" "from server json"
-  # note: paths specified here from json need to be put in nested [] brackets - even if only one path exists 
-  task_generic_testWritePaths "TEMP_FOLDER;PARENT_DATA_FOLDER;PARENT_LOG_FOLDER" "cass_data;dsefs_data"
-  task_generic_testWritePaths_report
-  prepare_generic_display_stageTimeCount
-
-  # ------------------------------------------
-
-  ## STAGE [4]
-
-  prepare_generic_display_stageCount        "Send POD_SOFTWARE folder" "4" "7"
-  prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Send software in parallel"
-
-  if [[ "${SEND_POD_SOFTWARE}" == "true" ]]; then
-    task_generic_sendPodSoftware
-    task_generic_sendPodSoftware_report
-  else
-    prepare_generic_display_msgColourSimple "ALERT-->" "You have opted to skip this STAGE"
-    printf "%s\n"
-  fi
-  prepare_generic_display_stageTimeCount
-
-  # ------------------------------------------
-
-  ## STAGE [5]
-
-  prepare_generic_display_stageCount        "Build and send bespoke pod" "5" "7"
-  prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Configure locally and distribute"
-  task_buildSend
-  task_buildSend_report
-  prepare_generic_display_stageTimeCount
-
-  # ------------------------------------------
-
-  ## STAGE [6]
-
-  prepare_generic_display_stageCount        "Launch pod remotely" "6" "7"
-  prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Execute launch script on each server"
-  task_generic_launchPodRemotely
-  task_generic_launchPodRemotely_report
-  prepare_generic_display_stageTimeCount
-
-  # ------------------------------------------
-
-  ## STAGE [7]
-
-  prepare_generic_display_stageCount        "Summary" "7" "7"
-  prepare_generic_display_msgColourSimple   "REPORT" "STAGE REPORT:${reset}"
-  if [[ "${rr_flag}" == true ]]; then
-    prepare_generic_display_msgColourSimple "SUCCESS" "LOCAL SERVER: resources folder generated"
-  else
-    prepare_generic_display_msgColourSimple "SUCCESS" "LOCAL SERVER: resources folder untouched"
-  fi
-  task_generic_testConnectivity_report
-  task_generic_testWritePaths_report
-  if [[ "${SEND_POD_SOFTWARE}" == true ]]; then task_generic_sendPodSoftware_report; fi
-  task_buildSend_report
-  task_generic_launchPodRemotely_report
+  stage_stubs_createResourcesFolder     "1" "7"
+  stage_generic_stubs_testConnectivity  "2" "7"
+  stage_generic_stubs_testWritePaths    "3" "7" "TEMP_FOLDER;PARENT_DATA_FOLDER;PARENT_LOG_FOLDER" "cass_data;dsefs_data"
+  stage_generic_stubs_sendPodSoftware   "4" "7"
+  stage_stubs_buildSendPod              "5" "7"
+  stage_generic_stubs_launchPod         "6" "7"
+  stage_stubs_finish                    "7" "7"
 fi
 }

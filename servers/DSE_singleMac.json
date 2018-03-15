@@ -1,9 +1,9 @@
 {
     "server_1":{
       "tag": "storage_1",
-      "user": "jondowson",
-      "sshKey": "/Users/jondowson/.ssh/id_rsa",
-      "target_folder": "/Users/jondowson/Desktop/",
+      "user": "jd",
+      "sshKey": "/home/jd/.ssh/id_rsa",
+      "target_folder": "/home/jd/Desktop/",
       "pubIp": "127.0.0.1",
       "listen_address": "127.0.0.1",
       "rpc_address": "127.0.0.1",
@@ -19,12 +19,12 @@
         "dsefs": "false"
       },
       "cass_data": [
-        "/Users/jondowson/Desktop/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/sstables/",
-        "/Users/jondowson/Desktop/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/sstables2/"
+        "/home/jd/Desktop/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/sstables/",
+        "/home/jd/Desktop/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/sstables2/"
       ],
       "dsefs_data": [
-        "/Users/jondowson/Desktop/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/dsefs/;1.0;5368709",
-        "/Users/jondowson/Desktop/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/dsefs2/;1.0;5368709"
+        "/home/jd/Desktop/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/dsefs/;1.0;5368709",
+        "/home/jd/Desktop/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/dsefs2/;1.0;5368709"
       ]
     }
 }
