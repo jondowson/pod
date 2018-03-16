@@ -28,6 +28,9 @@ lib_doStuff_remotely_agentAddressYaml
 
 # [6] rename this redundant and meddlesome file !!
 lib_doStuff_remotely_cassandraTopologyProperties
+
+# [7] configure local environment
+lib_generic_doStuff_remotely_updatePathBashProfile "CASSANDRA_HOME" "${dse_untar_bin_folder}"
 }
 
 # ---------------------------------------

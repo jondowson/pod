@@ -33,7 +33,7 @@ source "${pod_home_path}/misc/.suitcase"
 
 # -----
 
-## source pod_ + pod_JAVA lib scripts
+## source pod_ + this pod's scripts
 
 files="$(find ${pod_home_path}/pods/pod_/lib/ -name "*.bash")"
 for file in $(printf "%s\n" "$files"); do
@@ -73,7 +73,7 @@ fi
 
 # -----
 
-# [2] run the remite functions for this pod
+# [2] run the remote functions for this pod
 
 lib_doStuff_remotely_${WHICH_POD}
 
