@@ -4,7 +4,7 @@
 
 function pod_DSE(){
 
-## globally declare arrays utilised by this pod
+## globally declare arrays utilised by this pod's own stages
 
 declare -A build_send_error_array     # stage_buildSend.bash
 declare -A start_dse_error_array      # stage_rollingStart.bash

@@ -6,6 +6,32 @@
 
 # ---------------------------------------
 
+function lib_doStuff_remotely_pod_DSE(){
+
+## this function is run on the remote machine and calls the other remote functions in order
+
+# [1] delete any previous pod build folder with the same name
+rm -rf ${INSTALL_FOLDER_POD}${BUILD_FOLDER}
+
+# [2] make folders
+lib_generic_doStuff_remotely_createFolders "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
+
+# [3] un-compress software
+lib_generic_doStuff_remotely_unpackTar "${dse_tar_file}" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
+lib_generic_doStuff_remotely_unpackTar "${agent_tar_file}" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
+
+# [4] merge the copied over 'resources' folder to the untarred one
+cp -R "${build_folder_path}resources" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}/${DSE_VERSION}"
+
+# [5] update the datastax-agent address.yaml to point to opscenter
+lib_doStuff_remotely_agentAddressYaml
+
+# [6] rename this redundant and meddlesome file !!
+lib_doStuff_remotely_cassandraTopologyProperties
+}
+
+# ---------------------------------------
+
 function lib_doStuff_remotely_cassandraTopologyProperties(){
 
 ## rename the deprecated cassandra-topology.properties to stop it interfering !!
