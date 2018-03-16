@@ -59,7 +59,7 @@ do
         start_opscenter_error_array["${tag}"]="${status};${pubIp}"
         break;
       else
-        ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_cmd} && ${start_opscenter}"
+        ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_opscenter}"
         status=${?}
         if [[ "${status}" == "0" ]]; then
           prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${green}${status}"

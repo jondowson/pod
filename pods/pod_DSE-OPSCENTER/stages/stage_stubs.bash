@@ -48,11 +48,13 @@ task_generic_testConnectivity_report
 if [[ "${clusterstateFlag}" == "true" ]]; then
   if [[ "${CLUSTER_STATE}" == "restart" ]]; then
     task_rollingStart_report
+    # change WHICH_POD to alter final message
+    WHICH_POD=${WHICH_POD}-rollingStart
   else
     task_rollingStop_report
+    # change WHICH_POD to alter final message
+    WHICH_POD=${WHICH_POD}-rollingStop
   fi
-  # change WHICH_POD to alter final message
-  WHICH_POD=${WHICH_POD}-rollingStart
 else
   task_generic_testWritePaths_report
   if [[ "${SEND_POD_SOFTWARE}" == true ]]; then task_generic_sendPodSoftware_report; fi

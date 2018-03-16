@@ -35,7 +35,7 @@ do
     retry=1
     until [[ "${retry}" == "4" ]] || [[ "${status}" == "0" ]]
     do
-      ssh -q -i ${sshKey} ${user}@${pubIp} "ps aux | grep opscenter | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
+      ssh -q -i ${sshKey} ${user}@${pubIp} "ps aux | grep start_opscenter.py | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
       status=${?}
       stop_opscenter_error_array["${tag}"]="${status};${pubIp}"
       ((retry++))
@@ -58,7 +58,7 @@ do
   lib_generic_strings_expansionDelimiter ${stop_opscenter_error_array[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
     stop_dse_fail="true"
-    stop_dse_report_array["${count}"]="${yellow}${k}${white} at address ${yellow}${_D2_}${white} with error code ${red}${_D1_}${reset}"
+    stop_opscenter_report_array["${count}"]="${yellow}${k}${white} at address ${yellow}${_D2_}${white} with error code ${red}${_D1_}${reset}"
     (( count++ ))
   fi
 done

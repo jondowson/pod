@@ -29,3 +29,21 @@ prepare_generic_display_msgColourSimple "INFO"      "$ . ~/.bash_profile"
 prepare_generic_display_msgColourSimple "INFO-BOLD" "(2) Start opscenter (usually run on one node)"
 prepare_generic_display_msgColourSimple "INFO"      "$ pod --pod pod_DSE-OPSCENTER -s ${SERVERS_JSON} -b ${BUILD_FOLDER} -cs restart"
 }
+
+# ------------------------------------------
+
+function pod_DSE-OPSCENTER-rollingStart_finalMessage(){
+
+prepare_generic_display_msgColourSimple "TASK==>"   "Finish:"
+prepare_generic_display_msgColourSimple "INFO-BOLD" "(1) Wait ~15 secs and check opscenter status here:"
+prepare_generic_display_msgColourSimple "INFO"      "http://${pubIp}:8888"
+}
+
+# ------------------------------------------
+
+function pod_DSE-OPSCENTER-rollingStop_finalMessage(){
+
+prepare_generic_display_msgColourSimple "TASK==>"   "Finish:"
+prepare_generic_display_msgColourSimple "INFO-BOLD" "(1) Opscenter should no longer be up here:"
+prepare_generic_display_msgColourSimple "INFO"      "http://${pubIp}:8888"
+}

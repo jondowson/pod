@@ -170,7 +170,11 @@ source "pods/${WHICH_POD}/${WHICH_POD}.bash"
 
 # [9.1] display final message for this pod
 ${WHICH_POD}_finalMessage
-# [9.2] calculate and display script timings
+
+# [9.2] tidy up temporary files
+prepare_generic_misc_clearTheDecks
+
+# [9.3] calculate and display script timings
 lib_generic_misc_timePod
 printf "%s\n"
 prepare_generic_display_msgColourSimple "INFO" "pod took: ${diff}[s]"

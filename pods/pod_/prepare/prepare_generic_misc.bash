@@ -101,7 +101,8 @@ done
 
 function prepare_generic_misc_sourceThisPodBuild(){
 
-# source the pod-specific 'builds' folder to use
+## source the pod-specific 'builds' folder to use
+
 if [[ ${buildFlag} == "true" ]]; then
   lib_generic_checks_fileFolderExists "build file path is wrong:" "true" "${pod_home_path}/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/" "file" "build_settings.bash"
   source  "${pod_home_path}/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/build_settings.bash"
@@ -123,7 +124,7 @@ STRICT_START="true"              # exit pod if any server cannot be reached or d
 
 function prepare_generic_misc_clearTheDecks(){
 
-## remove any temporary files/folders that may be left from a previous run of pod_DSE
+## remove any temporary files/folders that may be left from a previous run of pod
 
 > ${pod_home_path}/misc/.suitcase
 rm -rf ${pod_home_path}/tmp
