@@ -2,6 +2,22 @@
 
 # ---------------------------------------
 
+function lib_doStuff_remotely_pod_REMOVE-PODS(){
+
+## remove this pod on remote machine
+
+# [1] delete any previous pod build folder with the same name + any agent folder of the same version
+
+lib_doStuff_remotely_removeThisPod
+lib_doStuff_remotely_removeThisPodFromBashProfile
+lib_doStuff_remotely_removeThisPodFromBashrc
+
+# [2] this folder is empty so tidy it up
+rm -rf ${INSTALL_FOLDER_POD}
+}
+
+# ---------------------------------------
+
 function lib_doStuff_remotely_removeThisPod(){
 
 ## remove this pod on remote machine

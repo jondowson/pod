@@ -6,6 +6,32 @@
 
 # ---------------------------------------
 
+function lib_doStuff_remotely_pod_JAVA(){
+
+## install from local tar to the designated java folder
+
+# [1] delete any previous pod build folder with the same name
+rm -rf ${UNTAR_FOLDER}
+
+# on a mac don't do anything
+if [[ ${os} == *"Mac"* ]]; then
+
+  # [2] make folders
+  lib_generic_doStuff_remotely_createFolders "${UNTAR_FOLDER}${SOFTWARE_VERSION}"
+  lib_generic_doStuff_remotely_createFolders "${UNTAR_FOLDER}${SOFTWARE_VERSION}/lib/security"
+
+  # [3] un-compress software
+  lib_generic_doStuff_remotely_unpackTar "${TAR_FILE}" "${UNTAR_FOLDER}"
+  lib_doStuff_remotely_installJavaSecurity
+
+  # [4] configure local environment
+  lib_doStuff_remotely_updateJavaPathBashProfile "JAVA_HOME" "${UNTAR_FOLDER}${SOFTWARE_VERSION}"
+
+fi
+}
+
+# ---------------------------------------
+
 function lib_doStuff_remotely_installJavaSecurity(){
 
 ## install from local tar to the designated java folder
