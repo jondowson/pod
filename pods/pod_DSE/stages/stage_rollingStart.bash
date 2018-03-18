@@ -54,7 +54,7 @@ do
   if [[ "${searchFlag}" == "true" ]];     then flags="${flags} -s"; fi
   if [[ "${analyticsFlag}" == "true" ]];  then flags="${flags} -k"; fi
   if [[ "${graphFlag}" == "true" ]];      then flags="${flags} -g"; fi
-  start_cmd="dse cassandra${flags}"
+  start_cmd="${dse_untar_bin_folder}dse cassandra${flags}"
 
 # ----------
 
