@@ -41,10 +41,10 @@ function pod_DSE-rollingStart_finalMessage(){
 
 prepare_generic_display_msgColourSimple "TASK==>"   "Finish:"
 prepare_generic_display_msgColourSimple "INFO-BOLD" "(1) To check status of cluster"
-prepare_generic_display_msgColourSimple "INFO"      "$ ${dse_untar_bin_folder}nodetool status"
+prepare_generic_display_msgColourSimple "INFO"      "$ nodetool status"
 prepare_generic_display_msgColourSimple "INFO-BOLD" "note:"
 prepare_generic_display_msgColourSimple "INFO"      "- running '--clusterstate restart' has just restarted the specified pod_DSE build"
 prepare_generic_display_msgColourSimple "INFO"      "- however '--clusterstate restart' does not alter the CASSANDRA_PATH set in bash_profile"
 prepare_generic_display_msgColourSimple "INFO"      "- to update the CASSANDRA_PATH to point at this build, re-run pod_DSE for the desired build"
-prepare_generic_display_msgColourSimple "INFO"      "- this is why above, the full path to nodetool is specified, as it may be different to the one set in bash_profile"
+prepare_generic_display_msgColourSimple "INFO"      "- as such you may need to prepend the full path to nodetool to use the corresponding version"
 }

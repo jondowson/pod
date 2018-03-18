@@ -14,7 +14,7 @@ function lib_doStuff_remotely_pod_JAVA(){
 rm -rf ${UNTAR_FOLDER}
 
 # on a mac don't do anything
-if [[ ${os} == *"Mac"* ]]; then
+if [[ ${os} != *"Mac"* ]]; then
 
   # [2] make folders
   lib_generic_doStuff_remotely_createFolders "${UNTAR_FOLDER}${SOFTWARE_VERSION}"
@@ -71,10 +71,10 @@ a=$(<$file); printf "%s\n" "$a" > $file
 # append to end of files
 cat << EOF >> ${file}
 
-#>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'
+#>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}
 export ${program_home}="${folder_path}"
 export PATH=\$${program_home}/bin:\$PATH
 export JVM_OPTS="-Djava.io.tmpdir=${TEMP_FOLDER}"
-#>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'
+#>>>>>END-ADDED-BY__${WHICH_POD}@${label}
 EOF
 }
