@@ -45,6 +45,7 @@ prepare_generic_display_msgColourSimple "INFO"      "$ nodetool status"
 prepare_generic_display_msgColourSimple "INFO-BOLD" "note:"
 prepare_generic_display_msgColourSimple "INFO"      "- running '--clusterstate restart' has just restarted the specified pod_DSE build"
 prepare_generic_display_msgColourSimple "INFO"      "- however '--clusterstate restart' does not alter the CASSANDRA_PATH set in bash_profile"
-prepare_generic_display_msgColourSimple "INFO"      "- to update the CASSANDRA_PATH to point at this build, re-run pod_DSE for the desired build"
-prepare_generic_display_msgColourSimple "INFO"      "- as such you may need to prepend the full path to nodetool to use the corresponding version"
+prepare_generic_display_msgColourSimple "INFO"      "- as such you MAY need to prepend the full build path to use its corresponding version of nodetool"
+prepare_generic_display_msgColourSimple "INFO"      "- if you want to update the CASSANDRA_PATH to point at a given build, re-run pod_DSE for the desired build"
+
 }
