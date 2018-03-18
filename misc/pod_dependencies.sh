@@ -1,11 +1,10 @@
 #!/bin/bash
 
-POD_VERSION="1.4.0"
+POD_VERSION="1.5.0"
 script_name="pod_dependencies.sh"
 script_author="JRD"
 script_about="install dependencies for the pod application"
 script_start=$(date +%s)
-
 
 # ////////////////////////////////////////// DISCOVER PATHS
 
