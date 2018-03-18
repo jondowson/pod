@@ -36,7 +36,7 @@ prepare_generic_misc_identifyOs
 # [2.4] if os is mac switch to mac version of this script
 if [[ "${os}" == "Mac" ]]; then
 
-  misc/.pod "$@"
+  misc/podMac "$@"
 
 else
 
