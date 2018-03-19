@@ -3,11 +3,11 @@
 
 **1) pod_dependencies.sh**
 
-+ bash_profile alias for cd'ing to pod folder  
++ convenient bash_profile alias for cd'ing to pod folder  
 
 **2) pod_DSE**
 
-+ ability to update and restart datastax-agents independently of dse
++ ability to update/config/restart datastax-agents independently of dse
 
 **3) pod_REMOVE-PODS**
 
@@ -22,4 +22,4 @@
 
 **5) pod_DSE-OPSCENTER**
 
-+ added block to cassandra-env.sh to force opscenter cluster to be used for metric storage
++ block in cassandra-env.sh to force opscenter cluster to be used for metric storage
