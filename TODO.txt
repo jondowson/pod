@@ -1,0 +1,21 @@
+1.5.1
+
+(1) pod_
+
++ alias for pod folder
+
+(2) pod_DSE
+
++ add ability to update and restart datastax-agent independently of dse
+
+(3) pod_REMOVE-PODS
+
++ remove a build from a pod
+
+(4) pod_DSE-SECURITY
+
++ finish !!
+
+(5) pod_DSE-OPSCENTER
+
++ add block to use opscenter cluster for metric storage

@@ -51,6 +51,7 @@ do
   build_folder_path_string="${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"
   printf "%s\n" "build_folder_path=${build_folder_path_string}" >> "${tmp_suitcase_file_path}"
   # [3] append variables from server json definition file
+  # n/a
 
   # -----
 

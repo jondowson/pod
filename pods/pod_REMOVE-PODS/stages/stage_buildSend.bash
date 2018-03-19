@@ -47,6 +47,7 @@ do
   printf "%s\n" "build_folder_path=${build_folder_path_string}" >> "${tmp_suitcase_file_path}"
   printf "%s\n" "REMOVE_POD=${REMOVE_POD}"                      >> "${tmp_suitcase_file_path}"
   # [3] append variables from server json definition file
+  # n/a
 
 # -----
 

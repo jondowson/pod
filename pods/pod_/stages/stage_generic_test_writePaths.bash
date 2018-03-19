@@ -41,7 +41,7 @@ do
 
   # (1) test all buildFolderPaths
   # delimit the buildFolderPaths string into an array
-  buildFolderPaths="target_folder;${buildFolderPaths}"              #prepend the target_folder for this server
+  buildFolderPaths="target_folder;${buildFolderPaths}"              # prepend the target_folder for this server
   lib_generic_strings_ifsStringDelimeter ";" "${buildFolderPaths}"
   # for each element in the array
   for folder in "${array[@]}"

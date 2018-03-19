@@ -18,8 +18,7 @@ declare -A build_send_error_array     # stage_buildSend.bash
 
 stage_generic_stubs_testConnectivity  "1" "6"
 stage_generic_stubs_testWritePaths    "2" "6" "" ""
-stage_generic_stubs_sendPodSoftware   "3" "6"
-stage_stubs_buildSendPod              "4" "6"
-stage_generic_stubs_launchPod         "5" "6"
-stage_stubs_finish                    "6" "6"
+stage_stubs_buildSendPod              "3" "6"
+stage_generic_stubs_launchPod         "4" "6"
+stage_stubs_finish                    "5" "6"
 }

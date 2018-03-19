@@ -176,7 +176,7 @@ else
 # ////////////////////////////////////////// GENERIC POD FINISH
 
 
-## [9] display generic pod_ closing messages
+## [9] display generic pod_ + pod specific closing messages
 
   # [9.1] display final message for this pod
   ${WHICH_POD}_finalMessage
