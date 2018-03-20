@@ -10,6 +10,11 @@ declare -A build_send_error_array     # stage_buildSend.bash
 declare -A start_dse_error_array      # stage_rollingStart.bash
 declare -A stop_dse_error_array       # stage_rollingStop.bash
 
+## declare any variables used below
+
+buildPathsToCheck="TEMP_FOLDER;PARENT_DATA_FOLDER;PARENT_LOG_FOLDER;spark_local_data;spark_worker_data;"
+jsonPathsToCheck="cass_data;dsefs_data"
+
 # ------------------------------------------
 
 ## STAGES
@@ -30,7 +35,7 @@ else
 
   stage_stubs_createResourcesFolder     "1" "7"
   stage_generic_stubs_testConnectivity  "2" "7"
-  stage_generic_stubs_testWritePaths    "3" "7" "TEMP_FOLDER;PARENT_DATA_FOLDER;PARENT_LOG_FOLDER" "cass_data;dsefs_data"
+  stage_generic_stubs_testWritePaths    "3" "7"  "${buildPathsToCheck}" "${jsonPathsToCheck}"
   stage_generic_stubs_sendPodSoftware   "4" "7"
   stage_stubs_buildSendPod              "5" "7"
   stage_generic_stubs_launchPod         "6" "7"

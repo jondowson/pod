@@ -51,9 +51,9 @@ do
 # ----------
 
   flags=""
-  if [[ "${searchFlag}" == "true" ]];     then flags="${flags} -s"; fi
-  if [[ "${analyticsFlag}" == "true" ]];  then flags="${flags} -k"; fi
-  if [[ "${graphFlag}" == "true" ]];      then flags="${flags} -g"; fi
+  if [[ "${search}" == "true" ]];     then flags="${flags} -s"; fi
+  if [[ "${analytics}" == "true" ]];  then flags="${flags} -k"; fi
+  if [[ "${graph}" == "true" ]];      then flags="${flags} -g"; fi
   start_cmd="${dse_untar_bin_folder}dse cassandra${flags}"
 
 # ----------
