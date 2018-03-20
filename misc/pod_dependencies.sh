@@ -209,6 +209,7 @@ EOF
   echo "#>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}"
   echo "export POD_HOME=${pod_home_path}/"
   echo "export PATH=\$POD_HOME:\$PATH"
+  echo "alias fpod='cd ${pod_home_path}'"
   echo "#>>>>>END-ADDED-BY__${WHICH_POD}@${label}"
 
 cat << EOF >> "${file}"
@@ -216,6 +217,7 @@ cat << EOF >> "${file}"
 #>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}
 export POD_HOME=${pod_home_path}/
 export PATH=\$POD_HOME:\$PATH
+alias fpod='cd ${pod_home_path}'
 #>>>>>END-ADDED-BY__${WHICH_POD}@${label}
 EOF
 
@@ -268,6 +270,7 @@ else
   echo "#>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}"
   echo "export POD_HOME=${pod_home_path}/"
   echo "export PATH=\$POD_HOME:\$PATH"
+  echo "alias fpod='cd ${pod_home_path}'"
   echo "#>>>>>END-ADDED-BY__${WHICH_POD}@${label}"
 
 cat << EOF >> "${file}"
@@ -275,6 +278,7 @@ cat << EOF >> "${file}"
 #>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}
 export POD_HOME=${pod_home_path}/
 export PATH=\$POD_HOME:\$PATH
+alias fpod='cd ${pod_home_path}'
 #>>>>>END-ADDED-BY__${WHICH_POD}@${label}
 EOF
 
