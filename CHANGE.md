@@ -1,5 +1,5 @@
 
-### pod-version-1.5.1 - 20/03/18
+### 20/03/2018: pod-version-1.5.1
 
 **1) pod_dependencies.sh**
 
