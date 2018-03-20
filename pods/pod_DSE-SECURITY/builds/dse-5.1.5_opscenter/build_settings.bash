@@ -126,6 +126,44 @@ ce_cipher_suites=""
   # store_type: JKS
   # cipher_suites: [TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA,TLS_DHE_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA]
 
+  # -----
+
+## [3.3] enable JMX authentication for clients such as nodetool - this enables remote connection, otherwise restricted to localhost
+# set LOCAL_JMX to anything other than null to enable authentication
+LOCAL_JMX="yes"
+# set these JVM_OPTS to enable ssl
+jmxremote.ssl="true"
+jmxremote.ssl.need.client.auth="true"
+jmxremote.ssl.enabled.protocols="<enabled-protocols>"
+jmxremote.ssl.enabled.cipher.suites="<enabled-cipher-suites>"
+net.ssl.keyStore="/path/to/keystore"
+net.ssl.keyStorePassword="<keystore-password>"
+net.ssl.trustStore="/path/to/truststore"
+net.ssl.trustStorePassword="<truststore-password>"
+
+# block taken from cassandra-env.sh
+#  if [ "$LOCAL_JMX" = "yes" ]; then
+#    JVM_OPTS="$JVM_OPTS -Dcassandra.jmx.local.port=$JMX_PORT"
+#    JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.authenticate=false"
+#  else
+#    JVM_OPTS="$JVM_OPTS -Dcassandra.jmx.remote.port=$JMX_PORT"
+    # if ssl is enabled the same port cannot be used for both jmx and rmi so either
+    # pick another value for this property or comment out to use a random port (though see CASSANDRA-7087 for origins)
+#    JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.rmi.port=$JMX_PORT"
+
+    # turn on JMX authentication. See below for further options
+#    JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.authenticate=true"
+
+    # jmx ssl options
+    #JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.ssl=true"
+    #JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.ssl.need.client.auth=true"
+    #JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.ssl.enabled.protocols=<enabled-protocols>"
+    #JVM_OPTS="$JVM_OPTS -Dcom.sun.management.jmxremote.ssl.enabled.cipher.suites=<enabled-cipher-suites>"
+    #JVM_OPTS="$JVM_OPTS -Djavax.net.ssl.keyStore=/path/to/keystore"
+    #JVM_OPTS="$JVM_OPTS -Djavax.net.ssl.keyStorePassword=<keystore-password>"
+    #JVM_OPTS="$JVM_OPTS -Djavax.net.ssl.trustStore=/path/to/truststore"
+    #JVM_OPTS="$JVM_OPTS -Djavax.net.ssl.trustStorePassword=<truststore-password>"
+#  fi
 
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
