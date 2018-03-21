@@ -133,7 +133,10 @@ The **.json** defintion file captures server specific settings such as login cre
 `   
 $ pod --help    
 `       
-
+And each pod will have its own help.    
+`   
+$ pod -p pod_NAME --help    
+`
 10) Finally run '**pod**' passing in the required parameters (without directory names).  
 `   
 $ chmod +x pod   
