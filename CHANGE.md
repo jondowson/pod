@@ -1,19 +1,22 @@
 
-### 20/03/2018: pod-version-1.5.1
+### Changes in pod-version-1.5.1
 
 **1) pod_dependencies.sh**
 
 + convenient 'fpod' alias added to bash_profile to cd into pod folder  
++ this is available on all servers in the cluster
 
-**2) pod_DSE**
+### Arriving in pod-version-1.5.2
+
+**1) pod_DSE**
 
 + update/config/restart datastax-agents independently of dse
 
-**3) pod_REMOVE-PODS**
+**2) pod_REMOVE-PODS**
 
 + flag to remove a specific build from a pod
 
-**4) pod_DSE-SECURITY**
+**3) pod_DSE-SECURITY**
 
 + NEW POD !!!!    
 + turn on/off audit logging
@@ -21,6 +24,6 @@
 + encryption:
     ssl, tde, agents-opscenter, LDAP, client-server
 
-**5) pod_DSE-OPSCENTER**
+**4) pod_DSE-OPSCENTER**
 
 + block in cassandra-env.sh to force opscenter cluster to be used for metric storage

@@ -53,6 +53,21 @@ export ${program_home}="${soft_exec_path}"
 export PATH=\$${program_home}:\$PATH
 #>>>>>END-ADDED-BY__${WHICH_POD}@${label}
 EOF
+
+## allow pod to be run on this server from any folder and create an alias too
+
+label="POD_HOME_bash_profile"
+# search for and remove any pre-canned blocks containing this label
+lib_generic_strings_removePodBlockAndEmptyLines ${file} "pod_SETUP@${label}"
+
+cat << EOF >> "${file}"
+
+#>>>>>BEGIN-ADDED-BY__pod_SETUP@${label}
+export POD_HOME=${pod_home_path}/
+export PATH=\$POD_HOME:\$PATH
+alias fpod='cd ${pod_home_path}'
+#>>>>>END-ADDED-BY__pod_SETUP@${label}
+EOF
 }
 
 # ---------------------------------------
