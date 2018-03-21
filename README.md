@@ -96,8 +96,7 @@ $ ./misc/pod_dependencies.sh
 **Note:**  
 On a Mac this will install/refresh 'homebrew' package manager and retrieve a number of packages.    
 On all OS, it will add pod to the path, so pod can be run from any folder.    
-It is necessary to run this on the machine running pod (or any Mac in the cluster).    
-It is not required to first run this on non Mac linux machines but does no harm to do so.        
+Run this on the machine running pod (also a pre-req on any Mac in a cluster).            
 
 6) Setup password-less access to all servers (**including local machine**).        
 `    
