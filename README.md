@@ -58,11 +58,11 @@ As such **pod_DSE** is very useful in development / testing environments as well
 - **complete:**     will distribute, untar and configure all software sent to each server.    
 - **speed:**        0-cluster in minutes !!
 - **simple:**       settings are defined in just **two** configuration files.    
-          -  one for cluster-wide settings.    
-          -  one for server level settings.    
+          -  a build file for cluster-wide settings.    
+          -  a json file for server level settings.    
 - **control:**      all dse settings and installation paths may be configured.     
 
-Out of the box - pod creates a desktop folder with all configured software, data and log folders all conveniently in one place.  
+Out of the box - pod creates a desktop folder with configured software, data and log folders all conveniently in one place.  
 
 ## Get started with 'pod_DSE'   
 
@@ -82,6 +82,7 @@ Quick Instructions (to work out of the box):
   - **JAVA**    
     - **oracle**  
       - jdk-8uxxx-linux-i586.tar.gz
+      - jce_policy-8.zip
   - **POD**          
 
 3) cd to POD_SOFTWARE/POD folder
@@ -92,11 +93,12 @@ $ ./misc/pod_dependencies.sh
 `
 
 **Note:**  
-On a Mac this will install/refresh homebrew package manager and retrieve a number of packages.    
+On a Mac this will install/refresh 'homebrew' package manager and retrieve a number of packages.    
 On all OS, it will add pod to the path, so pod can be run from any folder.    
-It is neccessary to run this on the machine running pod (or any Mac in the cluster).        
+It is necessary to run this on the machine running pod (or any Mac in the cluster).    
+It is not required to first run this on non Mac linux machines but does no harm to do so.        
 
-6) Setup passwordless access to all servers (including local machine).        
+6) Setup password-less access to all servers (**including local machine**).        
 `    
 $ ssh-keygen -t rsa    # hit enter to all questions    
 `    
@@ -148,7 +150,11 @@ This copied folder is stripped of all **non-config files** - the remainder are t
 The settings specified in **build_settings.bash** and the **<servers.json>** are edited into this copied resources folder.    
 But for all the settings they do not cover, you can manually edit any of them.    
 So if required, hit **\<ctrl-c\>** at the end of this initial stage - by default you will have 5 seconds!   
-Then edit any DSE config file in the build's **resources** folder and re-launch **pod_DSE**.       
+Then edit any DSE config file in the build's **resources** folder and re-launch **pod_DSE**.    
+Alternatively, pass the '--regenresources' flag with the edit option.    
+`   
+$ pod -p pod_DSE -s myServers.json -b dse-5.0.5_pre-prod -rr edit       
+`         
 
 All servers will receive a bespoke version of the resources folder + all required software.     
 A pod-launcher script will be run remotely and finish the server configuration:    
