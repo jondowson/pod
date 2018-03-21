@@ -14,7 +14,7 @@
       "rack": "rack1",
       "mode": {
         "search": "false",
-        "analytics": "true",
+        "analytics": "false",
         "graph": "false",
         "dsefs": "false"
       },
