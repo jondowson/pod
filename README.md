@@ -151,14 +151,19 @@ The settings specified in **build_settings.bash** and the **<servers.json>** are
 But for all the settings they do not cover, you can manually edit any of them.    
 So if required, hit **\<ctrl-c\>** at the end of this initial stage - by default you will have 5 seconds!   
 Then edit any DSE config file in the build's **resources** folder and re-launch **pod_DSE**.    
-Alternatively, pass the '--regenresources' flag with the edit option.    
+Alternatively, pass the '--regenresources' flag with the edit option to automatically exit at end of this stage.    
 `   
-$ pod -p pod_DSE -s myServers.json -b dse-5.0.5_pre-prod -rr edit       
+$ pod -p pod_DSE -s myServers.json -b dse-5.0.5_pre-prod --regenresources edit       
 `         
 
-All servers will receive a bespoke version of the resources folder + all required software.     
-A pod-launcher script will be run remotely and finish the server configuration:    
+All servers receive a bespoke version of the resources folder configured correctly for that box.        
+A pod-launcher script is run remotely to finish the server configuration:    
 - uncompress software.    
 - merge the bespoke resources folder.    
 - setup environment variables.      
-Once finished - pod_DSE has a rolling start command to start DSE (choice of modes) and datastax-agents - see help for example.    
+
+pod_DSE has a rolling start command to start DSE + agents.    
+The workload of each server is dictated in the json file.    
+`   
+$ pod -p pod_DSE -s myServers.json -b dse-5.0.5_pre-prod --clusterstate restart      
+`
