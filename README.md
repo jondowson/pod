@@ -166,12 +166,12 @@ A pod-launcher script is run remotely to finish the server configuration:
 `   
 $ pod -p pod_DSE -s myServers.json -b dse-5.0.5_pre-prod --clusterstate restart      
 `    
-The workload of each server is dictated in the json file.    
+The workload of each server is dictated in the json file (default is storage only).    
 `
-"mode": {
-  "search": "false",
-  "analytics": "false",
-  "graph": "false",
-  "dsefs": "false"
-},
+"mode": {    
+  "search": "false",    
+  "analytics": "false",    
+  "graph": "false",    
+  "dsefs": "false"    
+}    
 `
