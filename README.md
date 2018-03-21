@@ -42,15 +42,15 @@ $ git checkout -b <pod-version-x.x>
 
 ### pod #1 - 'pod_DSE'  
 
-The first 'pod' makes it easy to set up and run a DSE cluster from **tarballs**.  
+The first 'pod' makes it easy to set up and run a dse cluster from **tarballs**.  
 
-  - setup, configure and distribute DSE software to all servers in a cluster.
+  - setup, configure and distribute dse software to all servers in a cluster.
   - setup and configure datastax-agent software.    
-  - perform rolling start and stop for DSE clusters.
+  - perform rolling start and stop for dse clusters.
 
 With **pod_DSE** you can easily create and manage multiple dse cluster setups with varying versions / settings.     
 Different configurations can be deployed to the same machines and they will not interfere with each other.  
-As such **pod_DSE** is very useful in development / testing environments as well as in production if DSE opscenter is not an option.  
+As such **pod_DSE** is very useful in development / testing environments as well as in production if dse opscenter is not an option.  
 
 **Features:**    
 - **available:**    by using tarballs, pod does **not require root privileges** to setup a dse cluster.    
@@ -143,14 +143,14 @@ $ pod --pod pod_DSE --servers nameIt.json --build dse-x.x.x_nameIt
 `   
 
 **Note:**    
-When you first run pod_DSE, it will look in your specified builds folder to see if there is a '**resources**' folder.    
+When you first run **pod_DSE**, it will look in your specified builds folder to see if there is a '**resources**' folder.    
 If there is not, it will uncompress your chosen dse version tarball and copy its resources folder there.    
 This copied folder is stripped of all **non-config files** - the remainder are then available for editing.    
 
 The settings specified in **build_settings.bash** and the **<servers.json>** are edited into this copied resources folder.    
 But for all the settings they do not cover, you can manually edit any of them.    
 So if required, hit **\<ctrl-c\>** at the end of this initial stage - by default you will have 5 seconds!   
-Then edit any DSE config file in the build's **resources** folder and re-launch **pod_DSE**.    
+Then edit any dse config file in the build's **resources** folder and re-launch **pod_DSE**.    
 Alternatively, pass the '--regenresources' flag with the edit option to automatically exit at end of this stage.    
 `   
 $ pod -p pod_DSE -s myServers.json -b dse-5.0.5_pre-prod --regenresources edit       
@@ -162,7 +162,7 @@ A pod-launcher script is run remotely to finish the server configuration:
 - merge the bespoke resources folder.    
 - setup environment variables.      
 
-pod_DSE has a rolling start command to start DSE + agents.    
+**pod_DSE** has a rolling start command to start dse + agents.    
 The workload of each server is dictated in the json file.    
 `   
 $ pod -p pod_DSE -s myServers.json -b dse-5.0.5_pre-prod --clusterstate restart      
