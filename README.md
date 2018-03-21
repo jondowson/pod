@@ -10,11 +10,12 @@ It is extensible and new modules (or 'pods') can be added quickly that make use 
 
 **Pod Use Cases**    
 
-1) Install and configure software.    
-2) Harvest os/application data - cpu, memory, diskspace, mounts, swap etc    
-3) Test - security, readiness (best practice), network/port connectivity, write paths and file permissions.    
-4) Tidy up machines - remove software, unmount/mount drives, stop processes.    
-5) 'sudo tasks' - setup cron jobs, create services, user accounts.               
+1) Install and configure any software.    
+2) Create and distribute SSL certs + truststores.    
+3) Harvest os/application data - cpu, memory, disk-space, io, mounts, swap etc    
+4) Test - security, readiness (best practice), network/port, system clocks, write paths and file permissions.    
+5) Maintenance - remove software, unmount/mount drives, stop processes etc    
+6) 'sudo tasks' - setup cron jobs, create services, manage user accounts.               
 
 ## pod versioning
 
