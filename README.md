@@ -7,11 +7,14 @@ It is written in bash because sometimes thats all you can use in locked down env
 Tested on Mac, Ubuntu, Centos and Redhat.    
 
 It is extensible and new modules (or 'pods') can be added quickly that make use of pod's core capabilities.  
-Its first 'pod' makes it easy to set up and run a DSE cluster from **tarballs**.  
-- **pod_DSE**:    
-    - setup, configure and distribute DSE software to all servers in a cluster.
-    - setup and configure datastax-agent software.    
-    - perform rolling start and stop for DSE clusters.            
+
+**Pod Use Cases**    
+
+1) Install and configure software.    
+2) Harvest os/application data - cpu, memory, diskspace, mounts, swap etc    
+3) Test - security, readiness (best practice), network/port connectivity, write paths and file permissions.    
+4) Tidy up machines - remove software, unmount/mount drives, stop processes.    
+5) 'sudo tasks' - setup cron jobs, create services, user accounts.               
 
 ## pod versioning
 
@@ -38,6 +41,12 @@ $ git checkout -b <pod-version-x.x>
 - pod workflows are organised into one or more **STAGES**, consisting of one or more **TASKS**, containing action(s).     
 
 ### pod #1 - 'pod_DSE'  
+
+The first 'pod' makes it easy to set up and run a DSE cluster from **tarballs**.  
+- **pod_DSE**:    
+    - setup, configure and distribute DSE software to all servers in a cluster.
+    - setup and configure datastax-agent software.    
+    - perform rolling start and stop for DSE clusters.
 
 With **pod_DSE** you can easily create and manage multiple dse cluster setups with varying versions / settings.     
 Different configurations can be deployed to the same machines and they will not interfere with each other.  
