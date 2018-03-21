@@ -43,24 +43,24 @@ $ git checkout -b <pod-version-x.x>
 ### pod #1 - 'pod_DSE'  
 
 The first 'pod' makes it easy to set up and run a DSE cluster from **tarballs**.  
-   
+
   - setup, configure and distribute DSE software to all servers in a cluster.
   - setup and configure datastax-agent software.    
   - perform rolling start and stop for DSE clusters.
 
 With **pod_DSE** you can easily create and manage multiple dse cluster setups with varying versions / settings.     
 Different configurations can be deployed to the same machines and they will not interfere with each other.  
-As such **pod_DSE** is very useful in development / testing environments as well as in production if opscenter is not an option.  
+As such **pod_DSE** is very useful in development / testing environments as well as in production if DSE opscenter is not an option.  
 
 **Features:**    
-- **available:** by using tarballs, pod does **not require root privileges** to setup a dse cluster.    
-- **flexible:** can install a dse cluster locally and/or on remote machines (or span both).     
-- **complete:** will distribute, untar and configure all software sent to each server.    
-- **speed:** 0-cluster in minutes !!
-- **simple:** settings are defined in just **two** configuration files.    
-    -  one for cluster-wide settings.    
-    -  one for server level settings.    
-- **control:** all dse settings and installation paths may be configured.     
+- **available:**    by using tarballs, pod does **not require root privileges** to setup a dse cluster.    
+- **flexible:**     can install a dse cluster locally and/or on remote machines (or span both).     
+- **complete:**     will distribute, untar and configure all software sent to each server.    
+- **speed:**        0-cluster in minutes !!
+- **simple:**       settings are defined in just **two** configuration files.    
+          -  one for cluster-wide settings.    
+          -  one for server level settings.    
+- **control:**      all dse settings and installation paths may be configured.     
 
 Out of the box - pod creates a desktop folder with all configured software, data and log folders all conveniently in one place.  
 
