@@ -163,7 +163,15 @@ A pod-launcher script is run remotely to finish the server configuration:
 - setup environment variables.      
 
 **pod_DSE** has a rolling start command to start dse + agents.    
-The workload of each server is dictated in the json file.    
 `   
 $ pod -p pod_DSE -s myServers.json -b dse-5.0.5_pre-prod --clusterstate restart      
+`    
+The workload of each server is dictated in the json file.    
+`
+"mode": {
+  "search": "false",
+  "analytics": "false",
+  "graph": "false",
+  "dsefs": "false"
+},
 `
