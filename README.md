@@ -43,7 +43,7 @@ $ git checkout -b <pod-version-x.x>
 ### pod #1 - 'pod_DSE'  
 
 The first 'pod' makes it easy to set up and run a DSE cluster from **tarballs**.  
-**pod_DSE**:    
+   
   - setup, configure and distribute DSE software to all servers in a cluster.
   - setup and configure datastax-agent software.    
   - perform rolling start and stop for DSE clusters.
