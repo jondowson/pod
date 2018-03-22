@@ -6,7 +6,7 @@
 + convenient 'fpod' alias added to bash_profile to cd into pod folder  
 + this is available on all servers in the cluster
 
-### Arriving in pod-version-1.5.2
+### Roadmap
 
 **1) pod_DSE**
 
