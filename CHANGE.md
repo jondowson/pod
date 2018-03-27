@@ -11,6 +11,8 @@
 **1) pod_DSE**
 
 + update/config/restart datastax-agents independently of dse
++ add option for swagger UI to
+build_settings.bash (address.yaml)
 
 **2) pod_REMOVE-PODS**
 
