@@ -1,0 +1,38 @@
+
+
+
+[kerberos]
+default_service =
+opscenterd_client_principal =
+opscenterd_keytab_location =
+agent_keytab_location =
+agent_client_principal =
+
+[agents]
+ssl_truststore_password =
+ssl_keystore_password =
+ssl_keystore = /home/opscentre/POD_INSTALLS/pod_DSE/dse-5.1.5_ob_opscenter/datastax-agent-6.1.5/ssl/agentKeyStore
+ssl_truststore = /home/opscentre/POD_INSTALLS/pod_DSE/dse-5.1.5_ob_opscenter/datastax-agent-6.1.5/ssl/agentKeyStore
+
+[jmx]
+password =
+port = 7199
+username =
+
+[cassandra]
+ssl_truststore_password = changeme
+cql_port = 9042
+seed_hosts = 10.225.134.68,10.225.134.69,10.225.134.70
+password = cassandra
+ssl_keystore_password = changeme
+ssl_keystore = /etc/dse/Opscentre.jks
+ssl_truststore = /etc/dse/Opscentre.jks
+username = cassandra
+
+[storage_cassandra]
+username = opsusr
+password = Lopscenter
+seed_hosts = 10.225.134.164,10.225.134.165
+api_port = 9160
+cql_port = 9042
+keyspace = OpsCenter_data_prod

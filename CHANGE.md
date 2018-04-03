@@ -1,10 +1,9 @@
 
-### Changes in pod-version-1.5.1
+### Changes in pod-version-1.5.2
 
-**1) pod_dependencies.sh**
+**1) pod_DSE    
 
-+ convenient 'fpod' alias added to bash_profile to cd into pod folder  
-+ this is available on all servers in the cluster
++ removed unused function: lib_doStuff_remotely_agentEnvironment 
 
 ### Roadmap
 
