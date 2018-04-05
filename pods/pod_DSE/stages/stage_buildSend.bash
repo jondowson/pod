@@ -28,10 +28,13 @@ do
 
 # -----
 
-  # add trailing '/' to path if not present
+  ## add trailing '/' to target_folder path if not present
+
   target_folder="$(lib_generic_strings_addTrailingSlash ${target_folder})"
 
 # -----
+
+  ## determine remote server os
 
   prepare_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}" && printf "\n%s"
   remote_os=$(ssh -q -o Forwardx11=no ${user}@${pubIp} 'bash -s'  < ${pod_home_path}/pods/pod_/scripts/scripts_generic_identifyOs.sh)
@@ -40,27 +43,29 @@ do
 
 # -----
 
-  # assign build settings per the TARGET_FOLDER specified for this server
+  ## assign build settings per the TARGET_FOLDER specified for this server
   printf "%s\n" "TARGET_FOLDER=${target_folder}"                  > "${suitcase_file_path}"
   source "${tmp_build_settings_file_path}"
 
 # -----
 
-  ## pack the suitcase: [1] + [2] are always required !!!
+  ## pack the suitcase !!
 
-  # [1] TARGET_FOLDER determines many of the paths in build_settings.bash and can be different for each server
+  # append in order server specific variables used by remotely run functions !!!
+
+  # [1] server json definition file: (TARGET_FOLDER always goes first)
   printf "%s\n" "TARGET_FOLDER=${target_folder}"                  > "${tmp_suitcase_file_path}"    # clear any existing values with first entry (i.e. '>')
-  # [2] append variables derived from flags
+  printf "%s\n" "STOMP_INTERFACE=${stomp_interface}"             >> "${tmp_suitcase_file_path}"
+  # [2] flags:
   printf "%s\n" "WHICH_POD=${WHICH_POD}"                         >> "${tmp_suitcase_file_path}"
   printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}"                   >> "${tmp_suitcase_file_path}"
   build_folder_path_string="${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"
   printf "%s\n" "build_folder_path=${build_folder_path_string}"  >> "${tmp_suitcase_file_path}"
-  # [3] append variables derived from server json definition file
-  printf "%s\n" "STOMP_INTERFACE=${stomp_interface}"             >> "${tmp_suitcase_file_path}"
 
 # -----
 
-  # edit the local copy of the dse config files
+  #edit the local copy of the dse config files
+
   lib_doStuff_locally_cassandraEnv
   lib_doStuff_locally_jvmOptions
   lib_doStuff_locally_cassandraYaml

@@ -37,7 +37,7 @@ do
 
   # assign build settings per the TARGET_FOLDER specified for this server
   printf "%s\n" "TARGET_FOLDER=${target_folder}"                 > "${suitcase_file_path}"       # local .suitcase !!
-  source "${tmp_build_settings_file_path}"
+  source "${tmp_build_settings_file_path}"                                                       # this build_settings file in the tmp folder will source the above local .suitcase
 
   # -----
 

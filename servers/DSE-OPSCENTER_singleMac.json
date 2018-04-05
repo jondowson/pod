@@ -1,0 +1,41 @@
+{
+  "server_1":{
+    "tag": "opscenter_1",
+    "user": "jondowson",
+    "sshKey": "/Users/jondowson/.ssh/id_rsa",
+    "target_folder": "/Users/jondowson/Desktop/",
+    "pubIp": "127.0.0.1",
+    "cluster_conf":{
+      "cluster_1":{
+        "clustername": "PodCluster",
+        "username": "cassandra",
+        "password": "cassandra",
+        "apiport": "9160",
+        "cqlport": "9042",
+        "keyspace": "Opscenter_PodCluster",
+        "ssl_keystore": "",
+        "ssl_keystore_password": "",
+        "ssl_truststore": "",
+        "ssl_truststore_password": "",
+        "seed_hosts": [
+          "127.0.0.1"
+        ]
+      },
+      "cluster_2":{
+        "clustername": "PodCluster",
+        "username": "cassandraf",
+        "password": "cassandra",
+        "apiport": "9160",
+        "cqlport": "9042",
+        "keyspace": "Opscenter_PodCluster",
+        "ssl_keystore": "",
+        "ssl_keystore_password": "",
+        "ssl_truststore": "",
+        "ssl_truststore_password": "",
+        "seed_hosts": [
+          "127.0.0.2"
+        ]
+      }
+    }
+  }
+}

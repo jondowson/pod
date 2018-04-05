@@ -15,8 +15,8 @@ declare -A stop_opscenter_error_array   # stage_rollingStop.bash
 ## STAGES
 
 ## note:
-#     generic stages are composed in:   pod_/stages/stage_generic_stubs.bash
-# non-generic stages are composed in:   pod_DSE/stages/stage_stubs.bash
+#     generic stages are composed in pods/pod_:   /stages/stage_generic_stubs.bash
+# non-generic stages are composed in this pod:    /stages/stage_stubs.bash
 
 # stopping/starting opscenter nodes
 if [[ "${clusterstateFlag}" == "true" ]]; then

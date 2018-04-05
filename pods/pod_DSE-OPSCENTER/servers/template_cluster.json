@@ -6,8 +6,14 @@
 # tag:            used to display pod messages only - server tag should be relevant and unique - perhaps its hostname
 # user:           account used to connect to remote server
 # sshKey:         full path to local copy of server authentication file to use to access remote server
-# target_folder:  where 'POD_SOFTWARE' will be copied to on remote server
 # pubIp:          ip to connect to remote server
+# target_folder:  where 'POD_SOFTWARE' will be copied to on remote server
+# cluster_conf:   one or more clusters to manage - set this to store metric data for managed cluster on the opscenter cluster (not on the data cluster itself)
+#             --> 'cluster_1','cluster_2', 'cluster_3' ...
+
+# note:           these paramters will add a '[storage_cassandra]' block to a opscenter conf/cluster-name.conf file and will make it if it does not exist
+#                 to ignore these parameters - set 'apply_storage_cluster' to false in the build_settings.bash file
+#                 for parameter explanations see: https://docs.datastax.com/en/opscenter/6.1/opsc/configure/opscStoringCollectionDataDifferentCluster_t.html
 
 # FINALLY:        in the copy of this template, delete all these instructions, leaving just the json !!
 {
@@ -15,18 +21,40 @@
       "tag": "storage_1",
       "user": "<remote-user>",
       "sshKey": "/home/<local-user>/.ssh/id_rsa",
-      "target_folder": "/home/<remote-user>/Desktop/",
       "pubIp": "192.168.1.1",
-      "cluster_conf": [
-        "clustername;username;password;commaseperatedseeds;apiport;cqlport;keyspace",
-        "clustername;username;password;commaseperatedseeds;apiport;cqlport;keyspace"
-      ]
-    },
-    "server_2":{
-      "tag": "storage_2",
-      "user": "<remote-user>",
-      "sshKey": "/home/<local-user>/.ssh/id_rsa",
       "target_folder": "/home/<remote-user>/Desktop/",
-      "pubIp": "192.168.1.2"
+      "cluster_conf":{
+        "cluster_1":{
+          "clustername": "PodCluster",
+          "username": "cassandra",
+          "password": "cassandra",
+          "apiport": "9160",
+          "cqlport": "9042",
+          "keyspace": "Opscenter_PodCluster",
+          "ssl_keystore": "",
+          "ssl_keystore_password": "",
+          "ssl_truststore": "",
+          "ssl_truststore_password": "",
+          "seed_hosts": [
+            "127.0.0.1",
+            "127.0.0.2"
+          ]
+        },
+        "cluster_2":{
+          "clustername": "PodCluster2",
+          "username": "cassandra",
+          "password": "cassandra",
+          "apiport": "9160",
+          "cqlport": "9042",
+          "keyspace": "Opscenter_PodCluster2",
+          "ssl_keystore": "",
+          "ssl_keystore_password": "",
+          "ssl_truststore": "",
+          "ssl_truststore_password": "",
+          "seed_hosts": [
+            "127.0.0.3",
+            "127.0.0.4"
+          ]
+        }
     }
 }

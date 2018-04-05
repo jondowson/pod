@@ -176,15 +176,15 @@ else
 # ////////////////////////////////////////// GENERIC POD FINISH
 
 
-## [9] display generic pod_ + pod specific closing messages
+## [10] display generic pod_ + pod specific closing messages
 
-  # [9.1] display final message for this pod
+  # [10.1] display final message for this pod
   ${WHICH_POD}_finalMessage
 
-  # [9.2] tidy up temporary files
+  # [10.2] tidy up temporary files
   prepare_generic_misc_clearTheDecks
 
-  # [9.3] calculate and display script timings
+  # [10.3] calculate and display script timings
   lib_generic_misc_timePod
   printf "%s\n"
   prepare_generic_display_msgColourSimple "INFO" "pod took: ${diff}[s]"

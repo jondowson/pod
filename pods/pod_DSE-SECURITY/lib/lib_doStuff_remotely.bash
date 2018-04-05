@@ -44,7 +44,7 @@ dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -n' 'sed -n' 'sed -n' 'sed
 unset IFS
 
 # find line number of pod_DSE_SECURITY block
-matchA=$(${dynamic_cmd} /\#\>\>\>\>\>\ BEGIN-ADDED-BY__\'${WHICH_POD}@${label}\'/= "${file}")
+matchA=$(${dynamic_cmd} /\#\>\>\>\>\>BEGIN-ADDED-BY__${WHICH_POD}@${label}/= "${file}")
 # search for and remove any pod_DSE-SECURITY pre-canned blocks containing this label
 #lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
 lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
@@ -80,13 +80,13 @@ IFS='%'
 dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
 unset IFS
 # insert block to define encryption settings at correct line number
-${dynamic_cmd} "$(($matchC))i #>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'"            ${file}
+${dynamic_cmd} "$(($matchC))i #>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}"               ${file}
 ${dynamic_cmd} "$(($matchC+1))i system_info_encryption:"                                 ${file}
 ${dynamic_cmd} "$(($matchC+2))i \    enabled: ${tde_system_info_enabled}"                ${file}
 ${dynamic_cmd} "$(($matchC+3))i \    cipher_algorithm: ${tde_cipher_algorithm}"          ${file}
 ${dynamic_cmd} "$(($matchC+4))i \    secret_key_strength: ${tde_secret_key_strength}"    ${file}
 ${dynamic_cmd} "$(($matchC+5))i \    chunk_length_kb: ${tde_chunk_length_kb}"            ${file}
-${dynamic_cmd} "$(($matchC+6))i #>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'"            ${file}
+${dynamic_cmd} "$(($matchC+6))i #>>>>>END-ADDED-BY__${WHICH_POD}@${label}"               ${file}
 }
 
 # ---------------------------------------
@@ -104,7 +104,7 @@ dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -n' 'sed -n' 'sed -n' 'sed
 unset IFS
 
 # find line number of pod_DSE_SECURITY block
-matchA=$(${dynamic_cmd} /\#\>\>\>\>\>\ BEGIN-ADDED-BY__\'${WHICH_POD}@${label}\'/= "${file}")
+matchA=$(${dynamic_cmd} /\#\>\>\>\>\>BEGIN-ADDED-BY__\${WHICH_POD}@${label}\/= "${file}")
 # search for and remove any pod_DSE-SECURITY pre-canned blocks containing this label
 #lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
 lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
@@ -140,9 +140,9 @@ IFS='%'
 dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
 unset IFS
 # insert block to define encryption settings at correct line number
-${dynamic_cmd} "$(($matchC))i #>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'"            ${file}
+${dynamic_cmd} "$(($matchC))i #>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}"               ${file}
 ${dynamic_cmd} "$(($matchC+1))i system_key_directory: ${system_key_directory}"           ${file}
-${dynamic_cmd} "$(($matchC+2))i #>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'"            ${file}
+${dynamic_cmd} "$(($matchC+2))i #>>>>>END-ADDED-BY__${WHICH_POD}@${label}"               ${file}
 }
 
 # ---------------------------------------
@@ -160,7 +160,7 @@ dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -n' 'sed -n' 'sed -n' 'sed
 unset IFS
 
 # find line number of setting heading
-matchA=$(${dynamic_cmd} /\#\>\>\>\>\>\ BEGIN-ADDED-BY__\'${WHICH_POD}@${label}\'/= "${file}")
+matchA=$(${dynamic_cmd} /\#\>\>\>\>\>BEGIN-ADDED-BY__${WHICH_POD}@${label}/= "${file}")
 # search for and remove any pod_DSE-SECURITY pre-canned blocks containing this label
 #lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
 lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
@@ -197,12 +197,12 @@ dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed
 unset IFS
 
 # insert block to define encryption settings at correct line number
-${dynamic_cmd} "$(($matchC))i #>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'"                     ${file}
+${dynamic_cmd} "$(($matchC))i #>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}"                        ${file}
 ${dynamic_cmd} "$(($matchC+1))i audit_logging_options:"                                           ${file}
 ${dynamic_cmd} "$(($matchC+2))i \    enabled: ${audit_logging_enabled}"                           ${file}
 ${dynamic_cmd} "$(($matchC+3))i \    included_categories: ${audit_logging_included_categories}"   ${file}
 ${dynamic_cmd} "$(($matchC+4))i \    included_keyspaces: ${audit_logging_included_keyspaces}"     ${file}
-${dynamic_cmd} "$(($matchC+5))i #>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'"                     ${file}
+${dynamic_cmd} "$(($matchC+5))i #>>>>>END-ADDED-BY__${WHICH_POD}@${label}"                        ${file}
 }
 
 # ---------------------------------------
@@ -220,7 +220,7 @@ dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -n' 'sed -n' 'sed -n' 'sed
 unset IFS
 
 # find line number of setting heading
-matchA=$(${dynamic_cmd} /\#\>\>\>\>\>\ BEGIN-ADDED-BY__\'${WHICH_POD}@${label}\'/= "${file}")
+matchA=$(${dynamic_cmd} /\#\>\>\>\>\>BEGIN-ADDED-BY__${WHICH_POD}@${label}/= "${file}")
 # search for and remove any pod_DSE-SECURITY pre-canned blocks containing this label
 #lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
 lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
@@ -257,7 +257,7 @@ dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed
 unset IFS
 
 # insert block to define encryption settings at correct line number
-${dynamic_cmd} "$(($matchC))i #>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'"             ${file}
+${dynamic_cmd} "$(($matchC))i #>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}"                ${file}
 ${dynamic_cmd} "$(($matchC+1))i server_encryption_options:"                               ${file}
 ${dynamic_cmd} "$(($matchC+2))i \    internode_encryption: ${se_internode_encryption}"    ${file}
 ${dynamic_cmd} "$(($matchC+3))i \    keystore: ${se_keystore}"                            ${file}
@@ -272,7 +272,7 @@ if [ ${se_store_type} ];          then ${dynamic_cmd} "$(($matchC+$nextLine))i \
 if [ ${se_cipher_suites} ];       then ${dynamic_cmd} "$(($matchC+$nextLine))i \    cipher_suites: ${se_cipher_suites}"               ${file} && nextLine="$(($nextLine+1))"; fi
 if [ ${se_require_client_auth} ]; then ${dynamic_cmd} "$(($matchC+$nextLine))i \    require_client_auth: ${se_require_client_auth}"   ${file} && nextLine="$(($nextLine+1))"; fi
 if [ ${se_require_endpoint_verification} ]; then ${dynamic_cmd} "$(($matchC+$nextLine))i \    require_endpoint_verification: ${se_require_endpoint_verification}" ${file} && nextLine="$(($nextLine+1))"; fi
-${dynamic_cmd} "$(($matchC+$nextLine))i #>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'"     ${file}
+${dynamic_cmd} "$(($matchC+$nextLine))i #>>>>>END-ADDED-BY__${WHICH_POD}@${label}"        ${file}
 }
 
 # ---------------------------------------
@@ -290,7 +290,7 @@ dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -n' 'sed -n' 'sed -n' 'sed
 unset IFS
 
 # find line number of setting heading
-matchA=$(${dynamic_cmd} /\#\>\>\>\>\>\ BEGIN-ADDED-BY__\'${WHICH_POD}@${label}\'/= "${file}")
+matchA=$(${dynamic_cmd} /\#\>\>\>\>\>BEGIN-ADDED-BY__${WHICH_POD}@${label}/= "${file}")
 # search for and remove any pod_DSE-SECURITY pre-canned blocks containing this label
 #lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
 lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
@@ -327,7 +327,7 @@ dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed
 unset IFS
 
 # insert block to define encryption settings at correct line number
-${dynamic_cmd} "$(($matchC))i #>>>>> BEGIN-ADDED-BY__'${WHICH_POD}@${label}'"             ${file}
+${dynamic_cmd} "$(($matchC))i #>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}"                ${file}
 ${dynamic_cmd} "$(($matchC+1))i client_encryption_options:"                               ${file}
 ${dynamic_cmd} "$(($matchC+2))i \    enabled:  ${ce_enabled}"                             ${file}
 ${dynamic_cmd} "$(($matchC+3))i \    optional: ${ce_optional}"                            ${file}
@@ -342,7 +342,7 @@ if [ ${ce_protocol} ];            then ${dynamic_cmd} "$(($matchC+$nextLine))i \
 if [ ${ce_algorithm} ];           then ${dynamic_cmd} "$(($matchC+$nextLine))i \    algorithm: ${ce_algorithm}"                       ${file} && nextLine="$(($nextLine+1))"; fi
 if [ ${ce_store_type} ];          then ${dynamic_cmd} "$(($matchC+$nextLine))i \    store_type: ${ce_store_type}"                     ${file} && nextLine="$(($nextLine+1))"; fi
 if [ ${ce_cipher_suites} ];       then ${dynamic_cmd} "$(($matchC+$nextLine))i \    cipher_suites: ${ce_cipher_suites}"               ${file} && nextLine="$(($nextLine+1))"; fi
-${dynamic_cmd} "$(($matchC+$nextLine))i #>>>>> END-ADDED-BY__'${WHICH_POD}@${label}'"     ${file}
+${dynamic_cmd} "$(($matchC+$nextLine))i #>>>>>END-ADDED-BY__${WHICH_POD}@${label}"        ${file}
 }
 
 # ---------------------------------------

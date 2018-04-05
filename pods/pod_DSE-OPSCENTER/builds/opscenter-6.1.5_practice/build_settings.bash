@@ -45,18 +45,10 @@ TEMP_FOLDER="${INSTALL_FOLDER}TEMP/"
 
 # -----
 
-# [4] Ensure the opscenter cluster are used solely to store metric data
+# [4] Use the opscenter cluster to store metrics data for other clusters
 
 # set to true to apply [storage_cassandra] block (defined in server json) to /conf/clusters/cluster_name.conf
 apply_storage_cluster="true"
-
-# [storage_cassandra]
-# username = opsusr
-# password = opscenter
-# seed_hosts = host1, host2
-# api_port = 9160
-# cql_port = 9042
-# keyspace = OpsCenter_Cluster1
 
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
