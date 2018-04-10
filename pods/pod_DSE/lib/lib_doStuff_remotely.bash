@@ -4,7 +4,7 @@
 
 function lib_doStuff_remotely_pod_DSE(){
 
-## this function is run on the remote machine and calls the other remote functions in order
+## this function is run on the remote machine and calls other remote functions in order
 
 # [1] delete any previous pod build folder with the same name
 rm -rf ${INSTALL_FOLDER_POD}${BUILD_FOLDER}
