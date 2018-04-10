@@ -33,15 +33,15 @@ do
   ## [6] locally edit the dse config files in the folder 'tmp/pod/pods/pod_DSE/builds/${BUILD_FOLDER}/resources'
   lib_doStuff_locally_cassandraEnv
   lib_doStuff_locally_jvmOptions
-  lib_doStuff_locally_cassandraYaml
+  lib_doStuff_locally_cassandraYaml_buildSettings
   lib_doStuff_locally_dseSparkEnv
   lib_doStuff_locally_cassandraRackDcProperties
-  lib_doStuff_locally_cassandraYamlNodeSpecific
+  lib_doStuff_locally_cassandraYaml_json
   # handle paths specified in lists in the json
   lib_generic_build_jqListToArray "cass_data"
-  lib_doStuff_locally_cassandraYamlData
+  lib_doStuff_locally_cassandraYaml_cassData
   lib_generic_build_jqListToArray "dsefs_data"
-  lib_doStuff_locally_dseYamlDsefs
+  lib_doStuff_locally_dseYaml_dsefsData
 
   ## [7] display message
   prepare_generic_display_msgColourSimple "INFO-->" "sending:     bespoke pod build"

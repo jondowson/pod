@@ -2,7 +2,7 @@
 
 # ---------------------------------------
 
-function lib_doStuff_locally_cassandraYamlData(){
+function lib_doStuff_locally_cassandraYaml_cassData(){
 
 ## replace existing data directory/directories with new paths
 
@@ -24,11 +24,12 @@ do
   fi
 done
 
+# select correct version of command based on OS
 IFS='%'
 dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
 unset IFS
 
-# remove previous data path(s)
+# remove any previous data path(s)
 ${dynamic_cmd} "${file}" -re "${start},${lastEntry}d"
 
 # insert the new data paths with yaml friendly spacing
@@ -66,7 +67,7 @@ export GREMLIN_LOG_DIR=${gremlin_log_folder}
 #>>>>>END-ADDED-BY__${WHICH_POD}@${label}
 EOF
 
-# helps cqlsh and nodetool connect
+# this helps cqlsh and nodetool connect
 lib_generic_strings_sedStringManipulation "removeHashAndLeadingWhitespace"         ${file} '# JVM_OPTS=\"$JVM_OPTS -Djava.rmi.server.hostname=<public name>\"' "dummy"
 lib_generic_strings_sedStringManipulation "editAfterSubstring"                     ${file} 'JVM_OPTS=\"$JVM_OPTS -Djava.rmi.server.hostname=' "${pubIp}\""
 }
@@ -75,7 +76,7 @@ lib_generic_strings_sedStringManipulation "editAfterSubstring"                  
 
 function lib_doStuff_locally_jvmOptions(){
 
-## utilise if default tmpdir does not have access permissions !!
+## jvm.options - set temp folder that has write permissions
 
 # file to edit
 file="${tmp_build_file_folder}resources/cassandra/conf/jvm.options"
@@ -100,7 +101,7 @@ EOF
 
 function lib_doStuff_locally_cassandraRackDcProperties(){
 
-## configure the rack and data center for this node
+## cassandra-rackdc.properties - configure the rack and data center for this node
 
 # file to edit
 file="${tmp_build_file_folder}resources/cassandra/conf/cassandra-rackdc.properties"
@@ -112,9 +113,9 @@ lib_generic_strings_sedStringManipulation "editAfterSubstring" "${file}" "rack="
 
 # ---------------------------------------
 
-function lib_doStuff_locally_cassandraYaml(){
+function lib_doStuff_locally_cassandraYaml_buildSettings(){
 
-## configure the 'main' settings for the cassandra config file
+## cassandra.yaml - configure the 'main' settings set in the build_settings file
 
 # file to edit
 file="${tmp_build_file_folder}resources/cassandra/conf/cassandra.yaml"
@@ -136,47 +137,45 @@ if [[ "${VNODES}" == "false" ]]; then
   lib_generic_strings_sedStringManipulation "hashCommentOutMatchingLine"     "${file}" "initial_token:" "dummy"
 fi
 
-# hints_directory:
+# hints_directory
 lib_generic_strings_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "hints_directory:" "${hints_directory}"
-
-# commitlog_directory:
+# commitlog_directory
 lib_generic_strings_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "commitlog_directory:" "${commitlog_directory}"
-
-# cdc_raw_directory:
+# cdc_raw_directory
 lib_generic_strings_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "cdc_raw_directory:" "${cdc_raw_directory}"
-
-# saved_caches_directory:
+# saved_caches_directory
 lib_generic_strings_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "saved_caches_directory:" "${saved_caches_directory}"
-
 # endpoint_snitch: (nearly always 'GossipingPropertyFileSnitch')
 lib_generic_strings_sedStringManipulation "editAfterSubstring" "${file}" "endpoint_snitch:" "${ENDPOINT_SNITCH}"
 }
 
 # ---------------------------------------
 
-function lib_doStuff_locally_cassandraYamlNodeSpecific(){
+function lib_doStuff_locally_cassandraYaml_json(){
+
+## cassandra.yaml - set node specific settings from json
 
 # file to edit
 file="${tmp_build_file_folder}resources/cassandra/conf/cassandra.yaml"
 
-# seeds:
+# select correct version of command based on OS
 IFS='%'
 dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
 unset IFS
+
+# seeds
 ${dynamic_cmd} "s?\(-[[:space:]]seeds:\s*\).*\$?\1\"${seeds}\"?"  "${file}"
-
-# listen_address:
+# listen_address
 lib_generic_strings_sedStringManipulation "editAfterSubstring" "${file}" "listen_address:" "${listen_address}"
-
-# rpc_address:
+# rpc_address
 lib_generic_strings_sedStringManipulation "editAfterSubstring" "${file}" "rpc_address:" "${rpc_address}"
 }
 
 # ---------------------------------------
 
-function lib_doStuff_locally_dseYamlDsefs(){
+function lib_doStuff_locally_dseYaml_dsefsData(){
 
-## configure dse.yaml for dsefs - required by spark
+## dse.yaml - configure for dsefs - required by spark
 
 # file to edit
 file="${tmp_build_file_folder}resources/dse/conf/dse.yaml"
