@@ -5,7 +5,7 @@
 function lib_generic_misc_chooseOsCommand(){
 
 ## dynamically choose command based on the OS
-# e.g. generic_dynamic_os_command "gsed -i" "sed -i" "sed -i" "sed -i"
+## e.g. generic_dynamic_os_command "gsed -i" "sed -i" "sed -i" "sed -i"
 
 mac_cmd=${1}
 ubuntu_cmd=${2}
@@ -30,13 +30,17 @@ fi
 
 function lib_generic_misc_timestamp(){
 
-# generate a timestamp
+## generate a timestamp
+
 date +%F_%T
 }
 
 # ---------------------------------------
 
 function lib_generic_misc_timecount(){
+
+## display a timecount on screen
+
 min=0
 sec=${1}
 message=${2}

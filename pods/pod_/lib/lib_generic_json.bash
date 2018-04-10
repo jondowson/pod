@@ -53,8 +53,7 @@ done
 function lib_generic_jason_assignValues(){
 
 ## loop through json server block and create a bash variable (same name as json key) and assign its value to it
-
-# note: this function allows nested json objects to a depth of four - e.g. c1.2.3.x below
+## this function allows nested json objects to a depth of four - e.g. c1.2.3.x below //TODO make recursive?
 
 # {
 #  "server_1":{

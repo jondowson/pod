@@ -19,8 +19,8 @@ arraySize=${#array[@]}
 function lib_generic_strings_expansionDelimiter(){
 
 ## split a string by delimeter (limited to 2 delimiters !)
-# e.g. pod_generic_strings_expansionDelimiter "this;that;other" ";" "2"
-#      ---> _D1_="this" and _D2_="that" and _D3_="other"
+## e.g. pod_generic_strings_expansionDelimiter "this;that;other" ";" "2"
+##      ---> _D1_="this" and _D2_="that" and _D3_="other"
 
 string=${1}
 delim=${2}
@@ -88,9 +88,8 @@ esac
 function lib_generic_strings_removePodBlockAndEmptyLines(){
 
 ## cleanly remove an existing pod insertion block, leaving no following blank line gaps
-
-#usage example
-#lib_generic_strings_removePodBlockAndEmptyLines "thisFile" "pod_XXX@<label>"
+## usage:
+## lib_generic_strings_removePodBlockAndEmptyLines "thisFile" "pod_XXX@<label>"
 
 # file to search and the pod block label
 file="${1}"

@@ -1,13 +1,12 @@
-# about:  checks and error catching functions
+# about:  variety of checks and error handling functions
 
 # ---------------------------------------
 
 function catchError(){  # short name allowed to break naming convention as it will be utilised heavily
 
-##  catch return code of any command and if failure exit with code
-
-# usage example
-# catchError "launch-pod#1" "json parsing error" "true" "true" "jq server.json"
+## catch return code of any command and if failure exit with code
+## usage:
+## catchError "launch-pod#1" "json parsing error" "true" "true" "jq server.json"
 
 # tag to identify calling script
 callingScriptTag=${1}
@@ -27,7 +26,6 @@ else
   ${command}
 fi
 ret=$?
-
 if [[ $ret != 0 ]]; then
   prepare_generic_display_msgColourSimple "ERROR-->" "Error: ${tagMsg} with return value: [ ${ret} ] ${yellow}[ ${callingScriptTag} ]"
   if [[ ${abort}  == "true" ]]; then
@@ -42,9 +40,8 @@ fi
 function lib_generic_checks_freeTest(){
 
 ## generic function to test two values against each other
-
-# usage example
-# lib_generic_checks_freeTest "launch-pod#5.2.1" "zero number of servers" "$numberOfServers" "-eq" "0"
+## usage:
+## lib_generic_checks_freeTest "launch-pod#5.2.1" "zero number of servers" "$numberOfServers" "-eq" "0"
 
 # tag to identify calling script
 callingScriptTag=${1}
@@ -55,7 +52,7 @@ value="$3"
 test="$4"
 testAgainst="$5"
 
-## ensure there are more than 0 servers
+# ensure there are more than 0 servers
 if [ $value $test $testAgainst ]; then
   prepare_generic_display_msgColourSimple "ERROR-->" "Error: ${tagMsg}: ${yellow}[ ${callingScriptTag} ]"
   prepare_generic_misc_clearTheDecks
@@ -68,9 +65,8 @@ fi
 function lib_generic_checks_fileExists(){
 
 ## check for the existence of a file - option to abort script if failure
-
-# usage example
-# lib_generic_checks_fileExists "message" "true" "fileToCheck.sh"
+## usage:
+## lib_generic_checks_fileExists "message" "true" "fileToCheck.sh"
 
 # a helpful tag message outputted to screen
 tagMsg=$1
@@ -93,9 +89,8 @@ fi
 function lib_generic_checks_folderExists(){
 
 ## check for the existence of a folder - option to abort script if failure
-
-# usage example
-# lib_generic_checks_folderExists "message" "true" "folderToCheck"
+## usage:
+## lib_generic_checks_folderExists "message" "true" "folderToCheck"
 
 # a helpful tag message outputted to screen
 tagMsg=$1
@@ -118,12 +113,11 @@ fi
 function lib_generic_checks_fileFolderExists(){
 
 ## check for the existence of a file or folder for a given folder path
-# note: case sensitive approach required as Macs ignore case when listing folders/files
-# note: returns return code 0 if file/folder found or error message
-
-# usage examples
-# lib_generic_checks_folderExistsCaseSensitive "message" "true" "pathToParentFolder" "folder" "file/folderTCheck"
-# lib_generic_checks_folderExistsCaseSensitive "message" "false" "pathToParentFolder" "file" "file/folderTCheck"
+## case sensitive approach required as Macs ignore case when listing folders/files
+## returns code 0 if file/folder found or error message
+## usage:
+## lib_generic_checks_folderExistsCaseSensitive "message" "true" "pathToParentFolder" "folder" "file/folderTCheck"
+## lib_generic_checks_folderExistsCaseSensitive "message" "false" "pathToParentFolder" "file" "file/folderTCheck"
 
 # a helpful tag message outputted to screen
 tagMsg=${1}
@@ -178,9 +172,8 @@ fi
 function lib_generic_checks_localIpMatch(){
 
 ## check if an ip is a local ip
-
-# usage example
-# lib_generic_checks_localIpMatch "${pubIp}"s
+## usage:
+## lib_generic_checks_localIpMatch "${pubIp}"s
 
 ipToCheck=${1}
 ip addr | grep -wq "${ipToCheck}" &&  printf "%s\n" "true"

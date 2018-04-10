@@ -34,7 +34,7 @@ function lib_generic_build_jqListToArray(){
 
 ## read the cassandra data path(s) specified in the json into a bash array
 ## usage:
-##        lib_generic_build_jqListToArray "cass_data"
+## lib_generic_build_jqListToArray "cass_data"
 
 # the name of the json key with the path(s)
 jqlist="${1}"
@@ -53,18 +53,22 @@ done
 
 function lib_generic_build_sendPod(){
 
-## check if server is local server - so not to delete itself !!!!!
+## send pod build to server
+
+# check if server is local server
 localServer="false"
 localServer=$(lib_generic_checks_localIpMatch "${pubIp}")
 
 # if not local server - delete any existing pod folder
 if [[ "${localServer}" != "true" ]]; then
   ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "rm -rf ${target_folder}POD_SOFTWARE/POD/pod" exit
+
 # if local server - copy from the tmp folder the value for target_folder
 # this will subsequently be copied back to the local copy of misc/.suitcase, once all servers have been looped through
 else
   cp "${tmp_suitcase_file_path}" ${pod_home_path}/.suitcase.tmp
 fi
+
 # (re)create folder and send over updated pod software
 # this will be merged locally
 ssh -q -i ${sshKey} ${user}@${pubIp} "mkdir -p ${target_folder}POD_SOFTWARE/POD/pod/"
@@ -76,6 +80,8 @@ build_send_error_array["${tag}"]="${status};${pubIp}"
 # ------------------------------------------
 
 function lib_generic_build_finishUp(){
+
+## tasks to finish up the build stage
 
 # assign the local target_folder value back to the local copy of the misc/.suitcase
 mv ${pod_home_path}/.suitcase.tmp "${suitcase_file_path}"
