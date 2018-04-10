@@ -2,16 +2,21 @@
 
 # ------------------------------------------
 
-function lib_generic_build_suitcase(){
+function lib_generic_build_sourceTarget(){
 
-## pack the suitcase !!
 ## assign build settings per the TARGET_FOLDER specified for this server
 
-# set the target folder for this server and write to the temp file in 'pod/misc/.suitcase'
+# write the target folder for this server to the temp file 'pod/misc/.suitcase'
 printf "%s\n" "TARGET_FOLDER=${target_folder}"  > "${suitcase_file_path}"
 # source the copied build_settings file in the tmp folder - that file will itself source the above file 'pod/misc/.suitcase'
 source "${tmp_build_settings_file_path}"
+}
 
+# ------------------------------------------
+
+function lib_generic_build_suitcase(){
+
+## pack the suitcase !!
 ## append (in order) server specific variables used by remotely run functions
 
 # [1] TARGET_FOLDER - clear any existing values with first entry (i.e. '>')

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-## about:      script launched on remote server
+# about:      script launched on remote server
 
 # ------------------------------------------
 

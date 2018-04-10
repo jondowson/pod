@@ -12,34 +12,27 @@ serverJsonPaths="${2}"
 
 for id in $(seq 1 ${numberOfServers});
 do
-
+  # [1] assign json variable to bash variables
   tag=$(jq             -r '.server_'${id}'.tag'             "${servers_json_path}")
   user=$(jq            -r '.server_'${id}'.user'            "${servers_json_path}")
   sshKey=$(jq          -r '.server_'${id}'.sshKey'          "${servers_json_path}")
   target_folder=$(jq   -r '.server_'${id}'.target_folder'   "${servers_json_path}")
   pubIp=$(jq           -r '.server_'${id}'.pubIp'           "${servers_json_path}")
-
-# ----------
-
   # add trailing '/' to path if not present
   target_folder=$(lib_generic_strings_addTrailingSlash "${target_folder}")
 
-# ----------
-
+  # [2] source the build_settings file after assigning the target_folder for the current server in the loop
   TARGET_FOLDER="${target_folder}"
   source "${tmp_build_settings_file_path}"
 
-# ----------
-
+  # [3] display message
   prepare_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
   printf "\n%s"
   prepare_generic_display_msgColourSimple "INFO-->" "configuring:    bespoke server paths"
   prepare_generic_display_msgColourSimple "INFO-->" "writing-to:     bespoke server paths"
   printf "%s\n" "${red}"
 
-# ----------
-
-  # (1) test all buildFolderPaths
+  # [4] test all buildFolderPaths
   # delimit the buildFolderPaths string into an array
   buildFolderPaths="target_folder;${buildFolderPaths}"              # prepend the target_folder for this server
   lib_generic_strings_ifsStringDelimeter ";" "${buildFolderPaths}"
@@ -59,9 +52,7 @@ do
     fi
   done
 
-# ----------
-
-  # (2) test json elements that have nested paths - these will be passed here as a delimited string
+  # [5] test json elements that have nested paths - these will be passed here as a delimited string
   # e.g. "cass_data;dsefs_data"
   if [[ ${serverJsonPaths} != "" ]]; then
     # delimit the json element(s) into an array
@@ -73,7 +64,6 @@ do
       lib_generic_json_writePathTest ";" "${element}"
     done
   fi
-
 done
 }
 

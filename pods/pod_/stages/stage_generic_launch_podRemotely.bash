@@ -24,6 +24,9 @@ do
   printf "\n%s"
   prepare_generic_display_msgColourSimple "INFO-->" "launch:      pod remotely"
 
+# -----
+
+  # call remote launch script
   ssh -ttq -o "BatchMode yes" -o "ForwardX11=no" ${user}@${pubIp} "chmod -R 700 ${target_folder}POD_SOFTWARE/POD && ${target_folder}POD_SOFTWARE/POD/pod/pods/pod_/scripts/scripts_generic_launch_pod.sh" > /dev/null 2>&1 &                # run in parallel
   # grab pid and capture owner in array
   pid=$!
@@ -34,7 +37,6 @@ do
 # -----
 
   # print out pids
-
   if [[ "${runBuild_pids_print}" ]]; then
     runBuild_pids_print="${runBuild_pids_print},$pid"
   else
@@ -53,7 +55,6 @@ printf "\n%s"
 # -----
 
 # Wait for all processes to finish
-
 runBuild_pid_failures=""
 printf "%s" ${red}  # any scp error messages
 for p in $runBuild_pids; do
@@ -69,6 +70,8 @@ done
 # ------------------------------------------
 
 function task_generic_launchPodRemotely_report(){
+
+## report on the status of the remote server launch pod pids
 
 if [[ ! -z $runBuild_pid_failures ]]; then
   prepare_generic_display_msgColourSimple "INFO-->" "${cross} Problems executing pod build on servers"

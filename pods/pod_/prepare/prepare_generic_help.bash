@@ -22,6 +22,8 @@ printf "%s\n"     "-------------------------------------------------------------
 
 function prepare_generic_help_lists(){
 
+## list available pods, all server definitions and pod specific build folders
+
 if [[ "${podFlag}" != "true" ]]; then
 
   prepare_generic_display_msgColourSimple "TASK" "Available pods:"

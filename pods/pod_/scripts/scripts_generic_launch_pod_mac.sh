@@ -1,6 +1,6 @@
 #!/usr/local/bin/bash
 
-## about:      script launched on remote server - using mac version bash path above
+# about:      script launched on remote server - using mac bash path above
 
 # ------------------------------------------
 

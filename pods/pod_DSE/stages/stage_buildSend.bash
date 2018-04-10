@@ -24,10 +24,13 @@ do
   ## [3] for this server, loop through its json block and assign values to bash variables
   lib_generic_jason_assignValues
 
-  ## [4] build a 'suitcase' of server specific variables - used by remotely run functions
+  ## [4] source the build_settings file based on this server's target_folder
+  lib_generic_build_sourceTarget
+
+  ## [5] build a 'suitcase' of server specific variables - used by remotely run functions
   lib_generic_build_suitcase
 
-  ## [5] locally edit the dse config files in the folder 'tmp/pod/pods/pod_DSE/builds/${BUILD_FOLDER}/resources'
+  ## [6] locally edit the dse config files in the folder 'tmp/pod/pods/pod_DSE/builds/${BUILD_FOLDER}/resources'
   lib_doStuff_locally_cassandraEnv
   lib_doStuff_locally_jvmOptions
   lib_doStuff_locally_cassandraYaml
@@ -40,11 +43,11 @@ do
   lib_generic_build_jqListToArray "dsefs_data"
   lib_doStuff_locally_dseYamlDsefs
 
-  ## [6] display message
+  ## [7] display message
   prepare_generic_display_msgColourSimple "INFO-->" "sending:     bespoke pod build"
   printf "%s\n" "${red}"
 
-  ## [7] send the bespoke pod build to the server
+  ## [8] send the bespoke pod build to the server
   lib_generic_build_sendPod
 done
 
@@ -56,7 +59,7 @@ lib_generic_build_finishUp
 
 function task_buildSend_report(){
 
-## generate a report of all failed sends of pod build
+## generate a status report of all send pids
 
 declare -a build_send_report_array
 count=0

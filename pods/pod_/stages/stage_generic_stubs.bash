@@ -77,9 +77,9 @@ stageTotal="${2}"
 prepare_generic_display_stageCount        "Summary" "${stageNumber}" "${stageTotal}"
 prepare_generic_display_msgColourSimple   "REPORT" "STAGE REPORT:${reset}"
 if [[ "${rr_flag}" == true ]]; then
-  prepare_generic_display_msgColourSimple "SUCCESS" "LOCAL SERVER: resources folder generated"
+  prepare_generic_display_msgColourSimple "SUCCESS" "LOCAL SERVER: new resources folder generated"
 else
-  prepare_generic_display_msgColourSimple "SUCCESS" "LOCAL SERVER: resources folder untouched"
+  prepare_generic_display_msgColourSimple "SUCCESS" "LOCAL SERVER: old resources folder utilised"
 fi
 task_generic_testConnectivity_report
 task_generic_testWritePaths_report

@@ -9,23 +9,19 @@ function task_generic_testConnectivity(){
 for id in $(seq 1 ${numberOfServers});
 do
 
+  # [1] assign json variable to bash variables
   tag=$(jq            -r '.server_'${id}'.tag'            "${servers_json_path}")
   user=$(jq           -r '.server_'${id}'.user'           "${servers_json_path}")
   sshKey=$(jq         -r '.server_'${id}'.sshKey'         "${servers_json_path}")
   target_folder=$(jq  -r '.server_'${id}'.target_folder'  "${servers_json_path}")
   pubIp=$(jq          -r '.server_'${id}'.pubIp'          "${servers_json_path}")
-
-# ----------
-
   # add trailing '/' to path if not present
   target_folder=$(lib_generic_strings_addTrailingSlash "${target_folder}")
 
-# ----------
-
+  # [2] display message
   prepare_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
 
-# ----------
-
+  # [3] test ssh connectivity 5 times
   status="999"
   if [[ "${status}" != "0" ]]; then
     retry=1

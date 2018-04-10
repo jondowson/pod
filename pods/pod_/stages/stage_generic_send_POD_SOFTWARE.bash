@@ -7,47 +7,42 @@ function task_generic_sendPodSoftware(){
 for id in $(seq 1 ${numberOfServers});
 do
 
+  # [1] assign json variable to bash variables
   tag=$(jq            -r '.server_'${id}'.tag'            "${servers_json_path}")
   user=$(jq           -r '.server_'${id}'.user'           "${servers_json_path}")
   sshKey=$(jq         -r '.server_'${id}'.sshKey'         "${servers_json_path}")
   target_folder=$(jq  -r '.server_'${id}'.target_folder'  "${servers_json_path}")
   pubIp=$(jq          -r '.server_'${id}'.pubIp'          "${servers_json_path}")
-
-# -----
-
   # add trailing '/' to path if not present
   target_folder=$(lib_generic_strings_addTrailingSlash "${target_folder}")
+
+  # [2] source the build_settings file after assigning the target_folder for the current server in the loop
   TARGET_FOLDER="${LOCAL_TARGET_FOLDER}"
   source ${tmp_build_settings_file_path}
 
-# -----
-
+  # [3] display message
   prepare_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
-
-# -----
-
   prepare_generic_display_msgColourSimple "INFO-->" "sending:     POD_SOFTWARE/${PACKAGE} folder"
 
-  # target folder must exist on target machine !!
+  # [4] check target_folder can be used on target machine !!
   catchError "stage_generic_POD_SOFTWARE#1" "cannot make target folder" "true" "true" "ssh -o ForwardX11=no ${user}@${pubIp} mkdir -p ${target_folder}POD_SOFTWARE"
 
-  # check if server is local server - no point sending software if local +  no delete locally of existing pod folder
+  # [5] check if server is local server - no point sending software if local +  no delete locally of existing pod folder
   localServer="false"
   localServer=$(lib_generic_checks_localIpMatch "${pubIp}")
-
   if [[ "${localServer}" == "true" ]]; then
     prepare_generic_display_msgColourSimple "INFO-->" "Not sending to local machine ! ${reset}"
   else
-    # copy the POD_SOFTWARE for this pod from this server to remote server
+    # copy the POD_SOFTWARE folder to remote server
     scp -q -o LogLevel=QUIET -i ${sshKey} -r "${PACKAGES}" "${user}@${pubIp}:${target_folder}POD_SOFTWARE" &    # run in parallel
-    # grab pid and capture owner in array
+    # out pid response status in array
     pid=${!}
     prepare_generic_display_msgColourSimple "INFO-->" "pid id:      ${yellow}${pid}${reset}"
     send_pod_software_pid_array["${pid}"]="${tag};${pubIp}"
     DSE_pids+=" $pid"
   fi
 
-  # collect pids for print
+  # collect pids for display
   if [[ "${DSE_pids_print}" ]]; then
     DSE_pids_print="${DSE_pids_print},$pid"
   else
@@ -59,14 +54,12 @@ done
 
 # -----
 
+# [6] display message
 prepare_generic_display_msgColourSimple "INFO-BOLD" "awaiting scp pids:${reset}"
 prepare_generic_display_msgColourSimple "INFO" "${yellow}$DSE_pids${reset}"
 printf "\n%s"
 
-# -----
-
-# Wait for all processes to finish
-
+# [7] display pid responses as they become available
 POD_SOFTWARE_pid_failures=""
 printf "%s" ${red}  # any scp error messages
 for p in $DSE_pids; do
@@ -83,7 +76,7 @@ done
 
 function task_generic_sendPodSoftware_report(){
 
-# display report
+## display report of pids used when sending POD_SOFTWARE 
 
 if [[ ! -z $POD_SOFTWARE_pid_failures ]]; then
   prepare_generic_display_msgColourSimple "INFO-->" "${cross} Problems distributing POD_SOFTWARE/${PACKAGE} to servers"

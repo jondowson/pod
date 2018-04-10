@@ -5,9 +5,8 @@
 function prepare_generic_misc_podBuildTempFolder(){
 
 ## prepare duplicate version of 'pod' project
-
-# this requires an existing local resources folder
-# note: it is this duplicate folder will be configured locally and then sent to remote server(s)
+## this requires an existing local resources folder
+## it is this duplicate folder will be configured locally and then sent to remote server(s)
 
 suitcase_file_path="${pod_home_path}/misc/.suitcase"
 tmp_build_folder="${pod_home_path}/tmp/pod/" && \
@@ -28,6 +27,7 @@ cp -rp "${pod_home_path}/pods"         "${tmp_working_folder}" && \
 cp -rp "${pod_home_path}/servers"      "${tmp_working_folder}" && \
 cp -rp "${pod_home_path}/third_party"  "${tmp_working_folder}" && \
 cp -p  "${pod_home_path}/README.md"    "${tmp_working_folder}" && \
+cp -p  "${pod_home_path}/CHANGE.md"    "${tmp_working_folder}" && \
 cp -p  "${pod_home_path}/.gitignore"   "${tmp_working_folder}" && \
 cp -p  "${pod_home_path}/pod"          "${tmp_working_folder}"
 
@@ -135,9 +135,8 @@ rm -rf ${pod_home_path}/.suitcase
 
 function prepare_generic_misc_checkSoftwareExists(){
 
-## test software exists
+## test POD_SOFTWARE folder and software tar file are available
 
-# test POD_SOFTWARE folder and software tar file are available
 if [[ "${SEND_POD_SOFTWARE}" == "true" ]]; then
   lib_generic_checks_folderExists "prepare_generic_misc.bash#3" "true" "${POD_SOFTWARE}"
 fi

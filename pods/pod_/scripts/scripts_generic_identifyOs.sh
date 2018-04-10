@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# about: script to output os on remote machine - works for both mac and linux 
+# about: script to output os on remote machine - works for both mac and linux
+
+# ---------------------------------------
 
 function scripts_generic_identifyOs(){
 
