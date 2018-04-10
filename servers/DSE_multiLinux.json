@@ -1,61 +1,5 @@
 {
     "server_1":{
-      "tag": "storage_1",
-      "user": "jd",
-      "sshKey": "/home/jd/.ssh/id_rsa",
-      "target_folder": "/home/jd/Desktop/",
-      "pubIp": "192.168.1.64",
-      "listen_address": "127.0.0.1",
-      "rpc_address": "127.0.0.1",
-      "stomp_interface": "127.0.0.1",
-      "seeds": "127.0.0.1",
-      "token": "",
-      "dc": "dc1",
-      "rack": "rack1",
-      "mode": {
-        "search": "false",
-        "analytics": "false",
-        "graph": "false",
-        "dsefs": "false"
-      },
-      "cass_data": [
-        "/Users/jd/Desktop/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/sstables/",
-        "/Users/jd/Desktop/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/sstables2/"
-      ],
-      "dsefs_data": [
-        "/home/jd/Desktop/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/dsefs/;1.0;5368709",
-        "/home/jd/Desktop/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/dsefs2/;1.0;5368709"
-      ]
-    },
-    "server_2":{
-      "tag": "storage_2",
-      "user": "greta",
-      "sshKey": "/home/jd/.ssh/id_rsa",
-      "target_folder": "/home/greta/",
-      "pubIp": "192.168.1.65",
-      "listen_address": "192.168.1.65",
-      "rpc_address": "192.168.1.65",
-      "stomp_interface": "192.168.1.64",
-      "seeds": "192.168.1.64,192.168.1.65",
-      "token": "",
-      "dc": "dc1",
-      "rack": "rack1",
-      "mode": {
-        "search": "false",
-        "analytics": "true",
-        "graph": "false",
-        "dsefs": "false"
-      },
-      "cass_data": [
-        "/home/greta/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/sstables/",
-        "/home/greta/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/sstables2/"
-      ],
-      "dsefs_data": [
-        "/home/greta/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/dsefs/;1.0;5368709",
-        "/home/greta/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/dsefs2/;1.0;5368709"
-      ]
-    },
-    "server_3":{
       "tag": "storage_3",
       "user": "frieda",
       "sshKey": "/home/jd/.ssh/id_rsa",
@@ -69,10 +13,22 @@
       "dc": "dc1",
       "rack": "rack1",
       "mode": {
-        "search": "false",
-        "analytics": "true",
+        "search": {
+          "tom": "bonjour",
+          "dick": "ca va",
+          "harry": "oui"
+        },
+        "analytics": "false",
         "graph": "false",
-        "dsefs": "false"
+        "dsefs": {
+          "tom": "watcha",
+          "dick": "how are you",
+          "harry": {
+            "tom": "watcha",
+            "dick": "how are you",
+            "harry": "yes"
+          }
+        }
       },
       "cass_data": [
         "/home/frieda/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/sstables/",

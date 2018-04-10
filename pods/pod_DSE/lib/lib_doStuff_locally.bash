@@ -32,7 +32,7 @@ unset IFS
 ${dynamic_cmd} "${file}" -re "${start},${lastEntry}d"
 
 # insert the new data paths with yaml friendly spacing
-for i in "${data_file_directories_array[@]}"
+for i in "${build_send_data_array[@]}"
 do
 	${dynamic_cmd} "${start}i\    \-\ \ ${i}" "${file}"
 	start=$(($start+1))
@@ -198,7 +198,7 @@ dsefs_options:
       data_directories:
 EOF
 # add data folder(s) for dsefs
-for i in "${dsefs_data_file_directories_array[@]}"
+for i in "${build_send_data_array[@]}"
 do
   lib_generic_strings_expansionDelimiter "$i" ";" "2"
   cat << EOF >> $file

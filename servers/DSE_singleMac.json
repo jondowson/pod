@@ -7,7 +7,7 @@
       "pubIp": "127.0.0.1",
       "listen_address": "127.0.0.1",
       "rpc_address": "127.0.0.1",
-      "stomp_interface": "127.0.0.1",
+      "stomp_interface": "127.0.0.1000",
       "seeds": "127.0.0.1",
       "token": "",
       "dc": "dc1",

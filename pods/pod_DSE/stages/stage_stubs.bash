@@ -57,7 +57,7 @@ stageTotal="${2}"
 prepare_generic_display_stageCount        "Build and send bespoke pod" "${stageNumber}" "${stageTotal}"
 prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Configure pod locally and distribute"
 task_buildSend
-task_buildSend_report
+task_generic_buildSend_report
 prepare_generic_display_stageTimeCount
 }
 
@@ -81,9 +81,9 @@ if [[ "${clusterstateFlag}" == "true" ]]; then
   WHICH_POD=${WHICH_POD}-rollingStart
 else
   if [[ "${REGENERATE_RESOURCES}" == "true" ]] || [[ "${REGENERATE_RESOURCES}" == "edit" ]]; then
-    prepare_generic_display_msgColourSimple "SUCCESS" "LOCAL SERVER: resources folder generated"
+    prepare_generic_display_msgColourSimple "SUCCESS" "LOCAL SERVER: new resources folder generated"
   else
-    prepare_generic_display_msgColourSimple "SUCCESS" "LOCAL SERVER: resources folder untouched"
+    prepare_generic_display_msgColourSimple "SUCCESS" "LOCAL SERVER: old resources folder utilised"
   fi
   task_generic_testConnectivity_report
   task_generic_testWritePaths_report

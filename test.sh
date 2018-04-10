@@ -1,25 +1,75 @@
-#!/usr/bin/env bash
-set -x
-servers_json_path="servers/DSE-OPSCENTER_singleMac.json"
-id=1
+#!/bin/bash
 
-numberOfClusters=$(jq -r '.server_1.cluster_conf' ${servers_json_path} | grep 'cluster_' | wc -l)
+#tags=$(jq '.server_1 | keys[]' servers/DSE_multiLinux.json)
+#tags=$(sed -e 's/^"//' -e 's/"$//' <<<"$tags")
+#set -x
+servers_json_path="servers/DSE_multiLinux.json"
+u="_"
+keys=$(jq -r '.server_1 | keys[]' ${servers_json_path})
+numberOfServers="1"
 
-# process the opscenter cluster config entries for the [storage_cassandra] block (specified in the jsonfile) - handle ${BUILD_FOLDER} variable if present in path
-#storage_cassandra=$(jq -r '.server_'${id}'.cluster_conf.cluster_'${COUNTER} "${servers_json_path}")
-declare -a storage_cassandra_array
-for count in $(seq 1 ${numberOfClusters});
+#IFS='%'
+#dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
+#unset IFS
+
+for id in $(seq 1 ${numberOfServers});
 do
-  jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.clustername'             "${servers_json_path}"
-  jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.username'                "${servers_json_path}"
-  jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.password'                "${servers_json_path}"
-  jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.apiport'                 "${servers_json_path}"
-  jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.cqlport'                 "${servers_json_path}"
-  jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.keyspace'                "${servers_json_path}"
-  jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.ssl_keystore'            "${servers_json_path}"
-  jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.ssl_keystore_password'   "${servers_json_path}"
-  jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.ssl_truststore'          "${servers_json_path}"
-  jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.ssl_truststore_password' "${servers_json_path}"
-  #storage_cassandra_array[${COUNTER}]=${path}
-  #(( COUNTER++ ))
+  # for each level one key
+  for k in $keys
+  do
+    # declare a variable of the same name and assign its value to it
+    declare "$k=$(jq -r '.server_'${id}'.'$k ${servers_json_path})"
+
+    # check if key has nested key value pairs - ignore if it is empty or if it is a list (then it will contain [0])
+    nestedCheck=$(jq -r '.server_'${id}'.'$k' | paths' ${servers_json_path})
+    if [[ $nestedCheck != *[0]* ]] && [[ $nestedCheck != "" ]]; then
+
+      # remove brackets, quotes and spaces + then deduplicate in preparation to loop through each nested key
+      nestedKeys=$(echo $nestedCheck | tr -d '[' | tr -d ']' | tr -d '"' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+      nestedKeys=$(echo $nestedKeys  | sed 's/, *.[[:alnum:]]*//g' | gsed -r ':a; s/\b([[:alnum:]]+)\b(.*)\b\1\b/\1\2/g; ta; s/(, )+/, /g; s/, *$//')
+
+      # for each level two key
+      for nk in $nestedKeys
+      do
+        # declare a variable of the same name and assign its value to it - using underscore between nested levels for variable name
+        declare "$k$u$nk=$(jq -r '.server_'${id}'.'$k'.'$nk ${servers_json_path})"
+
+        # check if key has nested key value pairs - ignore if it is empty or if it is a list (then it will contain [0])
+        nestedCheckTwo=$(jq -r '.server_'${id}'.'$k'.'$nk' | paths' ${servers_json_path})
+        if [[ $nestedCheckTwo != *[0]* ]] && [[ $nestedCheckTwo != "" ]]; then
+
+          # remove brackets, quotes and spaces + then deduplicate in preparation to loop through each nested key
+          nestedKeysTwo=$(echo $nestedCheckTwo |  tr -d '[' | tr -d ']' | tr -d '"' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+          nestedKeysTwo=$(echo $nestedKeysTwo  | sed 's/, *.[[:alnum:]]*//g' | gsed -r ':a; s/\b([[:alnum:]]+)\b(.*)\b\1\b/\1\2/g; ta; s/(, )+/, /g; s/, *$//')
+
+          # for each level three key
+          for nnk in $nestedKeysTwo
+          do
+            # declare a variable of the same name and assign its value to it - using underscore between nested levels for variable name
+            declare "$k$u$nk$u$nnk=$(jq -r '.server_'${id}'.'$k'.'$nk'.'$nnk ${servers_json_path})"
+
+            # check if key has nested key value pairs - ignore if it is empty or if it is a list (then it will contain [0])
+            nestedCheckThree=$(jq -r '.server_'${id}'.'$k'.'$nk'.'$nnk' | paths' ${servers_json_path})
+            if [[ $nestedCheckThree != *[0]* ]] && [[ $nestedCheckThree != "" ]]; then
+
+              # remove brackets, quotes and spaces + then deduplicate in preparation to loop through each nested key
+              nestedKeysThree=$(echo $nestedCheckThree |  tr -d '[' | tr -d ']' | tr -d '"' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+              nestedKeysThree=$(echo $nestedKeysThree  | sed 's/, *.[[:alnum:]]*//g' | gsed -r ':a; s/\b([[:alnum:]]+)\b(.*)\b\1\b/\1\2/g; ta; s/(, )+/, /g; s/, *$//')
+
+              # for each level four key
+              for nnnk in $nestedKeysThree
+              do
+                declare "$k$u$nk$u$nnk$u$nnnk=$(jq -r '.server_'${id}'.'$k'.'$nk'.'$nnk'.'$nnnk ${servers_json_path})"
+              done
+            fi
+          done
+        fi
+      done
+    fi
+  done
+
 done
+
+echo $mode_search_tom
+echo $mode_dsefs_tom
+echo $mode_dsefs_harry_harry

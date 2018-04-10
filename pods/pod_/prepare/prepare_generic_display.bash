@@ -23,6 +23,7 @@ reset=`tput sgr0`
 italic=$(tput sitm)
 tick="${b}${green}$(printf '\xE2\x9C\x94')${reset}"
 cross="${b}${red}$(printf '\xE2\x9C\x99')${reset}"
+u="_"
 
 # ---------------------------------------
 
