@@ -4,25 +4,21 @@
 
 function pod_DSE(){
 
-## globally declare arrays utilised by this pod's own stages
-
+# globally declare arrays utilised by this pod's own stages
 declare -A build_send_error_array     # stage_buildSend.bash
 declare -a build_send_data_array      # stage_buildSend.bash
 declare -A start_dse_error_array      # stage_rollingStart.bash
 declare -A stop_dse_error_array       # stage_rollingStop.bash
 
-## declare all paths (; seperated) from the build folder + json file that should be write tested
-
+# declare all paths (; seperated) from the build folder + json file that should be write tested
 buildPathsToCheck="TEMP_FOLDER;PARENT_DATA_FOLDER;PARENT_LOG_FOLDER;spark_local_data;spark_worker_data;"
 jsonPathsToCheck="cass_data;dsefs_data"
 
 # ------------------------------------------
 
 ## STAGES
-
-## note:
-#     generic stages are composed in:   pod_/stages/stage_generic_stubs.bash
-# non-generic stages are composed in:   pod_DSE/stages/stage_stubs.bash
+##     generic stages are composed in:   pod_/stages/stage_generic_stubs.bash
+## non-generic stages are composed in:   pod_DSE/stages/stage_stubs.bash
 
 # stopping/starting dse nodes
 if [[ "${clusterstateFlag}" == "true" ]]; then

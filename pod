@@ -153,6 +153,7 @@ else
 
 ## [8] globally declare arrays used by generic stages
 
+  declare -A json_array                   # all stages - assign json key values to bash variables
   declare -A test_connect_error_array     # stage_generic_test_sshConnectivity - test passwordless connectivity
   declare -A test_write_error_array_1     # stage_generic_test_writePaths      - test writeTest_array paths
   declare -A test_write_error_array_2     # stage_generic_test_writePaths      - test paths specified in json
