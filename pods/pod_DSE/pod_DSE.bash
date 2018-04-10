@@ -11,7 +11,7 @@ declare -a build_send_data_array      # stage_buildSend.bash
 declare -A start_dse_error_array      # stage_rollingStart.bash
 declare -A stop_dse_error_array       # stage_rollingStop.bash
 
-## declare all paths (; seperated) from the build folder + json file that should be write tested 
+## declare all paths (; seperated) from the build folder + json file that should be write tested
 
 buildPathsToCheck="TEMP_FOLDER;PARENT_DATA_FOLDER;PARENT_LOG_FOLDER;spark_local_data;spark_worker_data;"
 jsonPathsToCheck="cass_data;dsefs_data"
@@ -34,10 +34,10 @@ if [[ "${clusterstateFlag}" == "true" ]]; then
 # installing pod_DSE
 else
 
-  #stage_stubs_createResourcesFolder     "1" "7"
+  stage_stubs_createResourcesFolder     "1" "7"
   stage_generic_stubs_testConnectivity  "2" "7"
-  #stage_generic_stubs_testWritePaths    "3" "7"  "${buildPathsToCheck}" "${jsonPathsToCheck}"
-  #stage_generic_stubs_sendPodSoftware   "4" "7"
+  stage_generic_stubs_testWritePaths    "3" "7"  "${buildPathsToCheck}" "${jsonPathsToCheck}"
+  stage_generic_stubs_sendPodSoftware   "4" "7"
   stage_stubs_buildSendPod              "5" "7"
   stage_generic_stubs_launchPod         "6" "7"
   stage_stubs_finish                    "7" "7"

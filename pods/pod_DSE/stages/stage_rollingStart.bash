@@ -5,96 +5,47 @@
 
 function task_rollingStart(){
 
+## for each server start dse + agent based on its json defined mode
+
+# used in error message
 task_file="task_rollingStart.bash"
 
-## for each server start dse based on its json defined mode
+# identify all keys for this json file from the first server block
+keys=$(jq -r '.server_1 | keys[]' ${servers_json_path})
 
 for id in $(seq 1 ${numberOfServers});
 do
 
-  tag=$(jq             -r '.server_'${id}'.tag'             "${servers_json_path}")
-  user=$(jq            -r '.server_'${id}'.user'            "${servers_json_path}")
-  sshKey=$(jq          -r '.server_'${id}'.sshKey'          "${servers_json_path}")
-  target_folder=$(jq   -r '.server_'${id}'.target_folder'   "${servers_json_path}")
-  pubIp=$(jq           -r '.server_'${id}'.pubIp'           "${servers_json_path}")
-  listen_address=$(jq  -r '.server_'${id}'.listen_address'  "${servers_json_path}")
-  rpc_address=$(jq     -r '.server_'${id}'.rpc_address'     "${servers_json_path}")
-  stomp_interface=$(jq -r '.server_'${id}'.stomp_interface' "${servers_json_path}")
-  seeds=$(jq           -r '.server_'${id}'.seeds'           "${servers_json_path}")
-  token=$(jq           -r '.server_'${id}'.token'           "${servers_json_path}")
-  dc=$(jq              -r '.server_'${id}'.dc'              "${servers_json_path}")
-  rack=$(jq            -r '.server_'${id}'.rack'            "${servers_json_path}")
-  search=$(jq          -r '.server_'${id}'.mode.search'     "${servers_json_path}")
-  analytics=$(jq       -r '.server_'${id}'.mode.analytics'  "${servers_json_path}")
-  graph=$(jq           -r '.server_'${id}'.mode.graph'      "${servers_json_path}")
-  dsefs=$(jq           -r '.server_'${id}'.mode.dsefs'      "${servers_json_path}")
+  # [1] determine remote server os
+  lib_generic_doStuff_remotely_identifyOs
 
-# ----------
+  # [2] for this server, loop through its json block and assign values to bash variables
+  lib_generic_jason_assignValues
 
-  # add trailing '/' to path if not present
-  target_folder=$(lib_generic_strings_addTrailingSlash "${target_folder}")
-
-# ----------
-
+  # [3] display message
   prepare_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
 
-# ----------
+  # [4] source the build_settings file based on this server's target_folder
+  lib_generic_build_sourceTarget
 
-  # assign build settings per the TARGET_FOLDER specified for this server
-  printf "%s\n" "TARGET_FOLDER=${target_folder}"            > "${suitcase_file_path}"
-  source "${tmp_build_settings_file_path}"
-
-# ----------
-
+  # [5] handle the flags used to start dse in the correct mode
+  flags=""
+  if [[ "${mode_search}" == "true" ]];     then flags="${flags} -s"; fi
+  if [[ "${mode_analytics}" == "true" ]];  then flags="${flags} -k"; fi
+  if [[ "${mode_graph}" == "true" ]];      then flags="${flags} -g"; fi
+  start_cmd="${dse_untar_bin_folder}dse cassandra${flags}"
   start_agent="${agent_untar_bin_folder}/datastax-agent"
 
-# ----------
-
-  flags=""
-  if [[ "${search}" == "true" ]];     then flags="${flags} -s"; fi
-  if [[ "${analytics}" == "true" ]];  then flags="${flags} -k"; fi
-  if [[ "${graph}" == "true" ]];      then flags="${flags} -g"; fi
-  start_cmd="${dse_untar_bin_folder}dse cassandra${flags}"
-
-# ----------
-
+  # [6] display message
   if [[ "${flags}" == "" ]]; then
     prepare_generic_display_msgColourSimple "INFO-->" "starting dse + agent:      cassandra only"
   else
     prepare_generic_display_msgColourSimple "INFO-->" "starting dse + agent:      with flags ${flags}"
   fi
 
-# ----------
+  # [7] start dse + agent
+  lib_doStuff_remotely_startDseAgent
 
-  status="999"
-  if [[ "${status}" != "0" ]]; then
-    retry=1
-    until [[ "${retry}" == "6" ]] || [[ "${status}" == "0" ]]
-    do
-      ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && java -version"
-      status=${?}
-      if [[ "${status}" != "0" ]]; then
-        prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status}"
-        if [[ "${STRICT_START}" ==  "true" ]]; then
-          prepare_generic_display_msgColourSimple "ERROR-->" "Exiting pod: ${yellow}${task_file}${red} with ${yellow}--strict true${red} - java unavailable"
-          exit 1;
-        fi
-        start_dse_error_array["${tag}"]="${status};${pubIp}"
-        break;
-      else
-        ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_cmd} && ${start_agent}"
-        status=${?}
-        if [[ "${status}" == "0" ]]; then
-          prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${green}${status}"
-        else
-          prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}(retry ${retry}/5)"
-        fi
-        start_dse_error_array["${tag}"]="${status};${pubIp}"
-        ((retry++))
-      fi
-    done
-    printf "%s\n"
-  fi
 done
 }
 
@@ -102,7 +53,7 @@ done
 
 function task_rollingStart_report(){
 
-## generate a report of all failed ssh connectivity attempts
+## generate a report of start pids finish status
 
 declare -a start_dse_report_array
 count=0

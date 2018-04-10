@@ -69,3 +69,71 @@ use_ssl: 0
 #>>>>>END-ADDED-BY__${WHICH_POD}@${label}
 EOF
 }
+
+# ---------------------------------------
+
+function lib_doStuff_remotely_stopDseAgent(){
+
+## run a command remotely to stop DSE gracefully and kill datastax-agent pid
+## record result of commands in array for later reporting
+
+stop_cmd="dse cassandra-stop"
+status="999"
+if [[ "${status}" != "0" ]]; then
+  retry=1
+  until [[ "${retry}" == "4" ]] || [[ "${status}" == "0" ]]
+  do
+    ssh -q -i ${sshKey} ${user}@${pubIp} "ps aux | grep datastax-agent | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
+    ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${stop_cmd}"
+    status=${?}
+    if [[ "${status}" == "0" ]]; then
+      prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${green}${status}"
+    else
+      prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}(retry ${retry}/3)"
+      prepare_generic_display_msgColourSimple "INFO-->" "killing dse:     ungracefully"
+      ssh -q -i ${sshKey} ${user}@${pubIp} "ps aux | grep cassandra | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
+    fi
+    stop_dse_error_array["${tag}"]="${status};${pubIp}"
+    ((retry++))
+  done
+  printf "%s\n"
+fi
+}
+
+# ---------------------------------------
+
+function lib_doStuff_remotely_startDseAgent(){
+
+## run a command remotely to start DSE and datastax-agent
+## record result of commands in array for later reporting
+
+status="999"
+if [[ "${status}" != "0" ]]; then
+  retry=1
+  until [[ "${retry}" == "6" ]] || [[ "${status}" == "0" ]]
+  do
+    ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && java -version"
+    status=${?}
+    if [[ "${status}" != "0" ]]; then
+      prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status}"
+      if [[ "${STRICT_START}" ==  "true" ]]; then
+        prepare_generic_display_msgColourSimple "ERROR-->" "Exiting pod: ${yellow}${task_file}${red} with ${yellow}--strict true${red} - java unavailable"
+        exit 1;
+      fi
+      start_dse_error_array["${tag}"]="${status};${pubIp}"
+      break;
+    else
+      ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_cmd} && ${start_agent}"
+      status=${?}
+      if [[ "${status}" == "0" ]]; then
+        prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${green}${status}"
+      else
+        prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}(retry ${retry}/5)"
+      fi
+      start_dse_error_array["${tag}"]="${status};${pubIp}"
+      ((retry++))
+    fi
+  done
+  printf "%s\n"
+fi
+}

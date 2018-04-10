@@ -16,13 +16,13 @@ do
   ## [1] determine remote server os
   lib_generic_doStuff_remotely_identifyOs
 
-  ## [2] display message
+  ## [2] for this server, loop through its json block and assign values to bash variables
+  lib_generic_jason_assignValues
+
+  ## [3] display message
   prepare_generic_display_msgColourSimple "INFO"    "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}" && printf "\n%s"
   prepare_generic_display_msgColourSimple "INFO-->" "detected os: ${green}${remote_os}${reset}"
   prepare_generic_display_msgColourSimple "INFO-->" "making:      bespoke pod build"
-
-  ## [3] for this server, loop through its json block and assign values to bash variables
-  lib_generic_jason_assignValues
 
   ## [4] source the build_settings file based on this server's target_folder
   lib_generic_build_sourceTarget
