@@ -113,7 +113,7 @@ if [[ "${status}" != "0" ]]; then
   until [[ "${retry}" == "6" ]] || [[ "${status}" == "0" ]]
   do
     ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && java -version"
-    status=${?}
+    status=$?
     if [[ "${status}" != "0" ]]; then
       prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status}"
       if [[ "${STRICT_START}" ==  "true" ]]; then
@@ -123,12 +123,12 @@ if [[ "${status}" != "0" ]]; then
       start_dse_error_array["${tag}"]="${status};${pubIp}"
       break;
     else
-      ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_cmd} && ${start_agent}"
-      status=${?}
-      if [[ "${status}" == "0" ]]; then
-        prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${green}${status}"
+      output=$(ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_agent} && ${start_cmd}" | grep 'Wait for nodes completed' )
+      status=$?
+      if [[ "${status}" != "0" ]] || [[ "${output}" != *"Wait for nodes completed"* ]]; then
+        prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}"
       else
-        prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}(retry ${retry}/5)"
+        prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${green}${status}"
       fi
       start_dse_error_array["${tag}"]="${status};${pubIp}"
       ((retry++))

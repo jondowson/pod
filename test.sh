@@ -3,7 +3,7 @@
 #tags=$(jq '.server_1 | keys[]' servers/DSE_multiLinux.json)
 #tags=$(sed -e 's/^"//' -e 's/"$//' <<<"$tags")
 #set -x
-servers_json_path="servers/DSE_multiLinux.json"
+servers_json_path="servers/DSE_singleMac.json"
 u="_"
 keys=$(jq -r '.server_1 | keys[]' ${servers_json_path})
 numberOfServers="1"
@@ -70,7 +70,7 @@ do
 
 done
 
-echo $mode_search_tom
+echo $seeds
 echo $mode_dsefs_tom
 echo $mode_dsefs_harry_harry
 
