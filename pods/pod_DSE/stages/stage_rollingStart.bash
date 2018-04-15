@@ -39,8 +39,6 @@ do
   if [[ "${mode_search}"    == "true" ]];  then flags="${flags} -s"; fi
   if [[ "${mode_analytics}" == "true" ]];  then flags="${flags} -k"; fi
   if [[ "${mode_graph}"     == "true" ]];  then flags="${flags} -g"; fi
-  start_cmd="${dse_untar_bin_folder}dse cassandra${flags}"
-  start_agent="${agent_untar_bin_folder}/datastax-agent"
 
   # [6] display message
   if [[ "${flags}" == "" ]]; then

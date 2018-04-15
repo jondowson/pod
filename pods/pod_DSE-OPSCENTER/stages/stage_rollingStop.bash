@@ -9,39 +9,25 @@ function task_rollingStop(){
 for id in $(seq 1 ${numberOfServers});
 do
 
-  tag=$(jq             -r '.server_'${id}'.tag'             "${servers_json_path}")
-  user=$(jq            -r '.server_'${id}'.user'            "${servers_json_path}")
-  sshKey=$(jq          -r '.server_'${id}'.sshKey'          "${servers_json_path}")
-  target_folder=$(jq   -r '.server_'${id}'.target_folder'   "${servers_json_path}")
-  pubIp=$(jq           -r '.server_'${id}'.pubIp'           "${servers_json_path}")
+  # [1] determine remote server os
+  lib_generic_doStuff_remotely_identifyOs
 
-# ----------
+  # [2] for this server, loop through its json block and assign values to bash variables
+  lib_generic_json_assignValue
+  for key in "${!json_array[@]}"
+  do
+    declare $key=${json_array[$key]} &>/dev/null
+  done
+  # add trailing '/' to target_folder path if not present
+  target_folder="$(lib_generic_strings_addTrailingSlash ${target_folder})"
 
-  # add trailing '/' to path if not present
-  target_folder=$(lib_generic_strings_addTrailingSlash "${target_folder}")
-
-# ----------
-
+  # [3] display a message
   prepare_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
-
-# ----------
-
   prepare_generic_display_msgColourSimple "INFO-->" "killing opscenter:     ungracefully"
 
-# ----------
-
-  status="999"
-  if [[ "${status}" != "0" ]]; then
-    retry=1
-    until [[ "${retry}" == "4" ]] || [[ "${status}" == "0" ]]
-    do
-      ssh -q -i ${sshKey} ${user}@${pubIp} "ps aux | grep start_opscenter.py | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
-      status=${?}
-      stop_opscenter_error_array["${tag}"]="${status};${pubIp}"
-      ((retry++))
-    done
-    printf "%s\n"
-  fi
+  # [4] stop opscenter
+  lib_doStuff_remotely_stopOpscenter
+  
 done
 }
 

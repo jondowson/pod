@@ -4,13 +4,16 @@
 
 function pod_DSE(){
 
-# globally declare arrays utilised by this pod's own stages
-declare -A build_send_error_array     # stage_buildSend.bash
-declare -a build_send_data_array      # stage_buildSend.bash
-declare -A start_dse_error_array      # stage_rollingStart.bash
-declare -A stop_dse_error_array       # stage_rollingStop.bash
+## globally declare arrays utilised by this pod
+## this will make their contents available to functions outside of the function that populates it
+declare -A build_send_error_array     # populated in stage_buildSend.bash
+declare -a build_send_data_array      # populated in stage_buildSend.bash
+declare -A start_dse_error_array      # populated in stage_rollingStart.bash
+declare -A stop_dse_error_array       # populated in stage_rollingStop.bash
 
-# declare all paths (; seperated) from the build folder + json file that should be write tested
+## declare all paths (; seperated) to be write tested
+## no need to specify target_folder as automatically added !!
+## supply the variable string and omit the '$' - e.g "this_path;that_path"
 buildPathsToCheck="TEMP_FOLDER;PARENT_DATA_FOLDER;PARENT_LOG_FOLDER;spark_local_data;spark_worker_data;"
 jsonPathsToCheck="cass_data;dsefs_data"
 

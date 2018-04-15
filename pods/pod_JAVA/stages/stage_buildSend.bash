@@ -4,90 +4,63 @@
 
 function task_buildSend(){
 
-## for each server configure a pod build and then send it
+## for each server configure a bespoke pod build and send/merge it
 
+# identify all keys for this json file from the first server block
+keys=$(jq -r '.server_1 | keys[]' ${servers_json_path})
+
+# loop through each server defined in the json file
 for id in $(seq 1 ${numberOfServers});
 do
 
-  tag=$(jq            -r '.server_'${id}'.tag'            "${servers_json_path}")
-  user=$(jq           -r '.server_'${id}'.user'           "${servers_json_path}")
-  sshKey=$(jq         -r '.server_'${id}'.sshKey'         "${servers_json_path}")
-  target_folder=$(jq  -r '.server_'${id}'.target_folder'  "${servers_json_path}")
-  pubIp=$(jq          -r '.server_'${id}'.pubIp'          "${servers_json_path}")
+  # [1] determine remote server os
+  lib_generic_doStuff_remotely_identifyOs
 
-# -----
-
-  # add trailing '/' to path if not present
+  # [2] for this server, loop through its json block and assign values to bash variables
+  lib_generic_json_assignValue
+  for key in "${!json_array[@]}"
+  do
+    declare $key=${json_array[$key]} &>/dev/null
+  done
+  # add trailing '/' to target_folder path if not present
   target_folder="$(lib_generic_strings_addTrailingSlash ${target_folder})"
 
-# -----
-
-  prepare_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
-  printf "%s\n"
-  remote_os=$(ssh -q -o Forwardx11=no ${user}@${pubIp} 'bash -s' < ${pod_home_path}/pods/pod_/scripts/scripts_generic_identifyOs.sh)
+  # [3] display message
+  prepare_generic_display_msgColourSimple "INFO"    "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}" && printf "\n%s"
   prepare_generic_display_msgColourSimple "INFO-->" "detected os: ${green}${remote_os}${reset}"
+  prepare_generic_display_msgColourSimple "INFO-->" "making:      bespoke pod build"
 
-  if [[ "${remote_os}" == "Mac" ]]; then
-    prepare_generic_display_msgColourSimple "INFO-->" "note:        pod_JAVA does not set Java on Macs"
-  else
-    prepare_generic_display_msgColourSimple "INFO-->" "making:      bespoke pod build"
-  fi
+  # [4] source the build_settings file based on this server's target_folder
+  lib_generic_build_sourceTarget
 
-# -----
+  # [5] build a 'suitcase' of server specific variables - used by remotely run functions
+  lib_generic_build_suitcase
 
-  # assign build settings per the TARGET_FOLDER specified for this server
-  printf "%s\n" "TARGET_FOLDER=${target_folder}"                 > "${suitcase_file_path}"       # local .suitcase !!
-  source "${tmp_build_settings_file_path}"                                                       # this build_settings file in the tmp folder will source the above local .suitcase
-
-  # -----
-
-  ## pack the suitcase: [1] + [2] are always required !!!
-
-  # [1] append target_folder - clear any existing values with first entry (i.e. '>')
-  printf "%s\n" "TARGET_FOLDER=${target_folder}"                 > "${tmp_suitcase_file_path}"   # remote .suitcase !!
-  # [2] append variables gathered from flags
-  printf "%s\n" "WHICH_POD=${WHICH_POD}"                        >> "${tmp_suitcase_file_path}"
-  printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}"                  >> "${tmp_suitcase_file_path}"
-  build_folder_path_string="${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"
-  printf "%s\n" "build_folder_path=${build_folder_path_string}" >> "${tmp_suitcase_file_path}"
-  # [3] append variables from server json definition file
-  # n/a
-
-  # -----
-
+  # [6] check if os is mac
   if [[ "${remote_os}" == "Mac" ]]; then
     prepare_generic_display_msgColourSimple "INFO-->" "sending:     dummy pod build"
   else
     prepare_generic_display_msgColourSimple "INFO-->" "sending:     bespoke pod build"
   fi
 
+  # [7] display message
+  prepare_generic_display_msgColourSimple "INFO-->" "sending:     bespoke pod build"
   printf "%s\n" "${red}"
-  # check if server is local server - so not to delete itself !!
-  localServer="false"
-  localServer=$(lib_generic_checks_localIpMatch "${pubIp}")
-  if [[ "${localServer}" != "true" ]]; then
-    ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "rm -rf ${target_folder}POD_SOFTWARE/POD/pod" exit
-  else
-    cp "${tmp_suitcase_file_path}" ${pod_home_path}/.suitcase.tmp
-  fi
-  # (re)create folder and send over updated pod software
-  ssh -q -i ${sshKey} ${user}@${pubIp} "mkdir -p ${target_folder}POD_SOFTWARE/POD/pod/"
-  scp -q -o LogLevel=QUIET -i ${sshKey} -r "${tmp_working_folder}" "${user}@${pubIp}:${target_folder}POD_SOFTWARE/POD/"
-  status=${?}
-  build_send_error_array["${tag}"]="${status};${pubIp}"
+
+  # [8] send the bespoke pod build to the server
+  lib_generic_build_sendPod
+
 done
 
-# assign the local target_folder value to the suitcase
-mv ${pod_home_path}/.suitcase.tmp "${suitcase_file_path}"
-# delete the temporary work folder
-rm -rf "${tmp_folder}"
+# assign the local target_folder value to the suitcase and delete tmp folder
+lib_generic_build_finishUp
 }
 
 # ------------------------------------------
 
 function task_buildSend_report(){
 
-## generate a report of all failed sends of pod build
+## generate a status report of all send pids
 
 declare -a build_send_report_array
 count=0

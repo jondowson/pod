@@ -24,6 +24,26 @@ fi
 
 # ---------------------------------------
 
+function lib_doStuff_remotely_stopOpscenter(){
+
+## kill opscenter pid
+
+status="999"
+if [[ "${status}" != "0" ]]; then
+  retry=1
+  until [[ "${retry}" == "4" ]] || [[ "${status}" == "0" ]]
+  do
+    ssh -q -i ${sshKey} ${user}@${pubIp} "ps aux | grep start_opscenter.py | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
+    status=${?}
+    stop_opscenter_error_array["${tag}"]="${status};${pubIp}"
+    ((retry++))
+  done
+  printf "%s\n"
+fi
+}
+
+# ---------------------------------------
+
 function lib_doStuff_remotely_clusterConf(){
 
 ## configure the cluster config file for this cluster to use opscenter to store its metric data (rather than storing in its own cluster)

@@ -14,9 +14,9 @@
       "rack": "rack1",
       "mode": {
         "search": "false",
-        "analytics": "false",
+        "analytics": "true",
         "graph": "false",
-        "dsefs": "false"
+        "dsefs": "true"
       },
       "cass_data": [
         "/Users/jondowson/Desktop/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/sstables/",

@@ -78,10 +78,11 @@ function lib_doStuff_remotely_stopDseAgent(){
 ## record result of commands in array for later reporting
 
 stop_cmd="dse cassandra-stop"
+# try twice to start dse + agent
 status="999"
 if [[ "${status}" != "0" ]]; then
-  retry=1
-  until [[ "${retry}" == "4" ]] || [[ "${status}" == "0" ]]
+  retry=0
+  until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
   do
     ssh -q -i ${sshKey} ${user}@${pubIp} "ps aux | grep datastax-agent | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
     ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${stop_cmd}"
@@ -107,10 +108,14 @@ function lib_doStuff_remotely_startDseAgent(){
 ## run a command remotely to start DSE and datastax-agent
 ## record result of commands in array for later reporting
 
+start_dse="${dse_untar_bin_folder}dse cassandra${flags}"
+start_agent="${agent_untar_bin_folder}/datastax-agent"
+
+# try twice to start dse + agent
 status="999"
 if [[ "${status}" != "0" ]]; then
-  retry=1
-  until [[ "${retry}" == "6" ]] || [[ "${status}" == "0" ]]
+  retry=0
+  until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
   do
     ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && java -version"
     status=$?
@@ -123,7 +128,7 @@ if [[ "${status}" != "0" ]]; then
       start_dse_error_array["${tag}"]="${status};${pubIp}"
       break;
     else
-      output=$(ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_agent} && ${start_cmd}" | grep 'Wait for nodes completed' )
+      output=$(ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_agent} && ${start_dse}" | grep 'Wait for nodes completed' )
       status=$?
       if [[ "${status}" != "0" ]] || [[ "${output}" != *"Wait for nodes completed"* ]]; then
         prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}"
