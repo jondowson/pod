@@ -81,8 +81,8 @@ stop_cmd="dse cassandra-stop"
 # try twice to start dse + agent
 status="999"
 if [[ "${status}" != "0" ]]; then
-  retry=0
-  until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
+  retry=1
+  until [[ "${retry}" == "3" ]] || [[ "${status}" == "0" ]]
   do
     ssh -q -i ${sshKey} ${user}@${pubIp} "ps aux | grep datastax-agent | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
     ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${stop_cmd}"
@@ -90,7 +90,7 @@ if [[ "${status}" != "0" ]]; then
     if [[ "${status}" == "0" ]]; then
       prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${green}${status}"
     else
-      prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}(retry ${retry}/3)"
+      prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}(retry ${retry}/2)"
       prepare_generic_display_msgColourSimple "INFO-->" "killing dse:     ungracefully"
       ssh -q -i ${sshKey} ${user}@${pubIp} "ps aux | grep cassandra | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
     fi
@@ -114,8 +114,8 @@ start_agent="${agent_untar_bin_folder}/datastax-agent"
 # try twice to start dse + agent
 status="999"
 if [[ "${status}" != "0" ]]; then
-  retry=0
-  until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
+  retry=1
+  until [[ "${retry}" == "3" ]] || [[ "${status}" == "0" ]]
   do
     ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && java -version"
     status=$?
