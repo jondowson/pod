@@ -158,6 +158,9 @@ else
   declare -A test_write_error_array_1     # stage_generic_test_writePaths      - test writeTest_array paths
   declare -A test_write_error_array_2     # stage_generic_test_writePaths      - test paths specified in json
   declare -A send_pod_software_pid_array  # stage_generic_send_POD_SOFTWARE    - send POD_SOFTWARE folder to server(s)
+  declare -a build_local_functions_array  # stage_generic_buildSend            - functions performed locally (not on remote server)
+  declare -A build_send_error_array       # stage_generic_buildSend            - did pod build get successfully sent?
+  declare -a build_send_data_array        # stage_generic_buildSend            - handle data paths specified in json
   declare -A launch_pod_pid_array         # stage_generic_launch_podRemotely   - did script launch successfully on remote server?
 
 # ==========

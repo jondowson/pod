@@ -33,21 +33,14 @@ do
   # [4] source the build_settings file based on this server's target_folder
   lib_generic_build_sourceTarget
 
-  # [5] build a 'suitcase' of server specific variables - used by remotely run functions
+  # [5] build a 'suitcase' of server specific variables for remotely run functions
   lib_generic_build_suitcase
+  lib_build_suitcase
 
-  # [6] check if os is mac
-  if [[ "${remote_os}" == "Mac" ]]; then
-    prepare_generic_display_msgColourSimple "INFO-->" "sending:     dummy pod build"
-  else
-    prepare_generic_display_msgColourSimple "INFO-->" "sending:     bespoke pod build"
-  fi
+  # [6] perform locally run functions for this pod (this may be empty!)
+  # n/a
 
-  # [7] display message
-  prepare_generic_display_msgColourSimple "INFO-->" "sending:     bespoke pod build"
-  printf "%s\n" "${red}"
-
-  # [8] send the bespoke pod build to the server
+  # [7] send the bespoke pod build to the server
   lib_generic_build_sendPod
 
 done

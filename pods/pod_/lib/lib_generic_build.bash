@@ -60,6 +60,14 @@ function lib_generic_build_sendPod(){
 
 ## send pod build to server
 
+# check if os is mac
+if [[ "${remote_os}" == "Mac" ]]; then
+  prepare_generic_display_msgColourSimple "INFO-->" "sending:     dummy pod build"
+else
+  prepare_generic_display_msgColourSimple "INFO-->" "sending:     bespoke pod build"
+fi
+printf "%s\n" "${red}"
+
 # check if server is local server
 localServer="false"
 localServer=$(lib_generic_checks_localIpMatch "${pubIp}")

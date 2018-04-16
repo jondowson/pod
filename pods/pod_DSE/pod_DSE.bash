@@ -6,8 +6,9 @@ function pod_DSE(){
 
 ## globally declare arrays utilised by this pod
 ## this will make their contents available to functions outside of the function that populates it
-declare -A build_send_error_array     # populated in stage_buildSend.bash
-declare -a build_send_data_array      # populated in stage_buildSend.bash
+#declare -a build_functions_array      # populated in stage_buildSend.bash
+#declare -A build_send_error_array     # populated in stage_buildSend.bash
+#declare -a build_send_data_array      # populated in stage_buildSend.bash
 declare -A start_dse_error_array      # populated in stage_rollingStart.bash
 declare -A stop_dse_error_array       # populated in stage_rollingStop.bash
 

@@ -3,7 +3,7 @@
 
 **1) pod_DSE    
 
-+ removed unused function: lib_doStuff_remotely_agentEnvironment 
++ removed unused function: lib_doStuff_remotely_agentEnvironment
 
 ### Roadmap
 
