@@ -1,6 +1,6 @@
 # about:        function calls for pod specific (non-generic) stages
 #               the stub functions below only call display and task functions (the latter stored in stage scripts)
-#               the display and task functions in turn utilise functions stored in the lib folder scripts of this and the generic pod_  
+#               the display and task functions in turn utilise functions stored in the lib folder scripts of this and the generic pod_
 
 # ------------------------------------------
 
@@ -60,6 +60,7 @@ stageTotal="${2}"
 
 prepare_generic_display_stageCount        "Build and send bespoke pod" "${stageNumber}" "${stageTotal}"
 prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Configure pod locally and distribute"
+# this will call the pod specific version of this task, which in turn calls the generic one (task_generic_buildSend)
 task_buildSend
 task_generic_buildSend_report
 prepare_generic_display_stageTimeCount
@@ -92,7 +93,7 @@ else
   task_generic_testConnectivity_report
   task_generic_testWritePaths_report
   if [[ "${SEND_POD_SOFTWARE}" == true ]]; then task_generic_sendPodSoftware_report; fi
-  task_buildSend_report
+  task_generic_buildSend_report
   task_generic_launchPodRemotely_report
 fi
 }

@@ -6,7 +6,6 @@ function pod_DSE-OPSCENTER(){
 
 ## globally declare arrays utilised by this pod
 ## this will make their contents available to functions outside of the function that populates it
-declare -A build_send_error_array       # stage_buildSend.bash
 declare -A start_opscenter_error_array  # stage_rollingStart.bash
 declare -A stop_opscenter_error_array   # stage_rollingStop.bash
 
@@ -19,8 +18,19 @@ jsonPathsToCheck=""
 # ------------------------------------------
 
 ## STAGES
-##     generic stages are composed in:   pod_/stages/stage_generic_stubs.bash
-## non-generic stages are composed in:   pod_DSE/stages/stage_stubs.bash
+
+## Workflow of STAGES through TASKS to ACTIONS
+## [1] CALL ALL STAGES - in order from this file:
+## --> pod_<NAME>.bash
+## [2] FOR EACH STAGE  - use its composition stub function:
+## --> generic stubs:           pod_/stages/stage_generic_stubs.bash
+## --> pod specific stubs:      pod_<NAME>/stages/stage_stubs.bash
+## [3] STAGE STUB FUNCTIONS call STAGE TASKS:
+## --> generic tasks:           pod_ 'stages' folder
+## --> pod specific tasks:      this pod's 'stages' folder
+## [4] TASKS call ACTIONS (functions):
+## --> generic functions:       pod_ 'lib' folder
+## --> pod specific functions:  this pod's 'lib' folder
 
 # stopping/starting opscenter nodes
 if [[ "${clusterstateFlag}" == "true" ]]; then
