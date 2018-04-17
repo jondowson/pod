@@ -58,7 +58,7 @@ label="set_stomp_opscenter"
 lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
 
 # get stomp_interface value for this server
-STOMP_INTERFACE=$(jq -r '.server_'${which_server}'.stomp_interface' "${servers_json_path}")
+STOMP_INTERFACE=$(jq -r '.server_'${server_id}'.stomp_interface' "${servers_json_path}")
 
 # add block with space to end of file
 cat << EOF >> ${file}

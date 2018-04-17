@@ -18,7 +18,7 @@ lib_generic_doStuff_remotely_updatePathBashProfile "OPSC_HOME" "${UNTAR_EXEC_FOL
 
 # [5] configure cluster_config file
 if [[ "${apply_storage_cluster}" == "true" ]]; then
-  lib_doStuff_remotely_clusterConfigFile
+  lib_doStuff_remotely_clusterConf
 fi
 }
 
@@ -48,88 +48,105 @@ function lib_doStuff_remotely_clusterConf(){
 
 ## configure the cluster config file for this cluster to use opscenter to store its metric data (rather than storing in its own cluster)
 
-file="${1}"
-label="${2}"
+id="${server_id}"
+numberOfClusters=$($jqCmd -r '.server_'${id}'.cluster_conf' ${servers_json_path} | grep 'cluster_' | wc -l)
+# process the opscenter cluster config entries for the [storage_cassandra] block (specified in the jsonfile)
+# add [storage_cluster] block for each cluster
+for count in $(seq 1 ${numberOfClusters});
+do
 
-# file to edit + if it does not exist make it
-#file="${opscenter_untar_config_folder}clusters/${clustername}.yaml" && touch ${file}
-#label="[storage_cassandra]"
+  sc_clustername=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.clustername'                      "${servers_json_path}")
+  sc_username=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.username'                            "${servers_json_path}")
+  sc_password=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.password'                            "${servers_json_path}")
+  sc_api_port=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.apiport'                             "${servers_json_path}")
+  sc_cql_port=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.cqlport'                             "${servers_json_path}")
+  sc_keyspace=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.keyspace'                            "${servers_json_path}")
+  sc_ssl_keystore=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.ssl_keystore'                    "${servers_json_path}")
+  sc_ssl_keystore_password=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.ssl_keystore_password'  "${servers_json_path}")
+  sc_truststore=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.ssl_truststore'                    "${servers_json_path}")
+  sc_truststore_password=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.ssl_truststore_password'  "${servers_json_path}")
 
-IFS='%'
-dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -n' 'sed -n' 'sed -n' 'sed -n')"
-unset IFS
+# -----
 
-# find line number of any existing pod block with this label
-matchA=$(${dynamic_cmd} /\#\>\>\>\>\>BEGIN-ADDED-BY__${WHICH_POD}@${label}/= "${file}")
-# search for and remove any pod_DSE-SECURITY pre-canned blocks containing this label
-#lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
-lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
-# search again for line number of setting
-label=$(printf %q ${label})
-matchB=$(${dynamic_cmd} '/${label}/=' "${file}")
-
-# if there is still a block then it was not added by this pod - so delete it
-if [[ "${matchB}" != "" ]]; then
-  # define line number range to erase
-  start=$(($matchB))
-  finish=$(($start+30))
-  for i in `seq $start $finish`
+  # make comma seperated string from a json list
+  # some bash-kung-fu required to get variable out of the pipe created sub-shell
+  seed_hosts=""
+  seed_hosts=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'${count}'.seed_hosts[]' "${servers_json_path}" |
+  while read -r seed
   do
-    # grab 1st char from this line
-    lineContent=$(${dynamic_cmd} ${i}p ${file})
-    # search following lines until a blankline or commented-out line is found
-    if [ "${lineContent}" == "" ]; then
-      lastEntry=$(($i-1))
-      break;
-    fi
-  done
-  # remove any previous block with this combination of pod and label
+    seed_hosts="${seed_hosts},${seed}"
+    echo "$seed_hosts"
+  done)
+  # remove first comma from comma seperated list of seed nodes ips
+  sc_seed_hosts=$(echo "$seed_hosts" | sed '$!d' | cut -c 2-) # sed '/./,$!d'
+
+# -----
+
+  # file to edit + if it does not exist make it
+  file="${opscenter_untar_config_folder}clusters/${sc_clustername}.conf"
+  label="storage_cassandra"
+  mkdir -p "${opscenter_untar_config_folder}clusters/" && touch ${file}
+
+# -----
+
+  IFS='%'
+  dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -n' 'sed -n' 'sed -n' 'sed -n')"
+  unset IFS
+
+  # find line number of any existing pod block with this label
+  matchA=$(${dynamic_cmd} /\#\>\>\>\>\>BEGIN-ADDED-BY__${WHICH_POD}@${label}/= "${file}")
+  # search for and remove any pod_DSE-SECURITY pre-canned blocks containing this label
+  #lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
+  lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
+  # search again for line number of setting
+  matchB=$(${dynamic_cmd} '/${label}/=' "${file}")
+
+  # if there is still a block then it was not added by this pod - so delete it
+  if [[ "${matchB}" != "" ]]; then
+    # define line number range to erase
+    start=$(($matchB))
+    finish=$(($start+30))
+    for i in `seq $start $finish`
+    do
+      # grab 1st char from this line
+      lineContent=$(${dynamic_cmd} ${i}p ${file})
+      # search following lines until a blankline or commented-out line is found
+      if [ "${lineContent}" == "" ]; then
+        lastEntry=$(($i-1))
+        break;
+      fi
+    done
+    # remove any previous block with this combination of pod and label
+    IFS='%'
+    dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
+    unset IFS
+    ${dynamic_cmd} "${file}" -re "${start},${lastEntry}d"
+    matchC=${matchB}
+  else
+    matchC=${matchA}
+  fi
+  echo $matchC
+  if [[ "${matchC}" == "" ]] || [[ "${matchC}" == "0" ]]; then matchC="1";fi;
+
+# -----
+
   IFS='%'
   dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
   unset IFS
-  ${dynamic_cmd} "${file}" -re "${start},${lastEntry}d"
-  matchC=${matchB}
-else
-  matchC=${matchA}
-fi
-
-IFS='%'
-dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
-unset IFS
-
-numberOfClusters=$(jq -r '.server_1.cluster_conf' ${servers_json_path} | grep 'cluster_' | wc -l)
-
-# process the opscenter cluster config entries for the [storage_cassandra] block (specified in the jsonfile) - handle ${BUILD_FOLDER} variable if present in path
-#storage_cassandra=$(jq -r '.server_'${id}'.cluster_conf.cluster_'${COUNTER} "${servers_json_path}")
-declare -a storage_cassandra_array
-for count in $(seq 1 ${numberOfClusters});
-do
-  sc_clustername=$(jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.clustername'                      "${servers_json_path}")
-  sc_username=$(jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.username'                            "${servers_json_path}")
-  sc_password=$(jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.password'                            "${servers_json_path}")
-  sc_api_port=$(jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.apiport'                             "${servers_json_path}")
-  sc_cql_port=$(jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.cqlport'                             "${servers_json_path}")
-  sc_keyspace=$(jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.keyspace'                            "${servers_json_path}")
-  sc_ssl_keystore=$(jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.ssl_keystore'                    "${servers_json_path}")
-  sc_ssl_keystore_password=$(jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.ssl_keystore_password'  "${servers_json_path}")
-  sc_truststore=$(jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.ssl_truststore'                    "${servers_json_path}")
-  sc_truststore_password=$(jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.ssl_truststore_password'  "${servers_json_path}")
-  #storage_cassandra_array[${COUNTER}]=${path}
-  #(( COUNTER++ ))
-
   # insert block to define encryption settings at correct line number
-  ${dynamic_cmd} "$(($matchC))i #>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}"       ${file}
-  ${dynamic_cmd} "$(($matchC+1))i ${label}"                                        ${file}
-  ${dynamic_cmd} "$(($matchC+2))i username = ${sc_username}"                       ${file}
-  ${dynamic_cmd} "$(($matchC+3))i password = ${sc_password}"                       ${file}
-  ${dynamic_cmd} "$(($matchC+4))i seed_hosts = ${sc_seedHosts}"                    ${file}
-  ${dynamic_cmd} "$(($matchC+5))i api_port = ${sc_apiPort}"                        ${file}
-  ${dynamic_cmd} "$(($matchC+6))i cql_port = ${sc_cqlPort}"                        ${file}
-  ${dynamic_cmd} "$(($matchC+7))i keyspace = ${sc_keyspace}"                       ${file}
-  ${dynamic_cmd} "$(($matchC+8))i #>>>>>END-ADDED-BY__${WHICH_POD}@${label}"       ${file}
+  ${dynamic_cmd} "$(($matchC))i #>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}"             ${file}
+  ${dynamic_cmd} "$(($matchC+1))i \[storage_cluster\]"                                   ${file}
+  ${dynamic_cmd} "$(($matchC+2))i username = ${sc_username}"                             ${file}
+  ${dynamic_cmd} "$(($matchC+3))i password = ${sc_password}"                             ${file}
+  ${dynamic_cmd} "$(($matchC+4))i seed_hosts = ${sc_seed_hosts}"                         ${file}
+  ${dynamic_cmd} "$(($matchC+5))i api_port = ${sc_api_port}"                             ${file}
+  ${dynamic_cmd} "$(($matchC+6))i cql_port = ${sc_cql_port}"                             ${file}
+  ${dynamic_cmd} "$(($matchC+7))i keyspace = ${sc_keyspace}"                             ${file}
+  ${dynamic_cmd} "$(($matchC+8))i ssl_keystore = ${ssl_keystore}"                        ${file}
+  ${dynamic_cmd} "$(($matchC+9))i ssl_keystore_password = ${ssl_keystore_password}"      ${file}
+  ${dynamic_cmd} "$(($matchC+10))i ssl_trustore = ${ssl_truststore}"                     ${file}
+  ${dynamic_cmd} "$(($matchC+11))i ssl_truststore_password = ${ssl_truststore_password}" ${file}
+  ${dynamic_cmd} "$(($matchC+12))i #>>>>>END-ADDED-BY__${WHICH_POD}@${label}"            ${file}
 
 done
-
-
-
 }

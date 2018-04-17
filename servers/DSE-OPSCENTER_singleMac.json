@@ -18,16 +18,18 @@
         "ssl_truststore": "",
         "ssl_truststore_password": "",
         "seed_hosts": [
-          "127.0.0.1"
+          "127.1.1.1",
+          "127.2.2.2",
+          "127.3.3.3"
         ]
       },
       "cluster_2":{
-        "clustername": "PodCluster",
-        "username": "cassandraf",
-        "password": "cassandra",
-        "apiport": "9160",
-        "cqlport": "9042",
-        "keyspace": "Opscenter_PodCluster",
+        "clustername": "PodCluster2",
+        "username": "cassandrag",
+        "password": "cassandrag",
+        "apiport": "9160g",
+        "cqlport": "9042g",
+        "keyspace": "Opscenter_PodCluster2",
         "ssl_keystore": "",
         "ssl_keystore_password": "",
         "ssl_truststore": "",

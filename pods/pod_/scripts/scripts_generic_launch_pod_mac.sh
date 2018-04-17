@@ -4,7 +4,7 @@
 
 # ------------------------------------------
 
-## determine OS of this computer
+## [1] determine OS of this computer
 
 os=$(uname -a)
 if [[ ${os} == *"Darwin"* ]]; then
@@ -23,7 +23,7 @@ fi
 
 # -----
 
-## determine this scripts' folder path
+## [2] determine this scripts' folder path
 
 parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 cd ${parent_path}
@@ -33,7 +33,16 @@ source "${pod_home_path}/misc/.suitcase"
 
 # -----
 
-## source pod_ + this pod's scripts
+# running jq within remote script requires full path
+if [[ "${os}" == "Mac" ]]; then
+  jqCmd="/usr/local/Cellar/jq/1.5_3/bin/jq"
+else
+  jqCmd-"${jq_file_path}"
+fi
+
+# -----
+
+## [4] source pod_ + this pod's scripts
 
 files="$(find ${pod_home_path}/pods/pod_/lib/ -name "*.bash")"
 for file in $(printf "%s\n" "$files"); do
@@ -52,7 +61,7 @@ done
 
 # -----
 
-## source the pod-specific 'builds' folder to use
+## [5] source the pod-specific 'builds' folder to use
 
 build_file_path="${build_folder_path}build_settings.bash"
 if [[ -f ${build_file_path} ]]; then
@@ -61,7 +70,9 @@ else
   lib_generic_checks_fileExists "scripts_launchPodRemotely#1" "true" "${build_file_path}"
 fi
 
+
 # ------------------------------------------ executed remotely
+
 
 ## configure local environment
 
