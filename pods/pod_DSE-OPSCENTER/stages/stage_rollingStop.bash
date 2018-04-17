@@ -1,7 +1,3 @@
-# about:         start dse on each server based on its server json defined mode
-
-# -------------------------------------------
-
 function task_rollingStop(){
 
 ## for each server stop dse based on its json defined mode
@@ -23,11 +19,12 @@ do
 
   # [3] display a message
   prepare_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
+  prepare_generic_display_msgColourSimple "INFO-->" "detected os: ${green}${remote_os}${reset}"
   prepare_generic_display_msgColourSimple "INFO-->" "killing opscenter:     ungracefully"
 
   # [4] stop opscenter
   lib_doStuff_remotely_stopOpscenter
-  
+
 done
 }
 

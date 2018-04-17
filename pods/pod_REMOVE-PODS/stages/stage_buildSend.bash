@@ -1,7 +1,3 @@
-# about:    for each server build and then send a configured version of pod
-
-# ------------------------------------------
-
 function task_buildSend(){
 
 ## for each server configure a bespoke pod build and send/merge it

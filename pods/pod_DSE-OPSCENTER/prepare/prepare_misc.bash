@@ -1,7 +1,3 @@
-# about:    preperation functions for this pod prior to running
-
-# ------------------------------------------
-
 function prepare_misc_checkFileFolderExist(){
 
 ## test file and folders used by this pod exist

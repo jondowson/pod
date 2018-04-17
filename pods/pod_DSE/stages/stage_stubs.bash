@@ -1,9 +1,3 @@
-# about:        function calls for pod specific (non-generic) stages
-#               the stub functions below only call display and task functions (the latter stored in stage scripts)
-#               the display and task functions in turn utilise functions stored in the lib folder scripts of this and the generic pod_
-
-# ------------------------------------------
-
 function stage_stubs_createResourcesFolder(){
 
 stageNumber="${1}"

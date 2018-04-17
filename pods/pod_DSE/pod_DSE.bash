@@ -1,7 +1,3 @@
-# about:    call in order the stages for this pod
-
-# ------------------------------------------
-
 function pod_DSE(){
 
 ## globally declare arrays utilised by this pod

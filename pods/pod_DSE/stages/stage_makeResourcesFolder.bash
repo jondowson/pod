@@ -1,7 +1,3 @@
-# about:   prepare dse 'resources' folder by removing all non-configuration files
-
-# -------------------------------------------
-
 function task_makeResourcesFolder(){
 
 thisFunction="task_makeResourcesFolder"

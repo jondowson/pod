@@ -1,8 +1,6 @@
-# about:    help on usage and flags for this pod
-
-# ------------------------------------------
-
 function prepare_help(){
+
+## main help for this pod
 
 prepare_generic_display_msgColourSimple "TASK" "Flags: pod_DSE-OPSCENTER"
 printf "%s\n"   "--------------------------------------------------------------------------------------------------"

@@ -1,7 +1,3 @@
-# about:         function calls for pod specific (non-generic) stages
-
-# ------------------------------------------
-
 function stage_stubs_buildSendPod(){
 
 stageNumber="${1}"

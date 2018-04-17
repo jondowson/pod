@@ -1,7 +1,3 @@
-# about:    non-generic functions executed on remote server
-
-# ---------------------------------------
-
 function lib_doStuff_remotely_pod_DSE(){
 
 ## this function is run on the remote machine and calls other remote functions in order

@@ -1,7 +1,3 @@
-# about:    call in order the stages for this pod
-
-# ------------------------------------------
-
 function pod_DSE-OPSCENTER(){
 
 ## globally declare arrays utilised by this pod
@@ -42,9 +38,9 @@ if [[ "${clusterstateFlag}" == "true" ]]; then
 # installing pod_DSE-OPSCENTER
 else
 
-  #stage_generic_stubs_testConnectivity  "1" "6"
+  stage_generic_stubs_testConnectivity  "1" "6"
   stage_generic_stubs_testWritePaths    "2" "6" "${buildPathsToCheck}" "${jsonPathsToCheck}"
-  #stage_generic_stubs_sendPodSoftware   "3" "6"
+  stage_generic_stubs_sendPodSoftware   "3" "6"
   stage_stubs_buildSendPod              "4" "6"
   stage_generic_stubs_launchPod         "5" "6"
   stage_stubs_finish                    "6" "6"

@@ -1,7 +1,3 @@
-# about:    functions that create the bespoke pod build for each server
-
-# ------------------------------------------
-
 function lib_generic_build_sourceTarget(){
 
 ## assign build settings per the TARGET_FOLDER specified for this server

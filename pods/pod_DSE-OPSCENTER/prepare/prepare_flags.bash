@@ -1,7 +1,3 @@
-# about:    rules for handling user supplied flags for this pod
-
-# ------------------------------------------
-
 function prepare_flags_rules(){
 
 ## rules for accepting flags

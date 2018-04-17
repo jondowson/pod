@@ -1,7 +1,3 @@
-# about:    call in order the stages for this pod
-
-# ------------------------------------------
-
 function pod_REMOVE-PODS(){
 
 ## globally declare arrays utilised by this pod

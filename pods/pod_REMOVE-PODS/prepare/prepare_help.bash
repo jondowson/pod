@@ -1,7 +1,3 @@
-# about:    help on this pod's usage and flags
-
-# ------------------------------------------
-
 function prepare_help(){
 
 ## help message for this pod - displayed with the help flag (-h --help)

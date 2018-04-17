@@ -1,7 +1,3 @@
-# about:    functions executed on remote server
-
-# ---------------------------------------
-
 function lib_doStuff_remotely_pod_REMOVE-PODS(){
 
 ## remove this pod on remote machine
