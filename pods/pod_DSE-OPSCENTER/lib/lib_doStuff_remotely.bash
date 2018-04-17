@@ -88,31 +88,32 @@ do
 
 # -----
 
-  ## edit/create conf file for this cluster
+  ## edit/create conf file for this cluster and assign label
 
   file="${opscenter_untar_config_folder}clusters/${sc_clustername}.conf"
-  label=$(printf "%q" "[storage_cassandra]")
   mkdir -p "${opscenter_untar_config_folder}clusters/" && touch ${file}
+  label=$(printf "%q" "[storage_cassandra]")
+  safeLabel=$(printf ${label} | sed 's/[][]//g')
 
 # -----
 
   ## remove any pre-exisiting pod added blocks with the same block label
 
+  # [a] select right command for os
   IFS='%'
   dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -n' 'sed -n' 'sed -n' 'sed -n')"
   unset IFS
-  # [a] find line number of any existing pod block with this label
-  matchA=$(${dynamic_cmd} /\#\>\>\>\>\>BEGIN-ADDED-BY__${WHICH_POD}@${label}/= "${file}")
-  # [b] remove any existing block
-  lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
-  # [c] search again for line number of setting
+  # [b] find line number of any existing pod block with this label
+  matchA=$(${dynamic_cmd} /\#\>\>\>\>\>BEGIN-ADDED-BY__${WHICH_POD}@${safeLabel}/= "${file}")
+  # [c] remove any existing block
+  lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${safelabel}"
+  # [d] search again for line number of setting - this time for setting not added by pod
   matchB=$(${dynamic_cmd} '/${label}/=' "${file}")
 
 # -----
 
   ## remove any pre-exisiting blocks - not added by pod
 
-  # if there is still a block then it was not added by this pod - so delete it
   if [[ "${matchB}" != "" ]]; then
     # define line number range to erase
     start=$(($matchB))
@@ -137,6 +138,7 @@ do
     matchC=${matchA}
   fi
   # ensure block is inserted at line 1 if no previous block found
+  # alternative is to add to end 'gsed -i -e "\$aTEXTTOEND" ${file}'?
   if [[ "${matchC}" == "" ]] || [[ "${matchC}" == "0" ]]; then matchC="1";fi;
 
 # -----
@@ -147,7 +149,7 @@ do
   dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
   unset IFS
   # insert block to define encryption settings at correct line number
-  ${dynamic_cmd} "$(($matchC))i #>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}"             ${file}
+  ${dynamic_cmd} "$(($matchC))i #>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${safeLabel}"         ${file}
   ${dynamic_cmd} "$(($matchC+1))i ${label}"                                              ${file}
   ${dynamic_cmd} "$(($matchC+2))i username = ${sc_username}"                             ${file}
   ${dynamic_cmd} "$(($matchC+3))i password = ${sc_password}"                             ${file}
@@ -159,7 +161,7 @@ do
   ${dynamic_cmd} "$(($matchC+9))i ssl_keystore_password = ${ssl_keystore_password}"      ${file}
   ${dynamic_cmd} "$(($matchC+10))i ssl_trustore = ${ssl_truststore}"                     ${file}
   ${dynamic_cmd} "$(($matchC+11))i ssl_truststore_password = ${ssl_truststore_password}" ${file}
-  ${dynamic_cmd} "$(($matchC+12))i #>>>>>END-ADDED-BY__${WHICH_POD}@${label}"            ${file}
+  ${dynamic_cmd} "$(($matchC+12))i #>>>>>END-ADDED-BY__${WHICH_POD}@${safeLabel}"        ${file}
 
 done
 }
