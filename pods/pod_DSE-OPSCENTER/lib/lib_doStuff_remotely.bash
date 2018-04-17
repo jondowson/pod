@@ -55,7 +55,7 @@ do
   seed_hosts=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'${count}'.seed_hosts[]' "${servers_json_path}" |
   while read -r seed
   do
-    seed_hosts="${seed_hosts},${seed}"
+    seed_hosts="${seed_hosts}, ${seed}"
     echo "$seed_hosts"
   done)
   # some bash-kung-fu required to get variable out of the pipe created sub-shell
@@ -69,7 +69,7 @@ do
   file="${opscenter_untar_config_folder}clusters/${sc_clustername}.conf"
   mkdir -p "${opscenter_untar_config_folder}clusters/" && touch ${file}
   label=$(printf "%q" "[storage_cassandra]")
-  safeLabel=$(printf ${label} | sed 's/[][]//g')
+  safeLabel=$(printf ${label} | sed 's/[][]//g' | sed 's/\\//g')
 
 # -----
 
@@ -144,10 +144,10 @@ done
 
 # ---------------------------------------
 
-function lib_do_stuff_remotely_startOpscenter(){
+function lib_doStuff_remotely_startOpscenter(){
 
 ## start opscenter daemon on remote server using a remote ssh call
-
+set -x
 start_opscenter="${opscenter_untar_bin_folder}/opscenter"
 
 status="999"

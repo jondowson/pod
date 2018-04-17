@@ -32,7 +32,7 @@ do
   lib_generic_build_sourceTarget
 
   # [5] start opscenter
-  lib_doStuff_remotely_startDseAgent
+  lib_doStuff_remotely_startOpscenter
 
 done
 }

@@ -24,11 +24,13 @@ if [[ "${CLUSTER_STATE}" == "restart" ]]; then
   task_rollingStop
   task_rollingStart
   task_rollingStart_report
+  prepare_generic_display_stageTimeCount
 else
   prepare_generic_display_stageCount        "Stopping opscenter" "${stageNumber}" "${stageTotal}"
   prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Stopping daemon on each server"
   task_rollingStop
   task_rollingStop_report
+  prepare_generic_display_stageTimeCount
 fi
 }
 
