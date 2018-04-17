@@ -1,9 +1,0 @@
-{
-    "server_1":{
-      "tag": "opscenter_1",
-      "user": "jondowson",
-      "sshKey": "/Users/jondowson/.ssh/id_rsa",
-      "target_folder": "/Users/jondowson/Desktop/",
-      "pubIp": "10.84.103.6"
-    }
-}
