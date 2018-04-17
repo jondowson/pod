@@ -1,6 +1,6 @@
 #!/bin/bash
 
-POD_VERSION="1.5.1"
+POD_VERSION="1.5.2"
 script_name="pod"
 script_author="JRD"
 script_about="launch a chosen pod with passed flags"
