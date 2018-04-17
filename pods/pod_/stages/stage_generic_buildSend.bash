@@ -1,7 +1,3 @@
-# about:    make server specific pod build and send it over
-
-# ------------------------------------------
-
 function task_generic_buildSend(){
 
 # [1] determine remote server os
