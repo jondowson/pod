@@ -23,6 +23,7 @@ stageTotal="${2}"
 # semi-colon delimeter any elements containing paths to be write tested:
 buildFolderPaths="${3}"  # from build_settings.bash
 jsonPaths="${4}"         # from server json
+
 # note:
 # in the json file, for paths to be specified here, they must be put in nested [] brackets.
 # this format supports multiple paths but is required here even if only one path exists.

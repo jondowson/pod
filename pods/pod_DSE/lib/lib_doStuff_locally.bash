@@ -1,7 +1,3 @@
-# about:     functions executed on local server on files destined for remote servers
-
-# ---------------------------------------
-
 function lib_doStuff_locally_cassandraYaml_cassData(){
 
 ## replace existing data directory/directories with new paths

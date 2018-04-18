@@ -1,7 +1,3 @@
-# about:    for each server build and then send a configured version of pod
-
-# ------------------------------------------
-
 function task_buildSend(){
 
 ## for each server configure a bespoke pod build and send/merge it
@@ -13,7 +9,7 @@ keys=$(jq -r '.server_1 | keys[]' ${servers_json_path})
 for id in $(seq 1 ${numberOfServers});
 do
 
-  # [1] define locally run functions array (this array may be empty!)
+  # [1] define in order locally run functions array (this array may be empty!)
   # escape any passed function parameters!
   # build_functions_array[0]=""
 

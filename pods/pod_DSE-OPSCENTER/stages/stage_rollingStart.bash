@@ -1,81 +1,43 @@
-
-# about:    start dse on each server based on its server json defined mode
-
-# -------------------------------------------
-
 function task_rollingStart(){
 
+## for each server start dse + agent based on its json defined mode
+
+# used in error message
 task_file="task_rollingStart.bash"
 
-## for each server start dse based on its json defined mode
+# identify all keys for this json file from the first server block
+keys=$(jq -r '.server_1 | keys[]' ${servers_json_path})
 
 for id in $(seq 1 ${numberOfServers});
 do
 
-  tag=$(jq             -r '.server_'${id}'.tag'             "${servers_json_path}")
-  user=$(jq            -r '.server_'${id}'.user'            "${servers_json_path}")
-  sshKey=$(jq          -r '.server_'${id}'.sshKey'          "${servers_json_path}")
-  target_folder=$(jq   -r '.server_'${id}'.target_folder'   "${servers_json_path}")
-  pubIp=$(jq           -r '.server_'${id}'.pubIp'           "${servers_json_path}")
+  # [1] determine remote server os
+  lib_generic_doStuff_remotely_identifyOs
 
-# ----------
+  # [2] for this server, loop through its json block and assign values to bash variables
+  lib_generic_json_assignValue
+  for key in "${!json_array[@]}"
+  do
+    declare $key=${json_array[$key]} &>/dev/null
+  done
+  # add trailing '/' to target_folder path if not present
+  target_folder="$(lib_generic_strings_addTrailingSlash ${target_folder})"
 
-  # add trailing '/' to path if not present
-  target_folder=$(lib_generic_strings_addTrailingSlash "${target_folder}")
-
-# ----------
-
-  prepare_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
-
-# ----------
-
-  # assign build settings per the TARGET_FOLDER specified for this server
-  printf "%s\n" "TARGET_FOLDER=${target_folder}"            > "${suitcase_file_path}"
-  source "${tmp_build_settings_file_path}"
-
-# ----------
-
-  start_opscenter="${opscenter_untar_bin_folder}/opscenter"
-
-# ----------
-
+  # [3] display a message
+  prepare_generic_display_msgColourSimple "INFO"    "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}" && printf "\n%s"
+  prepare_generic_display_msgColourSimple "INFO-->" "detected os: ${green}${remote_os}${reset}"
   prepare_generic_display_msgColourSimple "INFO-->" "starting opscenter:      ${pubIp}"
 
-# ----------
+  # [4] source the build_settings file based on this server's target_folder
+  lib_generic_build_sourceTarget
 
-  status="999"
-  if [[ "${status}" != "0" ]]; then
-    retry=1
-    until [[ "${retry}" == "6" ]] || [[ "${status}" == "0" ]]
-    do
-      ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && java -version"
-      status=${?}
-      if [[ "${status}" != "0" ]]; then
-        prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status}"
-        if [[ "${STRICT_START}" ==  "true" ]]; then
-          prepare_generic_display_msgColourSimple "ERROR-->" "Exiting pod: ${yellow}${task_file}${red} with ${yellow}--strict true${red} - java unavailable"
-          exit 1;
-        fi
-        start_opscenter_error_array["${tag}"]="${status};${pubIp}"
-        break;
-      else
-        ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_opscenter}"
-        status=${?}
-        if [[ "${status}" == "0" ]]; then
-          prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${green}${status}"
-        else
-          prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}(retry ${retry}/5)"
-        fi
-        start_opscenter_error_array["${tag}"]="${status};${pubIp}"
-        ((retry++))
-      fi
-    done
-    printf "%s\n"
-  fi
+  # [5] start opscenter
+  lib_doStuff_remotely_startOpscenter
+
 done
 }
 
-# -------------------------------------------
+# --------------------------------------
 
 function task_rollingStart_report(){
 

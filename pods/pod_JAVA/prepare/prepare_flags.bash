@@ -1,7 +1,3 @@
-# about:    rules for handling flags for pod_JAVA
-
-# ------------------------------------------
-
 function prepare_flags_rules(){
 
 # pre-canned formatted messages

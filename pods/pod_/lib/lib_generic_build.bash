@@ -1,7 +1,3 @@
-# about:    functions that create the bespoke pod build for each server
-
-# ------------------------------------------
-
 function lib_generic_build_sourceTarget(){
 
 ## assign build settings per the TARGET_FOLDER specified for this server
@@ -60,12 +56,8 @@ function lib_generic_build_sendPod(){
 
 ## send pod build to server
 
-# check if os is mac
-if [[ "${remote_os}" == "Mac" ]]; then
-  prepare_generic_display_msgColourSimple "INFO-->" "sending:     dummy pod build"
-else
-  prepare_generic_display_msgColourSimple "INFO-->" "sending:     bespoke pod build"
-fi
+# display message
+prepare_generic_display_msgColourSimple "INFO-->" "sending:     bespoke pod build"
 printf "%s\n" "${red}"
 
 # check if server is local server

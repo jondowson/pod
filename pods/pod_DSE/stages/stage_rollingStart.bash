@@ -1,8 +1,3 @@
-
-# about:    start dse on each server based on its server json defined mode
-
-# -------------------------------------------
-
 function task_rollingStart(){
 
 ## for each server start dse + agent based on its json defined mode
@@ -29,7 +24,8 @@ do
   target_folder="$(lib_generic_strings_addTrailingSlash ${target_folder})"
 
   # [3] display message
-  prepare_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
+  prepare_generic_display_msgColourSimple "INFO"    "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}" && printf "\n%s"
+  prepare_generic_display_msgColourSimple "INFO-->" "detected os: ${green}${remote_os}${reset}"
 
   # [4] source the build_settings file based on this server's target_folder
   lib_generic_build_sourceTarget

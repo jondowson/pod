@@ -1,7 +1,3 @@
-# about:         start dse on each server based on its server json defined mode
-
-# -------------------------------------------
-
 function task_rollingStop(){
 
 ## for each server stop dse based on its json defined mode

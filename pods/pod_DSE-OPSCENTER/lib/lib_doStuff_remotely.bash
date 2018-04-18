@@ -1,7 +1,3 @@
-# about:    non-generic functions executed on remote server
-
-# ---------------------------------------
-
 function lib_doStuff_remotely_pod_DSE-OPSCENTER(){
 
 # [1] delete any previous install folder with the same version
@@ -19,26 +15,6 @@ lib_generic_doStuff_remotely_updatePathBashProfile "OPSC_HOME" "${UNTAR_EXEC_FOL
 # [5] configure cluster_config file
 if [[ "${apply_storage_cluster}" == "true" ]]; then
   lib_doStuff_remotely_clusterConf
-fi
-}
-
-# ---------------------------------------
-
-function lib_doStuff_remotely_stopOpscenter(){
-
-## kill opscenter pid
-
-status="999"
-if [[ "${status}" != "0" ]]; then
-  retry=1
-  until [[ "${retry}" == "4" ]] || [[ "${status}" == "0" ]]
-  do
-    ssh -q -i ${sshKey} ${user}@${pubIp} "ps aux | grep start_opscenter.py | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
-    status=${?}
-    stop_opscenter_error_array["${tag}"]="${status};${pubIp}"
-    ((retry++))
-  done
-  printf "%s\n"
 fi
 }
 
@@ -79,7 +55,7 @@ do
   seed_hosts=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'${count}'.seed_hosts[]' "${servers_json_path}" |
   while read -r seed
   do
-    seed_hosts="${seed_hosts},${seed}"
+    seed_hosts="${seed_hosts}, ${seed}"
     echo "$seed_hosts"
   done)
   # some bash-kung-fu required to get variable out of the pipe created sub-shell
@@ -93,7 +69,7 @@ do
   file="${opscenter_untar_config_folder}clusters/${sc_clustername}.conf"
   mkdir -p "${opscenter_untar_config_folder}clusters/" && touch ${file}
   label=$(printf "%q" "[storage_cassandra]")
-  safeLabel=$(printf ${label} | sed 's/[][]//g')
+  safeLabel=$(printf ${label} | sed 's/[][]//g' | sed 's/\\//g')
 
 # -----
 
@@ -164,4 +140,63 @@ do
   ${dynamic_cmd} "$(($matchC+12))i #>>>>>END-ADDED-BY__${WHICH_POD}@${safeLabel}"        ${file}
 
 done
+}
+
+# ---------------------------------------
+
+function lib_doStuff_remotely_startOpscenter(){
+
+## start opscenter daemon on remote server using a remote ssh call
+set -x
+start_opscenter="${opscenter_untar_bin_folder}/opscenter"
+
+status="999"
+if [[ "${status}" != "0" ]]; then
+  retry=1
+  until [[ "${retry}" == "6" ]] || [[ "${status}" == "0" ]]
+  do
+    ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && java -version"
+    status=${?}
+    if [[ "${status}" != "0" ]]; then
+      prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status}"
+      if [[ "${STRICT_START}" ==  "true" ]]; then
+        prepare_generic_display_msgColourSimple "ERROR-->" "Exiting pod: ${yellow}${task_file}${red} with ${yellow}--strict true${red} - java unavailable"
+        exit 1;
+      fi
+      start_opscenter_error_array["${tag}"]="${status};${pubIp}"
+      break;
+    else
+      ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_opscenter}"
+      status=${?}
+      if [[ "${status}" == "0" ]]; then
+        prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${green}${status}"
+      else
+        prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}(retry ${retry}/5)"
+      fi
+      start_opscenter_error_array["${tag}"]="${status};${pubIp}"
+      ((retry++))
+    fi
+  done
+  printf "%s\n"
+fi
+}
+
+# ---------------------------------------
+
+function lib_doStuff_remotely_stopOpscenter(){
+
+## kill opscenter pid
+
+status="999"
+if [[ "${status}" != "0" ]]; then
+  retry=1
+  until [[ "${retry}" == "4" ]] || [[ "${status}" == "0" ]]
+  do
+    ssh -q -i ${sshKey} ${user}@${pubIp} "ps aux | grep start_opscenter.py | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
+    status=${?}
+    stop_opscenter_error_array["${tag}"]="${status};${pubIp}"
+    ((retry++))
+  done
+  printf "%s\n"
+fi
 }

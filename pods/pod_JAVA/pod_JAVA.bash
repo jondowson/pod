@@ -1,7 +1,3 @@
-# about:    call in order the stages for this pod
-
-# ------------------------------------------
-
 function pod_JAVA(){
 
 ## globally declare arrays utilised by this pod
