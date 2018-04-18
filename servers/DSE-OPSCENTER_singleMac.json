@@ -13,27 +13,15 @@
         "apiport": "9160",
         "cqlport": "9042",
         "keyspace": "Opscenter_PodCluster",
-        "ssl_keystore": "",
-        "ssl_keystore_password": "",
-        "ssl_truststore": "",
-        "ssl_truststore_password": "",
-        "seed_hosts": [
+        "keystore": "",
+        "keystore_password": "",
+        "truststore": "",
+        "truststore_password": "",
+        "seedhosts_cassandra": [
           "127.0.0.1"
-        ]
-      },
-      "cluster_2":{
-        "clustername": "Cluster2",
-        "username": "cassandra",
-        "password": "cassandra",
-        "apiport": "9160",
-        "cqlport": "9042",
-        "keyspace": "Opscenter_PodCluster2",
-        "ssl_keystore": "",
-        "ssl_keystore_password": "",
-        "ssl_truststore": "",
-        "ssl_truststore_password": "",
-        "seed_hosts": [
-          "127.0.0.2"
+        ],
+        "seedhosts_storage_cassandra": [
+          "127.0.0.1"
         ]
       }
     }

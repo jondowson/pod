@@ -38,10 +38,16 @@ SOFTWARE_TARBALL="opscenter-6.1.x.tar.gz"
 
 # -----
 
-# [3] TMP FOLDER LOCATION
+## [3] TMP FOLDER LOCATION
 
 # temp folder - can be anywhere with suffcient permissions
 TEMP_FOLDER="${INSTALL_FOLDER}TEMP/"
+
+## [4] Use the opscenter cluster to store metrics data for other clusters
+
+# set to true to apply [storage_cassandra] block (defined in server json) to /conf/clusters/cluster_name.conf
+# note: to use ssl - add keystore/truststore paths to the json file, otherwise leave all empty !
+apply_storage_cluster="true"
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 

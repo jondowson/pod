@@ -13,48 +13,54 @@
 
 # note:           these paramters will add a '[storage_cassandra]' block to a opscenter conf/cluster-name.conf file and will make it if it does not exist
 #                 to ignore these parameters - set 'apply_storage_cluster' to false in the build_settings.bash file
+#                 to use ssl - fill in all keystore / trustore settings - or leave all blank to disable ssl
 #                 for parameter explanations see: https://docs.datastax.com/en/opscenter/6.1/opsc/configure/opscStoringCollectionDataDifferentCluster_t.html
 
 # FINALLY:        in the copy of this template, delete all these instructions, leaving just the json !!
 {
-    "server_1":{
-      "tag": "storage_1",
-      "user": "<remote-user>",
-      "sshKey": "/home/<local-user>/.ssh/id_rsa",
-      "pubIp": "192.168.1.1",
-      "target_folder": "/home/<remote-user>/Desktop/",
-      "cluster_conf":{
-        "cluster_1":{
-          "clustername": "PodCluster",
-          "username": "cassandra",
-          "password": "cassandra",
-          "apiport": "9160",
-          "cqlport": "9042",
-          "keyspace": "Opscenter_PodCluster",
-          "ssl_keystore": "",
-          "ssl_keystore_password": "",
-          "ssl_truststore": "",
-          "ssl_truststore_password": "",
-          "seed_hosts": [
-            "127.0.0.1",
-            "127.0.0.2"
-          ]
-        },
-        "cluster_2":{
-          "clustername": "PodCluster2",
-          "username": "cassandra",
-          "password": "cassandra",
-          "apiport": "9160",
-          "cqlport": "9042",
-          "keyspace": "Opscenter_PodCluster2",
-          "ssl_keystore": "",
-          "ssl_keystore_password": "",
-          "ssl_truststore": "",
-          "ssl_truststore_password": "",
-          "seed_hosts": [
-            "127.0.0.3",
-            "127.0.0.4"
-          ]
-        }
+  "server_1":{
+    "tag": "opscenter_1",
+    "user": "jondowson",
+    "sshKey": "/Users/jondowson/.ssh/id_rsa",
+    "target_folder": "/Users/jondowson/Desktop/",
+    "pubIp": "127.0.0.1",
+    "cluster_conf":{
+      "cluster_1":{
+        "clustername": "Cluster",
+        "username": "cassandra",
+        "password": "cassandra",
+        "apiport": "9160",
+        "cqlport": "9042",
+        "keyspace": "Opscenter_PodCluster",
+        "keystore": "",
+        "keystore_password": "",
+        "truststore": "",
+        "truststore_password": "",
+        "seedhosts_cassandra": [
+          "127.0.0.1"
+        ],
+        "seedhosts_storage_cassandra": [
+          "127.0.0.1"
+        ]
+      },
+      "cluster_2":{
+        "clustername": "Cluster2",
+        "username": "cassandra",
+        "password": "cassandra",
+        "apiport": "9160",
+        "cqlport": "9042",
+        "keyspace": "Opscenter_PodCluster2",
+        "keystore": "",
+        "keystore_password": "",
+        "truststore": "",
+        "truststore_password": "",
+        "seedhosts_cassandra": [
+          "127.0.0.1"
+        ],
+        "seedhosts_storage_cassandra": [
+          "127.0.0.1"
+        ]
+      }
     }
+  }
 }
