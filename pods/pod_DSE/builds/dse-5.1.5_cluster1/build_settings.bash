@@ -54,8 +54,8 @@ AGENT_TARBALL="${AGENT_VERSION}.tar.gz"
 # + on spinning disks it is recommended to locate these on seperate mount points to sstable data folders
 # + by default DATA and LOGS folders are created inside the POD_INSTALLS desktop folder
 # ++  this seperation means that if pod_DSE is rerun or removed using pod_REMOVE-PODS, existing data will be retained
-PARENT_DATA_FOLDER="${INSTALL_FOLDER_POD}/DATA/${BUILD_FOLDER}/"
-PARENT_LOG_FOLDER="${INSTALL_FOLDER_POD}/LOGS/${BUILD_FOLDER}/"
+PARENT_DATA_FOLDER="${INSTALL_FOLDER_POD}DATA/${BUILD_FOLDER}/"
+PARENT_LOG_FOLDER="${INSTALL_FOLDER_POD}LOGS/${BUILD_FOLDER}/"
 # temp folder - can be anywhere with suffcient permissions
 TEMP_FOLDER="${INSTALL_FOLDER}TEMP/"
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -93,4 +93,14 @@ dsefs_untar_folder="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/${DSE_VERSION}/resource
 gremlin_log_folder="${PARENT_LOG_FOLDER}gremlin/"
 # tomcat logs
 tomcat_log_folder="${PARENT_LOG_FOLDER}tomcat/"
+
+## folders to be write tested !!
+# declare all paths (; seperated) to be write tested for this pod
+# no need to specify target_folder as automatically added !!
+# supply the variable string and omit the '$' - e.g "data_path;log_path"
+# this test also creates any folders that need to exist at runtime
+# build_settings paths to write test
+buildPathsWriteTest="TEMP_FOLDER;PARENT_DATA_FOLDER;PARENT_LOG_FOLDER;spark_local_data;spark_worker_data"
+# json server paths to write test
+jsonPathsWriteTest="cass_data;dsefs_data"
 # //////////////////////////////////////////

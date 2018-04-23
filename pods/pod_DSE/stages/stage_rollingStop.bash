@@ -22,11 +22,10 @@ do
 
   # [3] display message
   prepare_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
-  prepare_generic_display_msgColourSimple "INFO-->" "stopping dse:      gracefully"
-  prepare_generic_display_msgColourSimple "INFO-->" "killing agent:     ungracefully"
 
   # [4] stop dse + agent running on server
-  lib_doStuff_remotely_stopDseAgent
+  lib_doStuff_remotely_stopAgent
+  lib_doStuff_remotely_stopDse
 
 done
 }

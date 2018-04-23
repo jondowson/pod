@@ -36,15 +36,16 @@ do
   if [[ "${mode_analytics}" == "true" ]];  then flags="${flags} -k"; fi
   if [[ "${mode_graph}"     == "true" ]];  then flags="${flags} -g"; fi
 
-  # [6] display message
+  # [6] display dse start message
   if [[ "${flags}" == "" ]]; then
-    prepare_generic_display_msgColourSimple "INFO-->" "starting dse + agent:      cassandra only"
+    prepare_generic_display_msgColourSimple "INFO-->" "starting:         dse cassandra only"
   else
-    prepare_generic_display_msgColourSimple "INFO-->" "starting dse + agent:      with flags ${flags}"
+    prepare_generic_display_msgColourSimple "INFO-->" "starting:         dse with flags ${flags}"
   fi
 
   # [7] start dse + agent
-  lib_doStuff_remotely_startDseAgent
+  lib_doStuff_remotely_startDse
+  lib_doStuff_remotely_startAgent
 
 done
 }
@@ -74,6 +75,31 @@ if [[ "${start_dse_fail}" == "true" ]]; then
     prepare_generic_display_msgColourSimple "INFO" "${cross} ${k}"
   done
 else
-  prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  dse + agent started"
+  prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  dse started"
 fi
+
+# -----
+
+declare -a start_agent_report_array
+count=0
+for k in "${!start_agent_error_array[@]}"
+do
+  lib_generic_strings_expansionDelimiter ${start_agent_error_array[$k]} ";" "1"
+  if [[ "${_D1_}" != "0" ]]; then
+    start_agent_fail="true"
+    start_agent_report_array["${count}"]="${yellow}${k}${white} at address ${yellow}${_D2_}${white} with code ${red}${_D1_}${reset}"
+    (( count++ ))
+  fi
+done
+
+if [[ "${start_agent_fail}" == "true" ]]; then
+  printf "%s\n"
+  for k in "${start_agent_report_array[@]}"
+  do
+    prepare_generic_display_msgColourSimple "INFO" "${cross} ${k}"
+  done
+else
+  prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  agent started"
+fi
+
 }

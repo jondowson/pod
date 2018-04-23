@@ -68,19 +68,20 @@ EOF
 
 # ---------------------------------------
 
-function lib_doStuff_remotely_stopDseAgent(){
+function lib_doStuff_remotely_stopDse(){
 
 ## run a command remotely to stop DSE gracefully and kill datastax-agent pid
 ## record result of commands in array for later reporting
 
-stop_cmd="dse cassandra-stop"
-# try twice to start dse + agent
+stop_cmd="${dse_untar_bin_folder}dse cassandra-stop"
+# try twice to stop dse
 status="999"
 if [[ "${status}" != "0" ]]; then
   retry=1
   until [[ "${retry}" == "3" ]] || [[ "${status}" == "0" ]]
   do
-    ssh -q -i ${sshKey} ${user}@${pubIp} "ps aux | grep datastax-agent | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
+    dseVersion=$(ssh -q -i ${sshKey} ${user}@${pubIp} "${dse_untar_bin_folder}dse -v")
+    prepare_generic_display_msgColourSimple "INFO-->" "stopping dse:     gracefully (version: ${dseVersion})"
     ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${stop_cmd}"
     status=${?}
     if [[ "${status}" == "0" ]]; then
@@ -99,13 +100,42 @@ fi
 
 # ---------------------------------------
 
-function lib_doStuff_remotely_startDseAgent(){
+function lib_doStuff_remotely_stopAgent(){
 
-## run a command remotely to start DSE and datastax-agent
+## run a command remotely to stop DSE gracefully and kill datastax-agent pid
+## record result of commands in array for later reporting
+
+# try twice to stop agent
+status="999"
+if [[ "${status}" != "0" ]]; then
+  retry=1
+  until [[ "${retry}" == "3" ]] || [[ "${status}" == "0" ]]
+  do
+    prepare_generic_display_msgColourSimple "INFO-->" "killing agent:    ungracefully"
+    ssh -q -i ${sshKey} ${user}@${pubIp} "ps aux | grep datastax-agent | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
+    status=${?}
+    if [[ "${status}" == "0" ]]; then
+      prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${green}${status}"
+    else
+      prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}(retry ${retry}/2)"
+      prepare_generic_display_msgColourSimple "INFO-->" "killing agent:     ungracefully"
+      ssh -q -i ${sshKey} ${user}@${pubIp} "ps aux | grep datastax-agent | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
+    fi
+    stop_agent_error_array["${tag}"]="${status};${pubIp}"
+    ((retry++))
+  done
+  printf "%s\n"
+fi
+}
+
+# ---------------------------------------
+
+function lib_doStuff_remotely_startDse(){
+
+## run a command remotely to start DSE
 ## record result of commands in array for later reporting
 
 start_dse="${dse_untar_bin_folder}dse cassandra${flags}"
-start_agent="${agent_untar_bin_folder}/datastax-agent"
 
 # try twice to start dse + agent
 status="999"
@@ -124,7 +154,7 @@ if [[ "${status}" != "0" ]]; then
       start_dse_error_array["${tag}"]="${status};${pubIp}"
       break;
     else
-      output=$(ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_agent} && ${start_dse}" | grep 'Wait for nodes completed' )
+      output=$(ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_dse}" | grep 'Wait for nodes completed' )
       status=$?
       if [[ "${status}" != "0" ]] || [[ "${output}" != *"Wait for nodes completed"* ]]; then
         prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}"
@@ -132,6 +162,48 @@ if [[ "${status}" != "0" ]]; then
         prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${green}${status}"
       fi
       start_dse_error_array["${tag}"]="${status};${pubIp}"
+      ((retry++))
+    fi
+  done
+  printf "%s\n"
+fi
+}
+
+# ---------------------------------------
+
+function lib_doStuff_remotely_startAgent(){
+
+## run a command remotely to start datastax-agent
+## record result of commands in array for later reporting
+
+prepare_generic_display_msgColourSimple   "INFO-->" "starting:         dse agent"
+
+start_agent="${agent_untar_bin_folder}/datastax-agent"
+# try twice to start dse + agent
+status="999"
+if [[ "${status}" != "0" ]]; then
+  retry=1
+  until [[ "${retry}" == "3" ]] || [[ "${status}" == "0" ]]
+  do
+    ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && java -version"
+    status=$?
+    if [[ "${status}" != "0" ]]; then
+      prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status}"
+      if [[ "${STRICT_START}" ==  "true" ]]; then
+        prepare_generic_display_msgColourSimple "ERROR-->" "Exiting pod: ${yellow}${task_file}${red} with ${yellow}--strict true${red} - java unavailable"
+        exit 1;
+      fi
+      start_agent_error_array["${tag}"]="${status};${pubIp}"
+      break;
+    else
+      output=$(ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_agent}" | grep "Starting JMXComponent" )
+      status=$?
+      if [[ "${status}" != "0" ]] || [[ "${output}" != *"Starting JMXComponent"* ]]; then
+        prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}"
+      else
+        prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${green}${status}"
+      fi
+      start_agent_error_array["${tag}"]="${status};${pubIp}"
       ((retry++))
     fi
   done

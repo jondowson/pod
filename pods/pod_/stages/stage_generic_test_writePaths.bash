@@ -34,7 +34,8 @@ do
 
   # [4] test all buildFolderPaths
   # delimit the buildFolderPaths string into an array
-  buildFolderPaths="target_folder;${buildFolderPaths}"              # prepend the target_folder for this server
+  # prepend the target_folder for this server and append the build_settings specific paths to test
+  buildFolderPaths="target_folder;${buildPathsWriteTest}"
   lib_generic_strings_ifsStringDelimeter ";" "${buildFolderPaths}"
   # for each element in the array
   for folder in "${array[@]}"
@@ -54,9 +55,9 @@ do
 
   # [5] test json elements that have nested paths - these will be passed here as a delimited string
   # e.g. "cass_data;dsefs_data"
-  if [[ ${serverJsonPaths} != "" ]]; then
+  if [[ ${jsonPathsWriteTest} != "" ]]; then
     # delimit the json element(s) into an array
-    lib_generic_strings_ifsStringDelimeter ";" "${serverJsonPaths}"
+    lib_generic_strings_ifsStringDelimeter ";" "${jsonPathsWriteTest}"
     # for each element in the array e.g. cass_data
     for element in "${array[@]}"
     do

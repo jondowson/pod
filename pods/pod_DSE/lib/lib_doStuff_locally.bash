@@ -53,15 +53,17 @@ lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLin
 label="define_dse_log_folders"
 lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
 
-# append to end of file
-cat << EOF >> ${file}
+# select correct version of command based on OS
+IFS='%'
+dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
+unset IFS
 
-#>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}
-export CASSANDRA_LOG_DIR=${cassandra_log_folder}
-export TOMCAT_LOGS=${tomcat_log_folder}
-export GREMLIN_LOG_DIR=${gremlin_log_folder}
-#>>>>>END-ADDED-BY__${WHICH_POD}@${label}
-EOF
+# insert to beginning of file
+${dynamic_cmd} "1i#>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}" ${file}
+${dynamic_cmd} "2iexport CASSANDRA_LOG_DIR=${cassandra_log_folder}" ${file}
+${dynamic_cmd} "3iexport TOMCAT_LOGS=${tomcat_log_folder}" ${file}
+${dynamic_cmd} "4iexport GREMLIN_LOG_DIR=${gremlin_log_folder}i" ${file}
+${dynamic_cmd} "5i#>>>>>END-ADDED-BY__${WHICH_POD}@${label}" ${file}
 
 # this helps cqlsh and nodetool connect
 lib_generic_strings_sedStringManipulation "removeHashAndLeadingWhitespace"         ${file} '# JVM_OPTS=\"$JVM_OPTS -Djava.rmi.server.hostname=<public name>\"' "dummy"
@@ -180,12 +182,17 @@ file="${tmp_build_file_folder}resources/dse/conf/dse.yaml"
 label="define_dsefs_options"
 lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
 
+# if spark is turned on, then dsefs must also be turned on
+if [[ ${mode_analytics} == "true" ]]; then
+  mode_dsefs="true"
+fi
+
 # add block to define dsefs settings and data folders
 cat << EOF >> $file
 
 #>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}
 dsefs_options:
-      enabled: false
+      enabled: ${mode_dsefs}
       keyspace_name: dsefs
       work_dir: ${dsefs_folder}
       public_port: 5598
@@ -220,19 +227,29 @@ file="${tmp_build_file_folder}resources/spark/conf/dse-spark-env.sh"
 label="define_spark_folders"
 lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
 
-# search for and remove any lines starting with:
-lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export SPARK_WORKER_LOG_DIR=" "dummy"
-lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export SPARK_MASTER_LOG_DIR=" "dummy"
-lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export SPARK_WORKER_DIR=" "dummy"
-lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export SPARK_LOCAL_DIRS=" "dummy"
+# select correct version of command based on OS
+IFS='%'
+dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
+unset IFS
 
-cat << EOF >> ${file}
+# part [A]
+# insert gap at beginning of file (actually 2nd line to avoid any hash-bang)
+${dynamic_cmd} '1G' ${file} # insert after first line
 
-#>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}
-export SPARK_WORKER_LOG_DIR="${spark_worker_log_folder}"
-export SPARK_MASTER_LOG_DIR="${spark_master_log_folder}"
-export SPARK_WORKER_DIR=${spark_worker_data}
-export SPARK_LOCAL_DIRS=${spark_local_data}
-#>>>>>END-ADDED-BY__${WHICH_POD}@${label}
-EOF
+lineNumber=3
+# part [B]
+# insert block on 3nd line to avoid hash-bang
+# using double quotes expands variables but overwrites rather than insert
+${dynamic_cmd} "${lineNumber}i#>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}"                                                             ${file};((lineNumber++))
+if [ -n "$spark_local_data" ];           then ${dynamic_cmd} "${lineNumber}iexport SPARK_LOCAL_DIRS=${spark_local_data}"               ${file};((lineNumber++));fi
+if [ -n "$spark_worker_data" ];          then ${dynamic_cmd} "${lineNumber}iexport SPARK_WORKER_DIR=${spark_worker_data}"              ${file};((lineNumber++));fi
+if [ -n "$spark_executor_folder" ];      then ${dynamic_cmd} "${lineNumber}iexport SPARK_EXECUTOR_DIRS=${spark_executor_folder}"       ${file};((lineNumber++));fi
+if [ -n "$spark_worker_log_folder" ];    then ${dynamic_cmd} "${lineNumber}iexport SPARK_WORKER_LOG_DIR=${spark_worker_log_folder}"    ${file};((lineNumber++));fi
+if [ -n "$spark_master_log_folder" ];    then ${dynamic_cmd} "${lineNumber}iexport SPARK_MASTER_LOG_DIR=${spark_master_log_folder}"    ${file};((lineNumber++));fi
+if [ -n "$spark_alwayson_sql_log_dir" ]; then ${dynamic_cmd} "${lineNumber}iexport ALWAYSON_SQL_LOG_DIR=${spark_alwayson_sql_log_dir}" ${file};((lineNumber++));fi
+${dynamic_cmd} "${lineNumber}i#>>>>>END-ADDED-BY__${WHICH_POD}@${label}"                                                               ${file}
+
+# part [C]
+# insert gap at end of block
+#${dynamic_cmd} '"${lineNumber}G"' ${file} # insert after first line
 }
