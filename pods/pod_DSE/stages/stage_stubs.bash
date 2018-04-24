@@ -29,16 +29,16 @@ function stage_stubs_stopStartCluster(){
 stageNumber="${1}"
 stageTotal="${2}"
 
-if [[ "${CLUSTER_STATE}" == "restart" ]]; then
-  prepare_generic_display_stageCount        "Restarting DSE Cluster" "${stageNumber}" "${stageTotal}"
-  prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Restarting each server in cluster"
+if [[ "${CLUSTER_STATE}" == *"restart"* ]]; then
+  prepare_generic_display_stageCount        "Restarting on DSE Cluster" "${stageNumber}" "${stageTotal}"
+  prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Restarting on each server in cluster"
   task_rollingStop
   task_rollingStart
   task_rollingStart_report
   prepare_generic_display_stageTimeCount
 else
-  prepare_generic_display_stageCount        "Stopping DSE Cluster" "${stageNumber}" "${stageTotal}"
-  prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Stopping each server in cluster"
+  prepare_generic_display_stageCount        "Stopping on DSE Cluster" "${stageNumber}" "${stageTotal}"
+  prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Stopping on each server in cluster"
   task_rollingStop
   task_rollingStop_report
   prepare_generic_display_stageTimeCount
@@ -71,7 +71,7 @@ prepare_generic_display_stageCount        "Summary" "${stageNumber}" "${stageTot
 prepare_generic_display_msgColourSimple   "REPORT" "STAGE REPORT:${reset}"
 if [[ "${clusterstateFlag}" == "true" ]]; then
   task_generic_testConnectivity_report
-  if [[ "${CLUSTER_STATE}" == "restart" ]]; then
+  if [[ "${CLUSTER_STATE}" == *"restart"* ]]; then
     task_rollingStart_report
   else
     task_rollingStop_report

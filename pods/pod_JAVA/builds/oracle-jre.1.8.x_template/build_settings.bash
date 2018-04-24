@@ -1,6 +1,6 @@
 # //////////////////////////////////////////
 # DO-NOT-EDIT-THIS-BLOCK !!
-PACKAGE="DATASTAX"                                    # empty if pod does not involve tarball
+PACKAGE="JAVA"                                        # empty if pod does not involve tarball
 source ${pod_home_path}/misc/.suitcase                # file used to access server specific variables on remote machines
 POD_SOFTWARE="${TARGET_FOLDER}POD_SOFTWARE/"          # the parent folder with all the tarballs and the pod software
 PACKAGES="${POD_SOFTWARE}${PACKAGE}/"                 # the relevant tarball folders for this pod
@@ -14,21 +14,19 @@ INSTALL_FOLDER_POD="${INSTALL_FOLDER}${WHICH_POD}/"   # the pod specific folder 
 
 ## [1] SOFTWARE DETAILS
 
-# match to name of folder in POD_SOFTWARE/${PACKAGE} holding the software tarball
-SOFTWARE_NAME="opscenter"
-SOFTWARE_VERSION="opscenter-6.1.5"
-SOFTWARE_TARBALL="opscenter-6.1.5.tar.gz"
+# this needs to match the name of folder in the POD_SOFTWARE folder holding the java tarball
 
-## [2] TMP FOLDER LOCATION
+SOFTWARE_NAME="oracle"
+SOFTWARE_VERSION="jre1.8.x_xxx"
+SOFTWARE_TARBALL="jre-8uxxx-linux-x64.tar.gz"
 
-# can be anywhere with suffcient permissions
+JAVA_SECURITY_DISTRIBUTION="oracle"
+JAVA_SECURITY_ZIP="jce_policy-8.zip"
+
+# [2] TMP FOLDER LOCATIONS
+
+# temp folder - can be anywhere with suffcient permissions
 TEMP_FOLDER="${INSTALL_FOLDER}TEMP/"
-
-## [3] USE THIS OPSCENTER CLUSTER TO STORE METRICS OF OTHER CLUSTERS
-
-# set to true to apply the [storage_cassandra] block defined in the server json, to Opscenter's /conf/clusters/cluster_name.conf config file
-# to use ssl - add keystore/truststore paths to the json file, otherwise leave all empty!
-apply_storage_cluster="true"
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
@@ -38,9 +36,8 @@ TAR_FOLDER="${PACKAGES}${SOFTWARE_NAME}/"
 TAR_FILE="${TAR_FOLDER}${SOFTWARE_TARBALL}"
 UNTAR_FOLDER="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/"
 UNTAR_EXEC_FOLDER="${UNTAR_FOLDER}bin"
-opscenter_untar_folder="${UNTAR_FOLDER}${SOFTWARE_VERSION}"
-opscenter_untar_config_folder="${opscenter_untar_folder}/conf/"
-opscenter_untar_bin_folder="${opscenter_untar_folder}/bin/"
+java_security_folder="${PACKAGES}${JAVA_SECURITY_DISTRIBUTION}/"
+java_security_zip_file="${java_security_folder}${JAVA_SECURITY_ZIP}"
 
 ## folders to be write tested !!
 # declare all paths (; seperated) to be write tested for this pod

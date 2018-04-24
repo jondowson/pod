@@ -5,7 +5,7 @@ defaultErrMsg="You must supply the correct combination of flags and values - ple
 buildFolderErrMsg="You must supply a value for ${yellow}--build${red} --> please check this pod's help: ${yellow}pod -p ${WHICH_POD} --help"
 servJsonErrMsg="You must supply a value for ${yellow}--servers${red} --> please check this pod's help: ${yellow}pod -p ${WHICH_POD} --help"
 sendSoftErrMsg="You must supply valid values for ${yellow}--sendsoft${red} --> please check this pod's help: ${yellow}pod -p ${WHICH_POD} --help"
-clusterStateValueErrMsg="You must specify --clusterstate as either ${yellow}stop${red} or ${yellow}restart${red}"
+clusterStateValueErrMsg="You must specify --clusterstate as either ${yellow}stop${red} or ${yellow}restart${red} or ${yellow}agent-stop${red} or ${yellow}agent-restart${red}"
 
 # MODE 1: rolling start/stop of cluster using pod_DSE
 if [[ "${clusterstateFlag}" == "true" ]]; then
@@ -17,7 +17,7 @@ if [[ "${clusterstateFlag}" == "true" ]]; then
       prepare_generic_display_msgColourSimple "ERROR-->" "${defaultErrMsg}" && exit 1;
 
     # PART 2: check values are acceptable for this mode of operation
-    elif [[ "${CLUSTER_STATE}" != "stop" ]] && [[ ${CLUSTER_STATE} != "restart" ]]; then
+  elif [[ "${CLUSTER_STATE}" != "stop" ]] && [[ ${CLUSTER_STATE} != "restart" ]] && [[ ${CLUSTER_STATE} != "agent-stop" ]] && [[ ${CLUSTER_STATE} != "agent-restart" ]]; then
       prepare_generic_display_msgColourSimple "ERROR-->" "${clusterStateValueErrMsg}" && exit 1;
     fi
 

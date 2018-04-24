@@ -24,8 +24,12 @@ do
   prepare_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
 
   # [4] stop dse + agent running on server
-  lib_doStuff_remotely_stopAgent
-  lib_doStuff_remotely_stopDse
+  if [[ "${CLUSTER_STATE}" == "restart" ]] || [[ "${CLUSTER_STATE}" == "stop" ]]; then
+    lib_doStuff_remotely_stopAgent
+    lib_doStuff_remotely_stopDse
+  elif [[ "${CLUSTER_STATE}" == *"agent"* ]]; then
+    lib_doStuff_remotely_stopAgent
+  fi
 
 done
 }
@@ -55,6 +59,10 @@ if [[ "${stop_dse_fail}" == "true" ]]; then
     prepare_generic_display_msgColourSimple "INFO" "${cross} ${k}"
   done
 else
-  prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  dse + agent stopped"
+  if [[ "${CLUSTER_STATE}" == "restart" ]] || [[ "${CLUSTER_STATE}" == "stop" ]]; then
+    prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  dse + agent stopped"
+  elif [[ "${CLUSTER_STATE}" == *"agent"* ]]; then
+    prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  agent stopped"
+  fi
 fi
 }

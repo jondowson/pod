@@ -4,12 +4,6 @@ function pod_JAVA(){
 ## this will make their contents available to functions outside of the function that populates it
 # n/a for this pod
 
-## declare all paths (; seperated) to be write tested
-## no need to specify target_folder as automatically added !!
-## supply the variable string and omit the '$' - e.g "this_path;that_path"
-buildPathsToCheck="TEMP_FOLDER"
-jsonPathsToCheck=""
-
 # ------------------------------------------
 
 ## STAGES
@@ -28,7 +22,7 @@ jsonPathsToCheck=""
 ## --> pod specific functions:  this pod's 'lib' folder
 
 stage_generic_stubs_testConnectivity  "1" "6"
-stage_generic_stubs_testWritePaths    "2" "6" "${buildPathsToCheck}" "${jsonPathsToCheck}"
+stage_generic_stubs_testWritePaths    "2" "6" "${buildPathsWriteTest}" "${jsonPathsWriteTest}"   # set in build_settings.bash
 stage_generic_stubs_sendPodSoftware   "3" "6"
 stage_stubs_buildSendPod              "4" "6"
 stage_generic_stubs_launchPod         "5" "6"

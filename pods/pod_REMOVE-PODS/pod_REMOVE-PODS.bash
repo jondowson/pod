@@ -4,12 +4,6 @@ function pod_REMOVE-PODS(){
 ## this will make their contents available to functions outside of the function that populates it
 # n/a for this pod
 
-## declare all paths (; seperated) to be write tested
-## no need to specify target_folder as automatically added !!
-## supply the variable string and omit the '$' - e.g "this_path;that_path"
-buildPathsToCheck=""
-jsonPathsToCheck=""
-
 # ------------------------------------------
 
 ## STAGES
@@ -27,9 +21,9 @@ jsonPathsToCheck=""
 ## --> generic functions:       pod_ 'lib' folder
 ## --> pod specific functions:  this pod's 'lib' folder
 
-stage_generic_stubs_testConnectivity  "1" "6"
-stage_generic_stubs_testWritePaths    "2" "6" "${buildPathsToCheck}" "${jsonPathsToCheck}"
-stage_stubs_buildSendPod              "3" "6"
-stage_generic_stubs_launchPod         "4" "6"
-stage_stubs_finish                    "5" "6"
+stage_generic_stubs_testConnectivity  "1" "5"
+stage_generic_stubs_testWritePaths    "2" "5" "${buildPathsWriteTest}" "${jsonPathsWriteTest}"   # set in build_settings.bash
+stage_stubs_buildSendPod              "3" "5"
+stage_generic_stubs_launchPod         "4" "5"
+stage_stubs_finish                    "5" "5"
 }

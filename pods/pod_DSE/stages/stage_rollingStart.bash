@@ -36,16 +36,21 @@ do
   if [[ "${mode_analytics}" == "true" ]];  then flags="${flags} -k"; fi
   if [[ "${mode_graph}"     == "true" ]];  then flags="${flags} -g"; fi
 
-  # [6] display dse start message
-  if [[ "${flags}" == "" ]]; then
-    prepare_generic_display_msgColourSimple "INFO-->" "starting:         dse cassandra only"
-  else
-    prepare_generic_display_msgColourSimple "INFO-->" "starting:         dse with flags ${flags}"
-  fi
+  # [6] start dse + agent running on server
+  if [[ "${CLUSTER_STATE}" == "restart" ]]; then
 
-  # [7] start dse + agent
-  lib_doStuff_remotely_startDse
-  lib_doStuff_remotely_startAgent
+    if [[ "${flags}" == "" ]]; then
+      prepare_generic_display_msgColourSimple "INFO-->" "starting:         dse cassandra only"
+    else
+      prepare_generic_display_msgColourSimple "INFO-->" "starting:         dse with flags ${flags}"
+    fi
+
+    lib_doStuff_remotely_startAgent
+    lib_doStuff_remotely_startDse
+
+  elif [[ "${CLUSTER_STATE}" == *"agent"* ]]; then
+    lib_doStuff_remotely_startAgent
+  fi
 
 done
 }
@@ -75,7 +80,9 @@ if [[ "${start_dse_fail}" == "true" ]]; then
     prepare_generic_display_msgColourSimple "INFO" "${cross} ${k}"
   done
 else
-  prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  dse started"
+  if [[ "${CLUSTER_STATE}" == "restart" ]]; then
+    prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  dse started"
+  fi
 fi
 
 # -----
@@ -99,7 +106,8 @@ if [[ "${start_agent_fail}" == "true" ]]; then
     prepare_generic_display_msgColourSimple "INFO" "${cross} ${k}"
   done
 else
-  prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  agent started"
+  if [[ "${CLUSTER_STATE}" == *"agent"* ]]; then
+    prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  agent started"
+  fi
 fi
-
 }
