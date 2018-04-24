@@ -1,6 +1,6 @@
 #!/bin/bash
 
-POD_VERSION="1.5.2"
+POD_VERSION="1.5.3"
 script_name="pod_dependencies.sh"
 script_author="JRD"
 script_about="install dependencies for the pod application"

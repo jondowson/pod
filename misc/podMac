@@ -1,6 +1,6 @@
 #!/usr/local/bin/bash
 
-POD_VERSION="1.5.2"
+POD_VERSION="1.5.3"
 script_name="podMac"
 script_author="JRD"
 script_about="launch a chosen pod with passed flags - mac version"
@@ -45,7 +45,7 @@ declare -A pod_test_connect_error_array
 declare -A pod_software_send_pid_array
 # [2.8] set some handy generic flags
 flagOne="false"
-flagTwo="false" 
+flagTwo="false"
 
 # ==========
 

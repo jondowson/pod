@@ -1,6 +1,6 @@
 #!/bin/bash
 
-POD_VERSION="1.5.2"
+POD_VERSION="1.5.3"
 script_name="pod"
 script_author="JRD"
 script_about="launch a chosen pod with passed flags"
@@ -52,7 +52,7 @@ else
   declare -A pod_software_send_pid_array
   # [2.9] set some handy generic flags
   flagOne="false"
-  flagTwo="false" 
+  flagTwo="false"
 
 # ==========
 
