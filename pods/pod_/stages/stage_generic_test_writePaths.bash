@@ -7,8 +7,8 @@ function task_generic_testWritePaths(){
 ## for each server test ability to write to all required dse paths (data, logs etc)
 
 # if json contains nested paths to test, these will have been passed in
-buildFolderPaths="${1}"
-serverJsonPaths="${2}"
+buildPathsWriteTest="${1}"
+jsonPathsWriteTest="${2}"
 
 for id in $(seq 1 ${numberOfServers});
 do

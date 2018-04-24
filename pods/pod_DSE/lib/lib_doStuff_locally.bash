@@ -248,8 +248,4 @@ if [ -n "$spark_worker_log_folder" ];    then ${dynamic_cmd} "${lineNumber}iexpo
 if [ -n "$spark_master_log_folder" ];    then ${dynamic_cmd} "${lineNumber}iexport SPARK_MASTER_LOG_DIR=${spark_master_log_folder}"    ${file};((lineNumber++));fi
 if [ -n "$spark_alwayson_sql_log_dir" ]; then ${dynamic_cmd} "${lineNumber}iexport ALWAYSON_SQL_LOG_DIR=${spark_alwayson_sql_log_dir}" ${file};((lineNumber++));fi
 ${dynamic_cmd} "${lineNumber}i#>>>>>END-ADDED-BY__${WHICH_POD}@${label}"                                                               ${file}
-
-# part [C]
-# insert gap at end of block
-#${dynamic_cmd} '"${lineNumber}G"' ${file} # insert after first line
 }

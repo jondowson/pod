@@ -1,59 +1,36 @@
-# about:  set software versions, paths and homogenous settings ( i.e non server.json settings)
-
-
-
-
-# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-# EDIT-THIS-BLOCK !!
-
-## [1] capitalised sub-folder of POD_SOFTWARE where is stored the tarball - e.g. DATASTAX, JAVA ...
-
-# leave empty if pod does not involve tarball !
-PACKAGE="DATASTAX"
-
-
-
-
 # //////////////////////////////////////////
 # DO-NOT-EDIT-THIS-BLOCK !!
-source ${pod_home_path}/misc/.suitcase
-POD_SOFTWARE="${TARGET_FOLDER}POD_SOFTWARE/"
-PACKAGES="${POD_SOFTWARE}${PACKAGE}/"
-INSTALL_FOLDER="${TARGET_FOLDER}POD_INSTALLS/"
-INSTALL_FOLDER_POD="${INSTALL_FOLDER}${WHICH_POD}/"
+PACKAGE="DATASTAX"                                    # empty if pod does not involve tarball
+source ${pod_home_path}/misc/.suitcase                # file used to access server specific variables on remote machines
+POD_SOFTWARE="${TARGET_FOLDER}POD_SOFTWARE/"          # the parent folder with all the tarballs and the pod software
+PACKAGES="${POD_SOFTWARE}${PACKAGE}/"                 # the relevant tarball folders for this pod
+INSTALL_FOLDER="${TARGET_FOLDER}POD_INSTALLS/"        # the parent folder where tarball software is unpacked to
+INSTALL_FOLDER_POD="${INSTALL_FOLDER}${WHICH_POD}/"   # the pod specific folder where tarballs are unpacked to
 # //////////////////////////////////////////
-
-
 
 
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # EDIT-THIS-BLOCK !!
 
-## [2] BASIC CASSANDRA SETTINGS
+## [1] BASIC CASSANDRA SETTINGS
 
-CLUSTER_NAME="Cluster1"                         # avoid special characters !!
-ENDPOINT_SNITCH="GossipingPropertyFileSnitch"   # 'GossipingPropertyFileSnitch' should be the default !!
-VNODES="8"                                      # specify a value (8,16,32) for vnodes or "false" for assigned tokens (picked up from servers' .json definition file)
+CLUSTER_NAME="Cluster1"                               # avoid special characters !!
+ENDPOINT_SNITCH="GossipingPropertyFileSnitch"         # 'GossipingPropertyFileSnitch' should be the default !!
+VNODES="8"                                            # specify a value (8,16) for vnodes or "false" to pick up assigned token from json definition file
 
-# -----
+## [2] DSE + AGENT VERSIONS
 
-## [3] DSE VERSIONS
+DSE_VERSION="dse-5.1.5"                               # the dse tarball version to unpack
+AGENT_VERSION="datastax-agent-6.1.5"                  # the datastax agent tarball version to unpack
 
-DSE_VERSION="dse-5.1.5"
-DSE_TARBALL="${DSE_VERSION}-bin.tar.gz"
-AGENT_VERSION="datastax-agent-6.1.5"
-AGENT_TARBALL="${AGENT_VERSION}.tar.gz"
+# [3] DATA + LOG + TMP FOLDER LOCATIONS
 
-# -----
-
-# [4] DATA + LOG + TMP FOLDER LOCATIONS
-
-# note:
+## note:
 # + cassandra sstable data folders are specified in the <servers.json> definition file
 # + this data folder is where the supporting persistence files will go such as commitlogs and hinted-handoffs
 # + on spinning disks it is recommended to locate these on seperate mount points to sstable data folders
 # + by default DATA and LOGS folders are created inside the POD_INSTALLS desktop folder
-# ++  this seperation means that if pod_DSE is rerun or removed using pod_REMOVE-PODS, existing data will be retained
+# ++  this seperation means that by default if pod_DSE is rerun or removed using pod_REMOVE-PODS, existing data will be retained
 PARENT_DATA_FOLDER="${INSTALL_FOLDER_POD}DATA/${BUILD_FOLDER}/"
 PARENT_LOG_FOLDER="${INSTALL_FOLDER_POD}LOGS/${BUILD_FOLDER}/"
 # temp folder - can be anywhere with suffcient permissions
@@ -61,10 +38,11 @@ TEMP_FOLDER="${INSTALL_FOLDER}TEMP/"
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
-
-
 # //////////////////////////////////////////
 # DO-NOT-EDIT-THIS-BLOCK !!
+# tarballs
+DSE_TARBALL="${DSE_VERSION}-bin.tar.gz"
+AGENT_TARBALL="${AGENT_VERSION}.tar.gz"
 # dse
 dse_tar_folder="${PACKAGES}dse/"
 dse_tar_file="${dse_tar_folder}${DSE_TARBALL}"
@@ -96,10 +74,12 @@ tomcat_log_folder="${PARENT_LOG_FOLDER}tomcat/"
 
 ## folders to be write tested !!
 # declare all paths (; seperated) to be write tested for this pod
-# no need to specify target_folder as automatically added !!
 # supply the variable string and omit the '$' - e.g "data_path;log_path"
-# this test also creates any folders that need to exist at runtime
-# build_settings paths to write test
+# no need to specify target_folder as automatically added by function
+# the writetest creates and then deletes a dummy folder in the specified path
+# any folders that need to exist prior to running the application should be added here
+
+# build_settings paths from this file to write test
 buildPathsWriteTest="TEMP_FOLDER;PARENT_DATA_FOLDER;PARENT_LOG_FOLDER;spark_local_data;spark_worker_data"
 # json server paths to write test
 jsonPathsWriteTest="cass_data;dsefs_data"
