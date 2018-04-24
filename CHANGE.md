@@ -8,7 +8,8 @@
 **2) pod_DSE**        
 
 + update/config/restart datastax-agents independently of dse
-+ now works with dse 6.0      
++ now works with dse 6.0    
++ checks and sets dsefs to enabled if spark is started         
 
 **3) pod_DSE-OPSCENTER**
 
