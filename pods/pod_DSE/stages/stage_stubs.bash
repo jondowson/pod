@@ -5,6 +5,7 @@ stageTotal="${2}"
 
 destination_folder_parent_path="${pod_home_path}/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"
 destination_folder_path="${destination_folder_parent_path}resources/"
+newResourcesFolder="false" # becomes true if stage is run
 
 prepare_generic_display_stageCount        "Prepare 'resources' Folder" "${stageNumber}" "${stageTotal}"
 prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Strip out all non config files"
@@ -79,10 +80,10 @@ if [[ "${clusterstateFlag}" == "true" ]]; then
   # change WHICH_POD to alter final message
   WHICH_POD=${WHICH_POD}-rollingStart
 else
-  if [[ "${REGENERATE_RESOURCES}" == "true" ]] || [[ "${REGENERATE_RESOURCES}" == "edit" ]]; then
+  if [[ "${REGENERATE_RESOURCES}" == "true" ]] || [[ "${REGENERATE_RESOURCES}" == "edit" ]] || [[ "${flagOne}" == "true" ]]; then
     prepare_generic_display_msgColourSimple "SUCCESS" "LOCAL SERVER: new resources folder generated"
   else
-    prepare_generic_display_msgColourSimple "SUCCESS" "LOCAL SERVER: old resources folder utilised"
+    prepare_generic_display_msgColourSimple "SUCCESS" "LOCAL SERVER: existing resources folder utilised"
   fi
   task_generic_testConnectivity_report
   task_generic_testWritePaths_report

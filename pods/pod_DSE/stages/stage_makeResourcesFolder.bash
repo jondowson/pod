@@ -32,9 +32,7 @@ if [ -d "${destination_folder_path}" ]; then
 fi
 
 prepare_generic_display_msgColourSimple "INFO" "Unpack from:   ${red}${dse_tar_file}${reset}"
-prepare_generic_display_msgColourSimple "INFO" "Unpack to:     ${yellow}${destination_folder_path}/resources${reset}"
-#printf "%s\n"
-#prepare_generic_display_msgColourSimple "ALERT" "Strip files from 'resources' folder"
+prepare_generic_display_msgColourSimple "INFO" "Unpack to:     ${yellow}${destination_folder_path}${reset}"
 
 mkdir -p "${pod_home_path}/tmp"
 tar -xf "${dse_tar_file}" -C "${pod_home_path}/tmp/"
@@ -82,7 +80,7 @@ array_file_extensions_to_strip[29]="war"
 printf "%s\n"
 printf "%s\t%s\t%s\t\t%s\t%s\n" "${b}Extension" "|" "No." "|" "Bytes${reset}"
 printf "%s\n" "--------------------------------------------------"
-sleep 5 # for the benefit of macs - otherwise file permission errors !!
+#sleep 5 # for the benefit of macs - otherwise file permission errors !!
 before_size=$(du -sh "${source_folder_path}" | awk '{ print $1 }')
 
 for i in "${array_file_extensions_to_strip[@]}"
@@ -108,4 +106,5 @@ printf "%s\n"
 cp -rp ${source_folder_path} ${destination_folder_path}
 rm -rf "${pod_home_path}tmp/"
 prepare_generic_misc_podBuildTempFolder
+flagOne="true" # record that this stage was run
 }

@@ -43,6 +43,9 @@ chmod -R 777 ${pod_home_path}/.git
 declare -A ifsDelimArray
 declare -A pod_test_connect_error_array
 declare -A pod_software_send_pid_array
+# [2.8] set some handy generic flags
+flagOne="false"
+flagTwo="false" 
 
 # ==========
 

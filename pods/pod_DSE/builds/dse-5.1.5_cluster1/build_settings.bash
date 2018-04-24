@@ -21,7 +21,7 @@ VNODES="8"                                            # specify a value (8,16) f
 ## [2] DSE + AGENT VERSIONS
 
 DSE_VERSION="dse-5.1.5"                               # the dse tarball version to unpack
-AGENT_VERSION="datastax-agent-6.1.5"                  # the datastax agent tarball version to unpack
+AGENT_VERSION="datastax-agent-6.5.0"                  # the datastax agent tarball version to unpack
 
 # [3] DATA + LOG + TMP FOLDER LOCATIONS
 
