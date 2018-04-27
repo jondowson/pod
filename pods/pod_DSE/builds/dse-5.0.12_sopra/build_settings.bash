@@ -20,7 +20,7 @@ VNODES="8"                                            # specify a value (8,16) f
 
 ## [2] DSE + AGENT VERSIONS
 
-DSE_VERSION="dse-5.1.5"                               # the dse tarball version to unpack
+DSE_VERSION="dse-5.0.12"                              # the dse tarball version to unpack
 AGENT_VERSION="datastax-agent-6.1.5"                  # the datastax agent tarball version to unpack
 
 # [3] DATA + LOG + TMP FOLDER LOCATIONS
@@ -79,8 +79,8 @@ tomcat_log_folder="${PARENT_LOG_FOLDER}tomcat/"
 # the writetest creates and then deletes a dummy folder in the specified path
 # any folders that need to exist prior to running the application should be added here
 
-# build_settings paths to write test
-buildPathsWriteTest="TEMP_FOLDER;PARENT_DATA_FOLDER;PARENT_LOG_FOLDER;spark_local_data;spark_worker_data;spark_executor_folder;spark_alwayson_sql_log_dir;spark_master_log_folder;spark_worker_log_folder"
+# build_settings paths from this file to write test
+buildPathsWriteTest="TEMP_FOLDER;PARENT_DATA_FOLDER;PARENT_LOG_FOLDER;spark_local_data;spark_worker_data;spark_master_log_folder;spark_worker_log_folder"
 # json server paths to write test
 jsonPathsWriteTest="cass_data;dsefs_data"
 # //////////////////////////////////////////

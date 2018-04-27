@@ -15,15 +15,17 @@ function lib_generic_build_suitcase(){
 ## pack the suitcase !!
 ## append (in order) server specific variables used by remotely run functions
 
-# [1] TARGET_FOLDER - clear any existing values with first entry (i.e. '>')
-printf "%s\n" "TARGET_FOLDER=${target_folder}"                  > "${tmp_suitcase_file_path}"
-# [2] WHICH_POD
+# [1] LOCAL_TARGET_FOLDER - clear any existing values with first entry (i.e. '>')
+printf "%s\n" "LOCAL_TARGET_FOLDER=${LOCAL_TARGET_FOLDER}"       > "${tmp_suitcase_file_path}"
+# [2] TARGET_FOLDER
+printf "%s\n" "TARGET_FOLDER=${target_folder}"                  >> "${tmp_suitcase_file_path}"
+# [3] WHICH_POD
 printf "%s\n" "WHICH_POD=${WHICH_POD}"                          >> "${tmp_suitcase_file_path}"
-# [3] SERVERS_JSON
+# [4] SERVERS_JSON
 printf "%s\n" "server_id=${id}"                                 >> "${tmp_suitcase_file_path}"
 servers_json_path_string="${target_folder}POD_SOFTWARE/POD/pod/servers/${SERVERS_JSON}"
 printf "%s\n" "servers_json_path=${servers_json_path_string}"   >> "${tmp_suitcase_file_path}"
-# [4] BUILD_FOLDER
+# [5] BUILD_FOLDER
 printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}"                    >> "${tmp_suitcase_file_path}"
 build_folder_path_string="${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"
 printf "%s\n" "build_folder_path=${build_folder_path_string}"   >> "${tmp_suitcase_file_path}"
@@ -64,13 +66,16 @@ printf "%s\n" "${red}"
 localServer="false"
 localServer=$(lib_generic_checks_localIpMatch "${pubIp}")
 
-# if not local server - delete any existing pod folder
-if [[ "${localServer}" != "true" ]]; then
+# if not local server or installing elsewhere locally - delete any existing pod folder
+if [[ "${localServer}" != "true" ]] || [[ "${LOCAL_TARGET_FOLDER}" != "${target_folder}" ]]; then
   ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "rm -rf ${target_folder}POD_SOFTWARE/POD/pod" exit
+fi
 
 # if local server - copy from the tmp folder the value for target_folder
-# this will subsequently be copied back to the local copy of misc/.suitcase, once all servers have been looped through
-else
+if [[ "${localServer}" == "true" ]]; then
+  # this will subsequently be copied back to the local copy of misc/.suitcase, once all servers have been looped through
+  # this will then be referenced when/if the launch remote script is run for the local machine (after it is then deleted)
+  # this 'suitcase' file ensures each server gets variables relevant to it (paths,ips etc)
   cp "${tmp_suitcase_file_path}" ${pod_home_path}/.suitcase.tmp
 fi
 
@@ -90,6 +95,7 @@ function lib_generic_build_finishUp(){
 
 # assign the local target_folder value back to the local copy of the misc/.suitcase
 mv ${pod_home_path}/.suitcase.tmp "${suitcase_file_path}"
+
 # delete the temporary work folder
 rm -rf "${tmp_folder}"
 }

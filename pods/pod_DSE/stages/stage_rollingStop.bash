@@ -20,10 +20,13 @@ do
   # add trailing '/' to target_folder path if not present
   target_folder="$(lib_generic_strings_addTrailingSlash ${target_folder})"
 
-  # [3] display message
+  # [3] source the build_settings file based on this server's target_folder
+  lib_generic_build_sourceTarget
+
+  # [4] display message
   prepare_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
 
-  # [4] stop dse + agent running on server
+  # [5] stop dse + agent running on server
   if [[ "${CLUSTER_STATE}" == "restart" ]] || [[ "${CLUSTER_STATE}" == "stop" ]]; then
     lib_doStuff_remotely_stopAgent
     lib_doStuff_remotely_stopDse
@@ -60,7 +63,8 @@ if [[ "${stop_dse_fail}" == "true" ]]; then
   done
 else
   if [[ "${CLUSTER_STATE}" == "restart" ]] || [[ "${CLUSTER_STATE}" == "stop" ]]; then
-    prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  dse + agent stopped"
+    prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  dse stopped"
+    prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  agent stopped"
   elif [[ "${CLUSTER_STATE}" == *"agent"* ]]; then
     prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  agent stopped"
   fi

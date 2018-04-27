@@ -1,0 +1,30 @@
+{
+    "server_1":{
+      "tag": "storage_1",
+      "user": "jondowson",
+      "sshKey": "/Users/jondowson/.ssh/id_rsa",
+      "target_folder": "/POD/",
+      "pubIp": "127.0.0.1",
+      "listen_address": "127.0.0.1",
+      "rpc_address": "127.0.0.1",
+      "stomp_interface": "127.0.0.1",
+      "seeds": "127.0.0.1",
+      "token": "",
+      "dc": "dc1",
+      "rack": "rack1",
+      "mode": {
+        "search": "true",
+        "analytics": "true",
+        "graph": "true",
+        "dsefs": "true"
+      },
+      "cass_data": [
+        "/POD/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/sstables/",
+        "/POD/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/sstables2/"
+      ],
+      "dsefs_data": [
+        "/POD/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/dsefs/;1.0;5368709",
+        "/POD/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/dsefs2/;1.0;5368709"
+      ]
+    }
+}

@@ -6,6 +6,12 @@ function lib_generic_strings_ifsStringDelimeter(){
 
 ## split a string by any number of delimiters and insert into an array
 
+# then in calling function access split elements in the array
+# for whatever in "${array[@]}"
+# do
+#  echo ${!whatever}
+# done
+
 delim=$1
 string=$2
 
@@ -66,9 +72,9 @@ case "${1}" in
       ${cmd} "s,\(${searchString}\s*\).*\$,\1${newValue}," "${file}" ;;
   "searchFromLineStartAndRemoveEntireLine" )
       ${cmd} "/${searchString}/d" "${file}" ;;
-  "searchAndReplaceLabelledBlock" )
+  "searchAndReplaceLabelledBlock" )  # remove all blocks for a given pod and label e.g. a particular block within a configuration file
       ${cmd} "/#>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${searchString}/,/#>>>>>END-ADDED-BY__${WHICH_POD}@${searchString}/d" ${file} ;;
-  "searchAndReplaceLabelledBlock2" )
+  "searchAndReplaceLabelledBlock2" ) # remove all blocks for a given pod e.g. all entries in bash_profile
       ${cmd} "/#>>>>>BEGIN-ADDED-BY__${WHICH_POD}@/,/#>>>>>END-ADDED-BY__${WHICH_POD}@/d" ${file} ;;
   "deleteEverythingAfterIncludingSubstring" )
       ${cmd} "/${searchString}/,$d" ${file} ;;
@@ -89,7 +95,7 @@ function lib_generic_strings_removePodBlockAndEmptyLines(){
 
 ## cleanly remove an existing pod insertion block, leaving no following blank line gaps
 ## usage:
-## lib_generic_strings_removePodBlockAndEmptyLines "thisFile" "pod_XXX@<label>"
+## lib_generic_strings_removePodBlockAndEmptyLines "thisFile" "pod_XYZ@<label>"
 
 # file to search and the pod block label
 file="${1}"

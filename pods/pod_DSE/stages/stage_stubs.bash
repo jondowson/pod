@@ -78,7 +78,7 @@ if [[ "${clusterstateFlag}" == "true" ]]; then
     task_rollingStop_report
   fi
   # change WHICH_POD to alter final message
-  WHICH_POD=${WHICH_POD}-rollingStart
+  WHICH_POD=${WHICH_POD}-rollingStopStart
 else
   if [[ "${REGENERATE_RESOURCES}" == "true" ]] || [[ "${REGENERATE_RESOURCES}" == "edit" ]] || [[ "${flagOne}" == "true" ]]; then
     prepare_generic_display_msgColourSimple "SUCCESS" "LOCAL SERVER: new resources folder generated"

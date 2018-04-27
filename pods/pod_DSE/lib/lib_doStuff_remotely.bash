@@ -22,7 +22,8 @@ lib_doStuff_remotely_agentAddressYaml
 lib_doStuff_remotely_cassandraTopologyProperties
 
 # [7] configure local environment
-lib_generic_doStuff_remotely_updatePathBashProfile "CASSANDRA_HOME" "${dse_untar_bin_folder}"
+lib_generic_doStuff_remotely_updateAppBashProfile "CASSANDRA_HOME" "${dse_untar_bin_folder}"
+lib_generic_doStuff_remotely_updatePodBashProfile "POD_HOME" "${bash_path_string}"
 }
 
 # ---------------------------------------
@@ -82,7 +83,7 @@ if [[ "${status}" != "0" ]]; then
   do
     dseVersion=$(ssh -q -i ${sshKey} ${user}@${pubIp} "${dse_untar_bin_folder}dse -v")
     prepare_generic_display_msgColourSimple "INFO-->" "stopping dse:     gracefully (version: ${dseVersion})"
-    ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${stop_cmd}"
+    ssh -q -i ${sshKey} ${user}@${pubIp} "${stop_cmd}"
     status=${?}
     if [[ "${status}" == "0" ]]; then
       prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${green}${status}"
@@ -154,7 +155,7 @@ if [[ "${status}" != "0" ]]; then
       start_dse_error_array["${tag}"]="${status};${pubIp}"
       break;
     else
-      output=$(ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_dse}" | grep 'Wait for nodes completed' )
+      output=$(ssh -q -i ${sshKey} ${user}@${pubIp} "${start_dse}" | grep 'Wait for nodes completed' )
       status=$?
       if [[ "${status}" != "0" ]] || [[ "${output}" != *"Wait for nodes completed"* ]]; then
         prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}"

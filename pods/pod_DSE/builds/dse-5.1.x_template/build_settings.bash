@@ -80,7 +80,7 @@ tomcat_log_folder="${PARENT_LOG_FOLDER}tomcat/"
 # any folders that need to exist prior to running the application should be added here
 
 # build_settings paths from this file to write test
-buildPathsWriteTest="TEMP_FOLDER;PARENT_DATA_FOLDER;PARENT_LOG_FOLDER;spark_local_data;spark_worker_data"
+buildPathsWriteTest="TEMP_FOLDER;PARENT_DATA_FOLDER;PARENT_LOG_FOLDER;spark_local_data;spark_worker_data;spark_master_log_folder;spark_worker_log_folder"
 # json server paths to write test
 jsonPathsWriteTest="cass_data;dsefs_data"
 # //////////////////////////////////////////

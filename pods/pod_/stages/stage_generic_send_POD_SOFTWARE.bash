@@ -30,7 +30,7 @@ do
   # [5] check if server is local server - no point sending software if local +  no delete locally of existing pod folder
   localServer="false"
   localServer=$(lib_generic_checks_localIpMatch "${pubIp}")
-  if [[ "${localServer}" == "true" ]]; then
+  if [[ "${localServer}" == "true" ]] && [[ "${LOCAL_TARGET_FOLDER}" == "${target_folder}" ]]; then
     prepare_generic_display_msgColourSimple "INFO-->" "Not sending to local machine ! ${reset}"
   else
     # copy the POD_SOFTWARE folder to remote server
@@ -76,7 +76,7 @@ done
 
 function task_generic_sendPodSoftware_report(){
 
-## display report of pids used when sending POD_SOFTWARE 
+## display report of pids used when sending POD_SOFTWARE
 
 if [[ ! -z $POD_SOFTWARE_pid_failures ]]; then
   prepare_generic_display_msgColourSimple "INFO-->" "${cross} Problems distributing POD_SOFTWARE/${PACKAGE} to servers"

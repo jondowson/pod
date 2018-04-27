@@ -45,8 +45,8 @@ do
       prepare_generic_display_msgColourSimple "INFO-->" "starting:         dse with flags ${flags}"
     fi
 
-    lib_doStuff_remotely_startAgent
     lib_doStuff_remotely_startDse
+    lib_doStuff_remotely_startAgent
 
   elif [[ "${CLUSTER_STATE}" == *"agent"* ]]; then
     lib_doStuff_remotely_startAgent
@@ -106,7 +106,7 @@ if [[ "${start_agent_fail}" == "true" ]]; then
     prepare_generic_display_msgColourSimple "INFO" "${cross} ${k}"
   done
 else
-  if [[ "${CLUSTER_STATE}" == *"agent"* ]]; then
+  if [[ "${CLUSTER_STATE}" == *"agent"* ]] || [[ "${CLUSTER_STATE}" == "restart" ]]; then
     prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  agent started"
   fi
 fi
