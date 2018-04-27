@@ -37,6 +37,7 @@ do
   # prepend the target_folder for this server and append the build_settings specific paths to test
   buildFolderPaths="target_folder;${buildPathsWriteTest}"
   lib_generic_strings_ifsStringDelimeter ";" "${buildFolderPaths}"
+
   # for each element in the array
   for folder in "${array[@]}"
   do

@@ -14,14 +14,14 @@ INSTALL_FOLDER_POD="${INSTALL_FOLDER}${WHICH_POD}/"   # the pod specific folder 
 
 ## [1] BASIC CASSANDRA SETTINGS
 
-CLUSTER_NAME="Cluster1"                               # avoid special characters !!
+CLUSTER_NAME="cluster_dse-5.0.x"                      # avoid special characters !!
 ENDPOINT_SNITCH="GossipingPropertyFileSnitch"         # 'GossipingPropertyFileSnitch' should be the default !!
 VNODES="8"                                            # specify a value (8,16) for vnodes or "false" to pick up assigned token from json definition file
 
 ## [2] DSE + AGENT VERSIONS
 
-DSE_VERSION="dse-5.1.5"                               # the dse tarball version to unpack
-AGENT_VERSION="datastax-agent-6.5.0"                  # the datastax agent tarball version to unpack
+DSE_VERSION="dse-5.0.12"                              # the dse tarball version to unpack
+AGENT_VERSION="datastax-agent-6.1.x"                  # the datastax agent tarball version to unpack
 
 # [3] DATA + LOG + TMP FOLDER LOCATIONS
 
@@ -80,7 +80,7 @@ tomcat_log_folder="${PARENT_LOG_FOLDER}tomcat/"
 # any folders that need to exist prior to running the application should be added here
 
 # build_settings paths from this file to write test
-buildPathsWriteTest="TEMP_FOLDER;PARENT_DATA_FOLDER;PARENT_LOG_FOLDER;spark_local_data;spark_worker_data"
+buildPathsWriteTest="TEMP_FOLDER;PARENT_DATA_FOLDER;PARENT_LOG_FOLDER;spark_local_data;spark_worker_data;spark_master_log_folder;spark_worker_log_folder"
 # json server paths to write test
 jsonPathsWriteTest="cass_data;dsefs_data"
 # //////////////////////////////////////////
