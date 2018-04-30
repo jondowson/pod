@@ -21,14 +21,14 @@ touch ${file}
 
 # search for and remove any pre-canned blocks containing a label:
 label="source_bash_rc"
-lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
+lib_generic_strings_removePodBlockAndEmptyLines ${file} "pod_SETUP@${label}"
 
 # add line sourcing .bashrc
 cat << EOF >> ${file}
 
-#>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}
+#>>>>>BEGIN-ADDED-BY__pod_SETUP@${label}
 if [ -r ~/.bash_profile ]; then source ~/.bash_profile; fi
-#>>>>>END-ADDED-BY__${WHICH_POD}@${label}
+#>>>>>END-ADDED-BY__pod_SETUP@${label}
 EOF
 }
 

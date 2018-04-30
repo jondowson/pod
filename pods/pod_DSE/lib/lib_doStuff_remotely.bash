@@ -83,7 +83,7 @@ if [[ "${status}" != "0" ]]; then
   do
     dseVersion=$(ssh -q -i ${sshKey} ${user}@${pubIp} "${dse_untar_bin_folder}dse -v")
     prepare_generic_display_msgColourSimple "INFO-->" "stopping dse:     gracefully (version: ${dseVersion})"
-    ssh -q -i ${sshKey} ${user}@${pubIp} "${stop_cmd}"
+    ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${stop_cmd}"
     status=${?}
     if [[ "${status}" == "0" ]]; then
       prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${green}${status}"
@@ -155,7 +155,7 @@ if [[ "${status}" != "0" ]]; then
       start_dse_error_array["${tag}"]="${status};${pubIp}"
       break;
     else
-      output=$(ssh -q -i ${sshKey} ${user}@${pubIp} "${start_dse}" | grep 'Wait for nodes completed' )
+      output=$(ssh -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_dse}" | grep 'Wait for nodes completed')
       status=$?
       if [[ "${status}" != "0" ]] || [[ "${output}" != *"Wait for nodes completed"* ]]; then
         prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}"
@@ -197,7 +197,7 @@ if [[ "${status}" != "0" ]]; then
       start_agent_error_array["${tag}"]="${status};${pubIp}"
       break;
     else
-      output=$(ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_agent}" | grep "Starting JMXComponent" )
+      output=$(ssh -q -i ${sshKey} ${user}@${pubIp} "${start_agent}" | grep "Starting JMXComponent" )
       status=$?
       if [[ "${status}" != "0" ]] || [[ "${output}" != *"Starting JMXComponent"* ]]; then
         prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}"

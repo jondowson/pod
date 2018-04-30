@@ -13,10 +13,10 @@
       "dc": "dc1",
       "rack": "rack1",
       "mode": {
-        "search": "false",
-        "analytics": "false",
-        "graph": "false",
-        "dsefs": "false"
+        "search": "true",
+        "analytics": "true",
+        "graph": "true",
+        "dsefs": "true"
       },
       "cass_data": [
         "/home/jd/Desktop/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/sstables/",

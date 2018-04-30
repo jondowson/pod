@@ -51,7 +51,7 @@ else
   if [[ "${os}" == "Mac" ]]; then
     jqCmd="/usr/local/Cellar/jq/1.5_3/bin/jq"
   else
-    jqCmd-"${jq_file_path}"
+    jqCmd="${jq_file_path}"
   fi
 
   # -----

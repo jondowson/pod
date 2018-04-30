@@ -20,8 +20,8 @@ VNODES="8"                                            # specify a value (8,16) f
 
 ## [2] DSE + AGENT VERSIONS
 
-DSE_VERSION="dse-5.1.x"                               # the dse tarball version to unpack
-AGENT_VERSION="datastax-agent-6.1.x"                  # the datastax agent tarball version to unpack
+DSE_VERSION="dse-5.1.9"                               # the dse tarball version to unpack
+AGENT_VERSION="datastax-agent-6.5.0"                  # the datastax agent tarball version to unpack
 
 # [3] DATA + LOG + TMP FOLDER LOCATIONS
 
@@ -67,6 +67,7 @@ spark_master_log_folder="${PARENT_LOG_FOLDER}spark/master/"
 spark_worker_log_folder="${PARENT_LOG_FOLDER}spark/worker/"
 # dsefs
 dsefs_untar_folder="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/${DSE_VERSION}/resources/dsefs/"
+dsefs_work_dir="${PARENT_DATA_FOLDER}dsefs/"
 # gremlin logs
 gremlin_log_folder="${PARENT_LOG_FOLDER}gremlin/"
 # tomcat logs

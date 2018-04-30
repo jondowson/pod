@@ -102,15 +102,15 @@ file="${1}"
 blockLabel="${2}"
 
 # define block to remove from file
-beginBlockTag=$(printf "%q" "#>>>>>BEGIN-ADDED-BY__${blockLabel}")
-endBlockTag=$(printf "%q" "#>>>>>END-ADDED-BY__${blockLabel}")
+beginBlockTag="#>>>>>BEGIN-ADDED-BY__${blockLabel}"
+endBlockTag="#>>>>>END-ADDED-BY__${blockLabel}"
+
+# remove any empty blank lines at end of file
+a=$(<$file); printf "%s\n" "$a" > $file
 
 # find line numbers of begin and end of block
 beginMatch=$(sed -n /"${beginBlockTag}"/= "${file}")
 endMatch=$(sed -n /"${endBlockTag}"/= "${file}")
-
-# remove any empty blank lines at end of file
-a=$(<$file); printf "%s\n" "$a" > $file
 
 # if the block already exists - determine its position and also delete any blank lines following it (leave one blank line if any exist)
 if [[ ${beginMatch} != "" ]] && [[ ${endMatch} != "" ]]; then

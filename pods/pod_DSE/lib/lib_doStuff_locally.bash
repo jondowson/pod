@@ -194,7 +194,7 @@ cat << EOF >> $file
 dsefs_options:
       enabled: ${mode_dsefs}
       keyspace_name: dsefs
-      work_dir: ${dsefs_folder}
+      work_dir: ${dsefs_work_dir}
       public_port: 5598
       private_port: 5599
       data_directories:

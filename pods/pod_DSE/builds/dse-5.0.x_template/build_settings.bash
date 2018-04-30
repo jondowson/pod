@@ -14,14 +14,14 @@ INSTALL_FOLDER_POD="${INSTALL_FOLDER}${WHICH_POD}/"   # the pod specific folder 
 
 ## [1] BASIC CASSANDRA SETTINGS
 
-CLUSTER_NAME="cluster_dse-5.0.x"                      # avoid special characters !!
+CLUSTER_NAME="cluster_dse-5.0.13"                     # avoid special characters !!
 ENDPOINT_SNITCH="GossipingPropertyFileSnitch"         # 'GossipingPropertyFileSnitch' should be the default !!
 VNODES="8"                                            # specify a value (8,16) for vnodes or "false" to pick up assigned token from json definition file
 
 ## [2] DSE + AGENT VERSIONS
 
-DSE_VERSION="dse-5.0.12"                              # the dse tarball version to unpack
-AGENT_VERSION="datastax-agent-6.1.x"                  # the datastax agent tarball version to unpack
+DSE_VERSION="dse-5.0.13"                              # the dse tarball version to unpack
+AGENT_VERSION="datastax-agent-6.5.0"                  # the datastax agent tarball version to unpack
 
 # [3] DATA + LOG + TMP FOLDER LOCATIONS
 

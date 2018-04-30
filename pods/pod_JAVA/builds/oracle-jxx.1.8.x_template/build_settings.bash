@@ -17,11 +17,11 @@ INSTALL_FOLDER_POD="${INSTALL_FOLDER}${WHICH_POD}/"   # the pod specific folder 
 # this needs to match the name of folder in the POD_SOFTWARE folder holding the java tarball
 
 SOFTWARE_NAME="oracle"
-SOFTWARE_VERSION="jre1.8.x_xxx"
-SOFTWARE_TARBALL="jre-8uxxx-linux-x64.tar.gz"
+SOFTWARE_VERSION="jxx1.8.x_xxx"
+SOFTWARE_TARBALL="jxx-8uxxx-linux-x64.tar.gz"
 
 JAVA_SECURITY_DISTRIBUTION="oracle"
-JAVA_SECURITY_ZIP="jce_policy-8.zip"
+JAVA_SECURITY_ZIP="jce_policy-x.zip"
 
 # [2] TMP FOLDER LOCATIONS
 
