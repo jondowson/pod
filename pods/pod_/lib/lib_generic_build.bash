@@ -59,7 +59,8 @@ function lib_generic_build_sendPod(){
 ## send pod build to server
 
 # display message
-prepare_generic_display_msgColourSimple "INFO-->" "sending:     bespoke pod build"
+prepare_generic_display_msgColourSimple "INFO-->" "sending to:          ${target_folder}POD_SOFTWARE/POD/"
+# any text will be error messages - so highlight in red
 printf "%s\n" "${red}"
 
 # check if server is local server
@@ -85,6 +86,8 @@ ssh -q -i ${sshKey} ${user}@${pubIp} "mkdir -p ${target_folder}POD_SOFTWARE/POD/
 scp -q -o LogLevel=QUIET -i ${sshKey} -r "${tmp_working_folder}" "${user}@${pubIp}:${target_folder}POD_SOFTWARE/POD/"
 status=${?}
 build_send_error_array["${tag}"]="${status};${pubIp}"
+# turn off red error highlighting
+printf "%s" "${reset}"
 }
 
 # ------------------------------------------

@@ -10,7 +10,7 @@ stageTotal="${2}"
 prepare_generic_display_stageCount        "Test server connectivity" "${stageNumber}" "${stageTotal}"
 prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Testing server connectivity"
 task_generic_testConnectivity
-task_generic_testConnectivity_report
+#task_generic_testConnectivity_report
 prepare_generic_display_stageTimeCount
 }
 
@@ -30,7 +30,7 @@ jsonPaths="${4}"         # from server json
 prepare_generic_display_stageCount        "Test cluster write-paths" "${stageNumber}" "${stageTotal}"
 prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Testing server write-paths"
 task_generic_testWritePaths "${buildFolderPaths}" "${jsonPaths}"
-task_generic_testWritePaths_report
+#task_generic_testWritePaths_report
 prepare_generic_display_stageTimeCount
 }
 
@@ -46,7 +46,7 @@ prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Send software in p
 
 if [[ "${SEND_POD_SOFTWARE}" == "true" ]]; then
   task_generic_sendPodSoftware
-  task_generic_sendPodSoftware_report
+  #task_generic_sendPodSoftware_report
 else
   prepare_generic_display_msgColourSimple "ALERT-->" "You have opted to skip this STAGE"
   printf "%s\n"
@@ -64,7 +64,7 @@ stageTotal="${2}"
 prepare_generic_display_stageCount        "Launch pod remotely" "${stageNumber}" "${stageTotal}"
 prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Execute launch script on each server"
 task_generic_launchPodRemotely
-task_generic_launchPodRemotely_report
+#task_generic_launchPodRemotely_report
 prepare_generic_display_stageTimeCount
 }
 

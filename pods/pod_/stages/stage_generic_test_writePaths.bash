@@ -25,14 +25,15 @@ do
   TARGET_FOLDER="${target_folder}"
   source "${tmp_build_settings_file_path}"
 
-  # [3] display message
-  prepare_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
-  printf "\n%s"
-  prepare_generic_display_msgColourSimple "INFO-->" "configuring:    bespoke server paths"
-  prepare_generic_display_msgColourSimple "INFO-->" "writing-to:     bespoke server paths"
-  printf "%s\n" "${red}"
+  # [3] determine remote server os
+  lib_generic_doStuff_remotely_identifyOs
 
-  # [4] test all buildFolderPaths
+  # [4] display message
+  prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pubIp${white} on os ${yellow}${remote_os}${reset}" #&& printf "\n%s"
+  prepare_generic_display_msgColourSimple "INFO-->" "testing write-paths:"
+  #printf "%s\n" "${red}"
+
+  # [5] test all buildFolderPaths
   # delimit the buildFolderPaths string into an array
   # prepend the target_folder for this server and append the build_settings specific paths to test
   buildFolderPaths="target_folder;${buildPathsWriteTest}"
@@ -54,7 +55,7 @@ do
     fi
   done
 
-  # [5] test json elements that have nested paths - these will be passed here as a delimited string
+  # [6] test json elements that have nested paths - these will be passed here as a delimited string
   # e.g. "cass_data;dsefs_data"
   if [[ ${jsonPathsWriteTest} != "" ]]; then
     # delimit the json element(s) into an array

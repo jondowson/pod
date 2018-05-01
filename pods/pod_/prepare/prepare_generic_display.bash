@@ -36,19 +36,23 @@ message="${2}"
 
 case ${messageType} in
     "STAGECOUNT" )
-                    printf "%s\n" "${b}${white}${message}${reset}" ;;
+                    printf "%s\n"      "${b}${white}${message}${reset}" ;;
+    "STAGE_REPORT" )
+                    printf "\n%s\n"    "${b}${white}${message}${reset}" ;;
     "TASK==>" )
-                    printf "\n%s\n\n" "${b}${cyan}==> ${message}${reset}" ;;
+                    printf "\n%s\n\n"  "${b}${cyan}==> ${message}${reset}" ;;
     "REPORT" )
-                    printf "\n%s\n\n" "${b}${yellow}==> ${message}${reset}" ;;
+                    printf "\n%s\n\n"  "${b}${yellow}==> ${message}${reset}" ;;
     "ALERT-->" )
-                    printf "\n%s\n" "${b}${yellow}--> ${message} ${yellow}!!${reset}" ;;
+                    printf "\n%s\n"    "${b}${yellow}--> ${message} ${yellow}!!${reset}" ;;
     "ERROR-->" )
-                    printf "\n%s\n" "${b}${red}--> ${message} ${red}!!${reset}" ;;
+                    printf "\n%s\n"    "${b}${red}--> ${message} ${red}!!${reset}" ;;
     "SUCCESS" )
-                    printf "%s\n" "${tick}${b}${green} ${message} ${green}!!${reset}" ;;
+                    printf "%s\n"      "${tick}${b}${green} ${message} ${green}!!${reset}" ;;
     "FAILURE" )
-                    printf "%s\n" "${cross}${b}${green} ${message} ${red}!!${reset}" ;;
+                    printf "%s\n"      "${cross}${b}${green} ${message} ${red}!!${reset}" ;;
+    "INFO-BOLD-SPACED" )
+                    printf "\n%s\n"   "${b}${white}${message} ${reset}" ;;
 
 # ----- no-spacing
 

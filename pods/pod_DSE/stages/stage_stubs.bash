@@ -35,13 +35,13 @@ if [[ "${CLUSTER_STATE}" == *"restart"* ]]; then
   prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Restarting on each server in cluster"
   task_rollingStop
   task_rollingStart
-  task_rollingStart_report
+  #task_rollingStart_report
   prepare_generic_display_stageTimeCount
 else
   prepare_generic_display_stageCount        "Stopping on DSE Cluster" "${stageNumber}" "${stageTotal}"
   prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Stopping on each server in cluster"
   task_rollingStop
-  task_rollingStop_report
+  #task_rollingStop_report
   prepare_generic_display_stageTimeCount
 fi
 }
@@ -57,7 +57,7 @@ prepare_generic_display_stageCount        "Build and send bespoke pod" "${stageN
 prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Configure pod locally and distribute"
 # this will call the pod specific version of this task, which in turn calls the generic one (task_generic_buildSend)
 task_buildSend
-task_generic_buildSend_report
+#task_generic_buildSend_report
 prepare_generic_display_stageTimeCount
 }
 

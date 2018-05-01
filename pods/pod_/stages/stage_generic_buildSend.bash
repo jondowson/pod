@@ -12,25 +12,27 @@ done
 # add trailing '/' to target_folder path if not present
 target_folder="$(lib_generic_strings_addTrailingSlash ${target_folder})"
 
-# [3] display message
-prepare_generic_display_msgColourSimple "INFO"    "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}" && printf "\n%s"
-prepare_generic_display_msgColourSimple "INFO-->" "detected os: ${green}${remote_os}${reset}"
-prepare_generic_display_msgColourSimple "INFO-->" "making:      bespoke pod build"
+# [3] determine remote server os
+lib_generic_doStuff_remotely_identifyOs
 
-# [4] source the build_settings file based on this server's target_folder
+# [4] display message
+prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pubIp${white} on os ${yellow}${remote_os}${reset}" #&& printf "\n%s"
+prepare_generic_display_msgColourSimple "INFO-->" "making build:        ${BUILD_FOLDER}"
+
+# [5] source the build_settings file based on this server's target_folder
 lib_generic_build_sourceTarget
 
-# [5] build a 'suitcase' of server specific variables for remotely run functions
+# [6] build a 'suitcase' of server specific variables for remotely run functions
 lib_generic_build_suitcase
 lib_build_suitcase
 
-# [6] perform locally run functions for this pod (this array may be empty!)
+# [7] perform locally run functions for this pod (this array may be empty!)
 for func in "${!build_local_functions_array[@]}"
 do
   ${build_local_functions_array[$func]}
 done
 
-# [7] send the bespoke pod build to the server
+# [8] send the bespoke pod build to the server
 lib_generic_build_sendPod
 }
 

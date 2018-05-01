@@ -7,52 +7,43 @@ function task_generic_launchPodRemotely(){
 for id in $(seq 1 ${numberOfServers});
 do
 
+  # [1] handle json
   tag=$(jq            -r '.server_'${id}'.tag'            "${servers_json_path}")
   user=$(jq           -r '.server_'${id}'.user'           "${servers_json_path}")
   sshKey=$(jq         -r '.server_'${id}'.sshKey'         "${servers_json_path}")
   target_folder=$(jq  -r '.server_'${id}'.target_folder'  "${servers_json_path}")
   pubIp=$(jq          -r '.server_'${id}'.pubIp'          "${servers_json_path}")
 
-# -----
-
-  # add trailing '/' to path if not present
+  # [2] add trailing '/' to path if not present
   target_folder=$(lib_generic_strings_addTrailingSlash "${target_folder}")
 
-# -----
+  # [3] determine remote server os
+  lib_generic_doStuff_remotely_identifyOs
 
-  prepare_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
-  printf "\n%s"
-  prepare_generic_display_msgColourSimple "INFO-->" "launch:      pod remotely"
+  # [4] display message
+  prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pubIp${white} on os ${yellow}${remote_os}${reset}" #&& printf "\n%s"
+  prepare_generic_display_msgColourSimple "INFO-->" "launch pod remotely:      ${target_folder}POD_SOFTWARE/POD/pod/pods/pod_/scripts/scripts_generic_launch_pod.sh"
 
-# -----
-
-  # call remote launch script
+  # [5] call remote launch script
   ssh -ttq -o "BatchMode yes" -o "ForwardX11=no" ${user}@${pubIp} "chmod -R 777 ${target_folder}POD_SOFTWARE/POD && ${target_folder}POD_SOFTWARE/POD/pod/pods/pod_/scripts/scripts_generic_launch_pod.sh" > /dev/null 2>&1 &                # run in parallel
   # grab pid and capture owner in array
   pid=$!
-  prepare_generic_display_msgColourSimple "INFO-->" "pid id:      ${yellow}${pid}${reset}"
+  prepare_generic_display_msgColourSimple "INFO-->"  "pid id:                   ${yellow}${pid}${reset}"
   launch_pod_pid_array["${pid}"]="${tag};${pubIp}"
   runBuild_pids+=" $pid"
 
-# -----
-
-  # print out pids
+  # [5] display launch pid status
   if [[ "${runBuild_pids_print}" ]]; then
     runBuild_pids_print="${runBuild_pids_print},$pid"
   else
     runBuild_pids_print="$!"
   fi
-  printf "\n%s"
 
 done
 
-# -----
-
-prepare_generic_display_msgColourSimple "INFO-BOLD" "awaiting ssh pids:${reset}"
+prepare_generic_display_msgColourSimple "INFO-BOLD-SPACED" "awaiting ssh pids:${reset}"
 prepare_generic_display_msgColourSimple "INFO" "${yellow}$runBuild_pids${reset}"
 printf "\n%s"
-
-# -----
 
 # Wait for all processes to finish
 runBuild_pid_failures=""

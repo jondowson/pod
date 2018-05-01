@@ -24,8 +24,10 @@ do
   target_folder="$(lib_generic_strings_addTrailingSlash ${target_folder})"
 
   # [3] display message
-  prepare_generic_display_msgColourSimple "INFO"    "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}" && printf "\n%s"
-  prepare_generic_display_msgColourSimple "INFO-->" "detected os: ${green}${remote_os}${reset}"
+
+  prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}${pubIp} ${reset} on os ${green}${remote_os}${reset}" && printf "\n%s"
+  prepare_generic_display_msgColourSimple "INFO-->" "${green}starting${reset}"
+  prepare_generic_display_msgColourSimple "INFO-->" "dse version:           ${DSE_VERSION}"
 
   # [4] source the build_settings file based on this server's target_folder
   lib_generic_build_sourceTarget
@@ -40,15 +42,17 @@ do
   if [[ "${CLUSTER_STATE}" == "restart" ]]; then
 
     if [[ "${flags}" == "" ]]; then
-      prepare_generic_display_msgColourSimple "INFO-->" "starting:         dse cassandra only"
+      prepare_generic_display_msgColourSimple "INFO-->" "mode:                  storage only"
     else
-      prepare_generic_display_msgColourSimple "INFO-->" "starting:         dse with flags ${flags}"
+      prepare_generic_display_msgColourSimple "INFO-->" "mode:                  storage + flags ${flags}"
     fi
 
+    lib_doStuff_remotely_checkJava
     lib_doStuff_remotely_startDse
     lib_doStuff_remotely_startAgent
 
   elif [[ "${CLUSTER_STATE}" == *"agent"* ]]; then
+    lib_doStuff_remotely_checkJava
     lib_doStuff_remotely_startAgent
   fi
 

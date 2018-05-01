@@ -20,18 +20,21 @@ do
   TARGET_FOLDER="${LOCAL_TARGET_FOLDER}"
   source ${tmp_build_settings_file_path}
 
-  # [3] display message
-  prepare_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
-  prepare_generic_display_msgColourSimple "INFO-->" "sending:     POD_SOFTWARE/${PACKAGE} folder"
+  # [3] determine remote server os
+  lib_generic_doStuff_remotely_identifyOs
 
-  # [4] check target_folder can be used on target machine !!
+  # [4] display message
+  prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pubIp${white} on os ${yellow}${remote_os}${reset}" #&& printf "\n%s"
+  prepare_generic_display_msgColourSimple "INFO-->" "sending:                POD_SOFTWARE/${PACKAGE}"
+
+  # [5] check target_folder can be used on target machine !!
   catchError "stage_generic_POD_SOFTWARE#1" "cannot make target folder" "true" "true" "ssh -o ForwardX11=no ${user}@${pubIp} mkdir -p ${target_folder}POD_SOFTWARE"
 
-  # [5] check if server is local server - no point sending software if local +  no delete locally of existing pod folder
+  # [6] check if server is local server - no point sending software if local +  no delete locally of existing pod folder
   localServer="false"
   localServer=$(lib_generic_checks_localIpMatch "${pubIp}")
   if [[ "${localServer}" == "true" ]] && [[ "${LOCAL_TARGET_FOLDER}" == "${target_folder}" ]]; then
-    prepare_generic_display_msgColourSimple "INFO-->" "Not sending to local machine ! ${reset}"
+    prepare_generic_display_msgColourSimple "INFO-->" "skipping:               no need to send locally"
   else
     # copy the POD_SOFTWARE folder to remote server
     scp -q -o LogLevel=QUIET -i ${sshKey} -r "${PACKAGES}" "${user}@${pubIp}:${target_folder}POD_SOFTWARE" &    # run in parallel
@@ -48,18 +51,15 @@ do
   else
     DSE_pids_print="$!"
   fi
-  printf "\n%s"
-
 done
 
 # -----
 
-# [6] display message
-prepare_generic_display_msgColourSimple "INFO-BOLD" "awaiting scp pids:${reset}"
-prepare_generic_display_msgColourSimple "INFO" "${yellow}$DSE_pids${reset}"
-printf "\n%s"
+# [7] display message
+prepare_generic_display_msgColourSimple "INFO-BOLD-SPACED" "awaiting scp pids:${reset}"
+prepare_generic_display_msgColourSimple "INFO"      "${yellow}$DSE_pids${reset}"
 
-# [7] display pid responses as they become available
+# [8] display pid responses as they become available
 POD_SOFTWARE_pid_failures=""
 printf "%s" ${red}  # any scp error messages
 for p in $DSE_pids; do
@@ -70,6 +70,7 @@ for p in $DSE_pids; do
     POD_SOFTWARE_pid_failures+=" ${p}"
   fi
 done
+printf "%s" ${reset}
 }
 
 # ------------------------------------------

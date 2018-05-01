@@ -19,7 +19,8 @@ do
   target_folder=$(lib_generic_strings_addTrailingSlash "${target_folder}")
 
   # [2] display message
-  prepare_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
+  prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pubIp${reset}" #&& printf "\n%s"
+  prepare_generic_display_msgColourSimple "INFO-->" "testing ssh:"
 
   # [3] test ssh connectivity 5 times
   status="999"
@@ -28,17 +29,17 @@ do
     until [[ "${retry}" == "6" ]] || [[ "${status}" == "0" ]]
     do
       lib_generic_checks_fileExists "stage_generic_test_sshConnectivity.sh#1" "true" "${sshKey}"
-      ssh -q -i ${sshKey} ${user}@${pubIp} exit
+      # determine remote server os as test
+      lib_generic_doStuff_remotely_identifyOs
       status=${?}
       if [[ "${status}" == "0" ]]; then
-        prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${green}${status}"
+        prepare_generic_display_msgColourSimple "INFO-->" "ssh return code:       ${green}${status}"
       else
-        prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}(retry ${retry}/5)"
+        prepare_generic_display_msgColourSimple "INFO-->" "ssh return code:       ${red}${status}${white}(retry ${retry}/5)"
       fi
       test_connect_error_array["${tag}"]="${status};${pubIp}"
       ((retry++))
     done
-    printf "%s\n"
   fi
 done
 }
