@@ -1,1 +1,0 @@
-ssh -q -i /home/jd/.ssh/id_rsa jd@127.0.0.1 /home/jd/Desktop/POD_INSTALLS/pod_DSE/dse-5.1.x_template/dse-5.1.9/bin/dse cassandra

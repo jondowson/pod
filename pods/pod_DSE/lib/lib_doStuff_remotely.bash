@@ -155,7 +155,8 @@ if [[ "${status}" != "0" ]]; then
       start_dse_error_array["${tag}"]="${status};${pubIp}"
       break;
     else
-      output=$(ssh -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_dse}" | grep 'Wait for nodes completed')
+      # leave space before last closing brace )
+      output=$(ssh -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_dse}" | grep 'Wait for nodes completed' )
       status=$?
       if [[ "${status}" != "0" ]] || [[ "${output}" != *"Wait for nodes completed"* ]]; then
         prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}"
@@ -197,7 +198,8 @@ if [[ "${status}" != "0" ]]; then
       start_agent_error_array["${tag}"]="${status};${pubIp}"
       break;
     else
-      output=$(ssh -q -i ${sshKey} ${user}@${pubIp} "${start_agent}" | grep "Starting JMXComponent" )
+      # leave space before last closing brace )
+      output=$(ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_agent}" | grep "Starting JMXComponent" )
       status=$?
       if [[ "${status}" != "0" ]] || [[ "${output}" != *"Starting JMXComponent"* ]]; then
         prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}"
