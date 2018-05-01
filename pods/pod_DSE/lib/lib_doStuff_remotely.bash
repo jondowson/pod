@@ -82,14 +82,14 @@ if [[ "${status}" != "0" ]]; then
   until [[ "${retry}" == "3" ]] || [[ "${status}" == "0" ]]
   do
     prepare_generic_display_msgColourSimple "INFO-->" "stopping dse:          gracefully"
-    ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${stop_cmd}"
-    status=${?}
-    if [[ "${status}" == "0" ]]; then
-      prepare_generic_display_msgColourSimple "INFO-->" "ssh return code:       ${green}${status}"
-    else
-      prepare_generic_display_msgColourSimple "INFO-->" "ssh return code:       ${red}${status} ${white}(retry ${retry}/2)"
+    output=$(ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${stop_cmd}" | grep 'DSE shutdown complete' )
+    status=$?
+    if [[ "${status}" != "0" ]] || [[ "${output}" == *"java.lang."* ]]; then
+      prepare_generic_display_msgColourSimple "INFO-->" "dse-stop return code:       ${red}${status} ${white}(retry ${retry}/2)"
       prepare_generic_display_msgColourSimple "INFO-->" "killing dse:           ungracefully"
       ssh -q -i ${sshKey} ${user}@${pubIp} "ps aux | grep cassandra | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
+    else
+      prepare_generic_display_msgColourSimple "INFO-->" "dse-stop return code:       ${green}${status}"
     fi
     stop_dse_error_array["${tag}"]="${status};${pubIp}"
     ((retry++))
