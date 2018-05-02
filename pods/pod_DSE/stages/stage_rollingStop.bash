@@ -23,15 +23,20 @@ do
   # [3] determine remote server os
   lib_generic_doStuff_remotely_identifyOs
 
-  # [4] display message
+  # [4] display messages
   prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pubIp${white} on os ${yellow}${remote_os}${reset}" #&& printf "\n%s"
-  prepare_generic_display_msgColourSimple "INFO-->" "${cyan}stopping${reset}"
 
-  currentDseVersion=$(ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && dse -v")
-  if [[ ${currentDseVersion} == *"command not found"* ]]; then
-    currentDseVersion="n/a"
+  runningDseVersion=$(ssh -q -i ~/.ssh/id_rsa jd@127.0.0.1 "ps -ef | grep -v grep | grep -Po '(?<=dse-core-)[^/lib/]+' | head -n1" )
+  runningDseVersion=$(echo ${runningDseVersion%\.jar:})
+  if [[ ${runningDseVersion} == "" ]]; then
+    runningDseVersion="n/a"
   fi
-  prepare_generic_display_msgColourSimple "INFO-->" "current dse version:   ${currentDseVersion}"
+  runningAgentVersion=$(ps -ef | grep -v grep | grep -o 'datastax-agent-[^ ]*' | sed 's/^\(datastax-agent\-\)*//' | sed -e 's/\(-standalone.jar\)*$//g' )
+  if [[ -z ${runningAgentVersion} ]]; then
+    runningAgentVersion="n/a"
+  fi
+  prepare_generic_display_msgColourSimple "INFO-->" "dse version (now):     ${runningDseVersion}"
+  prepare_generic_display_msgColourSimple "INFO-->" "agent version (now):   ${runningAgentVersion}"
 
   # [5] stop dse + agent running on server
   if [[ "${CLUSTER_STATE}" == "restart" ]] || [[ "${CLUSTER_STATE}" == "stop" ]]; then
@@ -69,10 +74,10 @@ if [[ "${stop_dse_fail}" == "true" ]]; then
   done
 else
   if [[ "${CLUSTER_STATE}" == "restart" ]] || [[ "${CLUSTER_STATE}" == "stop" ]]; then
-    prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:           dse stopped"
-    prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:           agent stopped"
+    prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  dse stopped"
+    prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  agent stopped"
   elif [[ "${CLUSTER_STATE}" == *"agent"* ]]; then
-    prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:           agent stopped"
+    prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  agent stopped"
   fi
 fi
 }

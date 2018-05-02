@@ -7,10 +7,9 @@ function stage_generic_stubs_testConnectivity(){
 stageNumber="${1}"
 stageTotal="${2}"
 
-prepare_generic_display_stageCount        "Test server connectivity" "${stageNumber}" "${stageTotal}"
-prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Testing server connectivity"
+prepare_generic_display_stageCount        "Test Connectivity" "${stageNumber}" "${stageTotal}"
+prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Testing ssh call"
 task_generic_testConnectivity
-#task_generic_testConnectivity_report
 prepare_generic_display_stageTimeCount
 }
 
@@ -27,10 +26,9 @@ jsonPaths="${4}"         # from server json
 # note:
 # in the json file, for paths to be specified here, they must be put in nested [] brackets.
 # this format supports multiple paths but is required here even if only one path exists.
-prepare_generic_display_stageCount        "Test cluster write-paths" "${stageNumber}" "${stageTotal}"
-prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Testing server write-paths"
+prepare_generic_display_stageCount        "Test Write-Paths" "${stageNumber}" "${stageTotal}"
+prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Making remote folders"
 task_generic_testWritePaths "${buildFolderPaths}" "${jsonPaths}"
-#task_generic_testWritePaths_report
 prepare_generic_display_stageTimeCount
 }
 
@@ -41,12 +39,11 @@ function stage_generic_stubs_sendPodSoftware(){
 stageNumber="${1}"
 stageTotal="${2}"
 
-prepare_generic_display_stageCount        "Send POD_SOFTWARE folder" "${stageNumber}" "${stageTotal}"
-prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Send software in parallel"
+prepare_generic_display_stageCount        "Send POD_SOFTWARE" "${stageNumber}" "${stageTotal}"
+prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Sending software in parallel"
 
 if [[ "${SEND_POD_SOFTWARE}" == "true" ]]; then
   task_generic_sendPodSoftware
-  #task_generic_sendPodSoftware_report
 else
   prepare_generic_display_msgColourSimple "ALERT-->" "You have opted to skip this STAGE"
   printf "%s\n"
@@ -61,10 +58,9 @@ function stage_generic_stubs_launchPod(){
 stageNumber="${1}"
 stageTotal="${2}"
 
-prepare_generic_display_stageCount        "Launch pod remotely" "${stageNumber}" "${stageTotal}"
-prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Execute launch script on each server"
+prepare_generic_display_stageCount        "Launch Pod Build" "${stageNumber}" "${stageTotal}"
+prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Executing remote launch script"
 task_generic_launchPodRemotely
-#task_generic_launchPodRemotely_report
 prepare_generic_display_stageTimeCount
 }
 

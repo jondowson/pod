@@ -25,9 +25,9 @@ do
 
   # [3] display message
 
-  prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}${pubIp} ${reset} on os ${green}${remote_os}${reset}" && printf "\n%s"
-  prepare_generic_display_msgColourSimple "INFO-->" "${green}starting${reset}"
+  prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}${pubIp} ${reset} on os ${yellow}${remote_os}${reset}"
   prepare_generic_display_msgColourSimple "INFO-->" "dse version:           ${DSE_VERSION}"
+  prepare_generic_display_msgColourSimple "INFO-->" "agent version:         ${AGENT_VERSION}"
 
   # [4] source the build_settings file based on this server's target_folder
   lib_generic_build_sourceTarget
@@ -42,9 +42,9 @@ do
   if [[ "${CLUSTER_STATE}" == "restart" ]]; then
 
     if [[ "${flags}" == "" ]]; then
-      prepare_generic_display_msgColourSimple "INFO-->" "mode:                  storage only"
+      prepare_generic_display_msgColourSimple "INFO-->" "starting dse in mode:  storage only"
     else
-      prepare_generic_display_msgColourSimple "INFO-->" "mode:                  storage + flags ${flags}"
+      prepare_generic_display_msgColourSimple "INFO-->" "starting dse in mode:  storage + flags ${flags}"
     fi
 
     lib_doStuff_remotely_checkJava

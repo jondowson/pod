@@ -31,17 +31,16 @@ stageNumber="${1}"
 stageTotal="${2}"
 
 if [[ "${CLUSTER_STATE}" == *"restart"* ]]; then
-  prepare_generic_display_stageCount        "Restarting on DSE Cluster" "${stageNumber}" "${stageTotal}"
-  prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Restarting on each server in cluster"
+  prepare_generic_display_stageCount        "DSE Cluster Restart" "${stageNumber}" "${stageTotal}"
+  prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Stopping on each server"
   task_rollingStop
+  prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Starting on each server"
   task_rollingStart
-  #task_rollingStart_report
   prepare_generic_display_stageTimeCount
 else
   prepare_generic_display_stageCount        "Stopping on DSE Cluster" "${stageNumber}" "${stageTotal}"
-  prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Stopping on each server in cluster"
+  prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Stopping on each server"
   task_rollingStop
-  #task_rollingStop_report
   prepare_generic_display_stageTimeCount
 fi
 }
@@ -53,11 +52,10 @@ function stage_stubs_buildSendPod(){
 stageNumber="${1}"
 stageTotal="${2}"
 
-prepare_generic_display_stageCount        "Build and send bespoke pod" "${stageNumber}" "${stageTotal}"
-prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Configure pod locally and distribute"
+prepare_generic_display_stageCount        "Build + Send Bespoke Pod Build" "${stageNumber}" "${stageTotal}"
+prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Configuring and distributing pod"
 # this will call the pod specific version of this task, which in turn calls the generic one (task_generic_buildSend)
 task_buildSend
-#task_generic_buildSend_report
 prepare_generic_display_stageTimeCount
 }
 

@@ -2,12 +2,17 @@ function prepare_misc_checkFileFolderExist(){
 
 ## test file and folders used by this pod exist
 
-# if software tarball is used - then check it exists
-if [[ "${SOFTWARE_TARBALL}" != "" ]]; then
-  prepare_generic_misc_checkSoftwareExists
+if [[ ${clusterstateFlag} != "true" ]]; then
+  # test POD_SOFTWARE folder and opscenter tar file are available
+  if [[ "${SEND_POD_SOFTWARE}" == "true" ]]; then
+    prepare_generic_misc_checkSoftwareExists
+    lib_generic_checks_fileExists   "prepare_misc.bash#1" "true" "${TAR_FILE}"
+  fi
+else
+  lib_generic_checks_fileExists   "prepare_misc.bash#3" "true" "${suitcase_file_path}"
+  lib_generic_checks_fileExists   "prepare_misc.bash#4" "true" "${tmp_build_settings_file_path}"
 fi
 
-# add below any other pod specific file and folder checks
 }
 
 # ------------------------------------------

@@ -54,6 +54,7 @@ agent_tar_file="${agent_tar_folder}${AGENT_TARBALL}"
 agent_untar_folder="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/${AGENT_VERSION}"
 agent_untar_config_folder="${agent_untar_folder}/conf/"
 agent_untar_bin_folder="${agent_untar_folder}/bin/"
+agent_untar_log_folder="${agent_untar_folder}/log/"
 # cassandra
 cassandra_log_folder="${PARENT_LOG_FOLDER}cassandra/"
 commitlog_directory="${PARENT_DATA_FOLDER}commitlog/"
