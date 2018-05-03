@@ -19,6 +19,7 @@ INSTALL_FOLDER_POD="${INSTALL_FOLDER}${WHICH_POD}/"   # the pod specific folder 
 SOFTWARE_NAME="oracle"
 SOFTWARE_VERSION="jdk1.8.0_172"
 SOFTWARE_TARBALL="jdk-8u172-linux-x64.tar.gz"
+
 JAVA_SECURITY_DISTRIBUTION="oracle"
 JAVA_SECURITY_ZIP="jce_policy-8.zip"
 

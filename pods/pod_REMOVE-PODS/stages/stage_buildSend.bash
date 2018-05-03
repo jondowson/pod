@@ -17,7 +17,4 @@ do
   task_generic_buildSend
 
 done
-
-# assign the local target_folder value to the suitcase and delete tmp folder
-lib_generic_build_finishUp
 }
