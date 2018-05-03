@@ -52,10 +52,10 @@ function stage_stubs_buildSendPod(){
 stageNumber="${1}"
 stageTotal="${2}"
 
-prepare_generic_display_stageCount        "Build + Send Bespoke Pod Build" "${stageNumber}" "${stageTotal}"
-prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Configuring and distributing pod"
+prepare_generic_display_stageCount        "Bespoke Pod Build" "${stageNumber}" "${stageTotal}"
+prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Making bespoke pod"
 # this will call the pod specific version of this task, which in turn calls the generic one (task_generic_buildSend)
-task_buildSend
+task_buildSendPod
 prepare_generic_display_stageTimeCount
 }
 
@@ -79,9 +79,9 @@ if [[ "${clusterstateFlag}" == "true" ]]; then
   WHICH_POD=${WHICH_POD}-rollingStopStart
 else
   if [[ "${REGENERATE_RESOURCES}" == "true" ]] || [[ "${REGENERATE_RESOURCES}" == "edit" ]] || [[ "${flagOne}" == "true" ]]; then
-    prepare_generic_display_msgColourSimple "SUCCESS" "LOCAL SERVER: new resources folder generated"
+    prepare_generic_display_msgColourSimple "SUCCESS" "This server:  new resources folder generated"
   else
-    prepare_generic_display_msgColourSimple "SUCCESS" "LOCAL SERVER: existing resources folder utilised"
+    prepare_generic_display_msgColourSimple "SUCCESS" "This server:  existing resources folder utilised"
   fi
   task_generic_testConnectivity_report
   task_generic_testWritePaths_report

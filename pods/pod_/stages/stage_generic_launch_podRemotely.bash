@@ -78,6 +78,6 @@ if [[ ! -z $runBuild_pid_failures ]]; then
   done
   printf "%s\n"
 else
-  prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  launched remote pod build"
+  prepare_generic_display_msgColourSimple "SUCCESS" "Each server:  launched remote pod build"
 fi
 }

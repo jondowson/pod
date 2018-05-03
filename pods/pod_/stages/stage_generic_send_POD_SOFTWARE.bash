@@ -25,7 +25,7 @@ do
 
   # [4] display message
   prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pubIp${white} on os ${yellow}${remote_os}${reset}" #&& printf "\n%s"
-  prepare_generic_display_msgColourSimple "INFO-->" "sending:                POD_SOFTWARE/${PACKAGE}"
+  prepare_generic_display_msgColourSimple "INFO-->" "sending:        POD_SOFTWARE/${PACKAGE}"
 
   # [5] check target_folder can be used on target machine !!
   catchError "stage_generic_POD_SOFTWARE#1" "cannot make target folder" "true" "true" "ssh -o ForwardX11=no ${user}@${pubIp} mkdir -p ${target_folder}POD_SOFTWARE"
@@ -34,13 +34,13 @@ do
   localServer="false"
   localServer=$(lib_generic_checks_localIpMatch "${pubIp}")
   if [[ "${localServer}" == "true" ]] && [[ "${LOCAL_TARGET_FOLDER}" == "${target_folder}" ]]; then
-    prepare_generic_display_msgColourSimple "INFO-->" "skipping:               no need to send locally"
+    prepare_generic_display_msgColourSimple "INFO-->" "skipping:       no need to send locally"
   else
     # copy the POD_SOFTWARE folder to remote server
     scp -q -o LogLevel=QUIET -i ${sshKey} -r "${PACKAGES}" "${user}@${pubIp}:${target_folder}POD_SOFTWARE" &    # run in parallel
     # out pid response status in array
     pid=${!}
-    prepare_generic_display_msgColourSimple "INFO-->" "pid id:      ${yellow}${pid}${reset}"
+    prepare_generic_display_msgColourSimple "INFO-->" "pid id:        ${yellow}${pid}${reset}"
     send_pod_software_pid_array["${pid}"]="${tag};${pubIp}"
     DSE_pids+=" $pid"
   fi
@@ -93,6 +93,6 @@ if [[ ! -z $POD_SOFTWARE_pid_failures ]]; then
   done
   printf "%s\n"
 else
-  prepare_generic_display_msgColourSimple "SUCCESS" "All SERVERS:  distributed POD_SOFTWARE/${PACKAGE}"
+  prepare_generic_display_msgColourSimple "SUCCESS" "Each server:  distributed POD_SOFTWARE/${PACKAGE}"
 fi
 }

@@ -207,7 +207,7 @@ do
   sleep 5                                                                                                   # give the logs a chance to fill up
   cmdOutput=$(ssh -q -i ${sshKey} ${user}@${pubIp} "cat ~/.cmdOutput && rm -rf ~/.cmdOutput" )              # command output is java version - grab it
   output=$(ssh -q -i ${sshKey} ${user}@${pubIp} "cat ${agent_untar_log_folder}agent.log | tr '\0' '\n'" )   # grab agent log and handle null point warning
-  lastbit=$(ssh -q -i ${sshKey} ${user}@${pubIp} "tail -n 1 ${agent_untar_log_folder}agent.log" )           # grab the last line of log for error message
+  lastbit=$(ssh -q -i ${sshKey} ${user}@${pubIp} "tail -n 1 ${agent_untar_log_folder}agent.log" )           # grab the last line of log for any error message
 
   if [[ "${output}" != *"Starting JMXComponent"* ]]; then
     prepare_generic_display_msgColourSimple "INFO-->" "agent return code:     ${red}${cmdOutput}${reset}"

@@ -62,6 +62,6 @@ if [[ "${start_dse_fail}" == "true" ]]; then
     prepare_generic_display_msgColourSimple "INFO" "${cross} ${k}"
   done
 else
-  prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  opscenter started"
+  prepare_generic_display_msgColourSimple "SUCCESS" "Each server:  opscenter started"
 fi
 }

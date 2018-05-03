@@ -29,9 +29,7 @@ do
   lib_generic_doStuff_remotely_identifyOs
 
   # [4] display message
-  prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pubIp${white} on os ${yellow}${remote_os}${reset}" #&& printf "\n%s"
-  prepare_generic_display_msgColourSimple "INFO-->" "testing write-paths:"
-  #printf "%s\n" "${red}"
+  prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pubIp${white} on os ${yellow}${remote_os}${reset}"
 
   # [5] test all buildFolderPaths
   # delimit the buildFolderPaths string into an array
@@ -47,6 +45,7 @@ do
       retry=0
       until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
       do
+        prepare_generic_display_msgColourSimple "INFO-->" "${!folder}"
         ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir -p ${!folder}dummyFolder && rm -rf ${!folder}dummyFolder" exit
         status=${?}
         test_write_error_array_1["${!folder}"]="${status};${tag}"
@@ -122,6 +121,6 @@ if [[ "${test_write_fail}" == "true" ]]; then
   prepare_generic_display_msgColourSimple "ERROR-->" "Aborting script as not all paths are writeable"
   prepare_generic_misc_clearTheDecks && exit 1;
 else
-  prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  write-path test passed"
+  prepare_generic_display_msgColourSimple "SUCCESS" "Each server:  write-path test passed"
 fi
 }

@@ -59,7 +59,7 @@ stageNumber="${1}"
 stageTotal="${2}"
 
 prepare_generic_display_stageCount        "Launch Pod Build" "${stageNumber}" "${stageTotal}"
-prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Executing remote launch script"
+prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Running launch script in parallel"
 task_generic_launchPodRemotely
 prepare_generic_display_stageTimeCount
 }

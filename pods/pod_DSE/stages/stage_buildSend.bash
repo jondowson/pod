@@ -1,4 +1,4 @@
-function task_buildSend(){
+function task_buildSendPod(){
 
 ## for each server configure a bespoke pod build and send/merge it
 
@@ -23,10 +23,7 @@ do
   build_local_functions_array[9]="lib_doStuff_locally_dseYaml_dsefsData"
 
   # [2] call the generic buildSend task
-  task_generic_buildSend
+  task_generic_buildSendPod
 
 done
-
-# assign the local target_folder value to the suitcase and delete tmp folder
-lib_generic_build_finishUp
 }

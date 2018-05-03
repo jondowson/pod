@@ -74,6 +74,6 @@ if [[ "${pod_test_connect_fail}" == "true" ]]; then
   prepare_generic_display_msgColourSimple "ERROR" "Aborting script as not all servers are reachable"
   exit 1;
 else
-  prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  connectivity test passed"
+  prepare_generic_display_msgColourSimple "SUCCESS" "Each server:  connectivity test passed"
 fi
 }

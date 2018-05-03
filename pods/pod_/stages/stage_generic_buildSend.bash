@@ -1,4 +1,4 @@
-function task_generic_buildSend(){
+function task_generic_buildSendPod(){
 
 # [1] determine remote server os
 lib_generic_doStuff_remotely_identifyOs
@@ -17,7 +17,7 @@ lib_generic_doStuff_remotely_identifyOs
 
 # [4] display message
 prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pubIp${white} on os ${yellow}${remote_os}${reset}" #&& printf "\n%s"
-prepare_generic_display_msgColourSimple "INFO-->" "making build:        ${BUILD_FOLDER}"
+prepare_generic_display_msgColourSimple "INFO-->" "make build:        ${BUILD_FOLDER}"
 
 # [5] source the build_settings file based on this server's target_folder
 lib_generic_build_sourceTarget
@@ -32,8 +32,14 @@ do
   ${build_local_functions_array[$func]}
 done
 
-# [8] send the bespoke pod build to the server
+# [8 ]display message
+prepare_generic_display_msgColourSimple "INFO-->" "send build to:     ${target_folder}POD_SOFTWARE/POD/"
+
+# [9] send the bespoke pod build to the server
 lib_generic_build_sendPod
+
+# [10] assign the local target_folder value to the suitcase and delete tmp folder
+lib_generic_build_finishUp
 }
 
 # ------------------------------------------
@@ -69,6 +75,6 @@ if [[ "${build_send_fail}" == "true" ]]; then
   prepare_generic_display_msgColourSimple "ERROR-->" "Aborting script as not all paths are writeable"
   prepare_generic_misc_clearTheDecks && exit 1;
 else
-  prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  distributed bespoke pod build"
+  prepare_generic_display_msgColourSimple "SUCCESS" "Each server:  distributed bespoke pod build"
 fi
 }

@@ -85,7 +85,7 @@ if [[ "${start_dse_fail}" == "true" ]]; then
   done
 else
   if [[ "${CLUSTER_STATE}" == "restart" ]]; then
-    prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  dse started"
+    prepare_generic_display_msgColourSimple "SUCCESS" "Each server:  dse started"
   fi
 fi
 
@@ -111,7 +111,7 @@ if [[ "${start_agent_fail}" == "true" ]]; then
   done
 else
   if [[ "${CLUSTER_STATE}" == *"agent"* ]] || [[ "${CLUSTER_STATE}" == "restart" ]]; then
-    prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  agent started"
+    prepare_generic_display_msgColourSimple "SUCCESS" "Each server:  agent started"
   fi
 fi
 }

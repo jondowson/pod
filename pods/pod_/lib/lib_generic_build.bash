@@ -58,10 +58,8 @@ function lib_generic_build_sendPod(){
 
 ## send pod build to server
 
-# display message
-prepare_generic_display_msgColourSimple "INFO-->" "sending to:          ${target_folder}POD_SOFTWARE/POD/"
 # any text will be error messages - so highlight in red
-printf "%s\n" "${red}"
+printf "%s" "${red}"
 
 # check if server is local server
 localServer="false"

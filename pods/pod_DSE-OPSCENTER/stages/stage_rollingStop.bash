@@ -53,6 +53,6 @@ if [[ "${stop_opscenter_fail}" == "true" ]]; then
     prepare_generic_display_msgColourSimple "INFO" "${cross} ${k}"
   done
 else
-  prepare_generic_display_msgColourSimple "SUCCESS" "ALL SERVERS:  opscenter stopped"
+  prepare_generic_display_msgColourSimple "SUCCESS" "Each server:  opscenter stopped"
 fi
 }
