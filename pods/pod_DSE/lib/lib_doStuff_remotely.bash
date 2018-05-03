@@ -168,7 +168,8 @@ function lib_doStuff_remotely_startDse(){
 ## run a command remotely to start DSE
 ## record result of commands in array for later reporting
 
-start_dse="${dse_untar_bin_folder}dse cassandra${flags}"
+# source bash_profile to ensure correct java version is used
+start_dse="source ~/.bash_profile && ${dse_untar_bin_folder}dse cassandra${flags}"
 
 # try twice to start dse
 status="999"
@@ -177,7 +178,7 @@ if [[ "${status}" != "0" ]]; then
   until [[ "${retry}" == "3" ]] || [[ "${status}" == "0" ]]
   do
     # leave space before last closing brace )
-    output=$(ssh -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_dse}" | grep 'Wait for nodes completed' )
+    output=$(ssh -i ${sshKey} ${user}@${pubIp} "${start_dse}" | grep 'Wait for nodes completed' )
     status=$?
     if [[ "${status}" != "0" ]] || [[ "${output}" != *"Wait for nodes completed"* ]]; then
       prepare_generic_display_msgColourSimple "INFO-->" "dse return code:       ${red}${status}${white}"
@@ -198,12 +199,13 @@ function lib_doStuff_remotely_startAgent(){
 ## record result of commands in array for later reporting
 
 prepare_generic_display_msgColourSimple "INFO-->" "starting agent:"
-start_agent="${agent_untar_bin_folder}/datastax-agent"
+# source bash_profile to ensure correct java version is used
+start_agent="source ~/.bash_profile && ${agent_untar_bin_folder}/datastax-agent"
 
 retry=1
 until [[ "${retry}" == "3" ]]                                                                               # try twice to start agent
 do
-  ssh -q -i ${sshKey} ${user}@${pubIp} "${start_agent} &>~/.cmdOutput"                                      # run the agent for the specified build
+  ssh -q -i ${sshKey} ${user}@${pubIp} "${start_agent} &>~/.cmdOutput" &                                    # run the agent for the specified build
   sleep 5                                                                                                   # give the logs a chance to fill up
   cmdOutput=$(ssh -q -i ${sshKey} ${user}@${pubIp} "cat ~/.cmdOutput && rm -rf ~/.cmdOutput" )              # command output is java version - grab it
   output=$(ssh -q -i ${sshKey} ${user}@${pubIp} "cat ${agent_untar_log_folder}agent.log | tr '\0' '\n'" )   # grab agent log and handle null point warning

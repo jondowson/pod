@@ -16,8 +16,8 @@ INSTALL_FOLDER_POD="${INSTALL_FOLDER}${WHICH_POD}/"   # the pod specific folder 
 
 # match to name of folder in POD_SOFTWARE/${PACKAGE} holding the software tarball
 SOFTWARE_NAME="opscenter"
-SOFTWARE_VERSION="opscenter-6.1.5"
-SOFTWARE_TARBALL="opscenter-6.1.5.tar.gz"
+SOFTWARE_VERSION="opscenter-6.5.0"
+SOFTWARE_TARBALL="opscenter-6.5.0.tar.gz"
 
 ## [2] TMP FOLDER LOCATION
 
