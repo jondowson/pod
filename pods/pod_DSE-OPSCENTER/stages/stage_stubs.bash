@@ -7,7 +7,6 @@ prepare_generic_display_stageCount        "Build and send bespoke pod" "${stageN
 prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Configure pod locally and distribute"
 # this will call the pod specific version of this task, which in turn calls the generic one (task_generic_buildSend)
 task_buildSend
-task_generic_buildSend_report
 prepare_generic_display_stageTimeCount
 }
 
@@ -19,17 +18,16 @@ stageNumber="${1}"
 stageTotal="${2}"
 
 if [[ "${CLUSTER_STATE}" == "restart" ]]; then
-  prepare_generic_display_stageCount        "Restarting opscenter" "${stageNumber}" "${stageTotal}"
-  prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Restarting daemon on each server"
+  prepare_generic_display_stageCount        "Opscenter Restart" "${stageNumber}" "${stageTotal}"
+  prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Stopping on each server"
   task_rollingStop
+  prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Starting on each server"
   task_rollingStart
-  task_rollingStart_report
   prepare_generic_display_stageTimeCount
 else
-  prepare_generic_display_stageCount        "Stopping opscenter" "${stageNumber}" "${stageTotal}"
-  prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Stopping daemon on each server"
+  prepare_generic_display_stageCount        "Opscenter Stop" "${stageNumber}" "${stageTotal}"
+  prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Stopping on each server"
   task_rollingStop
-  task_rollingStop_report
   prepare_generic_display_stageTimeCount
 fi
 }

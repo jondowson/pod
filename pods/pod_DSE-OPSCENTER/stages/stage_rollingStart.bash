@@ -24,14 +24,14 @@ do
   target_folder="$(lib_generic_strings_addTrailingSlash ${target_folder})"
 
   # [3] display a message
-  prepare_generic_display_msgColourSimple "INFO"    "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}" && printf "\n%s"
-  prepare_generic_display_msgColourSimple "INFO-->" "detected os: ${green}${remote_os}${reset}"
-  prepare_generic_display_msgColourSimple "INFO-->" "starting opscenter:      ${pubIp}"
+  prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}${pubIp} ${reset} on os ${yellow}${remote_os}${reset}"
+  prepare_generic_display_msgColourSimple "INFO-->" "opscenter version:     ${SOFTWARE_VERSION}"
 
   # [4] source the build_settings file based on this server's target_folder
   lib_generic_build_sourceTarget
 
   # [5] start opscenter
+  lib_doStuff_remotely_checkJava
   lib_doStuff_remotely_startOpscenter
 
 done

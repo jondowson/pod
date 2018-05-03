@@ -1,4 +1,4 @@
-function task_generic_buildSendPod(){
+function task_generic_buildSend(){
 
 # [1] determine remote server os
 lib_generic_doStuff_remotely_identifyOs

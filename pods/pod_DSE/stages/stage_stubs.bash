@@ -55,7 +55,7 @@ stageTotal="${2}"
 prepare_generic_display_stageCount        "Bespoke Pod Build" "${stageNumber}" "${stageTotal}"
 prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Making bespoke pod"
 # this will call the pod specific version of this task, which in turn calls the generic one (task_generic_buildSend)
-task_buildSendPod
+task_buildSend
 prepare_generic_display_stageTimeCount
 }
 

@@ -1,6 +1,6 @@
 function lib_doStuff_remotely_pod_DSE-OPSCENTER(){
 
-# [1] delete any previous install folder with the same version
+# [1] delete any previous build folder with the same version
 rm -rf ${UNTAR_FOLDER}
 
 # [2] make folders
@@ -176,39 +176,31 @@ done
 
 function lib_doStuff_remotely_startOpscenter(){
 
-## start opscenter daemon on remote server using a remote ssh call
+## run a command remotely to start datastax-agent
+## record result of commands in array for later reporting
 
+prepare_generic_display_msgColourSimple "INFO-->" "starting opscenter:"
 start_opscenter="${opscenter_untar_bin_folder}/opscenter"
 
-status="999"
-if [[ "${status}" != "0" ]]; then
-  retry=1
-  until [[ "${retry}" == "6" ]] || [[ "${status}" == "0" ]]
-  do
-    ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && java -version"
-    status=${?}
-    if [[ "${status}" != "0" ]]; then
-      prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status}"
-      if [[ "${STRICT_START}" ==  "true" ]]; then
-        prepare_generic_display_msgColourSimple "ERROR-->" "Exiting pod: ${yellow}${task_file}${red} with ${yellow}--strict true${red} - java unavailable"
-        exit 1;
-      fi
-      start_opscenter_error_array["${tag}"]="${status};${pubIp}"
-      break;
-    else
-      ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${start_opscenter}"
-      status=${?}
-      if [[ "${status}" == "0" ]]; then
-        prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${green}${status}"
-      else
-        prepare_generic_display_msgColourSimple "INFO-->" "ssh return code: ${red}${status} ${white}(retry ${retry}/5)"
-      fi
-      start_opscenter_error_array["${tag}"]="${status};${pubIp}"
-      ((retry++))
-    fi
-  done
-  printf "%s\n"
-fi
+retry=1
+until [[ "${retry}" == "3" ]]                                                                                       # try twice to start agent
+do
+  ssh -q -i ${sshKey} ${user}@${pubIp} "${start_opscenter} &>~/.cmdOutput"                                          # run opscenter for the specified build
+  sleep 5                                                                                                           # give the logs a chance to fill up
+  cmdOutput=$(ssh -q -i ${sshKey} ${user}@${pubIp} "cat ~/.cmdOutput && rm -rf ~/.cmdOutput" )                      # command output is java version - grab it
+  output=$(ssh -q -i ${sshKey} ${user}@${pubIp} "cat ${opscenter_untar_log_folder}opscenterd.log | tr '\0' '\n'" )  # grab opscenter log and handle null point warning
+  lastbit=$(ssh -q -i ${sshKey} ${user}@${pubIp} "tail -n 1 ${opscenter_untar_log_folder}opscenterd.log" )          # grab the last line of log for any error message
+
+  if [[ "${output}" != *"StompFactory starting on"* ]]; then
+    prepare_generic_display_msgColourSimple "INFO-->" "opscenter return code: ${red}${cmdOutput}${reset}"
+    prepare_generic_display_msgColourSimple "INFO-->" "opscenter return code: ${red}${lastbit}${reset}"
+  else
+    prepare_generic_display_msgColourSimple "INFO-->" "opscenter return code: ${green}0${white}"
+    retry=2
+  fi
+  start_opscenter_error_array["${tag}"]="${status};${pubIp}"
+  ((retry++))
+done
 }
 
 # ---------------------------------------
@@ -220,13 +212,44 @@ function lib_doStuff_remotely_stopOpscenter(){
 status="999"
 if [[ "${status}" != "0" ]]; then
   retry=1
-  until [[ "${retry}" == "4" ]] || [[ "${status}" == "0" ]]
+  until [[ "${retry}" == "3" ]] || [[ "${status}" == "0" ]]
   do
     ssh -q -i ${sshKey} ${user}@${pubIp} "ps aux | grep start_opscenter.py | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
     status=${?}
     stop_opscenter_error_array["${tag}"]="${status};${pubIp}"
     ((retry++))
   done
-  printf "%s\n"
+fi
+}
+
+# ---------------------------------------
+
+function lib_doStuff_remotely_checkJava(){
+
+## run a command remotely to check Java is installed
+
+# try once to check java is installed
+status="999"
+if [[ "${status}" != "0" ]]; then
+  retry=1
+  until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
+  do
+    # display java output in different color
+    printf "%s" "${yellow}"
+    output=$(ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && java -version" )
+    status=$?
+    printf "%s" "${reset}"
+    if [[ "${status}" != "0" ]]; then
+      prepare_generic_display_msgColourSimple "INFO-->" "java return code:      ${red}${status}"
+      if [[ "${STRICT_START}" ==  "true" ]]; then
+        prepare_generic_display_msgColourSimple "ERROR-->" "Exiting pod: ${yellow}${task_file}${red} with ${yellow}--strict true${red} - java unavailable"
+        exit 1;
+      fi
+      break;
+    else
+      prepare_generic_display_msgColourSimple "INFO-->" "java return code:      ${green}${status}"
+      ((retry++))
+    fi
+  done
 fi
 }

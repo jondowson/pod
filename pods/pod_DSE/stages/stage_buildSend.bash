@@ -1,4 +1,4 @@
-function task_buildSendPod(){
+function task_buildSend(){
 
 ## for each server configure a bespoke pod build and send/merge it
 
@@ -23,7 +23,7 @@ do
   build_local_functions_array[9]="lib_doStuff_locally_dseYaml_dsefsData"
 
   # [2] call the generic buildSend task
-  task_generic_buildSendPod
+  task_generic_buildSend
 
 done
 }

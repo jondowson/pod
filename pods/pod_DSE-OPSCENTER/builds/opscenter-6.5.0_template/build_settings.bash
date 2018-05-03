@@ -16,8 +16,8 @@ INSTALL_FOLDER_POD="${INSTALL_FOLDER}${WHICH_POD}/"   # the pod specific folder 
 
 # match to name of folder in POD_SOFTWARE/${PACKAGE} holding the software tarball
 SOFTWARE_NAME="opscenter"
-SOFTWARE_VERSION="opscenter-6.5.0"
-SOFTWARE_TARBALL="opscenter-6.5.0.tar.gz"
+SOFTWARE_VERSION="opscenter-6.5.x"
+SOFTWARE_TARBALL="opscenter-6.5.x.tar.gz"
 
 ## [2] TMP FOLDER LOCATION
 
@@ -41,6 +41,7 @@ UNTAR_EXEC_FOLDER="${UNTAR_FOLDER}bin"
 opscenter_untar_folder="${UNTAR_FOLDER}${SOFTWARE_VERSION}"
 opscenter_untar_config_folder="${opscenter_untar_folder}/conf/"
 opscenter_untar_bin_folder="${opscenter_untar_folder}/bin/"
+opscenter_untar_log_folder="${opscenter_untar_folder}/log/"
 
 ## folders to be write tested !!
 # declare all paths (; seperated) to be write tested for this pod

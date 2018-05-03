@@ -154,6 +154,21 @@ if [[ "${os}" == "Mac" ]]; then
     brew install ssh-copy-id > /dev/null 2>&1
     printf "%s\n" "${tick}"
   fi
+
+  # -----
+
+  if [[ $brewList == *"grep"* ]]; then
+    prepare_generic_display_msgColourSimple "ALERT-->" "Fetching latest grep (takes ~2mins)"
+    printf "%s\t" "$ brew uninstall grep && brew install grep --with-default-names"
+    brew uninstall grep > /dev/null 2>&1
+    brew install grep --with-default-names > /dev/null 2>&1
+  else
+    prepare_generic_display_msgColourSimple "ALERT-->" "Installing grep (takes ~1mins)"
+    printf "%s\t" "$ brew install grep --with-default-names"
+    brew install grep --with-default-names > /dev/null 2>&1
+    printf "%s\n" "${tick}"
+  fi
+
   printf "%s\n"
   lib_generic_misc_timecount "5" "Proceeding to next STAGE..."
 
@@ -236,17 +251,17 @@ EOF
   brew list
 
   prepare_generic_display_msgColourSimple "TASK==>"    "Final tasks to complete Mac setup:"
-  prepare_generic_display_msgColourSimple "INFO-BOLD" "[1] Confirm above bash version is 4 or greater:"
+  prepare_generic_display_msgColourSimple "INFO-BOLD" "[1] source bash_profile"
+  prepare_generic_display_msgColourSimple "INFO"      "$ source ~/.bash_profile"
+  prepare_generic_display_msgColourSimple "INFO-BOLD" "[2] Confirm above bash version is 4 or greater:"
   prepare_generic_display_msgColourSimple "INFO"      "$ bash --version"
-  prepare_generic_display_msgColourSimple "INFO-BOLD" "[2] If not, then point to homebrew version of bash:"
+  prepare_generic_display_msgColourSimple "INFO-BOLD" "[3] If not, then point to homebrew version of bash:"
   prepare_generic_display_msgColourSimple "INFO"      "Open Mac settings --> Users&Groups --> right-click --> advanced options"
   prepare_generic_display_msgColourSimple "INFO"      "Change 'login shell' to use /usr/local/bin/bash"
   prepare_generic_display_msgColourSimple "INFO"      "Check version once more: $ bash --version"
-  prepare_generic_display_msgColourSimple "INFO-BOLD" "[3] Enable ssh connections"
+  prepare_generic_display_msgColourSimple "INFO-BOLD" "[4] Enable ssh connections"
   prepare_generic_display_msgColourSimple "INFO"      "Open Mac settings --> Sharing"
   prepare_generic_display_msgColourSimple "INFO"      "Tick-box remote-login"
-  prepare_generic_display_msgColourSimple "INFO-BOLD" "[4] Source ~/.bash_profile so pod can be run from any folder"
-  prepare_generic_display_msgColourSimple "INFO"      "$ . ~/.bash_profile"
   printf "%s\n"
 
 else

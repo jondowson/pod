@@ -24,7 +24,6 @@ do
   target_folder="$(lib_generic_strings_addTrailingSlash ${target_folder})"
 
   # [3] display message
-
   prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}${pubIp} ${reset} on os ${yellow}${remote_os}${reset}"
   prepare_generic_display_msgColourSimple "INFO-->" "dse version:           ${DSE_VERSION}"
   prepare_generic_display_msgColourSimple "INFO-->" "agent version:         ${AGENT_VERSION}"

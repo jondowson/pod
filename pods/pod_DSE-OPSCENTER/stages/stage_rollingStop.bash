@@ -18,9 +18,22 @@ do
   target_folder="$(lib_generic_strings_addTrailingSlash ${target_folder})"
 
   # [3] display a message
-  prepare_generic_display_msgColourSimple "INFO" "server: ${yellow}$tag${white} at address: ${yellow}$pubIp${reset}"
-  prepare_generic_display_msgColourSimple "INFO-->" "detected os: ${green}${remote_os}${reset}"
-  prepare_generic_display_msgColourSimple "INFO-->" "killing opscenter:     ungracefully"
+  prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pubIp${white} on os ${yellow}${remote_os}${reset}"
+  #prepare_generic_display_msgColourSimple "INFO-->" "killing opscenter:     ungracefully"
+
+  runningOpsVersion=$(ssh -q -i ${sshKey} ${user}@${pubIp} "ps -ef")
+  runningOpsVersion=$(echo $runningOpsVersion | grep -v grep | grep -Po '(?<=opscenter-)[^/lib/]+' | head -n1 )
+  runningOpsVersion=$(echo ${runningOpsVersion%\_*})
+  if [[ ${runningOpsVersion} == "" ]]; then
+    runningOpsVersion="n/a"
+  fi
+  runningAgentVersion=$(ssh -q -i ${sshKey} ${user}@${pubIp} "ps -ef")
+  runningAgentVersion=$(echo $runningAgentVersion | grep -v grep | grep -o 'datastax-agent-[^ ]*' | sed 's/^\(datastax-agent\-\)*//' | sed -e 's/\(-standalone.jar\)*$//g' )
+  if [[ -z ${runningAgentVersion} ]]; then
+    runningAgentVersion="n/a"
+  fi
+  prepare_generic_display_msgColourSimple "INFO-->" "opscenter version:     ${runningOpsVersion}"
+  prepare_generic_display_msgColourSimple "INFO-->" "agent version:         ${runningAgentVersion} (fyi)"
 
   # [4] stop opscenter
   lib_doStuff_remotely_stopOpscenter

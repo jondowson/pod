@@ -41,6 +41,7 @@ UNTAR_EXEC_FOLDER="${UNTAR_FOLDER}bin"
 opscenter_untar_folder="${UNTAR_FOLDER}${SOFTWARE_VERSION}"
 opscenter_untar_config_folder="${opscenter_untar_folder}/conf/"
 opscenter_untar_bin_folder="${opscenter_untar_folder}/bin/"
+opscenter_untar_log_folder="${opscenter_untar_folder}/log/"
 
 ## folders to be write tested !!
 # declare all paths (; seperated) to be write tested for this pod

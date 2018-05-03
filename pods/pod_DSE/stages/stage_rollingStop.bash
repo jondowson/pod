@@ -26,12 +26,14 @@ do
   # [4] display messages
   prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pubIp${white} on os ${yellow}${remote_os}${reset}" #&& printf "\n%s"
 
-  runningDseVersion=$(ssh -q -i ~/.ssh/id_rsa jd@127.0.0.1 "ps -ef | grep -v grep | grep -Po '(?<=dse-core-)[^/lib/]+' | head -n1" )
+  runningDseVersion=$(ssh -q -i ${sshKey} ${user}@${pubIp} "ps -ef")
+  runningDseVersion=$(echo $runningDseVersion | grep -v grep | grep -Po '(?<=dse-core-)[^/lib/]+' | head -n1 )
   runningDseVersion=$(echo ${runningDseVersion%\.jar:})
   if [[ ${runningDseVersion} == "" ]]; then
     runningDseVersion="n/a"
   fi
-  runningAgentVersion=$(ps -ef | grep -v grep | grep -o 'datastax-agent-[^ ]*' | sed 's/^\(datastax-agent\-\)*//' | sed -e 's/\(-standalone.jar\)*$//g' )
+  runningAgentVersion=$(ssh -q -i ${sshKey} ${user}@${pubIp} "ps -ef")
+  runningAgentVersion=$(echo $runningAgentVersion | grep -v grep | grep -o 'datastax-agent-[^ ]*' | sed 's/^\(datastax-agent\-\)*//' | sed -e 's/\(-standalone.jar\)*$//g' )
   if [[ -z ${runningAgentVersion} ]]; then
     runningAgentVersion="n/a"
   fi
