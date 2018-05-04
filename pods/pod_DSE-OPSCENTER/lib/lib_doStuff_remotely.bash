@@ -74,7 +74,7 @@ do
   do
     seed_hosts="${seed_hosts}, ${seed}"
     echo "$seed_hosts"
-  done)
+  done;)
   # some bash-kung-fu required to get variable out of the pipe created sub-shell
   # remove first comma from comma seperated list of seed nodes ips
   seedhosts_cassandra=$(echo "$seed_hosts" | sed '$!d' | cut -c 2-) # sed '/./,$!d'
@@ -89,7 +89,7 @@ do
   do
     seed_hosts="${seed_hosts}, ${seed}"
     echo "$seed_hosts"
-  done)
+  done;)
   # some bash-kung-fu required to get variable out of the pipe created sub-shell
   # remove first comma from comma seperated list of seed nodes ips
   seedhosts_storage_cassandra=$(echo "$seed_hosts" | sed '$!d' | cut -c 2-) # sed '/./,$!d'
@@ -176,28 +176,34 @@ done
 
 function lib_doStuff_remotely_startOpscenter(){
 
-## run a command remotely to start datastax-agent
+## run a command remotely to start opscenter
 ## record result of commands in array for later reporting
 
-prepare_generic_display_msgColourSimple "INFO-->" "starting opscenter: ~30s"
-# source bash_profile to ensure correct java is used
-start_opscenter="source ~/.bash_profile && ${opscenter_untar_bin_folder}opscenter"
+prepare_generic_display_msgColourSimple "INFO-->" "starting opscenter:    ~30s"
+cmd="source ~/.bash_profile && ${opscenter_untar_bin_folder}opscenter"                          # start command + source bash_profile to ensure correct java version is used
+log_to_check="${opscenter_untar_log_folder}opscenterd.log"                                      # log folder to check for keyphrase
+keyphrase="StompFactory starting"                                                               # if this appears in logs - then assume success!
+response_label="opscenter return code:"                                                         # label for response codes
+retryTimes="11"                                                                                 # try x times to inspect logs for success
+pauseTime="3"                                                                                   # pause between log look ups
+
+ssh -q -i ${sshKey} ${user}@${pubIp} "${cmd} &>~/.cmdOutput"                                    # run opscenter for the specified build
+sleep 5                                                                                         # give the chance for script to run + logs to fill up
+cmdOutput=$(ssh -q -i ${sshKey} ${user}@${pubIp} "cat ~/.cmdOutput && rm -rf ~/.cmdOutput" )    # grab any command output - could be a clue to a failure
 
 retry=1
-until [[ "${retry}" == "3" ]]                                                                                              # try twice to start agent
+until [[ "${retry}" == "${retryTimes}" ]]                                                       # try x times with a sleep pause between attempts
 do
-  ssh -q -i ${sshKey} ${user}@${pubIp} "${start_opscenter} &>~/.cmdOutput" &                                               # run opscenter for the specified build
-  sleep 30                                                                                                                 # give the logs a chance to fill up
-  cmdOutput=$(ssh -q -i ${sshKey} ${user}@${pubIp} "cat ~/.cmdOutput && rm -rf ~/.cmdOutput" )                             # command output is java version - grab it
-  output=$(ssh -q -i ${sshKey} ${user}@${pubIp} "tail -n 55 ${opscenter_untar_log_folder}opscenterd.log | tr '\0' '\n'" )  # grab opscenter log and handle null point warning
-  lastbit=$(ssh -q -i ${sshKey} ${user}@${pubIp} "tail -n 1 ${opscenter_untar_log_folder}opscenterd.log" )                 # grab the last line of log for any error message
-
-  if [[ "${output}" != *"OpsCenter version:"* ]]; then
-    prepare_generic_display_msgColourSimple "INFO-->" "opscenter return code: ${red}${cmdOutput}${reset}"
-    prepare_generic_display_msgColourSimple "INFO-->" "opscenter return code: ${red}${lastbit}${reset}"
-  else
-    prepare_generic_display_msgColourSimple "INFO-->" "opscenter return code: ${green}0${white}"
-    retry=2
+  sleep ${pauseTime}                                                                            # take a break - have a kitkat
+  output=$(ssh -q -i ${sshKey} ${user}@${pubIp}  "tail -n 10 ${log_to_check} | tr '\0' '\n'")   # grab opscenter log and handle null point warning
+  if [[ "${output}" == *"${keyphrase}"* ]]; then
+    prepare_generic_display_msgColourSimple "INFO-->" "${response_label} ${green}0${white}"
+    retry=10
+    success="true"
+  fi
+  if [[ "${retry}" == "10" ]] && [[ "${success}" != "true" ]]; then                             # failure messages
+  prepare_generic_display_msgColourSimple "INFO-->" "${response_label} ${red}1 - You may ned to kill any existing opscenter process as root !!${reset}"
+  prepare_generic_display_msgColourSimple "INFO-->" "${response_label} ${red}1 - Is the right Java version installed [ ${cmdOutput} ] !!${reset}"
   fi
   start_opscenter_error_array["${tag}"]="${status};${pubIp}"
   ((retry++))
@@ -261,30 +267,33 @@ function lib_doStuff_remotely_getAgentVersion(){
 
 ## try 2 approaches to identify running agent version
 
-# [1] use agent api to discover version
-url=http://${pubIp}:61621/v1/connection-status
-head=true
-while IFS= read -r line; do
+# [1] use agent api to discover version (first check curl is available)
+ssh -q -i ~/.ssh/id_rsa jd@127.0.0.1 "curl &>/dev/null"
+if [[ $? == "0" ]]; then
+  url=http://${pubIp}:61621/v1/connection-status
+  head=true
+  while IFS= read -r line; do
     if $head; then
-        if [[ -z $line ]]; then
-            head=false
-        else
-            headers+=("$line")
-        fi
+      if [[ -z $line ]]; then
+        head=false
+      else
+        headers+=("$line")
+      fi
     else
-        body+=("$line")
+      body+=("$line")
     fi
-done < <(curl -sD - "$url" | sed 's/\r$//')
-unset IFS
-runningAgentVersion=$(printf "%s\n" "${headers[@]}" | grep X-Datastax-Agent-Version)
-runningAgentVersion=$(echo "${runningAgentVersion#*:}" | tr -d [:space:])
+  done < <(curl -sD - "$url" | sed 's/\r$//')
+  unset IFS
+  runningAgentVersion=$(printf "%s\n" "${headers[@]}" | grep X-Datastax-Agent-Version)
+  runningAgentVersion=$(echo "${runningAgentVersion#*:}" | tr -d [:space:])
+fi
 
 # [2] find out the jar from running processes (this gets the version branch rather than necessarily the exact version)
 if [[ -z $runningAgentVersion ]]; then
   runningAgentVersion=$(ssh -q -i ${sshKey} ${user}@${pubIp} "ps -ef | grep -v grep")
   runningAgentVersion=$(echo $runningAgentVersion | grep -o 'datastax-agent-[^ ]*' | sed 's/^\(datastax-agent\-\)*//' | sed -e 's/\(-standalone.jar\)*$//g' )
   if [[ -z ${runningAgentVersion} ]]; then
-    prepare_generic_display_msgColourSimple "INFO-->" "agent version:         n/a (fyi)"
+    prepare_generic_display_msgColourSimple "INFO-->" "agent version:         n/a"
   else
     prepare_generic_display_msgColourSimple "INFO-->" "agent jar version:     ${runningAgentVersion} (fyi)"
   fi

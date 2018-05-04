@@ -81,8 +81,7 @@ retry=1
 until [[ "${retry}" == "3" ]]
 do
   prepare_generic_display_msgColourSimple "INFO-->"   "stopping dse:          gracefully"
-  ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${stop_cmd} &>~/.cmdOutput"
-  output=$(ssh -q -i ${sshKey} ${user}@${pubIp} "cat ~/.cmdOutput && rm -rf ~/.cmdOutput" )
+  ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && ${stop_cmd}"
   if [[ -z "${output}" ]]; then
     prepare_generic_display_msgColourSimple "INFO-->" "dse return code:       ${green}0${white}"
     retry=2
@@ -198,27 +197,33 @@ function lib_doStuff_remotely_startAgent(){
 ## run a command remotely to start datastax-agent
 ## record result of commands in array for later reporting
 
-prepare_generic_display_msgColourSimple "INFO-->" "starting agent: ~ 15s"
-# source bash_profile to ensure correct java version is used
-start_agent="source ~/.bash_profile && ${agent_untar_bin_folder}/datastax-agent"
+prepare_generic_display_msgColourSimple "INFO-->" "starting agent:        ~15s"
+cmd="source ~/.bash_profile && ${agent_untar_bin_folder}datastax-agent"                         # start command + source bash_profile to ensure correct java version is used
+log_to_check="${agent_untar_log_folder}agent.log"                                               # log folder to check for keyphrase
+keyphrase="Starting StompComponent"                                                             # if this appears in logs - then assume success!
+response_label="agent return code:"                                                             # label for response codes
+retryTimes="11"                                                                                 # try x times to inspect logs for success
+pauseTime="2"                                                                                   # pause between log look ups
+
+ssh -q -i ${sshKey} ${user}@${pubIp} "${cmd} &>~/.cmdOutput"                                    # run opscenter for the specified build
+sleep 5                                                                                         # give the chance for script to run + logs to fill up
+cmdOutput=$(ssh -q -i ${sshKey} ${user}@${pubIp} "cat ~/.cmdOutput && rm -rf ~/.cmdOutput" )    # grab any command output - could be a clue to a failure
 
 retry=1
-until [[ "${retry}" == "3" ]]                                                                                         # try twice to start agent
+until [[ "${retry}" == "${retryTimes}" ]]                                                       # try x times with a sleep pause between attempts
 do
-  ssh -q -i ${sshKey} ${user}@${pubIp} "${start_agent} &>~/.cmdOutput" &                                              # run the agent for the specified build
-  sleep 10                                                                                                            # give the logs a chance to fill up
-  cmdOutput=$(ssh -q -i ${sshKey} ${user}@${pubIp} "cat ~/.cmdOutput && rm -rf ~/.cmdOutput" )                        # command output is java version - grab it
-  output=$(ssh -q -i ${sshKey} ${user}@${pubIp}    "tail -n 50 ${agent_untar_log_folder}agent.log | tr '\0' '\n'" )   # grab agent log and handle null point warning
-  lastbit=$(ssh -q -i ${sshKey} ${user}@${pubIp}   "tail -n 1 ${agent_untar_log_folder}agent.log" )                   # grab the last line of log for any error message
-
-  if [[ "${output}" != *"Starting JMXComponent"* ]]; then
-    prepare_generic_display_msgColourSimple "INFO-->" "agent return code:     ${red}${cmdOutput}${reset}"
-    prepare_generic_display_msgColourSimple "INFO-->" "agent return code:     ${red}${lastbit}${reset}"
-  else
-    prepare_generic_display_msgColourSimple "INFO-->" "agent return code:     ${green}0${white}"
-    retry=2
+  sleep ${pauseTime}                                                                            # take a break - have a kitkat
+  output=$(ssh -q -i ${sshKey} ${user}@${pubIp}  "tail -n 50 ${log_to_check} | tr '\0' '\n'")   # grab opscenter log and handle null point warning
+  if [[ "${output}" == *"${keyphrase}"* ]]; then
+    prepare_generic_display_msgColourSimple "INFO-->" "${response_label}     ${green}0${white}"
+    retry=10
+    success="true"
   fi
-  start_agent_error_array["${tag}"]="${status};${pubIp}"
+  if [[ "${retry}" == "10" ]] && [[ "${success}" != "true" ]]; then                             # failure messages
+    prepare_generic_display_msgColourSimple "INFO-->" "${response_label} ${red}1 - You may ned to kill any existing agent process as root !!${reset}"
+    prepare_generic_display_msgColourSimple "INFO-->" "${response_label} ${red}1 - Is the right Java version installed [ ${cmdOutput} ] !!${reset}"
+  fi
+  start_opscenter_error_array["${tag}"]="${status};${pubIp}"
   ((retry++))
 done
 }
@@ -229,23 +234,26 @@ function lib_doStuff_remotely_getAgentVersion(){
 
 ## try 2 approaches to identify running agent version
 
-# [1] use agent api to discover version
-url=http://${pubIp}:61621/v1/connection-status
-head=true
-while IFS= read -r line; do
+# [1] use agent api to discover version (first check curl is available)
+ssh -q -i ~/.ssh/id_rsa jd@127.0.0.1 "curl &>/dev/null"
+if [[ $? == "0" ]]; then
+  url=http://${pubIp}:61621/v1/connection-status
+  head=true
+  while IFS= read -r line; do
     if $head; then
-        if [[ -z $line ]]; then
-            head=false
-        else
-            headers+=("$line")
-        fi
+      if [[ -z $line ]]; then
+        head=false
+      else
+        headers+=("$line")
+      fi
     else
-        body+=("$line")
+      body+=("$line")
     fi
-done < <(curl -sD - "$url" | sed 's/\r$//')
-unset IFS
-runningAgentVersion=$(printf "%s\n" "${headers[@]}" | grep X-Datastax-Agent-Version)
-runningAgentVersion=$(echo "${runningAgentVersion#*:}" | tr -d [:space:])
+  done < <(curl -sD - "$url" | sed 's/\r$//')
+  unset IFS
+  runningAgentVersion=$(printf "%s\n" "${headers[@]}" | grep X-Datastax-Agent-Version)
+  runningAgentVersion=$(echo "${runningAgentVersion#*:}" | tr -d [:space:])
+fi
 
 # [2] find out the jar from running processes (this gets the version branch rather than necessarily the exact version)
 if [[ -z $runningAgentVersion ]]; then

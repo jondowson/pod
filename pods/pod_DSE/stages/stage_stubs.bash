@@ -30,12 +30,24 @@ function stage_stubs_stopStartCluster(){
 stageNumber="${1}"
 stageTotal="${2}"
 
-if [[ "${CLUSTER_STATE}" == *"restart"* ]]; then
+if [[ "${CLUSTER_STATE}" == "restart" ]]; then
   prepare_generic_display_stageCount        "DSE Cluster Restart" "${stageNumber}" "${stageTotal}"
   prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Stopping dse + agent"
   task_rollingStop
   prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Starting dse + agent"
   task_rollingStart
+  prepare_generic_display_stageTimeCount
+elif [[ "${CLUSTER_STATE}" == "agent-restart" ]]; then
+  prepare_generic_display_stageCount        "DSE Cluster Restart" "${stageNumber}" "${stageTotal}"
+  prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Stopping agent"
+  task_rollingStop
+  prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Starting agent"
+  task_rollingStart
+  prepare_generic_display_stageTimeCount
+elif [[ "${CLUSTER_STATE}" == "agent-stop" ]]; then
+  prepare_generic_display_stageCount        "DSE Cluster Stop" "${stageNumber}" "${stageTotal}"
+  prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Stopping agent"
+  task_rollingStop
   prepare_generic_display_stageTimeCount
 else
   prepare_generic_display_stageCount        "DSE Cluster Stop" "${stageNumber}" "${stageTotal}"
