@@ -44,6 +44,6 @@ function pod_DSE-OPSCENTER-rollingStop_finalMessage(){
 prepare_generic_display_msgColourSimple "TASK==>"   "Finish:"
 prepare_generic_display_msgColourSimple "INFO-BOLD" "(1) Opscenter should no longer be up here:"
 prepare_generic_display_msgColourSimple "INFO"      "http://${pubIp}:8888"
-prepare_generic_display_msgColourSimple "INFO-BOLD" "(2) Verify agent pid is not up (or use Opscenter)"
+prepare_generic_display_msgColourSimple "INFO-BOLD" "(2) Verify agent pid is not up"
 prepare_generic_display_msgColourSimple "INFO"      "$ ps -ef | grep opscenter | grep -v grep"
 }
