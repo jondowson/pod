@@ -21,7 +21,7 @@ It is extensible and new modules (or 'pods') can be added quickly that make use 
 
 **The latest stable version is:**
 ```diff
-+ pod-version-1.5.3
++ pod-version-1.5.4
 ```    
 The master branch is in sync with the latest stable version.    
 

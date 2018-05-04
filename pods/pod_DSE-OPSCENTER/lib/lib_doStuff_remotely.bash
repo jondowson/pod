@@ -309,7 +309,6 @@ function lib_doStuff_remotely_getOpscenterVersion(){
 
 ## try to identify opscenter version from running pid
 
-podInput=$(printf "%q" ${podInput})
 runningOpsVersion=$(ssh -q -i ${sshKey} ${user}@${pubIp} "ps -ef | grep -v grep | grep -v -e '--pod pod_DSE-OPSCENTER' | grep -v -e '-p pod_DSE-OPSCENTER' | grep opscenter")
 runningOpsVersion=$(echo $runningOpsVersion | grep -Po '(?<=opscenter-)[^/lib/]+' | head -n1 )
 runningOpsVersion=$(echo ${runningOpsVersion%\_*})

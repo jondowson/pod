@@ -277,7 +277,6 @@ function lib_doStuff_remotely_getDseVersion(){
 
 ## try to identify opscenter version from running pid
 
-podInput=$(printf "%q" ${podInput})
 runningDseVersion=$(ssh -q -i ${sshKey} ${user}@${pubIp} "ps -ef | grep -v grep | grep -v -e '--pod pod_DSE' | grep -v -e '-p pod_DSE' | grep dse")
 runningDseVersion=$(echo $runningDseVersion | grep -Po '(?<=dse-core-)[^/lib/]+' | head -n1 )
 runningDseVersion=$(echo ${runningDseVersion%\.jar:})
