@@ -186,7 +186,7 @@ keyphrase="StompFactory starting"                                               
 response_label="opscenter return code:"                                                         # label for response codes
 retryTimes="11"                                                                                 # try x times to inspect logs for success
 pauseTime="3"                                                                                   # pause between log look ups
-tailCount="40"                                                                                  # how many lines to grab from end of log - relationship with pause time + speed logs are written
+tailCount="50"                                                                                  # how many lines to grab from end of log - relationship with pause time + speed logs are written
 
 ssh -q -i ${sshKey} ${user}@${pubIp} "${cmd} &>~/.cmdOutput"                                    # run opscenter for the specified build
 sleep 5                                                                                         # give the chance for script to run + logs to fill up
