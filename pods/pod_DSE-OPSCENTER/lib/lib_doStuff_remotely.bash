@@ -10,7 +10,8 @@ lib_generic_doStuff_remotely_createFolders "${UNTAR_FOLDER}${SOFTWARE_VERSION}"
 lib_generic_doStuff_remotely_unpackTar "${TAR_FILE}" "${UNTAR_FOLDER}"
 
 # [4] configure local environment
-lib_generic_doStuff_remotely_updatePathBashProfile "OPSC_HOME" "${UNTAR_EXEC_FOLDER}"
+
+lib_generic_doStuff_remotely_updateAppBashProfile "OPSC_HOME" "${UNTAR_EXEC_FOLDER}"
 
 # [5] configure cluster_config file
 if [[ "${apply_storage_cluster}" == "true" ]]; then

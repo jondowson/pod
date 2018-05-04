@@ -87,7 +87,6 @@ label="${program_home}_bash_profile"
 lib_generic_strings_removePodBlockAndEmptyLines ${file} "pod_SETUP@${label}"
 
 ## allow pod to be run on this server from any folder and create an alias too
-
 cat << EOF >> "${file}"
 
 #>>>>>BEGIN-ADDED-BY__pod_SETUP@${label}
