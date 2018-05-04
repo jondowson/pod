@@ -186,6 +186,7 @@ keyphrase="StompFactory starting"                                               
 response_label="opscenter return code:"                                                         # label for response codes
 retryTimes="11"                                                                                 # try x times to inspect logs for success
 pauseTime="3"                                                                                   # pause between log look ups
+tailCount="40"                                                                                  # how many lines to grab from end of log - relationship with pause time + speed logs are written
 
 ssh -q -i ${sshKey} ${user}@${pubIp} "${cmd} &>~/.cmdOutput"                                    # run opscenter for the specified build
 sleep 5                                                                                         # give the chance for script to run + logs to fill up
@@ -195,7 +196,7 @@ retry=1
 until [[ "${retry}" == "${retryTimes}" ]]                                                       # try x times with a sleep pause between attempts
 do
   sleep ${pauseTime}                                                                            # take a break - have a kitkat
-  output=$(ssh -q -i ${sshKey} ${user}@${pubIp}  "tail -n 10 ${log_to_check} | tr '\0' '\n'")   # grab opscenter log and handle null point warning
+  output=$(ssh -q -i ${sshKey} ${user}@${pubIp}  "tail -n ${tailCount} ${log_to_check} | tr '\0' '\n'")   # grab opscenter log and handle null point warning
   if [[ "${output}" == *"${keyphrase}"* ]]; then
     prepare_generic_display_msgColourSimple "INFO-->" "${response_label} ${green}0${white}"
     retry=10
