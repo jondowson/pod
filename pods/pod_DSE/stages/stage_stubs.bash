@@ -38,7 +38,7 @@ if [[ "${CLUSTER_STATE}" == *"restart"* ]]; then
   task_rollingStart
   prepare_generic_display_stageTimeCount
 else
-  prepare_generic_display_stageCount        "Stopping on DSE Cluster" "${stageNumber}" "${stageTotal}"
+  prepare_generic_display_stageCount        "DSE Cluster Stop" "${stageNumber}" "${stageTotal}"
   prepare_generic_display_msgColourSimple   "TASK==>"  "TASK: Stopping dse + agent"
   task_rollingStop
   prepare_generic_display_stageTimeCount

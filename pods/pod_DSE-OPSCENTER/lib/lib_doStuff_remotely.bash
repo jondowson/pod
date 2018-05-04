@@ -187,7 +187,7 @@ retry=1
 until [[ "${retry}" == "3" ]]                                                                                              # try twice to start agent
 do
   ssh -q -i ${sshKey} ${user}@${pubIp} "${start_opscenter} &>~/.cmdOutput" &                                               # run opscenter for the specified build
-  sleep 20                                                                                                                 # give the logs a chance to fill up
+  sleep 30                                                                                                                 # give the logs a chance to fill up
   cmdOutput=$(ssh -q -i ${sshKey} ${user}@${pubIp} "cat ~/.cmdOutput && rm -rf ~/.cmdOutput" )                             # command output is java version - grab it
   output=$(ssh -q -i ${sshKey} ${user}@${pubIp} "tail -n 55 ${opscenter_untar_log_folder}opscenterd.log | tr '\0' '\n'" )  # grab opscenter log and handle null point warning
   lastbit=$(ssh -q -i ${sshKey} ${user}@${pubIp} "tail -n 1 ${opscenter_untar_log_folder}opscenterd.log" )                 # grab the last line of log for any error message
