@@ -17,23 +17,10 @@ do
   # add trailing '/' to target_folder path if not present
   target_folder="$(lib_generic_strings_addTrailingSlash ${target_folder})"
 
-  # [3] display a message
+  # [3] display messages
   prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pubIp${white} on os ${yellow}${remote_os}${reset}"
-  #prepare_generic_display_msgColourSimple "INFO-->" "killing opscenter:     ungracefully"
-
-  runningOpsVersion=$(ssh -q -i ${sshKey} ${user}@${pubIp} "ps -ef")
-  runningOpsVersion=$(echo $runningOpsVersion | grep -v grep | grep -Po '(?<=opscenter-)[^/lib/]+' | head -n1 )
-  runningOpsVersion=$(echo ${runningOpsVersion%\_*})
-  if [[ ${runningOpsVersion} == "" ]]; then
-    runningOpsVersion="n/a"
-  fi
-  runningAgentVersion=$(ssh -q -i ${sshKey} ${user}@${pubIp} "ps -ef")
-  runningAgentVersion=$(echo $runningAgentVersion | grep -v grep | grep -o 'datastax-agent-[^ ]*' | sed 's/^\(datastax-agent\-\)*//' | sed -e 's/\(-standalone.jar\)*$//g' )
-  if [[ -z ${runningAgentVersion} ]]; then
-    runningAgentVersion="n/a"
-  fi
-  prepare_generic_display_msgColourSimple "INFO-->" "opscenter version:     ${runningOpsVersion}"
-  prepare_generic_display_msgColourSimple "INFO-->" "agent version:         ${runningAgentVersion} (fyi)"
+  lib_doStuff_remotely_getOpscenterVersion
+  lib_doStuff_remotely_getAgentVersion
 
   # [4] stop opscenter
   lib_doStuff_remotely_stopOpscenter

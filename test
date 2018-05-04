@@ -1,0 +1,18 @@
+#!/usr/local/bin/bash
+
+url=http://127.0.0.1:61621/v1/connection-status
+
+head=true
+while IFS= read -r line; do
+    if $head; then
+        if [[ -z $line ]]; then
+            head=false
+        else
+            headers+=("$line")
+        fi
+    else
+        body+=("$line")
+    fi
+done < <(curl -sD - "$url" | sed 's/\r$//')
+agentVersion=$(printf "%s\n" "${headers[@]}" | grep X-Datastax-Agent-Version)
+printf "%s\n" ${agentVersion#*:}

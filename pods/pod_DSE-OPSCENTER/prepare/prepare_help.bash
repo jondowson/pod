@@ -24,7 +24,7 @@ function pod_DSE-OPSCENTER_finalMessage(){
 prepare_generic_display_msgColourSimple "TASK==>"   "Finish:"
 prepare_generic_display_msgColourSimple "INFO-BOLD" "(1) Source '.bash_profile' (or open new terminal):"
 prepare_generic_display_msgColourSimple "INFO"      "$ . ~/.bash_profile"
-prepare_generic_display_msgColourSimple "INFO-BOLD" "(2) Start opscenter (usually run on one node)"
+prepare_generic_display_msgColourSimple "INFO-BOLD" "(2) Start opscenter"
 prepare_generic_display_msgColourSimple "INFO"      "$ pod --pod pod_DSE-OPSCENTER -s ${SERVERS_JSON} -b ${BUILD_FOLDER} -cs restart"
 }
 
@@ -33,7 +33,7 @@ prepare_generic_display_msgColourSimple "INFO"      "$ pod --pod pod_DSE-OPSCENT
 function pod_DSE-OPSCENTER-rollingStart_finalMessage(){
 
 prepare_generic_display_msgColourSimple "TASK==>"   "Finish:"
-prepare_generic_display_msgColourSimple "INFO-BOLD" "(1) Wait ~15 secs and check opscenter status here:"
+prepare_generic_display_msgColourSimple "INFO-BOLD" "(1) Check opscenter status here:"
 prepare_generic_display_msgColourSimple "INFO"      "http://${pubIp}:8888"
 }
 
@@ -44,4 +44,6 @@ function pod_DSE-OPSCENTER-rollingStop_finalMessage(){
 prepare_generic_display_msgColourSimple "TASK==>"   "Finish:"
 prepare_generic_display_msgColourSimple "INFO-BOLD" "(1) Opscenter should no longer be up here:"
 prepare_generic_display_msgColourSimple "INFO"      "http://${pubIp}:8888"
+prepare_generic_display_msgColourSimple "INFO-BOLD" "(2) Verify agent pid is not up (or use Opscenter)"
+prepare_generic_display_msgColourSimple "INFO"      "$ ps -ef | grep opscenter | grep -v grep"
 }

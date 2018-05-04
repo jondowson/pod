@@ -198,18 +198,18 @@ function lib_doStuff_remotely_startAgent(){
 ## run a command remotely to start datastax-agent
 ## record result of commands in array for later reporting
 
-prepare_generic_display_msgColourSimple "INFO-->" "starting agent:"
+prepare_generic_display_msgColourSimple "INFO-->" "starting agent: ~ 15s"
 # source bash_profile to ensure correct java version is used
 start_agent="source ~/.bash_profile && ${agent_untar_bin_folder}/datastax-agent"
 
 retry=1
-until [[ "${retry}" == "3" ]]                                                                               # try twice to start agent
+until [[ "${retry}" == "3" ]]                                                                                         # try twice to start agent
 do
-  ssh -q -i ${sshKey} ${user}@${pubIp} "${start_agent} &>~/.cmdOutput" &                                    # run the agent for the specified build
-  sleep 5                                                                                                   # give the logs a chance to fill up
-  cmdOutput=$(ssh -q -i ${sshKey} ${user}@${pubIp} "cat ~/.cmdOutput && rm -rf ~/.cmdOutput" )              # command output is java version - grab it
-  output=$(ssh -q -i ${sshKey} ${user}@${pubIp} "cat ${agent_untar_log_folder}agent.log | tr '\0' '\n'" )   # grab agent log and handle null point warning
-  lastbit=$(ssh -q -i ${sshKey} ${user}@${pubIp} "tail -n 1 ${agent_untar_log_folder}agent.log" )           # grab the last line of log for any error message
+  ssh -q -i ${sshKey} ${user}@${pubIp} "${start_agent} &>~/.cmdOutput" &                                              # run the agent for the specified build
+  sleep 10                                                                                                            # give the logs a chance to fill up
+  cmdOutput=$(ssh -q -i ${sshKey} ${user}@${pubIp} "cat ~/.cmdOutput && rm -rf ~/.cmdOutput" )                        # command output is java version - grab it
+  output=$(ssh -q -i ${sshKey} ${user}@${pubIp}    "tail -n 50 ${agent_untar_log_folder}agent.log | tr '\0' '\n'" )   # grab agent log and handle null point warning
+  lastbit=$(ssh -q -i ${sshKey} ${user}@${pubIp}   "tail -n 1 ${agent_untar_log_folder}agent.log" )                   # grab the last line of log for any error message
 
   if [[ "${output}" != *"Starting JMXComponent"* ]]; then
     prepare_generic_display_msgColourSimple "INFO-->" "agent return code:     ${red}${cmdOutput}${reset}"
@@ -221,4 +221,59 @@ do
   start_agent_error_array["${tag}"]="${status};${pubIp}"
   ((retry++))
 done
+}
+
+# ---------------------------------------
+
+function lib_doStuff_remotely_getAgentVersion(){
+
+## try 2 approaches to identify running agent version
+
+# [1] use agent api to discover version
+url=http://${pubIp}:61621/v1/connection-status
+head=true
+while IFS= read -r line; do
+    if $head; then
+        if [[ -z $line ]]; then
+            head=false
+        else
+            headers+=("$line")
+        fi
+    else
+        body+=("$line")
+    fi
+done < <(curl -sD - "$url" | sed 's/\r$//')
+unset IFS
+runningAgentVersion=$(printf "%s\n" "${headers[@]}" | grep X-Datastax-Agent-Version)
+runningAgentVersion=$(echo "${runningAgentVersion#*:}" | tr -d [:space:])
+
+# [2] find out the jar from running processes (this gets the version branch rather than necessarily the exact version)
+if [[ -z $runningAgentVersion ]]; then
+  runningAgentVersion=$(ssh -q -i ${sshKey} ${user}@${pubIp} "ps -ef | grep -v grep")
+  runningAgentVersion=$(echo $runningAgentVersion | grep -o 'datastax-agent-[^ ]*' | sed 's/^\(datastax-agent\-\)*//' | sed -e 's/\(-standalone.jar\)*$//g' )
+  if [[ -z ${runningAgentVersion} ]]; then
+    prepare_generic_display_msgColourSimple "INFO-->" "agent version:         n/a"
+  else
+    prepare_generic_display_msgColourSimple "INFO-->" "agent jar version:     ${runningAgentVersion}"
+  fi
+else
+  prepare_generic_display_msgColourSimple "INFO-->" "agent version:         ${runningAgentVersion}"
+fi
+}
+
+# ---------------------------------------
+
+function lib_doStuff_remotely_getDseVersion(){
+
+## try to identify opscenter version from running pid
+
+podInput=$(printf "%q" ${podInput})
+runningDseVersion=$(ssh -q -i ${sshKey} ${user}@${pubIp} "ps -ef | grep -v grep | grep -v -e '--pod pod_DSE' | grep -v -e '-p pod_DSE' | grep dse")
+runningDseVersion=$(echo $runningDseVersion | grep -Po '(?<=dse-core-)[^/lib/]+' | head -n1 )
+runningDseVersion=$(echo ${runningDseVersion%\.jar:})
+
+if [[ -z ${runningDseVersion} ]]; then
+  runningDseVersion="n/a"
+fi
+prepare_generic_display_msgColourSimple "INFO-->" "dse version:           ${runningDseVersion}"
 }

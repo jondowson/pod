@@ -54,7 +54,7 @@ prepare_generic_display_msgColourSimple "TASK==>"   "Finish:"
 prepare_generic_display_msgColourSimple "INFO-BOLD" "(1) To check status of cluster"
 prepare_generic_display_msgColourSimple "INFO"      "$ dse nodetool status"
 prepare_generic_display_msgColourSimple "INFO"      "$ dsetool ring"
-prepare_generic_display_msgColourSimple "INFO-BOLD" "(2) To check status of agent (or see Opscenter)"
+prepare_generic_display_msgColourSimple "INFO-BOLD" "(2) To verify agent pid (or use Opscenter)"
 prepare_generic_display_msgColourSimple "INFO"      "$ ps -ef | grep datastax-agent | grep -v grep"
 if [[ "${CLUSTER_STATE}" == *"restart"* ]];then
   printf "%s\n" ""

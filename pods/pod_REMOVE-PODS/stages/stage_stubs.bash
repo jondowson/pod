@@ -4,7 +4,7 @@ stageNumber="${1}"
 stageTotal="${2}"
 
 prepare_generic_display_stageCount        "Build and send bespoke pod" "${stageNumber}" "${stageTotal}"
-prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Configure pod locally and distribute"
+prepare_generic_display_msgColourSimple   "TASK==>"    "TASK: Configuring pod locally and distributing"
 task_buildSend
 prepare_generic_display_stageTimeCount
 }

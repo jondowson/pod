@@ -179,20 +179,20 @@ function lib_doStuff_remotely_startOpscenter(){
 ## run a command remotely to start datastax-agent
 ## record result of commands in array for later reporting
 
-prepare_generic_display_msgColourSimple "INFO-->" "starting opscenter:"
+prepare_generic_display_msgColourSimple "INFO-->" "starting opscenter: ~30s"
 # source bash_profile to ensure correct java is used
 start_opscenter="source ~/.bash_profile && ${opscenter_untar_bin_folder}opscenter"
 
 retry=1
-until [[ "${retry}" == "3" ]]                                                                                       # try twice to start agent
+until [[ "${retry}" == "3" ]]                                                                                              # try twice to start agent
 do
-  ssh -q -i ${sshKey} ${user}@${pubIp} "${start_opscenter} &>~/.cmdOutput" &                                        # run opscenter for the specified build
-  sleep 10                                                                                                          # give the logs a chance to fill up
-  cmdOutput=$(ssh -q -i ${sshKey} ${user}@${pubIp} "cat ~/.cmdOutput && rm -rf ~/.cmdOutput" )                      # command output is java version - grab it
-  output=$(ssh -q -i ${sshKey} ${user}@${pubIp} "cat ${opscenter_untar_log_folder}opscenterd.log | tr '\0' '\n'" )  # grab opscenter log and handle null point warning
-  lastbit=$(ssh -q -i ${sshKey} ${user}@${pubIp} "tail -n 1 ${opscenter_untar_log_folder}opscenterd.log" )          # grab the last line of log for any error message
+  ssh -q -i ${sshKey} ${user}@${pubIp} "${start_opscenter} &>~/.cmdOutput" &                                               # run opscenter for the specified build
+  sleep 20                                                                                                                 # give the logs a chance to fill up
+  cmdOutput=$(ssh -q -i ${sshKey} ${user}@${pubIp} "cat ~/.cmdOutput && rm -rf ~/.cmdOutput" )                             # command output is java version - grab it
+  output=$(ssh -q -i ${sshKey} ${user}@${pubIp} "tail -n 55 ${opscenter_untar_log_folder}opscenterd.log | tr '\0' '\n'" )  # grab opscenter log and handle null point warning
+  lastbit=$(ssh -q -i ${sshKey} ${user}@${pubIp} "tail -n 1 ${opscenter_untar_log_folder}opscenterd.log" )                 # grab the last line of log for any error message
 
-  if [[ "${output}" != *"StompFactory starting on"* ]]; then
+  if [[ "${output}" != *"OpsCenter version:"* ]]; then
     prepare_generic_display_msgColourSimple "INFO-->" "opscenter return code: ${red}${cmdOutput}${reset}"
     prepare_generic_display_msgColourSimple "INFO-->" "opscenter return code: ${red}${lastbit}${reset}"
   else
@@ -253,4 +253,59 @@ if [[ "${status}" != "0" ]]; then
     fi
   done
 fi
+}
+
+# ---------------------------------------
+
+function lib_doStuff_remotely_getAgentVersion(){
+
+## try 2 approaches to identify running agent version
+
+# [1] use agent api to discover version
+url=http://${pubIp}:61621/v1/connection-status
+head=true
+while IFS= read -r line; do
+    if $head; then
+        if [[ -z $line ]]; then
+            head=false
+        else
+            headers+=("$line")
+        fi
+    else
+        body+=("$line")
+    fi
+done < <(curl -sD - "$url" | sed 's/\r$//')
+unset IFS
+runningAgentVersion=$(printf "%s\n" "${headers[@]}" | grep X-Datastax-Agent-Version)
+runningAgentVersion=$(echo "${runningAgentVersion#*:}" | tr -d [:space:])
+
+# [2] find out the jar from running processes (this gets the version branch rather than necessarily the exact version)
+if [[ -z $runningAgentVersion ]]; then
+  runningAgentVersion=$(ssh -q -i ${sshKey} ${user}@${pubIp} "ps -ef | grep -v grep")
+  runningAgentVersion=$(echo $runningAgentVersion | grep -o 'datastax-agent-[^ ]*' | sed 's/^\(datastax-agent\-\)*//' | sed -e 's/\(-standalone.jar\)*$//g' )
+  if [[ -z ${runningAgentVersion} ]]; then
+    prepare_generic_display_msgColourSimple "INFO-->" "agent version:         n/a (fyi)"
+  else
+    prepare_generic_display_msgColourSimple "INFO-->" "agent jar version:     ${runningAgentVersion} (fyi)"
+  fi
+else
+  prepare_generic_display_msgColourSimple "INFO-->" "agent version:         ${runningAgentVersion} (fyi)"
+fi
+}
+
+# ---------------------------------------
+
+function lib_doStuff_remotely_getOpscenterVersion(){
+
+## try to identify opscenter version from running pid
+
+podInput=$(printf "%q" ${podInput})
+runningOpsVersion=$(ssh -q -i ${sshKey} ${user}@${pubIp} "ps -ef | grep -v grep | grep -v -e '--pod pod_DSE-OPSCENTER' | grep -v -e '-p pod_DSE-OPSCENTER' | grep opscenter")
+runningOpsVersion=$(echo $runningOpsVersion | grep -Po '(?<=opscenter-)[^/lib/]+' | head -n1 )
+runningOpsVersion=$(echo ${runningOpsVersion%\_*})
+
+if [[ -z ${runningOpsVersion} ]]; then
+  runningOpsVersion="n/a"
+fi
+prepare_generic_display_msgColourSimple "INFO-->" "opscenter version:     ${runningOpsVersion}"
 }
