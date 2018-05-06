@@ -1,7 +1,0 @@
-LOCAL_TARGET_FOLDER=/home/jd/Desktop/
-TARGET_FOLDER=/home/jd/Desktop/
-WHICH_POD=pod_DSE
-server_id=1
-serversJsonPath=/home/jd/Desktop/POD_SOFTWARE/POD/pod/servers/DSE_singleLinux.json
-BUILD_FOLDER=dse-5.0.x_template
-build_folder_path=/home/jd/Desktop/POD_SOFTWARE/POD/pod/pods/pod_DSE/builds/dse-5.0.x_template/
