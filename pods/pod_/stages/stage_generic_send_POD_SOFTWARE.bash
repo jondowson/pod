@@ -8,11 +8,11 @@ for id in $(seq 1 ${numberOfServers});
 do
 
   # [1] assign json variable to bash variables
-  tag=$(jq            -r '.server_'${id}'.tag'            "${servers_json_path}")
-  user=$(jq           -r '.server_'${id}'.user'           "${servers_json_path}")
-  sshKey=$(jq         -r '.server_'${id}'.sshKey'         "${servers_json_path}")
-  target_folder=$(jq  -r '.server_'${id}'.target_folder'  "${servers_json_path}")
-  pubIp=$(jq          -r '.server_'${id}'.pubIp'          "${servers_json_path}")
+  tag=$(jq            -r '.server_'${id}'.tag'            "${serversJsonPath}")
+  user=$(jq           -r '.server_'${id}'.user'           "${serversJsonPath}")
+  ssh_key=$(jq         -r '.server_'${id}'.ssh_key'         "${serversJsonPath}")
+  target_folder=$(jq  -r '.server_'${id}'.target_folder'  "${serversJsonPath}")
+  pub_ip=$(jq          -r '.server_'${id}'.pub_ip'          "${serversJsonPath}")
   # add trailing '/' to path if not present
   target_folder=$(lib_generic_strings_addTrailingSlash "${target_folder}")
 
@@ -24,24 +24,24 @@ do
   lib_generic_doStuff_remotely_identifyOs
 
   # [4] display message
-  prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pubIp${white} on os ${yellow}${remote_os}${reset}" #&& printf "\n%s"
+  prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pub_ip${white} on os ${yellow}${remote_os}${reset}" #&& printf "\n%s"
   prepare_generic_display_msgColourSimple "INFO-->" "sending:        POD_SOFTWARE/${PACKAGE}"
 
   # [5] check target_folder can be used on target machine !!
-  catchError "stage_generic_POD_SOFTWARE#1" "cannot make target folder" "true" "true" "ssh -o ForwardX11=no ${user}@${pubIp} mkdir -p ${target_folder}POD_SOFTWARE"
+  catchError "stage_generic_POD_SOFTWARE#1" "cannot make target folder" "true" "true" "ssh -o ForwardX11=no ${user}@${pub_ip} mkdir -p ${target_folder}POD_SOFTWARE"
 
   # [6] check if server is local server - no point sending software if local +  no delete locally of existing pod folder
   localServer="false"
-  localServer=$(lib_generic_checks_localIpMatch "${pubIp}")
+  localServer=$(lib_generic_checks_localIpMatch "${pub_ip}")
   if [[ "${localServer}" == "true" ]] && [[ "${LOCAL_TARGET_FOLDER}" == "${target_folder}" ]]; then
     prepare_generic_display_msgColourSimple "INFO-->" "skipping:       no need to send locally"
   else
     # copy the POD_SOFTWARE folder to remote server
-    scp -q -o LogLevel=QUIET -i ${sshKey} -r "${PACKAGES}" "${user}@${pubIp}:${target_folder}POD_SOFTWARE" &    # run in parallel
+    scp -q -o LogLevel=QUIET -i ${ssh_key} -r "${PACKAGES}" "${user}@${pub_ip}:${target_folder}POD_SOFTWARE" &    # run in parallel
     # out pid response status in array
     pid=${!}
     prepare_generic_display_msgColourSimple "INFO-->" "pid id:        ${yellow}${pid}${reset}"
-    send_pod_software_pid_array["${pid}"]="${tag};${pubIp}"
+    arraySendPodPids["${pid}"]="${tag};${pub_ip}"
     DSE_pids+=" $pid"
   fi
 
@@ -85,7 +85,7 @@ if [[ ! -z $POD_SOFTWARE_pid_failures ]]; then
   for k in "${!POD_SOFTWARE_server_pid_array[@]}"
   do
     if [[ "${POD_SOFTWARE_pid_failures}" == *"$k"* ]]; then
-      lib_generic_strings_expansionDelimiter "${send_pod_software_pid_array[$k]}" ";" "1"
+      lib_generic_strings_expansionDelimiter "${arraySendPodPids[$k]}" ";" "1"
       server="$_D1_"
       ip=$_D2_
       prepare_generic_display_msgColourSimple "ERROR-TIGHT" "pid ${yellow}${k}${red} failed for ${yellow}${server}@${ip}${red}"

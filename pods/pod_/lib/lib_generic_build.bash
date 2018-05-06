@@ -24,7 +24,7 @@ printf "%s\n" "WHICH_POD=${WHICH_POD}"                          >> "${tmp_suitca
 # [4] SERVERS_JSON
 printf "%s\n" "server_id=${id}"                                 >> "${tmp_suitcase_file_path}"
 servers_json_path_string="${target_folder}POD_SOFTWARE/POD/pod/servers/${SERVERS_JSON}"
-printf "%s\n" "servers_json_path=${servers_json_path_string}"   >> "${tmp_suitcase_file_path}"
+printf "%s\n" "serversJsonPath=${servers_json_path_string}"   >> "${tmp_suitcase_file_path}"
 # [5] BUILD_FOLDER
 printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}"                    >> "${tmp_suitcase_file_path}"
 build_folder_path_string="${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"
@@ -43,11 +43,11 @@ function lib_generic_build_jqListToArray(){
 jqlist="${1}"
 
 ## substitute the ${BUILD_FOLDER} variable if it is present in the path
-data_path=$(jq -r --arg bf "${BUILD_FOLDER}" '.server_'${id}'.'${jqlist}'[] | sub("\\${BUILD_FOLDER}";$bf)' "${servers_json_path}")
+data_path=$(jq -r --arg bf "${BUILD_FOLDER}" '.server_'${id}'.'${jqlist}'[] | sub("\\${BUILD_FOLDER}";$bf)' "${serversJsonPath}")
 COUNTER=0
 for path in ${data_path};
 do
-  build_send_data_array[${COUNTER}]=${path}
+  arrayBuildSendData[${COUNTER}]=${path}
   (( COUNTER++ ))
 done
 }
@@ -63,11 +63,11 @@ printf "%s" "${red}"
 
 # check if server is local server
 localServer="false"
-localServer=$(lib_generic_checks_localIpMatch "${pubIp}")
+localServer=$(lib_generic_checks_localIpMatch "${pub_ip}")
 
 # if not local server or installing elsewhere locally - delete any existing pod folder
 if [[ "${localServer}" != "true" ]] || [[ "${LOCAL_TARGET_FOLDER}" != "${target_folder}" ]]; then
-  ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "rm -rf ${target_folder}POD_SOFTWARE/POD/pod" exit
+  ssh -q -o ForwardX11=no -i ${ssh_key} ${user}@${pub_ip} "rm -rf ${target_folder}POD_SOFTWARE/POD/pod" exit
 fi
 
 # if local server - copy from the tmp folder the value for target_folder
@@ -75,15 +75,15 @@ if [[ "${localServer}" == "true" ]]; then
   # this will subsequently be copied back to the local copy of misc/.suitcase, once all servers have been looped through
   # this will then be referenced when/if the launch remote script is run for the local machine (after it is then deleted)
   # this 'suitcase' file ensures each server gets variables relevant to it (paths,ips etc)
-  cp "${tmp_suitcase_file_path}" ${pod_home_path}/.suitcase.tmp
+  cp "${tmp_suitcase_file_path}" ${podHomePath}/.suitcase.tmp
 fi
 
 # (re)create folder and send over updated pod software
 # this will be merged locally
-ssh -q -i ${sshKey} ${user}@${pubIp} "mkdir -p ${target_folder}POD_SOFTWARE/POD/pod/"
-scp -q -o LogLevel=QUIET -i ${sshKey} -r "${tmp_working_folder}" "${user}@${pubIp}:${target_folder}POD_SOFTWARE/POD/"
+ssh -q -i ${ssh_key} ${user}@${pub_ip} "mkdir -p ${target_folder}POD_SOFTWARE/POD/pod/"
+scp -q -o LogLevel=QUIET -i ${ssh_key} -r "${tmp_working_folder}" "${user}@${pub_ip}:${target_folder}POD_SOFTWARE/POD/"
 status=${?}
-build_send_error_array["${tag}"]="${status};${pubIp}"
+arrayBuildSend["${tag}"]="${status};${pub_ip}"
 # turn off red error highlighting
 printf "%s" "${reset}"
 }
@@ -95,7 +95,7 @@ function lib_generic_build_finishUp(){
 ## tasks to finish up the build stage
 
 # assign the local target_folder value back to the local copy of the misc/.suitcase
-mv ${pod_home_path}/.suitcase.tmp "${suitcase_file_path}"
+mv ${podHomePath}/.suitcase.tmp "${suitcase_file_path}"
 
 # delete the temporary work folder
 rm -rf "${tmp_folder}"

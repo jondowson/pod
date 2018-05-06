@@ -11,9 +11,9 @@ script_start=$(date +%s)
 
 ## determine this scripts' folder path
 
-parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
-cd ${parent_path}
-pod_home_path="$(cd ../; pwd)"
+parentPath=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+cd ${parentPath}
+podHomePath="$(cd ../; pwd)"
 
 
 # ////////////////////////////////////////// GENERIC PREPERATION (pod_)
@@ -22,7 +22,7 @@ pod_home_path="$(cd ../; pwd)"
 ## generic pod_ preparation
 
 # source generic pod_ preperation script
-source ${pod_home_path}/pods/pod_/prepare/prepare_generic_misc.bash
+source ${podHomePath}/pods/pod_/prepare/prepare_generic_misc.bash
 # identify local os
 prepare_generic_misc_identifyOs
 # source all generic pod_ scripts
@@ -222,17 +222,17 @@ EOF
 
   printf "%s\n"
   echo "#>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}"
-  echo "export POD_HOME=${pod_home_path}/"
+  echo "export POD_HOME=${podHomePath}/"
   echo "export PATH=\$POD_HOME:\$PATH"
-  echo "alias fpod='cd ${pod_home_path}'"
+  echo "alias fpod='cd ${podHomePath}'"
   echo "#>>>>>END-ADDED-BY__${WHICH_POD}@${label}"
 
 cat << EOF >> "${file}"
 
 #>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}
-export POD_HOME=${pod_home_path}/
+export POD_HOME=${podHomePath}/
 export PATH=\$POD_HOME:\$PATH
-alias fpod='cd ${pod_home_path}'
+alias fpod='cd ${podHomePath}'
 #>>>>>END-ADDED-BY__${WHICH_POD}@${label}
 EOF
 
@@ -283,17 +283,17 @@ else
 
   printf "%s\n"
   echo "#>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}"
-  echo "export POD_HOME=${pod_home_path}/"
+  echo "export POD_HOME=${podHomePath}/"
   echo "export PATH=\$POD_HOME:\$PATH"
-  echo "alias fpod='cd ${pod_home_path}'"
+  echo "alias fpod='cd ${podHomePath}'"
   echo "#>>>>>END-ADDED-BY__${WHICH_POD}@${label}"
 
 cat << EOF >> "${file}"
 
 #>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}
-export POD_HOME=${pod_home_path}/
+export POD_HOME=${podHomePath}/
 export PATH=\$POD_HOME:\$PATH
-alias fpod='cd ${pod_home_path}'
+alias fpod='cd ${podHomePath}'
 #>>>>>END-ADDED-BY__${WHICH_POD}@${label}
 EOF
 

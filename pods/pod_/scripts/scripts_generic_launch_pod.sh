@@ -25,50 +25,50 @@ fi
 
 ## [2] determine this scripts' folder path
 
-parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
-cd ${parent_path}
+parentPath=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+cd ${parentPath}
 cd ../../../
-pod_home_path="$(pwd)"
-source "${pod_home_path}/misc/.suitcase"
+podHomePath="$(pwd)"
+source "${podHomePath}/misc/.suitcase"
 
 if [[ "${os}" == "Mac" ]]; then
 
-  chmod +x ${pod_home_path}/pods/pod_/scripts/*.sh
-  . ${pod_home_path}/pods/pod_/scripts/scripts_generic_launch_pod_mac.sh
+  chmod +x ${podHomePath}/pods/pod_/scripts/*.sh
+  . ${podHomePath}/pods/pod_/scripts/scripts_generic_launch_pod_mac.sh
 
 else
 
   # -----
 
   # [3.1] jq - bash jason parser
-  jq_folder="${pod_home_path}/third_party/jq-linux64/"
-  jq_file_path="${jq_folder}jq"
+  jqFolderPath="${podHomePath}/third_party/jq-linux64/"
+  jqFilePath="${jqFolderPath}jq"
   # [3.2] ensure third party packages are executable
-  chmod -R 777 "${pod_home_path}/third_party/"
-  PATH=${jq_folder}:$PATH
+  chmod -R 777 "${podHomePath}/third_party/"
+  PATH=${jqFolderPath}:$PATH
 
   # running jq within remote script requires full path
   if [[ "${os}" == "Mac" ]]; then
     jqCmd="/usr/local/Cellar/jq/1.5_3/bin/jq"
   else
-    jqCmd="${jq_file_path}"
+    jqCmd="${jqFilePath}"
   fi
 
   # -----
 
   ## [4] source pod_ + this pod's scripts
 
-  files="$(find ${pod_home_path}/pods/pod_/lib/ -name "*.bash")"
+  files="$(find ${podHomePath}/pods/pod_/lib/ -name "*.bash")"
   for file in $(printf "%s\n" "$files"); do
       [ -f $file ] && . $file
   done
 
-  files="$(find ${pod_home_path}/pods/pod_/prepare/ -name "*.bash")"
+  files="$(find ${podHomePath}/pods/pod_/prepare/ -name "*.bash")"
   for file in $(printf "%s\n" "$files"); do
       [ -f $file ] && . $file
   done
 
-  files="$(find ${pod_home_path}/pods/${WHICH_POD}/lib/ -name "*.bash")"
+  files="$(find ${podHomePath}/pods/${WHICH_POD}/lib/ -name "*.bash")"
   for file in $(printf "%s\n" "$files"); do
       [ -f $file ] && . $file
   done

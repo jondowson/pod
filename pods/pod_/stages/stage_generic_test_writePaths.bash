@@ -7,17 +7,17 @@ function task_generic_testWritePaths(){
 ## for each server test ability to write to all required dse paths (data, logs etc)
 
 # if json contains nested paths to test, these will have been passed in
-buildPathsWriteTest="${1}"
-jsonPathsWriteTest="${2}"
+BUILDPATHS_WRITETEST="${1}"
+JSONPATHS_WRITETEST="${2}"
 
 for id in $(seq 1 ${numberOfServers});
 do
   # [1] assign json variable to bash variables
-  tag=$(jq             -r '.server_'${id}'.tag'             "${servers_json_path}")
-  user=$(jq            -r '.server_'${id}'.user'            "${servers_json_path}")
-  sshKey=$(jq          -r '.server_'${id}'.sshKey'          "${servers_json_path}")
-  target_folder=$(jq   -r '.server_'${id}'.target_folder'   "${servers_json_path}")
-  pubIp=$(jq           -r '.server_'${id}'.pubIp'           "${servers_json_path}")
+  tag=$(jq             -r '.server_'${id}'.tag'             "${serversJsonPath}")
+  user=$(jq            -r '.server_'${id}'.user'            "${serversJsonPath}")
+  ssh_key=$(jq          -r '.server_'${id}'.ssh_key'          "${serversJsonPath}")
+  target_folder=$(jq   -r '.server_'${id}'.target_folder'   "${serversJsonPath}")
+  pub_ip=$(jq           -r '.server_'${id}'.pub_ip'           "${serversJsonPath}")
   # add trailing '/' to path if not present
   target_folder=$(lib_generic_strings_addTrailingSlash "${target_folder}")
 
@@ -29,12 +29,12 @@ do
   lib_generic_doStuff_remotely_identifyOs
 
   # [4] display message
-  prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pubIp${white} on os ${yellow}${remote_os}${reset}"
+  prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pub_ip${white} on os ${yellow}${remote_os}${reset}"
 
   # [5] test all buildFolderPaths
   # delimit the buildFolderPaths string into an array
   # prepend the target_folder for this server and append the build_settings specific paths to test
-  buildFolderPaths="target_folder;${buildPathsWriteTest}"
+  buildFolderPaths="target_folder;${BUILDPATHS_WRITETEST}"
   lib_generic_strings_ifsStringDelimeter ";" "${buildFolderPaths}"
 
   # for each element in the array
@@ -46,9 +46,9 @@ do
       until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
       do
         prepare_generic_display_msgColourSimple "INFO-->" "${!folder}"
-        ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir -p ${!folder}dummyFolder && rm -rf ${!folder}dummyFolder" exit
+        ssh -q -o ForwardX11=no -i ${ssh_key} ${user}@${pub_ip} "mkdir -p ${!folder}dummyFolder && rm -rf ${!folder}dummyFolder" exit
         status=${?}
-        test_write_error_array_1["${!folder}"]="${status};${tag}"
+        arrayTestWrite1["${!folder}"]="${status};${tag}"
         ((retry++))
       done
     fi
@@ -56,9 +56,9 @@ do
 
   # [6] test json elements that have nested paths - these will be passed here as a delimited string
   # e.g. "cass_data;dsefs_data"
-  if [[ ${jsonPathsWriteTest} != "" ]]; then
+  if [[ ${JSONPATHS_WRITETEST} != "" ]]; then
     # delimit the json element(s) into an array
-    lib_generic_strings_ifsStringDelimeter ";" "${jsonPathsWriteTest}"
+    lib_generic_strings_ifsStringDelimeter ";" "${JSONPATHS_WRITETEST}"
     # for each element in the array e.g. cass_data
     for element in "${array[@]}"
     do

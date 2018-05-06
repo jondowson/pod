@@ -1,7 +1,7 @@
 # //////////////////////////////////////////
 # DO-NOT-EDIT-THIS-BLOCK !!
 PACKAGE="DATASTAX"                                    # empty if pod does not involve tarball
-source ${pod_home_path}/misc/.suitcase                # file used to access server specific variables on remote machines
+source ${podHomePath}/misc/.suitcase                # file used to access server specific variables on remote machines
 POD_SOFTWARE="${TARGET_FOLDER}POD_SOFTWARE/"          # the parent folder with all the tarballs and the pod software
 PACKAGES="${POD_SOFTWARE}${PACKAGE}/"                 # the relevant tarball folders for this pod
 INSTALL_FOLDER="${TARGET_FOLDER}POD_INSTALLS/"        # the parent folder where tarball software is unpacked to
@@ -22,7 +22,7 @@ SOFTWARE_TARBALL="opscenter-6.5.x.tar.gz"
 ## [2] TMP FOLDER LOCATION
 
 # can be anywhere with suffcient permissions
-TEMP_FOLDER="${INSTALL_FOLDER}TEMP/"
+temp_folder="${INSTALL_FOLDER}TEMP/"
 
 ## [3] USE THIS OPSCENTER CLUSTER TO STORE METRICS OF OTHER CLUSTERS
 
@@ -51,7 +51,7 @@ opscenter_untar_log_folder="${opscenter_untar_folder}/log/"
 # any folders that need to exist prior to running the application should be added here
 
 # build_settings paths from this file to write test
-buildPathsWriteTest="TEMP_FOLDER"
+BUILDPATHS_WRITETEST="temp_folder"
 # json server paths to write test
-jsonPathsWriteTest=""
+JSONPATHS_WRITETEST=""
 # //////////////////////////////////////////

@@ -3,7 +3,7 @@ function task_buildSend(){
 ## for each server configure a bespoke pod build and send/merge it
 
 # identify all keys for this json file from the first server block
-keys=$(jq -r '.server_1 | keys[]' ${servers_json_path})
+keys=$(jq -r '.server_1 | keys[]' ${serversJsonPath})
 
 # loop through each server defined in the json file
 for id in $(seq 1 ${numberOfServers});

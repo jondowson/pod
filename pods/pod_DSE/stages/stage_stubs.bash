@@ -3,7 +3,7 @@ function stage_stubs_createResourcesFolder(){
 stageNumber="${1}"
 stageTotal="${2}"
 
-destination_folder_parent_path="${pod_home_path}/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"
+destination_folder_parent_path="${podHomePath}/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"
 destination_folder_path="${destination_folder_parent_path}resources/"
 newResourcesFolder="false" # becomes true if stage is run
 

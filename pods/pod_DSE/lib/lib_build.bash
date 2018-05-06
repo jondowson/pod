@@ -3,7 +3,7 @@ function lib_build_suitcase(){
 ## add pod specific variables to the suitcase
 
 localServer="false"
-localServer=$(lib_generic_checks_localIpMatch "${pubIp}")
+localServer=$(lib_generic_checks_localIpMatch "${pub_ip}")
 
 # to handle installing pod to a different folder locally (to support short paths for dse 5.0.x)
 # point POD_HOME in bash_profile to the original pod location (rather than the replicated pod software folder)

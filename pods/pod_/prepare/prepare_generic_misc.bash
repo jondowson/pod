@@ -8,28 +8,28 @@ function prepare_generic_misc_podBuildTempFolder(){
 ## this requires an existing local resources folder
 ## it is this duplicate folder will be configured locally and then sent to remote server(s)
 
-suitcase_file_path="${pod_home_path}/misc/.suitcase"
-tmp_build_folder="${pod_home_path}/tmp/pod/" && \
+suitcase_file_path="${podHomePath}/misc/.suitcase"
+tmp_build_folder="${podHomePath}/tmp/pod/" && \
 tmp_builds_folder="${tmp_build_folder}pods/${WHICH_POD}/builds/" && \
 tmp_build_file_folder="${tmp_builds_folder}${BUILD_FOLDER}/" && \
 tmp_build_settings_file_path="${tmp_build_file_folder}build_settings.bash" && \
 tmp_suitcase_file_path="${tmp_build_folder}misc/.suitcase" && \
 
 # delete any existing duplicated 'pod' folder from '/tmp'
-tmp_folder="${pod_home_path}/tmp/" && \
+tmp_folder="${podHomePath}/tmp/" && \
 rm -rf "${tmp_folder}" && \
 
 # duplicate 'pod' folder to working directory '/tmp'
-tmp_working_folder="${pod_home_path}/tmp/pod/" && \
+tmp_working_folder="${podHomePath}/tmp/pod/" && \
 mkdir -p "${tmp_working_folder}" && \
-cp -rp "${pod_home_path}/misc"         "${tmp_working_folder}" && \
-cp -rp "${pod_home_path}/pods"         "${tmp_working_folder}" && \
-cp -rp "${pod_home_path}/servers"      "${tmp_working_folder}" && \
-cp -rp "${pod_home_path}/third_party"  "${tmp_working_folder}" && \
-cp -p  "${pod_home_path}/README.md"    "${tmp_working_folder}" && \
-cp -p  "${pod_home_path}/CHANGE.md"    "${tmp_working_folder}" && \
-cp -p  "${pod_home_path}/.gitignore"   "${tmp_working_folder}" && \
-cp -p  "${pod_home_path}/pod"          "${tmp_working_folder}"
+cp -rp "${podHomePath}/misc"         "${tmp_working_folder}" && \
+cp -rp "${podHomePath}/pods"         "${tmp_working_folder}" && \
+cp -rp "${podHomePath}/servers"      "${tmp_working_folder}" && \
+cp -rp "${podHomePath}/third_party"  "${tmp_working_folder}" && \
+cp -p  "${podHomePath}/README.md"    "${tmp_working_folder}" && \
+cp -p  "${podHomePath}/CHANGE.md"    "${tmp_working_folder}" && \
+cp -p  "${podHomePath}/.gitignore"   "${tmp_working_folder}" && \
+cp -p  "${podHomePath}/pod"          "${tmp_working_folder}"
 
 # check these paths have been created
 lib_generic_checks_fileExists   "prepare_generic_misc.bash#1" "true" "${suitcase_file_path}"
@@ -64,10 +64,10 @@ function prepare_generic_misc_getPodPath(){
 
 ## determine the folder path of pod
 
-parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
-cd ${parent_path}
+parentPath=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+cd ${parentPath}
 cd ../../
-pod_home_path="$(pwd)/"
+podHomePath="$(pwd)/"
 }
 
 # ------------------------------------------
@@ -76,7 +76,7 @@ function prepare_generic_misc_sourceGeneric(){
 
 ## source generic reusable pod scripts
 
-files="$(find ${pod_home_path}/pods/pod_/ -name "*.bash*" -not -path "*scripts/*" | grep -v  "template_*" | grep -v  "lib_generic_prepare.bash")"
+files="$(find ${podHomePath}/pods/pod_/ -name "*.bash*" -not -path "*scripts/*" | grep -v  "template_*" | grep -v  "lib_generic_prepare.bash")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
@@ -89,9 +89,9 @@ function prepare_generic_misc_sourceThisPod(){
 ## source pod-specific lib scripts
 
 # check pod exists
-lib_generic_checks_fileFolderExists "pod does not exist" "true" "${pod_home_path}/pods/" "folder" "${WHICH_POD}"
+lib_generic_checks_fileFolderExists "pod does not exist" "true" "${podHomePath}/pods/" "folder" "${WHICH_POD}"
 
-files="$(find ${pod_home_path}/pods/${WHICH_POD}/ -name "*.bash" -not -path "*builds/*" -not -path "*scripts/*")"
+files="$(find ${podHomePath}/pods/${WHICH_POD}/ -name "*.bash" -not -path "*builds/*" -not -path "*scripts/*")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
@@ -104,8 +104,8 @@ function prepare_generic_misc_sourceThisPodBuild(){
 ## source the pod-specific 'builds' folder to use
 
 if [[ ${buildFlag} == "true" ]]; then
-  lib_generic_checks_fileFolderExists "build file path is wrong:" "true" "${pod_home_path}/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/" "file" "build_settings.bash"
-  source  "${pod_home_path}/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/build_settings.bash"
+  lib_generic_checks_fileFolderExists "build file path is wrong:" "true" "${podHomePath}/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/" "file" "build_settings.bash"
+  source  "${podHomePath}/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/build_settings.bash"
 fi
 }
 
@@ -126,9 +126,9 @@ function prepare_generic_misc_clearTheDecks(){
 
 ## remove any temporary files/folders that may be left from a previous run of pod
 
-> ${pod_home_path}/misc/.suitcase
-rm -rf ${pod_home_path}/tmp
-rm -rf ${pod_home_path}/.suitcase
+> ${podHomePath}/misc/.suitcase
+rm -rf ${podHomePath}/tmp
+rm -rf ${podHomePath}/.suitcase
 }
 
 # ------------------------------------------

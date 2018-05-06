@@ -13,7 +13,7 @@ delim="${1}"
 element="${2}"
 
 # if path contains ${BUILD_FOLDER} variable then substitute in the user supplied value
-folders=$(jq -r --arg bf "${BUILD_FOLDER}" '.server_'${id}'.'${element}'[] | sub("\\${BUILD_FOLDER}";$bf)' "${servers_json_path}")
+folders=$(jq -r --arg bf "${BUILD_FOLDER}" '.server_'${id}'.'${element}'[] | sub("\\${BUILD_FOLDER}";$bf)' "${serversJsonPath}")
 # for each path nested within this element
 for folder in ${folders}
 do
@@ -26,9 +26,9 @@ do
       retry=0
       until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
       do
-        ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir -p ${path}dummyFolder && rm -rf ${path}dummyFolder" exit
+        ssh -q -o ForwardX11=no -i ${ssh_key} ${user}@${pub_ip} "mkdir -p ${path}dummyFolder && rm -rf ${path}dummyFolder" exit
         status=${?}
-        test_write_error_array_2[${path}]="${status};${tag}"
+        arrayTestWrite2[${path}]="${status};${tag}"
         ((retry++))
       done
     fi
@@ -38,9 +38,9 @@ do
       retry=0
       until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
       do
-        ssh -q -o ForwardX11=no -i ${sshKey} ${user}@${pubIp} "mkdir -p ${folder}dummyFolder && rm -rf ${folder}dummyFolder" exit
+        ssh -q -o ForwardX11=no -i ${ssh_key} ${user}@${pub_ip} "mkdir -p ${folder}dummyFolder && rm -rf ${folder}dummyFolder" exit
         status=${?}
-        test_write_error_array_2[${folder}]="${status};${tag}"
+        arrayTestWrite2[${folder}]="${status};${tag}"
         ((retry++))
       done
     fi
@@ -85,10 +85,10 @@ unset IFS
 for k in $keys
 do
   # declare a variable of the same name and assign its value to it
-  json_array[$k]="$(jq -r '.server_'${id}'.'$k ${servers_json_path})"
+  arrayJson[$k]="$(jq -r '.server_'${id}'.'$k ${serversJsonPath})"
 
   # check if key has nested key value pairs - ignore if it is empty or if it is a list (then it will contain [0])
-  nestedCheck=$(jq -r '.server_'${id}'.'$k' | paths' ${servers_json_path})
+  nestedCheck=$(jq -r '.server_'${id}'.'$k' | paths' ${serversJsonPath})
   if [[ $nestedCheck != *[0]* ]] && [[ $nestedCheck != "" ]]; then
 
     # remove brackets, quotes and spaces + then deduplicate in preparation to loop through each nested key
@@ -99,10 +99,10 @@ do
     for nk in $nestedKeys
     do
       # declare a variable of the same name and assign its value to it - using underscore between nested levels for variable name
-      json_array[$k$u$nk]="$(jq -r '.server_'${id}'.'$k'.'$nk ${servers_json_path})"
+      arrayJson[$k$u$nk]="$(jq -r '.server_'${id}'.'$k'.'$nk ${serversJsonPath})"
 
       # check if key has nested key value pairs - ignore if it is empty or if it is a list (then it will contain [0])
-      nestedCheckTwo=$(jq -r '.server_'${id}'.'$k'.'$nk' | paths' ${servers_json_path})
+      nestedCheckTwo=$(jq -r '.server_'${id}'.'$k'.'$nk' | paths' ${serversJsonPath})
       if [[ $nestedCheckTwo != *[0]* ]] && [[ $nestedCheckTwo != "" ]]; then
 
         # remove brackets, quotes and spaces + then deduplicate in preparation to loop through each nested key
@@ -113,9 +113,9 @@ do
         for nnk in $nestedKeysTwo
         do
           # declare a variable of the same name and assign its value to it - using underscore between nested levels for variable name
-          json_array[$k$u$nk$u$nnk]="$(jq -r '.server_'${id}'.'$k'.'$nk'.'$nnk ${servers_json_path})"
+          arrayJson[$k$u$nk$u$nnk]="$(jq -r '.server_'${id}'.'$k'.'$nk'.'$nnk ${serversJsonPath})"
           # check if key has nested key value pairs - ignore if it is empty or if it is a list (then it will contain [0])
-          nestedCheckThree=$(jq -r '.server_'${id}'.'$k'.'$nk'.'$nnk' | paths' ${servers_json_path})
+          nestedCheckThree=$(jq -r '.server_'${id}'.'$k'.'$nk'.'$nnk' | paths' ${serversJsonPath})
           if [[ $nestedCheckThree != *[0]* ]] && [[ $nestedCheckThree != "" ]]; then
 
             # remove brackets, quotes and spaces + then deduplicate in preparation to loop through each nested key
@@ -125,7 +125,7 @@ do
             # for each level four key
             for nnnk in $nestedKeysThree
             do
-              json_array[$k$u$nk$u$nnk$u$nnnk]="$(jq -r '.server_'${id}'.'$k'.'$nk'.'$nnk'.'$nnnk ${servers_json_path})"
+              arrayJson[$k$u$nk$u$nnk$u$nnnk]="$(jq -r '.server_'${id}'.'$k'.'$nk'.'$nnk'.'$nnnk ${serversJsonPath})"
             done
           fi
         done

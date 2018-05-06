@@ -27,17 +27,17 @@ function prepare_generic_help_lists(){
 if [[ "${podFlag}" != "true" ]]; then
 
   prepare_generic_display_msgColourSimple "TASK" "Available pods:"
-  availablePods=$(ls ${pod_home_path}/pods | grep -vw "pod_")
+  availablePods=$(ls ${podHomePath}/pods | grep -vw "pod_")
   printf "%s\n" ${availablePods}
 
 else
 
   prepare_generic_display_msgColourSimple "TASK" "Available server definitions:         ${green}all pods${reset}"
-  availableServers=$(ls ${pod_home_path}/servers)
+  availableServers=$(ls ${podHomePath}/servers)
   printf "%s\n" ${availableServers}
 
   prepare_generic_display_msgColourSimple "TASK" "Available build definitions for pod:  ${green}${WHICH_POD}${reset}"
-  availableBuilds=$(ls ${pod_home_path}/pods/${WHICH_POD}/builds)
+  availableBuilds=$(ls ${podHomePath}/pods/${WHICH_POD}/builds)
   printf "%s\n" ${availableBuilds}
 
 fi

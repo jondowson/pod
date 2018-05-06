@@ -36,7 +36,7 @@ else
 
   stage_stubs_createResourcesFolder     "1" "7"
   stage_generic_stubs_testConnectivity  "2" "7"
-  stage_generic_stubs_testWritePaths    "3" "7"  "${buildPathsWriteTest}" "${jsonPathsWriteTest}"   # set in build_settings.bash
+  stage_generic_stubs_testWritePaths    "3" "7"  "${BUILDPATHS_WRITETEST}" "${JSONPATHS_WRITETEST}"   # set in build_settings.bash
   stage_generic_stubs_sendPodSoftware   "4" "7"
   stage_stubs_buildSendPod              "5" "7"
   stage_generic_stubs_launchPod         "6" "7"

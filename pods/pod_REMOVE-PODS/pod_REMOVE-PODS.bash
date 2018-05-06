@@ -22,7 +22,7 @@ function pod_REMOVE-PODS(){
 ## --> pod specific functions:  this pod's 'lib' folder
 
 stage_generic_stubs_testConnectivity  "1" "5"
-stage_generic_stubs_testWritePaths    "2" "5" "${buildPathsWriteTest}" "${jsonPathsWriteTest}"   # set in build_settings.bash
+stage_generic_stubs_testWritePaths    "2" "5" "${BUILDPATHS_WRITETEST}" "${JSONPATHS_WRITETEST}"   # set in build_settings.bash
 stage_stubs_buildSendPod              "3" "5"
 stage_generic_stubs_launchPod         "4" "5"
 stage_stubs_finish                    "5" "5"

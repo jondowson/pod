@@ -2,9 +2,9 @@
   "server_1":{
     "tag": "opscenter_1",
     "user": "jondowson",
-    "sshKey": "/Users/jondowson/.ssh/id_rsa",
+    "ssh_key": "/Users/jondowson/.ssh/id_rsa",
     "target_folder": "/Users/jondowson/Desktop/",
-    "pubIp": "127.0.0.1",
+    "pub_ip": "127.0.0.1",
     "cluster_conf":{
       "cluster_1":{
         "clustername": "Cluster1",

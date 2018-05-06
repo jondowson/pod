@@ -2,9 +2,9 @@
     "server_1":{
       "tag": "storage_1",
       "user": "jondowson",
-      "sshKey": "/Users/jondowson/.ssh/id_rsa",
+      "ssh_key": "/Users/jondowson/.ssh/id_rsa",
       "target_folder": "/POD/",
-      "pubIp": "127.0.0.1",
+      "pub_ip": "127.0.0.1",
       "listen_address": "127.0.0.1",
       "rpc_address": "127.0.0.1",
       "stomp_interface": "127.0.0.1",

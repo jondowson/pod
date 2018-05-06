@@ -5,8 +5,8 @@
 
 # tag:            used to display pod messages only - server tag should be relevant and unique - perhaps its hostname
 # user:           account used to connect to remote server
-# sshKey:         full path to local copy of server authentication file to use to access remote server
-# pubIp:          ip to connect to remote server
+# ssh_key:         full path to local copy of server authentication file to use to access remote server
+# pub_ip:          ip to connect to remote server
 # target_folder:  where 'POD_SOFTWARE' will be copied to on remote server
 # cluster_conf:   one or more clusters to manage - set this to store metric data for managed cluster on the opscenter cluster (not on the data cluster itself)
 #             --> 'cluster_1','cluster_2', 'cluster_3' ...
@@ -21,9 +21,9 @@
   "server_1":{
     "tag": "opscenter_1",
     "user": "jondowson",
-    "sshKey": "/Users/jondowson/.ssh/id_rsa",
+    "ssh_key": "/Users/jondowson/.ssh/id_rsa",
     "target_folder": "/Users/jondowson/Desktop/",
-    "pubIp": "127.0.0.1",
+    "pub_ip": "127.0.0.1",
     "cluster_conf":{
       "cluster_1":{
         "clustername": "Cluster",

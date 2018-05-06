@@ -6,7 +6,7 @@ function lib_generic_doStuff_remotely_identifyOs(){
 
 ## determine remote server os
 
-remote_os=$(ssh -q -o Forwardx11=no ${user}@${pubIp} 'bash -s'  < ${pod_home_path}/pods/pod_/scripts/scripts_generic_identifyOs.sh)
+remote_os=$(ssh -q -o Forwardx11=no ${user}@${pub_ip} 'bash -s'  < ${podHomePath}/pods/pod_/scripts/scripts_generic_identifyOs.sh)
 }
 
 # ---------------------------------------

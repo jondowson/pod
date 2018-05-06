@@ -5,17 +5,17 @@
 
 # tag:            server tag should be relevant and unique - perhaps its hostname
 # user:           account used to connect to and setup datastax on remote server
-# sshKey:         full path to local copy of server authentication file to use to access remote server
+# ssh_key:         full path to local copy of server authentication file to use to access remote server
 # target_folder:  where 'POD_SOFTWARE' is put on server
-# pubIp:          specify here what will be used to connect - could be internal 'private ip'!
-# listen_address  specify either the 'pubIp' or 'prvIp' to use in cassandra.yaml (use prvIp on aws)
-# rpc_address     specify either the pubIp or prvIp (use prvIp on aws) or use default value of localhost
+# pub_ip:          specify here what will be used to connect - could be internal 'private ip'!
+# listen_address  specify either the 'pub_ip' or 'prvIp' to use in cassandra.yaml (use prvIp on aws)
+# rpc_address     specify either the pub_ip or prvIp (use prvIp on aws) or use default value of localhost
 # stomp_interface specify the address of the opscenter - or leave default setting of 127.0.0.1
 # seeds:          used at bootstrap of node into cluster
 #                 --> take care when choosing the seeds for a node
 #                 --> order local DC seeds first, then seeds for any other DC
 #                 --> do not include all ip addresses as seeds, but say a quorum from each DC
-# token:          specify a calculated token of leave blank to use Vnodes
+# token:          specify a calculated token of leave blank to use vnodes
 # dc:             the datacenter name - utilised if applying rack settings
 # rack:           the rack used within a dc - utilised if applying rack settings
 # mode:           set to 'true' for all DSE features turned on for this server
@@ -32,9 +32,9 @@
     "server_1":{
       "tag": "storage_1",
       "user": "<user>",
-      "sshKey": "/home/<user>/.ssh/id_rsa",
+      "ssh_key": "/home/<user>/.ssh/id_rsa",
       "target_folder": "/home/<user>/Desktop/",
-      "pubIp": "172.0.0.1",
+      "pub_ip": "172.0.0.1",
       "listen_address": "172.0.0.1",
       "rpc_address": "172.0.0.1",
       "stomp_interface": "127.0.0.1",
@@ -60,9 +60,9 @@
     "server_2":{
       "tag": "storage_2",
       "user": "<user>",
-      "sshKey": "/home/<user>/.ssh/id_rsa",
+      "ssh_key": "/home/<user>/.ssh/id_rsa",
       "target_folder": "/home/<user>/Desktop/",
-      "pubIp": "172.0.0.2",
+      "pub_ip": "172.0.0.2",
       "listen_address": "172.0.0.2",
       "rpc_address": "172.0.0.2",
       "seeds": "172.0.0.1,172.0.0.2",

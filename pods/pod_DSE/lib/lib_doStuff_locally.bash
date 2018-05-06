@@ -29,7 +29,7 @@ unset IFS
 ${dynamic_cmd} "${file}" -re "${start},${lastEntry}d"
 
 # insert the new data paths with yaml friendly spacing
-for i in "${build_send_data_array[@]}"
+for i in "${arrayBuildSendData[@]}"
 do
 	${dynamic_cmd} "${start}i\    \-\ \ ${i}" "${file}"
 	start=$(($start+1))
@@ -60,14 +60,14 @@ unset IFS
 
 # insert to beginning of file
 ${dynamic_cmd} "1i#>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}" ${file}
-${dynamic_cmd} "2iexport CASSANDRA_LOG_DIR=${cassandra_log_folder}" ${file}
-${dynamic_cmd} "3iexport TOMCAT_LOGS=${tomcat_log_folder}" ${file}
-${dynamic_cmd} "4iexport GREMLIN_LOG_DIR=${gremlin_log_folder}i" ${file}
+${dynamic_cmd} "2iexport CASSANDRA_LOG_DIR=${CASSANDRA_FOLDER_LOG}" ${file}
+${dynamic_cmd} "3iexport TOMCAT_LOGS=${TOMCAT_FOLDER_LOG}" ${file}
+${dynamic_cmd} "4iexport GREMLIN_LOG_DIR=${GREMLIN_FOLDER_LOG}i" ${file}
 ${dynamic_cmd} "5i#>>>>>END-ADDED-BY__${WHICH_POD}@${label}" ${file}
 
 # this helps cqlsh and nodetool connect
 lib_generic_strings_sedStringManipulation "removeHashAndLeadingWhitespace"         ${file} '# JVM_OPTS=\"$JVM_OPTS -Djava.rmi.server.hostname=<public name>\"' "dummy"
-lib_generic_strings_sedStringManipulation "editAfterSubstring"                     ${file} 'JVM_OPTS=\"$JVM_OPTS -Djava.rmi.server.hostname=' "${pubIp}\""
+lib_generic_strings_sedStringManipulation "editAfterSubstring"                     ${file} 'JVM_OPTS=\"$JVM_OPTS -Djava.rmi.server.hostname=' "${pub_ip}\""
 }
 
 # ---------------------------------------
@@ -90,7 +90,7 @@ lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
 cat << EOF >> ${file}
 
 #>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}
--Djna.tmpdir=${TEMP_FOLDER}
+-Djna.tmpdir=${temp_folder}
 #>>>>>END-ADDED-BY__${WHICH_POD}@${label}
 EOF
 }
@@ -119,32 +119,32 @@ function lib_doStuff_locally_cassandraYaml_buildSettings(){
 file="${tmp_build_file_folder}resources/cassandra/conf/cassandra.yaml"
 
 # cluster_name:
-lib_generic_strings_sedStringManipulation "editAfterSubstring" "${file}" "cluster_name:" "'${CLUSTER_NAME}'"
+lib_generic_strings_sedStringManipulation "editAfterSubstring" "${file}" "cluster_name:" "'${cluster_name}'"
 
 # num_tokens:
 # allocate_tokens_for_local_replication_factor: 3 (uncomment for vnodes)
-if [[ "${VNODES}" == "false" ]]; then
+if [[ "${vnodes}" == "false" ]]; then
   lib_generic_strings_sedStringManipulation "removeHashAndLeadingWhitespace" "${file}" "initial_token:" "dummy"
   lib_generic_strings_sedStringManipulation "editAfterSubstring"             "${file}" "initial_token:" "${token}"
   lib_generic_strings_sedStringManipulation "hashCommentOutMatchingLine"     "${file}" "num_tokens:" "dummy"
   lib_generic_strings_sedStringManipulation "hashCommentOutMatchingLine"     "${file}" "allocate_tokens_for_local_replication_factor:" "dummy"
  else
   lib_generic_strings_sedStringManipulation "removeHashAndLeadingWhitespace" "${file}" "num_tokens:" "dummy"
-  lib_generic_strings_sedStringManipulation "editAfterSubstring"             "${file}" "num_tokens:" "${VNODES}"
+  lib_generic_strings_sedStringManipulation "editAfterSubstring"             "${file}" "num_tokens:" "${vnodes}"
   lib_generic_strings_sedStringManipulation "removeHashAndLeadingWhitespace" "${file}" "allocate_tokens_for_local_replication_factor:" "dummy"
   lib_generic_strings_sedStringManipulation "hashCommentOutMatchingLine"     "${file}" "initial_token:" "dummy"
 fi
 
-# hints_directory
-lib_generic_strings_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "hints_directory:" "${hints_directory}"
-# commitlog_directory
-lib_generic_strings_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "commitlog_directory:" "${commitlog_directory}"
-# cdc_raw_directory
-lib_generic_strings_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "cdc_raw_directory:" "${cdc_raw_directory}"
-# saved_caches_directory
-lib_generic_strings_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "saved_caches_directory:" "${saved_caches_directory}"
+# CASSANDRA_FOLDER_HINTS
+lib_generic_strings_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "CASSANDRA_FOLDER_HINTS:" "${CASSANDRA_FOLDER_HINTS}"
+# CASSANDRA_FOLDER_COMMITLOG
+lib_generic_strings_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "CASSANDRA_FOLDER_COMMITLOG:" "${CASSANDRA_FOLDER_COMMITLOG}"
+# CASSANDRA_FOLDER_CDCRAW
+lib_generic_strings_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "CASSANDRA_FOLDER_CDCRAW:" "${CASSANDRA_FOLDER_CDCRAW}"
+# CASSANDRA_FOLDER_SAVEDCACHES
+lib_generic_strings_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "CASSANDRA_FOLDER_SAVEDCACHES:" "${CASSANDRA_FOLDER_SAVEDCACHES}"
 # endpoint_snitch: (nearly always 'GossipingPropertyFileSnitch')
-lib_generic_strings_sedStringManipulation "editAfterSubstring" "${file}" "endpoint_snitch:" "${ENDPOINT_SNITCH}"
+lib_generic_strings_sedStringManipulation "editAfterSubstring" "${file}" "endpoint_snitch:" "${endpoint_snitch}"
 }
 
 # ---------------------------------------
@@ -194,13 +194,13 @@ cat << EOF >> $file
 dsefs_options:
       enabled: ${mode_dsefs}
       keyspace_name: dsefs
-      work_dir: ${dsefs_work_dir}
+      work_dir: ${DSEFS_FOLDER_DATA}
       public_port: 5598
       private_port: 5599
       data_directories:
 EOF
 # add data folder(s) for dsefs
-for i in "${build_send_data_array[@]}"
+for i in "${arrayBuildSendData[@]}"
 do
   lib_generic_strings_expansionDelimiter "$i" ";" "2"
   cat << EOF >> $file
@@ -241,11 +241,11 @@ lineNumber=3
 # insert block on 3nd line to avoid hash-bang
 # using double quotes expands variables but overwrites rather than insert
 ${dynamic_cmd} "${lineNumber}i#>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}"                                                             ${file};((lineNumber++))
-if [ -n "$spark_local_data" ];           then ${dynamic_cmd} "${lineNumber}iexport SPARK_LOCAL_DIRS=${spark_local_data}"               ${file};((lineNumber++));fi
-if [ -n "$spark_worker_data" ];          then ${dynamic_cmd} "${lineNumber}iexport SPARK_WORKER_DIR=${spark_worker_data}"              ${file};((lineNumber++));fi
-if [ -n "$spark_executor_folder" ];      then ${dynamic_cmd} "${lineNumber}iexport SPARK_EXECUTOR_DIRS=${spark_executor_folder}"       ${file};((lineNumber++));fi
-if [ -n "$spark_worker_log_folder" ];    then ${dynamic_cmd} "${lineNumber}iexport SPARK_WORKER_LOG_DIR=${spark_worker_log_folder}"    ${file};((lineNumber++));fi
-if [ -n "$spark_master_log_folder" ];    then ${dynamic_cmd} "${lineNumber}iexport SPARK_MASTER_LOG_DIR=${spark_master_log_folder}"    ${file};((lineNumber++));fi
-if [ -n "$spark_alwayson_sql_log_dir" ]; then ${dynamic_cmd} "${lineNumber}iexport ALWAYSON_SQL_LOG_DIR=${spark_alwayson_sql_log_dir}" ${file};((lineNumber++));fi
+if [ -n "$SPARK_FOLDER_LOCALDATA" ];           then ${dynamic_cmd} "${lineNumber}iexport SPARK_LOCAL_DIRS=${SPARK_FOLDER_LOCALDATA}"               ${file};((lineNumber++));fi
+if [ -n "$SPARK_FOLDER_WORKERDATA" ];          then ${dynamic_cmd} "${lineNumber}iexport SPARK_WORKER_DIR=${SPARK_FOLDER_WORKERDATA}"              ${file};((lineNumber++));fi
+if [ -n "$SPARK_FOLDER_EXECUTOR" ];      then ${dynamic_cmd} "${lineNumber}iexport SPARK_EXECUTOR_DIRS=${SPARK_FOLDER_EXECUTOR}"       ${file};((lineNumber++));fi
+if [ -n "$SPARK_FOLDER_WORKERLOG" ];    then ${dynamic_cmd} "${lineNumber}iexport SPARK_WORKER_LOG_DIR=${SPARK_FOLDER_WORKERLOG}"    ${file};((lineNumber++));fi
+if [ -n "$SPARK_FOLDER_MASTERLOG" ];    then ${dynamic_cmd} "${lineNumber}iexport SPARK_MASTER_LOG_DIR=${SPARK_FOLDER_MASTERLOG}"    ${file};((lineNumber++));fi
+if [ -n "$SPARK_FOLDER_ALWAYSONSQLLOG" ]; then ${dynamic_cmd} "${lineNumber}iexport ALWAYSON_SQL_LOG_DIR=${SPARK_FOLDER_ALWAYSONSQLLOG}" ${file};((lineNumber++));fi
 ${dynamic_cmd} "${lineNumber}i#>>>>>END-ADDED-BY__${WHICH_POD}@${label}"                                                               ${file}
 }

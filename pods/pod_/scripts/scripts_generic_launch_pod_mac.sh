@@ -25,11 +25,11 @@ fi
 
 ## [2] determine this scripts' folder path
 
-parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
-cd ${parent_path}
+parentPath=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+cd ${parentPath}
 cd ../../../
-pod_home_path="$(pwd)"
-source "${pod_home_path}/misc/.suitcase"
+podHomePath="$(pwd)"
+source "${podHomePath}/misc/.suitcase"
 
 # -----
 
@@ -37,24 +37,24 @@ source "${pod_home_path}/misc/.suitcase"
 if [[ "${os}" == "Mac" ]]; then
   jqCmd="/usr/local/Cellar/jq/1.5_3/bin/jq"
 else
-  jqCmd-"${jq_file_path}"
+  jqCmd-"${jqFilePath}"
 fi
 
 # -----
 
 ## [4] source pod_ + this pod's scripts
 
-files="$(find ${pod_home_path}/pods/pod_/lib/ -name "*.bash")"
+files="$(find ${podHomePath}/pods/pod_/lib/ -name "*.bash")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
 
-files="$(find ${pod_home_path}/pods/pod_/prepare/ -name "*.bash")"
+files="$(find ${podHomePath}/pods/pod_/prepare/ -name "*.bash")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
 
-files="$(find ${pod_home_path}/pods/${WHICH_POD}/lib/ -name "*.bash")"
+files="$(find ${podHomePath}/pods/${WHICH_POD}/lib/ -name "*.bash")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done

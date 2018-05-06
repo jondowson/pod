@@ -8,11 +8,11 @@ for id in $(seq 1 ${numberOfServers});
 do
 
   # [1] handle json
-  tag=$(jq            -r '.server_'${id}'.tag'            "${servers_json_path}")
-  user=$(jq           -r '.server_'${id}'.user'           "${servers_json_path}")
-  sshKey=$(jq         -r '.server_'${id}'.sshKey'         "${servers_json_path}")
-  target_folder=$(jq  -r '.server_'${id}'.target_folder'  "${servers_json_path}")
-  pubIp=$(jq          -r '.server_'${id}'.pubIp'          "${servers_json_path}")
+  tag=$(jq            -r '.server_'${id}'.tag'            "${serversJsonPath}")
+  user=$(jq           -r '.server_'${id}'.user'           "${serversJsonPath}")
+  ssh_key=$(jq         -r '.server_'${id}'.ssh_key'         "${serversJsonPath}")
+  target_folder=$(jq  -r '.server_'${id}'.target_folder'  "${serversJsonPath}")
+  pub_ip=$(jq          -r '.server_'${id}'.pub_ip'          "${serversJsonPath}")
 
   # [2] add trailing '/' to path if not present
   target_folder=$(lib_generic_strings_addTrailingSlash "${target_folder}")
@@ -21,15 +21,15 @@ do
   lib_generic_doStuff_remotely_identifyOs
 
   # [4] display message
-  prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pubIp${white} on os ${yellow}${remote_os}${reset}" #&& printf "\n%s"
+  prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pub_ip${white} on os ${yellow}${remote_os}${reset}" #&& printf "\n%s"
   prepare_generic_display_msgColourSimple "INFO-->" "launch pod remotely:      ${target_folder}POD_SOFTWARE/POD/pod/pods/pod_/scripts/scripts_generic_launch_pod.sh"
 
   # [5] call remote launch script
-  ssh -ttq -o "BatchMode yes" -o "ForwardX11=no" ${user}@${pubIp} "chmod -R 777 ${target_folder}POD_SOFTWARE/POD && ${target_folder}POD_SOFTWARE/POD/pod/pods/pod_/scripts/scripts_generic_launch_pod.sh" > /dev/null 2>&1 &                # run in parallel
+  ssh -ttq -o "BatchMode yes" -o "ForwardX11=no" ${user}@${pub_ip} "chmod -R 777 ${target_folder}POD_SOFTWARE/POD && ${target_folder}POD_SOFTWARE/POD/pod/pods/pod_/scripts/scripts_generic_launch_pod.sh" > /dev/null 2>&1 &                # run in parallel
   # grab pid and capture owner in array
   pid=$!
   prepare_generic_display_msgColourSimple "INFO-->"  "pid id:                   ${yellow}${pid}${reset}"
-  launch_pod_pid_array["${pid}"]="${tag};${pubIp}"
+  arrayLaunchPodPids["${pid}"]="${tag};${pub_ip}"
   runBuild_pids+=" $pid"
 
   # [5] display launch pid status
@@ -67,10 +67,10 @@ function task_generic_launchPodRemotely_report(){
 if [[ ! -z $runBuild_pid_failures ]]; then
   prepare_generic_display_msgColourSimple "INFO-->" "${cross} Problems executing pod build on servers"
   printf "%s\n"
-  for k in "${!launch_pod_pid_array[@]}"
+  for k in "${!arrayLaunchPodPids[@]}"
   do
     if [[ "${runBuild_pid_failures}" == *"$k"* ]]; then
-      lib_generic_strings_expansionDelimiter "${launch_pod_pid_array[$k]}" ";" "1"
+      lib_generic_strings_expansionDelimiter "${arrayLaunchPodPids[$k]}" ";" "1"
       server="$_D1_"
       ip=$_D2_
       prepare_generic_display_msgColourSimple "ERROR-TIGHT" "pid ${yellow}${k}${red} failed for ${yellow}${server}@${ip}${red}"

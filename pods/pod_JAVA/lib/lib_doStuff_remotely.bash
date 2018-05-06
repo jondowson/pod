@@ -66,7 +66,7 @@ cat << EOF >> ${file}
 #>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}
 export ${program_home}="${folder_path}"
 export PATH=\$${program_home}/bin:\$PATH
-export JVM_OPTS="-Djava.io.tmpdir=${TEMP_FOLDER}"
+export JVM_OPTS="-Djava.io.tmpdir=${temp_folder}"
 #>>>>>END-ADDED-BY__${WHICH_POD}@${label}
 EOF
 }

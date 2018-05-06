@@ -5,9 +5,9 @@ lib_generic_doStuff_remotely_identifyOs
 
 # [2] for this server, loop through its json block and assign values to bash variables
 lib_generic_json_assignValue
-for key in "${!json_array[@]}"
+for key in "${!arrayJson[@]}"
 do
-  declare $key=${json_array[$key]} &>/dev/null
+  declare $key=${arrayJson[$key]} &>/dev/null
 done
 # add trailing '/' to target_folder path if not present
 target_folder="$(lib_generic_strings_addTrailingSlash ${target_folder})"
@@ -16,7 +16,7 @@ target_folder="$(lib_generic_strings_addTrailingSlash ${target_folder})"
 lib_generic_doStuff_remotely_identifyOs
 
 # [4] display message
-prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pubIp${white} on os ${yellow}${remote_os}${reset}" #&& printf "\n%s"
+prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pub_ip${white} on os ${yellow}${remote_os}${reset}" #&& printf "\n%s"
 prepare_generic_display_msgColourSimple "INFO-->" "make build:        ${BUILD_FOLDER}"
 
 # [5] source the build_settings file based on this server's target_folder
@@ -27,9 +27,9 @@ lib_generic_build_suitcase
 lib_build_suitcase
 
 # [7] perform locally run functions for this pod (this array may be empty!)
-for func in "${!build_local_functions_array[@]}"
+for func in "${!arrayBuildLocalFunctions[@]}"
 do
-  ${build_local_functions_array[$func]}
+  ${arrayBuildLocalFunctions[$func]}
 done
 
 # [8 ]display message
@@ -50,9 +50,9 @@ function task_generic_buildSend_report(){
 
 declare -a build_send_report_array
 count=0
-for k in "${!build_send_error_array[@]}"
+for k in "${!arrayBuildSend[@]}"
 do
-  lib_generic_strings_expansionDelimiter ${build_send_error_array[$k]} ";" "1"
+  lib_generic_strings_expansionDelimiter ${arrayBuildSend[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
     build_send_fail="true"
     build_send_report_array["${count}"]="could not transfer: ${yellow}${k} ${white}on server ${yellow}${_D2_}${reset}"

@@ -13,13 +13,13 @@ podInput=$@
 ## [1] discover pod path and assign TARGET_FOLDER
 
 # [1.1] discover pod path
-parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; cd ..; pwd -P )
-cd "${parent_path}"
-pod_home_path="$(pwd)"
+parentPath=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; cd ..; pwd -P )
+cd "${parentPath}"
+podHomePath="$(pwd)"
 
 # [1.2] establish TARGET_FOLDER on this machine running pod (parent folder to POD_SOFTWARE)
 
-LOCAL_TARGET_FOLDER=$(printf $parent_path | sed 's,POD_SOFTWARE.*,,')
+LOCAL_TARGET_FOLDER=$(printf $parentPath | sed 's,POD_SOFTWARE.*,,')
 TARGET_FOLDER="${LOCAL_TARGET_FOLDER}"
 
 
@@ -39,10 +39,10 @@ prepare_generic_misc_sourceGeneric
 # [2.5] set all generic pod_ default settings
 prepare_generic_misc_setDefaults
 # [2.6] change local permissions to assist later pod folder copy
-chmod -R 777 ${pod_home_path}/.git
+chmod -R 777 ${podHomePath}/.git
 # [2.7] declare global arrays used by generic pod_ stages / functions
 declare -A ifsDelimArray
-declare -A pod_test_connect_error_array
+declare -A pod_arrayTestConnect
 declare -A pod_software_send_pid_array
 # [2.8] set some handy generic flags
 flagOne="false"
@@ -53,10 +53,10 @@ flagTwo="false"
 ## [3] check generic pod_ dependencies
 
 # [3.1] jq - bash jason parser - on mac uses homebrew package
-jq_folder=""
-jq_file_path="jq"
+jqFolderPath=""
+jqFilePath="jq"
 # [3.2] ensure third party packages are executable
-chmod -R 777 "${pod_home_path}/third_party/"
+chmod -R 777 "${podHomePath}/third_party/"
 
 # ==========
 
@@ -120,12 +120,12 @@ prepare_flags_rules
 # note: a server definition file must always be specified !
 
 # [5.1] check it is valid
-servers_json_path="${pod_home_path}/servers/${SERVERS_JSON}"
-lib_generic_checks_fileExists "launch-pod#5.1.1" "true" "${servers_json_path}"
-catchError "launch-pod#5.1.2" "jq error on server json" "true" "false" "jq keys ${servers_json_path}"
+serversJsonPath="${podHomePath}/servers/${SERVERS_JSON}"
+lib_generic_checks_fileExists "launch-pod#5.1.1" "true" "${serversJsonPath}"
+catchError "launch-pod#5.1.2" "jq error on server json" "true" "false" "jq keys ${serversJsonPath}"
 
 # [5.2] check at least one server is defined
-numberOfServers=$(jq -r keys $servers_json_path | grep 'server_' | wc -l)
+numberOfServers=$(jq -r keys $serversJsonPath | grep 'server_' | wc -l)
 lib_generic_checks_freeTest "launch-pod#5.2.1" "zero number of servers" "$numberOfServers" "-eq" "0"
 
 # ==========
@@ -147,15 +147,15 @@ prepare_generic_misc_podBuildTempFolder
 
 ## [8] globally declare arrays used by generic stages
 
-  declare -A json_array                   # all stages - assign json key values to bash variables
-  declare -A test_connect_error_array     # stage_generic_test_sshConnectivity - test passwordless connectivity
-  declare -A test_write_error_array_1     # stage_generic_test_writePaths      - test writeTest_array paths
-  declare -A test_write_error_array_2     # stage_generic_test_writePaths      - test paths specified in json
-  declare -A send_pod_software_pid_array  # stage_generic_send_POD_SOFTWARE    - send POD_SOFTWARE folder to server(s)
-  declare -a build_local_functions_array  # stage_generic_buildSend            - functions performed locally (not on remote server)
-  declare -A build_send_error_array       # stage_generic_buildSend            - did pod build get successfully sent?
-  declare -a build_send_data_array        # stage_generic_buildSend            - handle data paths specified in json
-  declare -A launch_pod_pid_array         # stage_generic_launch_podRemotely   - did script launch successfully on remote server?
+  declare -A arrayJson                  # all stages - assign json key values to bash variables
+  declare -A arrayTestConnect           # stage_generic_test_sshConnectivity - test passwordless connectivity
+  declare -A arrayTestWrite1            # stage_generic_test_writePaths      - test writeTest_array paths
+  declare -A arrayTestWrite2            # stage_generic_test_writePaths      - test paths specified in json
+  declare -A arraySendPodPids           # stage_generic_send_POD_SOFTWARE    - send POD_SOFTWARE folder to server(s)
+  declare -a arrayBuildLocalFunctions   # stage_generic_buildSend            - functions performed locally (not on remote server)
+  declare -A arrayBuildSend             # stage_generic_buildSend            - did pod build get successfully sent?
+  declare -a arrayBuildSendData         # stage_generic_buildSend            - handle data paths specified in json
+  declare -A arrayLaunchPodPids         # stage_generic_launch_podRemotely   - did script launch successfully on remote server?
 
 # ==========
 

@@ -22,7 +22,7 @@ function pod_JAVA(){
 ## --> pod specific functions:  this pod's 'lib' folder
 
 stage_generic_stubs_testConnectivity  "1" "6"
-stage_generic_stubs_testWritePaths    "2" "6" "${buildPathsWriteTest}" "${jsonPathsWriteTest}"   # set in build_settings.bash
+stage_generic_stubs_testWritePaths    "2" "6" "${BUILDPATHS_WRITETEST}" "${JSONPATHS_WRITETEST}"   # set in build_settings.bash
 stage_generic_stubs_sendPodSoftware   "3" "6"
 stage_stubs_buildSendPod              "4" "6"
 stage_generic_stubs_launchPod         "5" "6"

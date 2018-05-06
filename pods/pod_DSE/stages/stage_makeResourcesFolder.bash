@@ -5,9 +5,9 @@ errNo=0
 
 ## assign paths to variables
 
-destination_folder_parent_path="${pod_home_path}/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"
+destination_folder_parent_path="${podHomePath}/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"
 destination_folder_path="${destination_folder_parent_path}resources/"
-source_folder_path="${pod_home_path}/tmp/${DSE_VERSION}/resources/"
+source_folder_path="${podHomePath}/tmp/${dse_version}/resources/"
 
 # -----
 
@@ -31,11 +31,11 @@ if [ -d "${destination_folder_path}" ]; then
   prepare_generic_display_msgColourSimple "TASK==>"  "TASK: Strip out all non config files"
 fi
 
-prepare_generic_display_msgColourSimple "INFO" "Unpack from:   ${red}${dse_tar_file}${reset}"
+prepare_generic_display_msgColourSimple "INFO" "Unpack from:   ${red}${DSE_FILE_TAR}${reset}"
 prepare_generic_display_msgColourSimple "INFO" "Unpack to:     ${yellow}${destination_folder_path}${reset}"
 
-mkdir -p "${pod_home_path}/tmp"
-tar -xf "${dse_tar_file}" -C "${pod_home_path}/tmp/"
+mkdir -p "${podHomePath}/tmp"
+tar -xf "${DSE_FILE_TAR}" -C "${podHomePath}/tmp/"
 
 # -----
 
@@ -104,7 +104,7 @@ prepare_generic_display_msgColourSimple "INFO" "move from:    ${yellow}${source_
 prepare_generic_display_msgColourSimple "INFO" "move to:      ${green}${destination_folder_path}${reset}"
 printf "%s\n"
 cp -rp ${source_folder_path} ${destination_folder_path}
-rm -rf "${pod_home_path}tmp/"
+rm -rf "${podHomePath}tmp/"
 prepare_generic_misc_podBuildTempFolder
 flagOne="true" # record that this stage was run
 }

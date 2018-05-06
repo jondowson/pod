@@ -6,7 +6,7 @@ function task_rollingStart(){
 task_file="task_rollingStart.bash"
 
 # identify all keys for this json file from the first server block
-keys=$(jq -r '.server_1 | keys[]' ${servers_json_path})
+keys=$(jq -r '.server_1 | keys[]' ${serversJsonPath})
 
 for id in $(seq 1 ${numberOfServers});
 do
@@ -16,15 +16,15 @@ do
 
   # [2] for this server, loop through its json block and assign values to bash variables
   lib_generic_json_assignValue
-  for key in "${!json_array[@]}"
+  for key in "${!arrayJson[@]}"
   do
-    declare $key=${json_array[$key]} &>/dev/null
+    declare $key=${arrayJson[$key]} &>/dev/null
   done
   # add trailing '/' to target_folder path if not present
   target_folder="$(lib_generic_strings_addTrailingSlash ${target_folder})"
 
   # [3] display a message
-  prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}${pubIp} ${reset} on os ${yellow}${remote_os}${reset}"
+  prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}${pub_ip} ${reset} on os ${yellow}${remote_os}${reset}"
   prepare_generic_display_msgColourSimple "INFO-->" "opscenter version:     ${SOFTWARE_VERSION}"
 
   # [4] source the build_settings file based on this server's target_folder

@@ -3,16 +3,16 @@ function task_rollingStop(){
 ## for each server stop dse based on its json defined mode
 
 # identify all keys for this json file from the first server block
-keys=$(jq -r '.server_1 | keys[]' ${servers_json_path})
+keys=$(jq -r '.server_1 | keys[]' ${serversJsonPath})
 
 for id in $(seq 1 ${numberOfServers});
 do
 
   # [1] for this server, loop through its json block and assign values to bash variables
   lib_generic_json_assignValue
-  for key in "${!json_array[@]}"
+  for key in "${!arrayJson[@]}"
   do
-    declare $key=${json_array[$key]} &>/dev/null
+    declare $key=${arrayJson[$key]} &>/dev/null
   done
   # add trailing '/' to target_folder path if not present
   target_folder="$(lib_generic_strings_addTrailingSlash ${target_folder})"
@@ -24,7 +24,7 @@ do
   lib_generic_doStuff_remotely_identifyOs
 
   # [4] display messages
-  prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pubIp${white} on os ${yellow}${remote_os}${reset}" #&& printf "\n%s"
+  prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pub_ip${white} on os ${yellow}${remote_os}${reset}" #&& printf "\n%s"
   lib_doStuff_remotely_getDseVersion
   lib_doStuff_remotely_getAgentVersion
 

@@ -29,7 +29,7 @@ function lib_doStuff_remotely_clusterConf(){
 # the server_id  for this server from the json file - i.e. server_1
 id="${server_id}"
 # the number of clusters this opscenter cluster will store metrics for
-numberOfClusters=$($jqCmd -r '.server_'${id}'.cluster_conf' ${servers_json_path} | grep 'cluster_' | wc -l)
+numberOfClusters=$($jqCmd -r '.server_'${id}'.cluster_conf' ${serversJsonPath} | grep 'cluster_' | wc -l)
 
 # add [storage_cluster] block for each managed cluster
 for count in $(seq 1 ${numberOfClusters});
@@ -37,16 +37,16 @@ do
 
   ## [1] assign json values to bash variables
 
-  clustername=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.clustername'                    "${servers_json_path}")
-  username=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.username'                          "${servers_json_path}")
-  password=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.password'                          "${servers_json_path}")
-  api_port=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.apiport'                           "${servers_json_path}")
-  cql_port=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.cqlport'                           "${servers_json_path}")
-  keyspace=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.keyspace'                          "${servers_json_path}")
-  keystore=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.keystore'                          "${servers_json_path}")
-  keystore_password=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.keystore_password'        "${servers_json_path}")
-  truststore=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.truststore'                      "${servers_json_path}")
-  truststore_password=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.truststore_password'    "${servers_json_path}")
+  clustername=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.clustername'                    "${serversJsonPath}")
+  username=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.username'                          "${serversJsonPath}")
+  password=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.password'                          "${serversJsonPath}")
+  api_port=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.apiport'                           "${serversJsonPath}")
+  cql_port=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.cqlport'                           "${serversJsonPath}")
+  keyspace=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.keyspace'                          "${serversJsonPath}")
+  keystore=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.keystore'                          "${serversJsonPath}")
+  keystore_password=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.keystore_password'        "${serversJsonPath}")
+  truststore=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.truststore'                      "${serversJsonPath}")
+  truststore_password=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.truststore_password'    "${serversJsonPath}")
 
   # -----
 
@@ -70,7 +70,7 @@ do
   ## [4] for list of [cassandra] seed_hosts, make a comma seperated string from a json list
 
   seed_hosts=""
-  seed_hosts=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'${count}'.seedhosts_cassandra[]' "${servers_json_path}" |
+  seed_hosts=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'${count}'.seedhosts_cassandra[]' "${serversJsonPath}" |
   while read -r seed
   do
     seed_hosts="${seed_hosts}, ${seed}"
@@ -85,7 +85,7 @@ do
   ## [5] for list of [storage_cassandra] seed_hosts, make a comma seperated string from a json list
 
   seed_hosts=""
-  seed_hosts=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'${count}'.seedhosts_storage_cassandra[]' "${servers_json_path}" |
+  seed_hosts=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'${count}'.seedhosts_storage_cassandra[]' "${serversJsonPath}" |
   while read -r seed
   do
     seed_hosts="${seed_hosts}, ${seed}"
@@ -189,15 +189,15 @@ retryTimes="11"                                                                 
 pauseTime="3"                                                                                   # pause between log look ups
 tailCount="50"                                                                                  # how many lines to grab from end of log - relationship with pause time + speed logs are written
 
-ssh -q -i ${sshKey} ${user}@${pubIp} "${cmd} &>~/.cmdOutput"                                    # run opscenter for the specified build
+ssh -q -i ${ssh_key} ${user}@${pub_ip} "${cmd} &>~/.cmdOutput"                                    # run opscenter for the specified build
 sleep 5                                                                                         # give the chance for script to run + logs to fill up
-cmdOutput=$(ssh -q -i ${sshKey} ${user}@${pubIp} "cat ~/.cmdOutput && rm -rf ~/.cmdOutput" )    # grab any command output - could be a clue to a failure
+cmdOutput=$(ssh -q -i ${ssh_key} ${user}@${pub_ip} "cat ~/.cmdOutput && rm -rf ~/.cmdOutput" )    # grab any command output - could be a clue to a failure
 
 retry=1
 until [[ "${retry}" == "${retryTimes}" ]]                                                       # try x times with a sleep pause between attempts
 do
   sleep ${pauseTime}                                                                            # take a break - have a kitkat
-  output=$(ssh -q -i ${sshKey} ${user}@${pubIp}  "tail -n ${tailCount} ${log_to_check} | tr '\0' '\n'")   # grab opscenter log and handle null point warning
+  output=$(ssh -q -i ${ssh_key} ${user}@${pub_ip}  "tail -n ${tailCount} ${log_to_check} | tr '\0' '\n'")   # grab opscenter log and handle null point warning
   if [[ "${output}" == *"${keyphrase}"* ]]; then
     prepare_generic_display_msgColourSimple "INFO-->" "${response_label} ${green}0${white}"
     retry=10
@@ -207,7 +207,7 @@ do
   prepare_generic_display_msgColourSimple "INFO-->" "${response_label} ${red}1 - You may ned to kill any existing opscenter process as root !!${reset}"
   prepare_generic_display_msgColourSimple "INFO-->" "${response_label} ${red}1 - Is the right Java version installed [ ${cmdOutput} ] !!${reset}"
   fi
-  start_opscenter_error_array["${tag}"]="${status};${pubIp}"
+  start_opscenter_error_array["${tag}"]="${status};${pub_ip}"
   ((retry++))
 done
 }
@@ -223,9 +223,9 @@ if [[ "${status}" != "0" ]]; then
   retry=1
   until [[ "${retry}" == "3" ]] || [[ "${status}" == "0" ]]
   do
-    ssh -q -i ${sshKey} ${user}@${pubIp} "ps aux | grep start_opscenter.py | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
+    ssh -q -i ${ssh_key} ${user}@${pub_ip} "ps aux | grep start_opscenter.py | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
     status=${?}
-    stop_opscenter_error_array["${tag}"]="${status};${pubIp}"
+    stop_opscenter_error_array["${tag}"]="${status};${pub_ip}"
     ((retry++))
   done
 fi
@@ -245,7 +245,7 @@ if [[ "${status}" != "0" ]]; then
   do
     # display java output in different color
     printf "%s" "${yellow}"
-    output=$(ssh -q -i ${sshKey} ${user}@${pubIp} "source ~/.bash_profile && java -version" )
+    output=$(ssh -q -i ${ssh_key} ${user}@${pub_ip} "source ~/.bash_profile && java -version" )
     status=$?
     printf "%s" "${reset}"
     if [[ "${status}" != "0" ]]; then
@@ -272,7 +272,7 @@ function lib_doStuff_remotely_getAgentVersion(){
 # [1] use agent api to discover version (first check curl is available)
 ssh -q -i ~/.ssh/id_rsa jd@127.0.0.1 "curl &>/dev/null"
 if [[ $? == "0" ]]; then
-  url=http://${pubIp}:61621/v1/connection-status
+  url=http://${pub_ip}:61621/v1/connection-status
   head=true
   while IFS= read -r line; do
     if $head; then
@@ -292,7 +292,7 @@ fi
 
 # [2] find out the jar from running processes (this gets the version branch rather than necessarily the exact version)
 if [[ -z $runningAgentVersion ]]; then
-  runningAgentVersion=$(ssh -q -i ${sshKey} ${user}@${pubIp} "ps -ef | grep -v grep")
+  runningAgentVersion=$(ssh -q -i ${ssh_key} ${user}@${pub_ip} "ps -ef | grep -v grep")
   runningAgentVersion=$(echo $runningAgentVersion | grep -o 'datastax-agent-[^ ]*' | sed 's/^\(datastax-agent\-\)*//' | sed -e 's/\(-standalone.jar\)*$//g' )
   if [[ -z ${runningAgentVersion} ]]; then
     prepare_generic_display_msgColourSimple "INFO-->" "agent version:         n/a"
@@ -310,7 +310,7 @@ function lib_doStuff_remotely_getOpscenterVersion(){
 
 ## try to identify opscenter version from running pid
 
-runningOpsVersion=$(ssh -q -i ${sshKey} ${user}@${pubIp} "ps -ef | grep -v grep | grep -v -e '--pod pod_DSE-OPSCENTER' | grep -v -e '-p pod_DSE-OPSCENTER' | grep opscenter")
+runningOpsVersion=$(ssh -q -i ${ssh_key} ${user}@${pub_ip} "ps -ef | grep -v grep | grep -v -e '--pod pod_DSE-OPSCENTER' | grep -v -e '-p pod_DSE-OPSCENTER' | grep opscenter")
 runningOpsVersion=$(echo $runningOpsVersion | grep -Po '(?<=opscenter-)[^/lib/]+' | head -n1 )
 runningOpsVersion=$(echo ${runningOpsVersion%\_*})
 
