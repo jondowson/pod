@@ -29,11 +29,11 @@ TARGET_FOLDER="${LOCAL_TARGET_FOLDER}"
 ## [2] generic pod_ preparation
 
 # [2.1] source generic pod_ preperation script
-source pods/pod_/prepare/prepare_generic_misc.bash
+source pods/pod_/prepare/GENERIC_prepare_misc.bash
 # [2.2] remove any existing temp files
-prepare_generic_misc_clearTheDecks
+GENERIC_prepare_misc_clearTheDecks
 # [2.3] identify local os
-prepare_generic_misc_identifyOs
+GENERIC_prepare_misc_identifyOs
 # [2.4] if os is mac switch to mac version of this script
 if [[ "${os}" == "Mac" ]]; then
 
@@ -42,9 +42,9 @@ if [[ "${os}" == "Mac" ]]; then
 else
 
   # [2.5] source all generic pod_ scripts
-  prepare_generic_misc_sourceGeneric
+  GENERIC_prepare_misc_sourceGeneric
   # [2.6] set all generic pod_ default settings
-  prepare_generic_misc_setDefaults
+  GENERIC_prepare_defaults_set
   # [2.7] change local permissions to assist later pod folder copy
   chmod -R 777 ${podHomePath}/.git
   # [2.8] declare global arrays used by generic pod_ stages / functions
@@ -62,7 +62,7 @@ else
   # [3.1] jq - bash jason parser
   jqFolderPath="${podHomePath}/third_party/jq-linux64/"
   jqFilePath="${jqFolderPath}jq"
-  lib_generic_checks_fileExists "launch-pod#3.1.1" "true" "${jqFilePath}"
+  GENERIC_lib_checks_fileExists "launch-pod#3.1.1" "true" "${jqFilePath}"
   # [3.2] ensure third party packages are executable
   chmod -R 777 "${podHomePath}/third_party/"
   PATH=${jqFolderPath}:$PATH
@@ -74,7 +74,7 @@ else
   # [4.1] ensure --pod | -p flag is passed first (if not using help flag on its own)
   if [[ "${1}" != "-p" ]] && [[ "${1}" != "--pod" ]] && [[ "${1}" != "-h" ]] && [[ "${1}" != "--help" ]]; then
     printf "%s\n"
-    prepare_generic_display_msgColourSimple "ERROR-->" "always specify the pod flag first ${yellow}-p | --pod${red}"
+    GENERIC_prepare_display_msgColourSimple "ERROR-->" "always specify the pod flag first ${yellow}-p | --pod${red}"
     printf "%s\n"
     exit 1;
   fi
@@ -88,14 +88,14 @@ else
     case "$1" in
       -h|--help)
           if [[ ${podFlag} == "true" ]]; then
-            prepare_generic_display_banner
-            prepare_generic_help
+            GENERIC_prepare_display_banner
+            GENERIC_prepare_help
             prepare_help
-            prepare_generic_help_lists
+            GENERIC_prepare_helpLists
           else
-            prepare_generic_display_banner
-            prepare_generic_help
-            prepare_generic_help_lists
+            GENERIC_prepare_display_banner
+            GENERIC_prepare_help
+            GENERIC_prepare_helpLists
           fi
           exit 0;
           ;;
@@ -103,9 +103,9 @@ else
           shift
           WHICH_POD=$1
           shift
-          prepare_generic_misc_sourceThisPod
+          GENERIC_prepare_misc_sourceThisPod
           prepare_misc_setDefaults
-          prepare_generic_misc_clearTheDecks
+          GENERIC_prepare_misc_clearTheDecks
           podFlag="true"
           ;;
       *)
@@ -130,12 +130,12 @@ else
 
   # [5.1] check it is valid
   serversJsonPath="${podHomePath}/servers/${SERVERS_JSON}"
-  lib_generic_checks_fileExists "launch-pod#5.1.1" "true" "${serversJsonPath}"
+  GENERIC_lib_checks_fileExists "launch-pod#5.1.1" "true" "${serversJsonPath}"
   catchError "launch-pod#5.1.2" "jq error on server json" "true" "false" "jq keys ${serversJsonPath}"
 
   # [5.2] check at least one server is defined
   numberOfServers=$(jq -r keys $serversJsonPath | grep 'server_' | wc -l)
-  lib_generic_checks_freeTest "launch-pod#5.2.1" "zero number of servers" "$numberOfServers" "-eq" "0"
+  GENERIC_lib_checks_freeTest "launch-pod#5.2.1" "zero number of servers" "$numberOfServers" "-eq" "0"
 
 # ==========
 
@@ -144,14 +144,14 @@ else
 # note: a build definition file must always be specified !
 
   # [6.1] source the build settings for the named pod build folder
-  prepare_generic_misc_sourceThisPodBuild
+  GENERIC_prepare_misc_sourceThisPodBuild
 
 # ==========
 
 ## [7] create tmp folder - this holds a copy of pod that can be edited and distributed to the servers
 
   # [7.1] create configurable temporary version of pod
-  prepare_generic_misc_podBuildTempFolder
+  GENERIC_prepare_misc_podBuildTempFolder
 
 # ==========
 
@@ -190,12 +190,12 @@ else
   ${WHICH_POD}_finalMessage
 
   # [10.2] tidy up temporary files
-  prepare_generic_misc_clearTheDecks
+  GENERIC_prepare_misc_clearTheDecks
 
   # [10.3] calculate and display script timings
   lib_generic_misc_timePod
   printf "%s\n"
-  prepare_generic_display_msgColourSimple "INFO" "pod took: ${diff}[s]"
+  GENERIC_prepare_display_msgColourSimple "INFO" "pod took: ${diff}[s]"
   printf "%s\n"
 
 fi

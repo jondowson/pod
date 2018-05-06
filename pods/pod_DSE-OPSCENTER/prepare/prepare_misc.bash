@@ -5,12 +5,12 @@ function prepare_misc_checkFileFolderExist(){
 if [[ ${clusterstateFlag} != "true" ]]; then
   # test POD_SOFTWARE folder and opscenter tar file are available
   if [[ "${SEND_POD_SOFTWARE}" == "true" ]]; then
-    prepare_generic_misc_checkSoftwareExists
-    lib_generic_checks_fileExists   "prepare_misc.bash#1" "true" "${TAR_FILE}"
+    GENERIC_prepare_misc_checkSoftwareExists
+    GENERIC_lib_checks_fileExists   "prepare_misc.bash#1" "true" "${TAR_FILE}"
   fi
 else
-  lib_generic_checks_fileExists   "prepare_misc.bash#3" "true" "${suitcase_file_path}"
-  lib_generic_checks_fileExists   "prepare_misc.bash#4" "true" "${tmp_build_settings_file_path}"
+  GENERIC_lib_checks_fileExists   "prepare_misc.bash#3" "true" "${SUITCASE_FILE_PATH}"
+  GENERIC_lib_checks_fileExists   "prepare_misc.bash#4" "true" "${TMP_FILE_BUILDSETTINGS}"
 fi
 
 }

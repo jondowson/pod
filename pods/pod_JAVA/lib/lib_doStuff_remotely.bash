@@ -1,4 +1,4 @@
-function lib_doStuff_remotely_pod_JAVA(){
+function lib_doStuffRemotely_pod_JAVA(){
 
 ## install from local tar to the designated java folder
 
@@ -14,17 +14,17 @@ if [[ ${os} != *"Mac"* ]]; then
 
   # [3] un-compress software
   lib_generic_doStuff_remotely_unpackTar "${TAR_FILE}" "${UNTAR_FOLDER}"
-  lib_doStuff_remotely_installJavaSecurity
+  lib_doStuffRemotely_installJavaSecurity
 
   # [4] configure local environment
-  lib_doStuff_remotely_updateJavaPathBashProfile "JAVA_HOME" "${UNTAR_FOLDER}${SOFTWARE_VERSION}"
+  lib_doStuffRemotely_updateJavaPathBashProfile "JAVA_HOME" "${UNTAR_FOLDER}${SOFTWARE_VERSION}"
 
 fi
 }
 
 # ---------------------------------------
 
-function lib_doStuff_remotely_installJavaSecurity(){
+function lib_doStuffRemotely_installJavaSecurity(){
 
 ## install from local tar to the designated java folder
 
@@ -36,7 +36,7 @@ rm -rf UnlimitedJCEPolicyJDK8/
 
 # ---------------------------------------
 
-function lib_doStuff_remotely_updateJavaPathBashProfile(){
+function lib_doStuffRemotely_updateJavaPathBashProfile(){
 
 ## configure bash_profile to set paths in an idempotent 'manner'
 
@@ -48,14 +48,14 @@ file="${HOME}/.bash_profile"
 touch "${file}"
 
 # search for and remove any lines starting with:
-lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" "${file}" "export ${program_home}=" "dummy"
-lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" "${file}" "export PATH=\$${program_home}:\$PATH" "dummy"
-lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" "${file}" "export PATH=\$PATH:\$${program_home}" "dummy"
+GENERIC_lib_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" "${file}" "export ${program_home}=" "dummy"
+GENERIC_lib_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" "${file}" "export PATH=\$${program_home}:\$PATH" "dummy"
+GENERIC_lib_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" "${file}" "export PATH=\$PATH:\$${program_home}" "dummy"
 
 # search for and remove any pre-canned blocks containing a label:
 label="${program_home}_bash_profile"
-#lib_generic_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
-lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
+#GENERIC_lib_strings_sedStringManipulation "searchAndReplaceLabelledBlock" ${file} "${label}" "dummy"
+GENERIC_lib_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
 
 # remove any empty blank lines at end of file
 a=$(<$file); printf "%s\n" "$a" > $file

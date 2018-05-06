@@ -27,9 +27,9 @@ else
 fi
 ret=$?
 if [[ $ret != 0 ]]; then
-  prepare_generic_display_msgColourSimple "ERROR-->" "Error: ${tagMsg} with return value: [ ${ret} ] ${yellow}[ ${callingScriptTag} ]"
+  GENERIC_prepare_display_msgColourSimple "ERROR-->" "Error: ${tagMsg} with return value: [ ${ret} ] ${yellow}[ ${callingScriptTag} ]"
   if [[ ${abort}  == "true" ]]; then
-    prepare_generic_misc_clearTheDecks
+    GENERIC_prepare_misc_clearTheDecks
     exit ${ret};
   fi
 fi
@@ -37,11 +37,11 @@ fi
 
 # ---------------------------------------
 
-function lib_generic_checks_freeTest(){
+function GENERIC_lib_checks_freeTest(){
 
 ## generic function to test two values against each other
 ## usage:
-## lib_generic_checks_freeTest "launch-pod#5.2.1" "zero number of servers" "$numberOfServers" "-eq" "0"
+## GENERIC_lib_checks_freeTest "launch-pod#5.2.1" "zero number of servers" "$numberOfServers" "-eq" "0"
 
 # tag to identify calling script
 callingScriptTag=${1}
@@ -54,19 +54,19 @@ testAgainst="$5"
 
 # ensure there are more than 0 servers
 if [ $value $test $testAgainst ]; then
-  prepare_generic_display_msgColourSimple "ERROR-->" "Error: ${tagMsg}: ${yellow}[ ${callingScriptTag} ]"
-  prepare_generic_misc_clearTheDecks
+  GENERIC_prepare_display_msgColourSimple "ERROR-->" "Error: ${tagMsg}: ${yellow}[ ${callingScriptTag} ]"
+  GENERIC_prepare_misc_clearTheDecks
   exit 1;
 fi
 }
 
 # ---------------------------------------
 
-function lib_generic_checks_fileExists(){
+function GENERIC_lib_checks_fileExists(){
 
 ## check for the existence of a file - option to abort script if failure
 ## usage:
-## lib_generic_checks_fileExists "message" "true" "fileToCheck.sh"
+## GENERIC_GENERIC_lib_checks_fileExists "message" "true" "fileToCheck.sh"
 
 # a helpful tag message outputted to screen
 tagMsg=$1
@@ -76,9 +76,9 @@ abort=$2
 file=${3}
 
 if [[ ! -f ${file} ]]; then
-  prepare_generic_display_msgColourSimple "ERROR-->" "Error: file not found: ${yellow}[ ${file} ]${red} tag: ${yellow}[ ${tagMsg} ]${red}"
+  GENERIC_prepare_display_msgColourSimple "ERROR-->" "Error: file not found: ${yellow}[ ${file} ]${red} tag: ${yellow}[ ${tagMsg} ]${red}"
   if [[ "${abort}"  == "true" ]]; then
-    prepare_generic_misc_clearTheDecks
+    GENERIC_prepare_misc_clearTheDecks
     exit 1;
   fi
 fi
@@ -86,11 +86,11 @@ fi
 
 # ---------------------------------------
 
-function lib_generic_checks_folderExists(){
+function GENERIC_lib_checks_folderExists(){
 
 ## check for the existence of a folder - option to abort script if failure
 ## usage:
-## lib_generic_checks_folderExists "message" "true" "folderToCheck"
+## GENERIC_lib_checks_folderExists "message" "true" "folderToCheck"
 
 # a helpful tag message outputted to screen
 tagMsg=$1
@@ -100,9 +100,9 @@ abort=$2
 folder=${3}
 
 if [[ ! -d ${folder} ]]; then
-  prepare_generic_display_msgColourSimple "ERROR-->" "Error: folder not found: ${yellow}[ ${folder} ]${red} tag: ${yellow}[ ${tagMsg} ]${red}"
+  GENERIC_prepare_display_msgColourSimple "ERROR-->" "Error: folder not found: ${yellow}[ ${folder} ]${red} tag: ${yellow}[ ${tagMsg} ]${red}"
   if [[ ${abort}  == "true" ]]; then
-    prepare_generic_misc_clearTheDecks
+    GENERIC_prepare_misc_clearTheDecks
     exit 1;
   fi
 fi
@@ -110,14 +110,14 @@ fi
 
 # ---------------------------------------
 
-function lib_generic_checks_fileFolderExists(){
+function GENERIC_lib_checks_fileFolderExists(){
 
 ## check for the existence of a file or folder for a given folder path
 ## case sensitive approach required as Macs ignore case when listing folders/files
 ## returns code 0 if file/folder found or error message
 ## usage:
-## lib_generic_checks_folderExistsCaseSensitive "message" "true" "pathToParentFolder" "folder" "file/folderTCheck"
-## lib_generic_checks_folderExistsCaseSensitive "message" "false" "pathToParentFolder" "file" "file/folderTCheck"
+## GENERIC_lib_checks_folderExistsCaseSensitive "message" "true" "pathToParentFolder" "folder" "file/folderTCheck"
+## GENERIC_lib_checks_folderExistsCaseSensitive "message" "false" "pathToParentFolder" "file" "file/folderTCheck"
 
 # a helpful tag message outputted to screen
 tagMsg=${1}
@@ -159,9 +159,9 @@ done
 # -----
 
 if [[ "${notFound}" != "false" ]]; then
-  prepare_generic_display_msgColourSimple "ERROR-->" "Error: not found: ${yellow}[ '${checkThis}' ]${red} tag: ${yellow}[ ${tagMsg} ]${red}"
+  GENERIC_prepare_display_msgColourSimple "ERROR-->" "Error: not found: ${yellow}[ '${checkThis}' ]${red} tag: ${yellow}[ ${tagMsg} ]${red}"
   if [[ "${abort}" == "true" ]]; then
-    prepare_generic_misc_clearTheDecks
+    GENERIC_prepare_misc_clearTheDecks
     exit 1;
   fi
 fi
@@ -169,11 +169,11 @@ fi
 
 # ---------------------------------------
 
-function lib_generic_checks_localIpMatch(){
+function GENERIC_lib_checks_localIpMatch(){
 
 ## check if an ip is a local ip
 ## usage:
-## lib_generic_checks_localIpMatch "${pub_ip}"s
+## GENERIC_lib_checks_localIpMatch "${pub_ip}"s
 
 ipToCheck=${1}
 ip addr | grep -wq "${ipToCheck}" &&  printf "%s\n" "true"

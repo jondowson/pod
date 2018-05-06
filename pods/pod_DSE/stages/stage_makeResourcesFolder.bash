@@ -5,34 +5,34 @@ errNo=0
 
 ## assign paths to variables
 
-destination_folder_parent_path="${podHomePath}/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"
-destination_folder_path="${destination_folder_parent_path}resources/"
-source_folder_path="${podHomePath}/tmp/${dse_version}/resources/"
+destBuildFolderPath="${podHomePath}/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"
+destResourcesFolderPath="${destBuildFolderPath}resources/"
+sourceResourcesFolderPath="${podHomePath}/tmp/${dse_version}/resources/"
 
 # -----
 
 ## check to see folder paths exist
 
-lib_generic_checks_folderExists "${thisFunction}#1" "true" "${destination_folder_parent_path}"
+GENERIC_lib_checks_folderExists "${thisFunction}#1" "true" "${destBuildFolderPath}"
 
 # -----
 
 ## copy resources folder from dse package to dse-setup
 
-if [ -d "${destination_folder_path}" ]; then
+if [ -d "${destResourcesFolderPath}" ]; then
 
-  prepare_generic_display_msgColourSimple "INFO-->" "Existing ${yellow}'${BUILD_FOLDER}/resources'${white} will be deleted"
+  GENERIC_prepare_display_msgColourSimple "INFO-->" "Existing ${yellow}'${BUILD_FOLDER}/resources'${white} will be deleted"
   printf "%s\n"
-  prepare_generic_display_msgColourSimple "ALERT" "Are you sure ?"
+  GENERIC_prepare_display_msgColourSimple "ALERT" "Are you sure ?"
   printf "%s\n"
-  lib_generic_misc_timecount "${STAGE_PAUSE}" "<ctrl-c> to abort now.."
-  rm -rf ${destination_folder_path}
-  prepare_generic_display_stageCount      "Prepare 'resources' Folder" "1" "7"
-  prepare_generic_display_msgColourSimple "TASK==>"  "TASK: Strip out all non config files"
+  GENERIC_lib_misc_timeCount "${STAGE_PAUSE}" "<ctrl-c> to abort now.."
+  rm -rf ${destResourcesFolderPath}
+  GENERIC_prepare_display_stageCount      "Prepare 'resources' Folder" "1" "7"
+  GENERIC_prepare_display_msgColourSimple "TASK==>"  "TASK: Strip out all non config files"
 fi
 
-prepare_generic_display_msgColourSimple "INFO" "Unpack from:   ${red}${DSE_FILE_TAR}${reset}"
-prepare_generic_display_msgColourSimple "INFO" "Unpack to:     ${yellow}${destination_folder_path}${reset}"
+GENERIC_prepare_display_msgColourSimple "INFO" "Unpack from:   ${red}${DSE_FILE_TAR}${reset}"
+GENERIC_prepare_display_msgColourSimple "INFO" "Unpack to:     ${yellow}${destResourcesFolderPath}${reset}"
 
 mkdir -p "${podHomePath}/tmp"
 tar -xf "${DSE_FILE_TAR}" -C "${podHomePath}/tmp/"
@@ -81,30 +81,30 @@ printf "%s\n"
 printf "%s\t%s\t%s\t\t%s\t%s\n" "${b}Extension" "|" "No." "|" "Bytes${reset}"
 printf "%s\n" "--------------------------------------------------"
 #sleep 5 # for the benefit of macs - otherwise file permission errors !!
-before_size=$(du -sh "${source_folder_path}" | awk '{ print $1 }')
+before_size=$(du -sh "${sourceResourcesFolderPath}" | awk '{ print $1 }')
 
 for i in "${array_file_extensions_to_strip[@]}"
 do
-  amount=$(find ${source_folder_path} -name "*.${i}" -type f -print | wc -l)
-  size=$(find ${source_folder_path} -name "*.${i}" -type f -print | xargs wc -c | awk 'END { print $1 }')
+  amount=$(find ${sourceResourcesFolderPath} -name "*.${i}" -type f -print | wc -l)
+  size=$(find ${sourceResourcesFolderPath} -name "*.${i}" -type f -print | xargs wc -c | awk 'END { print $1 }')
   printf "%s\t\t%s\t%s\t%s\t%s\n" "${yellow}*.${i}${reset}" "|" "${amount}" "|" "${size}"
-  find ${source_folder_path} -name "*.${i}" -type f -delete
+  find ${sourceResourcesFolderPath} -name "*.${i}" -type f -delete
 done
 
 printf "%s\n" "--------------------------------------------------"
 printf "%s\t\t\t\t%s\n"   "${b}Folder size before:" "${before_size}"
-printf "%s\t\t\t\t%s\n\n" "${b}Folder size after:"  "$(du -sh ${source_folder_path} | awk '{ print $1 }')${reset}"
+printf "%s\t\t\t\t%s\n\n" "${b}Folder size after:"  "$(du -sh ${sourceResourcesFolderPath} | awk '{ print $1 }')${reset}"
 
 # -----
 
 ## copy source folder to destination folder
-prepare_generic_display_msgColourSimple "ALERT" "Move stripped 'resources' folder into the pod_DSE 'build' folder"
+GENERIC_prepare_display_msgColourSimple "ALERT" "Move stripped 'resources' folder into the pod_DSE 'build' folder"
 printf "%s\n"
-prepare_generic_display_msgColourSimple "INFO" "move from:    ${yellow}${source_folder_path}${reset}"
-prepare_generic_display_msgColourSimple "INFO" "move to:      ${green}${destination_folder_path}${reset}"
+GENERIC_prepare_display_msgColourSimple "INFO" "move from:    ${yellow}${sourceResourcesFolderPath}${reset}"
+GENERIC_prepare_display_msgColourSimple "INFO" "move to:      ${green}${destResourcesFolderPath}${reset}"
 printf "%s\n"
-cp -rp ${source_folder_path} ${destination_folder_path}
+cp -rp ${sourceResourcesFolderPath} ${destResourcesFolderPath}
 rm -rf "${podHomePath}tmp/"
-prepare_generic_misc_podBuildTempFolder
+GENERIC_prepare_misc_podBuildTempFolder
 flagOne="true" # record that this stage was run
 }

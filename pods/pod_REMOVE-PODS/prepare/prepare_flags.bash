@@ -10,14 +10,14 @@ removePodErrMsg="You must supply valid values for ${yellow}--removepod${red} -->
 
 # part 1 - check flag combinations
 if [[ ${buildFlag} != "true" ]] || [[ ${serversFlag} != "true" ]]; then
-  prepare_generic_display_msgColourSimple "ERROR-->" "${defaultErrMsg}"       && exit 1;
+  GENERIC_prepare_display_msgColourSimple "ERROR-->" "${defaultErrMsg}"       && exit 1;
 # part 2 - check values are acceptable
 elif [[ ${BUILD_FOLDER} == "" ]]; then
-  prepare_generic_display_msgColourSimple "ERROR-->" "${buildFolderErrMsg}"   && exit 1;
+  GENERIC_prepare_display_msgColourSimple "ERROR-->" "${buildFolderErrMsg}"   && exit 1;
 elif [[ ${SERVERS_JSON} == "" ]]; then
-  prepare_generic_display_msgColourSimple "ERROR-->" "${buildFolderErrMsg}"   && exit 1;
+  GENERIC_prepare_display_msgColourSimple "ERROR-->" "${buildFolderErrMsg}"   && exit 1;
 elif [[ ${removepodFlag} != "true" ]] || [[ "${REMOVE_POD}" == "" ]]; then
-  prepare_generic_display_msgColourSimple "ERROR-->" "${removePodErrMsg}"     && exit 1;
+  GENERIC_prepare_display_msgColourSimple "ERROR-->" "${removePodErrMsg}"     && exit 1;
 fi
 }
 
@@ -47,7 +47,7 @@ while test $# -gt 0; do
         ;;
     *)
       printf "%s\n"
-      prepare_generic_display_msgColourSimple "ERROR-->" "Not a recognised flag ${yellow}${1}${red}"
+      GENERIC_prepare_display_msgColourSimple "ERROR-->" "Not a recognised flag ${yellow}${1}${red}"
       exit 1;
         ;;
   esac

@@ -2,7 +2,7 @@
 
 # -------------------------------------------
 
-function task_generic_testWritePaths(){
+function GENERIC_task_testWritePaths(){
 
 ## for each server test ability to write to all required dse paths (data, logs etc)
 
@@ -19,23 +19,23 @@ do
   target_folder=$(jq   -r '.server_'${id}'.target_folder'   "${serversJsonPath}")
   pub_ip=$(jq           -r '.server_'${id}'.pub_ip'           "${serversJsonPath}")
   # add trailing '/' to path if not present
-  target_folder=$(lib_generic_strings_addTrailingSlash "${target_folder}")
+  target_folder=$(GENERIC_lib_strings_addTrailingSlash "${target_folder}")
 
   # [2] source the build_settings file after assigning the target_folder for the current server in the loop
   TARGET_FOLDER="${target_folder}"
-  source "${tmp_build_settings_file_path}"
+  source "${TMP_FILE_BUILDSETTINGS}"
 
   # [3] determine remote server os
-  lib_generic_doStuff_remotely_identifyOs
+  GENERIC_lib_doStuffRemotely_identifyOs
 
   # [4] display message
-  prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pub_ip${white} on os ${yellow}${remote_os}${reset}"
+  GENERIC_prepare_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pub_ip${white} on os ${yellow}${remote_os}${reset}"
 
   # [5] test all buildFolderPaths
   # delimit the buildFolderPaths string into an array
   # prepend the target_folder for this server and append the build_settings specific paths to test
   buildFolderPaths="target_folder;${BUILDPATHS_WRITETEST}"
-  lib_generic_strings_ifsStringDelimeter ";" "${buildFolderPaths}"
+  lib_strings_ifsStringDelimeter ";" "${buildFolderPaths}"
 
   # for each element in the array
   for folder in "${array[@]}"
@@ -45,7 +45,7 @@ do
       retry=0
       until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
       do
-        prepare_generic_display_msgColourSimple "INFO-->" "${!folder}"
+        GENERIC_prepare_display_msgColourSimple "INFO-->" "${!folder}"
         ssh -q -o ForwardX11=no -i ${ssh_key} ${user}@${pub_ip} "mkdir -p ${!folder}dummyFolder && rm -rf ${!folder}dummyFolder" exit
         status=${?}
         arrayTestWrite1["${!folder}"]="${status};${tag}"
@@ -58,12 +58,12 @@ do
   # e.g. "cass_data;dsefs_data"
   if [[ ${JSONPATHS_WRITETEST} != "" ]]; then
     # delimit the json element(s) into an array
-    lib_generic_strings_ifsStringDelimeter ";" "${JSONPATHS_WRITETEST}"
+    lib_strings_ifsStringDelimeter ";" "${JSONPATHS_WRITETEST}"
     # for each element in the array e.g. cass_data
     for element in "${array[@]}"
     do
       # write test this element's nested path(s)
-      lib_generic_json_writePathTest ";" "${element}"
+      lib_json_writePathTest ";" "${element}"
     done
   fi
 done
@@ -71,14 +71,14 @@ done
 
 # -------------------------------------------
 
-function task_generic_testWritePaths_report(){
+function GENERIC_task_testWritePaths_report(){
 
 ## generate a report of all failed write-path attempts
 declare -a test_send_report_array_1
 count=0
 for k in "${!test_send_error_array_1[@]}"
 do
-  lib_generic_strings_expansionDelimiter ${test_send_error_array_1[$k]} ";" "1"
+  lib_strings_expansionDelimiter ${test_send_error_array_1[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
     test_write_fail="true"
     test_write_report_array_1["${count}"]="could not make folder: ${yellow}${k} ${white}on server ${yellow}${_D2_}${reset}"
@@ -92,7 +92,7 @@ declare -a test_send_report_array_2
 count=0
 for k in "${!test_send_error_array_2[@]}"
 do
-  lib_generic_strings_expansionDelimiter ${test_send_error_array_2[$k]} ";" "1"
+  lib_strings_expansionDelimiter ${test_send_error_array_2[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
     test_write_fail="true"
     test_write_report_array_2["${count}"]="could not make folder: ${yellow}${k} ${white}on server ${yellow}${_D2_}${reset}"
@@ -104,23 +104,23 @@ done
 
 if [[ "${test_write_fail}" == "true" ]]; then
   printf "%s\n"
-  prepare_generic_display_msgColourSimple "INFO-BOLD" "--> ${red}write-paths error report:"
+  GENERIC_prepare_display_msgColourSimple "INFO-BOLD" "--> ${red}write-paths error report:"
   printf "%s\n"
 
   for k in "${test_write_report_array_1[@]}"
   do
-    prepare_generic_display_msgColourSimple "INFO" "${cross} ${k}"
+    GENERIC_prepare_display_msgColourSimple "INFO" "${cross} ${k}"
   done
   printf "%s\n"
 
   for k in "${test_write_report_array_2[@]}"
   do
-    prepare_generic_display_msgColourSimple "INFO" "${cross} ${k}"
+    GENERIC_prepare_display_msgColourSimple "INFO" "${cross} ${k}"
   done
 
-  prepare_generic_display_msgColourSimple "ERROR-->" "Aborting script as not all paths are writeable"
-  prepare_generic_misc_clearTheDecks && exit 1;
+  GENERIC_prepare_display_msgColourSimple "ERROR-->" "Aborting script as not all paths are writeable"
+  GENERIC_prepare_misc_clearTheDecks && exit 1;
 else
-  prepare_generic_display_msgColourSimple "SUCCESS" "Each server:  write-path test passed"
+  GENERIC_prepare_display_msgColourSimple "SUCCESS" "Each server:  write-path test passed"
 fi
 }

@@ -27,7 +27,7 @@ u="_"
 
 # ---------------------------------------
 
-function prepare_generic_display_msgColourSimple(){
+function GENERIC_prepare_display_msgColourSimple(){
 
 ## display messages based on a simple colour scheme
 
@@ -77,7 +77,7 @@ esac
 
 # ---------------------------------------
 
-function prepare_generic_display_stageCount(){
+function GENERIC_prepare_display_stageCount(){
 
 ## display which is the currect stage being executed
 
@@ -85,23 +85,23 @@ stageTitle=${1}
 stageCount=${2}
 stageTotal=${3}
 
-prepare_generic_display_banner
-prepare_generic_display_msgColourSimple "STAGECOUNT" "STAGE: [ ${b}${cyan}${stageCount}${reset} of ${b}${cyan}${stageTotal}${white} ] ${stageTitle}"
+GENERIC_prepare_display_banner
+GENERIC_prepare_display_msgColourSimple "STAGECOUNT" "STAGE: [ ${b}${cyan}${stageCount}${reset} of ${b}${cyan}${stageTotal}${white} ] ${stageTitle}"
 }
 
 # ---------------------------------------
 
-function prepare_generic_display_stageTimeCount(){
+function GENERIC_prepare_display_stageTimeCount(){
 
 ## display timer and message at end of stage and before next stage
 
 printf "%s\n"
-lib_generic_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
+GENERIC_lib_misc_timecount "${STAGE_PAUSE}" "Proceeding to next STAGE..."
 }
 
 # ---------------------------------------
 
-function prepare_generic_display_banner(){
+function GENERIC_prepare_display_banner(){
 
 ## display logo and header
 

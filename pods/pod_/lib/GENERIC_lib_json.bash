@@ -2,7 +2,7 @@
 
 # ---------------------------------------
 
-function lib_generic_json_writePathTest(){
+function GENERIC_lib_json_writePathTest(){
 
 ## for a given element in a json block, grab its paths and write a dummy test folder
 ## if path is itself part of a mixed delimted string, then grab the path portion of the string
@@ -18,7 +18,7 @@ folders=$(jq -r --arg bf "${BUILD_FOLDER}" '.server_'${id}'.'${element}'[] | sub
 for folder in ${folders}
 do
   # check if nested path is itself a delimited string
-  lib_generic_strings_ifsStringDelimeter "${delim}" "$folder"
+  GENERIC_lib_strings_ifsStringDelimeter "${delim}" "$folder"
   if [[ ${arraySize} -gt "1" ]]; then
     path=${array[0]} # grab the path which should be the first part of the delimited string
     status="999"
@@ -50,7 +50,7 @@ done
 
 # ---------------------------------------
 
-function lib_generic_json_assignValue(){
+function GENERIC_lib_json_assignValue(){
 
 ## loop through json server block and create a bash variable (same name as json key) and assign its value to it
 # values are stored in an associative array and this is then expanded in the calling script to make variables globally available
@@ -77,7 +77,7 @@ function lib_generic_json_assignValue(){
 
 # dynamically select the correct command for the OS
 IFS='%'
-dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -r' 'sed -r' 'sed -r' 'sed -r')"
+dynamic_cmd="$(GENERIC_lib_misc_chooseOsCommand 'gsed -r' 'sed -r' 'sed -r' 'sed -r')"
 unset IFS
 
 # -----

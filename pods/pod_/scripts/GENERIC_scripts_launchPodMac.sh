@@ -17,7 +17,7 @@ elif [[ "$(cat /etc/system-release-cpe)" == *"redhat"* ]]; then
   os="Redhat"
 else
   os="Bad"
-  prepare_generic_display_msgColourSimple "ERROR-->" "OS Not Supported"
+  GENERIC_prepare_display_msgColourSimple "ERROR-->" "OS Not Supported"
   exit 1;
 fi
 
@@ -67,7 +67,7 @@ build_file_path="${build_folder_path}build_settings.bash"
 if [[ -f ${build_file_path} ]]; then
   source ${build_file_path}
 else
-  lib_generic_checks_fileExists "scripts_launchPodRemotely#1" "true" "${build_file_path}"
+  GENERIC_lib_checks_fileExists "scripts_launchPodRemotely#1" "true" "${build_file_path}"
 fi
 
 
@@ -79,16 +79,16 @@ fi
 # [1] check if Ubuntu to include bash_profile call
 
 if [[ ${os} == *"Ubuntu"* ]]; then
-  lib_generic_doStuff_remotely_bashrc
+  GENERIC_lib_doStuffRemotely_bashrc
 fi
 
 # -----
 
 # [2] run the remote functions for this pod
 
-lib_doStuff_remotely_${WHICH_POD}
+lib_doStuffRemotely_${WHICH_POD}
 
 # -----
 
 # [3] tidy up
-prepare_generic_misc_clearTheDecks
+GENERIC_prepare_misc_clearTheDecks

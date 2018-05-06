@@ -1,8 +1,4 @@
-# about:  miscellaneous generic bash functions
-
-# ---------------------------------------
-
-function lib_generic_misc_chooseOsCommand(){
+function GENERIC_lib_misc_chooseOsCommand(){
 
 ## dynamically choose command based on the OS
 ## e.g. generic_dynamic_os_command "gsed -i" "sed -i" "sed -i" "sed -i"
@@ -21,14 +17,14 @@ elif [[ "${os}" == "Centos" ]];then
 elif [[ "${os}" == "Redhat" ]];then
   printf "%s" ${redhat_cmd}
 else
-  prepare_generic_display_msgColourSimple "ERROR-->" "lib_generic_misc.bash | generic_dynamic_os_command --> 'Unsupported OS'"
+  GENERIC_prepare_display_msgColourSimple "ERROR-->" "GENERIC_lib_misc.bash | generic_dynamic_os_command --> 'Unsupported OS'"
   exit 1;
 fi
 }
 
 # ---------------------------------------
 
-function lib_generic_misc_timestamp(){
+function GENERIC_lib_misc_timestamp(){
 
 ## generate a timestamp
 
@@ -37,7 +33,7 @@ date +%F_%T
 
 # ---------------------------------------
 
-function lib_generic_misc_timecount(){
+function GENERIC_lib_misc_timecount(){
 
 ## display a timecount on screen
 
@@ -58,7 +54,7 @@ done
 
 # ---------------------------------------
 
-function lib_generic_misc_timePod(){
+function GENERIC_lib_misc_timePod(){
 
 ## calculate pod runtime
 

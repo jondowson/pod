@@ -3,7 +3,7 @@ function lib_doStuff_locally_cassandraYaml_cassData(){
 ## replace existing data directory/directories with new paths
 
 # file to edit
-file="${tmp_build_file_folder}resources/cassandra/conf/cassandra.yaml"
+file="${TMP_FOLDER_BUILDFILE}resources/cassandra/conf/cassandra.yaml"
 
 # find line number of setting
 match=$(sed -n /data_file_directories:/= "${file}")
@@ -22,7 +22,7 @@ done
 
 # select correct version of command based on OS
 IFS='%'
-dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
+dynamic_cmd="$(GENERIC_lib_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
 unset IFS
 
 # remove any previous data path(s)
@@ -43,19 +43,19 @@ function lib_doStuff_locally_cassandraEnv(){
 ## utilise if default logging folder does not have access permissions !!
 
 # file to edit
-file="${tmp_build_file_folder}resources/cassandra/conf/cassandra-env.sh"
+file="${TMP_FOLDER_BUILDFILE}resources/cassandra/conf/cassandra-env.sh"
 # search for and remove any lines starting with:
-lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export CASSANDRA_LOG_DIR=" "dummy"
-lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export TOMCAT_LOGS=" "dummy"
-lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export GREMLIN_LOG_DIR=" "dummy"
+GENERIC_lib_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export CASSANDRA_LOG_DIR=" "dummy"
+GENERIC_lib_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export TOMCAT_LOGS=" "dummy"
+GENERIC_lib_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "export GREMLIN_LOG_DIR=" "dummy"
 
 # search for and remove any pre-canned pod added blocks containing this label
 label="define_dse_log_folders"
-lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
+GENERIC_lib_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
 
 # select correct version of command based on OS
 IFS='%'
-dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
+dynamic_cmd="$(GENERIC_lib_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
 unset IFS
 
 # insert to beginning of file
@@ -66,8 +66,8 @@ ${dynamic_cmd} "4iexport GREMLIN_LOG_DIR=${GREMLIN_FOLDER_LOG}i" ${file}
 ${dynamic_cmd} "5i#>>>>>END-ADDED-BY__${WHICH_POD}@${label}" ${file}
 
 # this helps cqlsh and nodetool connect
-lib_generic_strings_sedStringManipulation "removeHashAndLeadingWhitespace"         ${file} '# JVM_OPTS=\"$JVM_OPTS -Djava.rmi.server.hostname=<public name>\"' "dummy"
-lib_generic_strings_sedStringManipulation "editAfterSubstring"                     ${file} 'JVM_OPTS=\"$JVM_OPTS -Djava.rmi.server.hostname=' "${pub_ip}\""
+GENERIC_lib_strings_sedStringManipulation "removeHashAndLeadingWhitespace"         ${file} '# JVM_OPTS=\"$JVM_OPTS -Djava.rmi.server.hostname=<public name>\"' "dummy"
+GENERIC_lib_strings_sedStringManipulation "editAfterSubstring"                     ${file} 'JVM_OPTS=\"$JVM_OPTS -Djava.rmi.server.hostname=' "${pub_ip}\""
 }
 
 # ---------------------------------------
@@ -77,14 +77,14 @@ function lib_doStuff_locally_jvmOptions(){
 ## jvm.options - set temp folder that has write permissions
 
 # file to edit
-file="${tmp_build_file_folder}resources/cassandra/conf/jvm.options"
+file="${TMP_FOLDER_BUILDFILE}resources/cassandra/conf/jvm.options"
 
 # search for and remove any lines starting with:
-lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "-Djna.tmpdir=" "dummy"
+GENERIC_lib_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "-Djna.tmpdir=" "dummy"
 
 # search for and remove any pre-canned blocks containing this label
 label="define_jvm_options"
-lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
+GENERIC_lib_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
 
 # append to end of file
 cat << EOF >> ${file}
@@ -102,10 +102,10 @@ function lib_doStuff_locally_cassandraRackDcProperties(){
 ## cassandra-rackdc.properties - configure the rack and data center for this node
 
 # file to edit
-file="${tmp_build_file_folder}resources/cassandra/conf/cassandra-rackdc.properties"
+file="${TMP_FOLDER_BUILDFILE}resources/cassandra/conf/cassandra-rackdc.properties"
 
-lib_generic_strings_sedStringManipulation "editAfterSubstring" "${file}" "dc="   "${dc}"
-lib_generic_strings_sedStringManipulation "editAfterSubstring" "${file}" "rack=" "${rack}"
+GENERIC_lib_strings_sedStringManipulation "editAfterSubstring" "${file}" "dc="   "${dc}"
+GENERIC_lib_strings_sedStringManipulation "editAfterSubstring" "${file}" "rack=" "${rack}"
 }
 
 
@@ -116,35 +116,35 @@ function lib_doStuff_locally_cassandraYaml_buildSettings(){
 ## cassandra.yaml - configure the 'main' settings set in the build_settings file
 
 # file to edit
-file="${tmp_build_file_folder}resources/cassandra/conf/cassandra.yaml"
+file="${TMP_FOLDER_BUILDFILE}resources/cassandra/conf/cassandra.yaml"
 
 # cluster_name:
-lib_generic_strings_sedStringManipulation "editAfterSubstring" "${file}" "cluster_name:" "'${cluster_name}'"
+GENERIC_lib_strings_sedStringManipulation "editAfterSubstring" "${file}" "cluster_name:" "'${cluster_name}'"
 
 # num_tokens:
 # allocate_tokens_for_local_replication_factor: 3 (uncomment for vnodes)
 if [[ "${vnodes}" == "false" ]]; then
-  lib_generic_strings_sedStringManipulation "removeHashAndLeadingWhitespace" "${file}" "initial_token:" "dummy"
-  lib_generic_strings_sedStringManipulation "editAfterSubstring"             "${file}" "initial_token:" "${token}"
-  lib_generic_strings_sedStringManipulation "hashCommentOutMatchingLine"     "${file}" "num_tokens:" "dummy"
-  lib_generic_strings_sedStringManipulation "hashCommentOutMatchingLine"     "${file}" "allocate_tokens_for_local_replication_factor:" "dummy"
+  GENERIC_lib_strings_sedStringManipulation "removeHashAndLeadingWhitespace" "${file}" "initial_token:" "dummy"
+  GENERIC_lib_strings_sedStringManipulation "editAfterSubstring"             "${file}" "initial_token:" "${token}"
+  GENERIC_lib_strings_sedStringManipulation "hashCommentOutMatchingLine"     "${file}" "num_tokens:" "dummy"
+  GENERIC_lib_strings_sedStringManipulation "hashCommentOutMatchingLine"     "${file}" "allocate_tokens_for_local_replication_factor:" "dummy"
  else
-  lib_generic_strings_sedStringManipulation "removeHashAndLeadingWhitespace" "${file}" "num_tokens:" "dummy"
-  lib_generic_strings_sedStringManipulation "editAfterSubstring"             "${file}" "num_tokens:" "${vnodes}"
-  lib_generic_strings_sedStringManipulation "removeHashAndLeadingWhitespace" "${file}" "allocate_tokens_for_local_replication_factor:" "dummy"
-  lib_generic_strings_sedStringManipulation "hashCommentOutMatchingLine"     "${file}" "initial_token:" "dummy"
+  GENERIC_lib_strings_sedStringManipulation "removeHashAndLeadingWhitespace" "${file}" "num_tokens:" "dummy"
+  GENERIC_lib_strings_sedStringManipulation "editAfterSubstring"             "${file}" "num_tokens:" "${vnodes}"
+  GENERIC_lib_strings_sedStringManipulation "removeHashAndLeadingWhitespace" "${file}" "allocate_tokens_for_local_replication_factor:" "dummy"
+  GENERIC_lib_strings_sedStringManipulation "hashCommentOutMatchingLine"     "${file}" "initial_token:" "dummy"
 fi
 
 # CASSANDRA_FOLDER_HINTS
-lib_generic_strings_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "CASSANDRA_FOLDER_HINTS:" "${CASSANDRA_FOLDER_HINTS}"
+GENERIC_lib_strings_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "CASSANDRA_FOLDER_HINTS:"        "${CASSANDRA_FOLDER_HINTS}"
 # CASSANDRA_FOLDER_COMMITLOG
-lib_generic_strings_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "CASSANDRA_FOLDER_COMMITLOG:" "${CASSANDRA_FOLDER_COMMITLOG}"
+GENERIC_lib_strings_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "CASSANDRA_FOLDER_COMMITLOG:"    "${CASSANDRA_FOLDER_COMMITLOG}"
 # CASSANDRA_FOLDER_CDCRAW
-lib_generic_strings_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "CASSANDRA_FOLDER_CDCRAW:" "${CASSANDRA_FOLDER_CDCRAW}"
+GENERIC_lib_strings_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "CASSANDRA_FOLDER_CDCRAW:"       "${CASSANDRA_FOLDER_CDCRAW}"
 # CASSANDRA_FOLDER_SAVEDCACHES
-lib_generic_strings_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "CASSANDRA_FOLDER_SAVEDCACHES:" "${CASSANDRA_FOLDER_SAVEDCACHES}"
+GENERIC_lib_strings_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "CASSANDRA_FOLDER_SAVEDCACHES:"  "${CASSANDRA_FOLDER_SAVEDCACHES}"
 # endpoint_snitch: (nearly always 'GossipingPropertyFileSnitch')
-lib_generic_strings_sedStringManipulation "editAfterSubstring" "${file}" "endpoint_snitch:" "${endpoint_snitch}"
+GENERIC_lib_strings_sedStringManipulation "editAfterSubstring" "${file}" "endpoint_snitch:" "${endpoint_snitch}"
 }
 
 # ---------------------------------------
@@ -154,19 +154,19 @@ function lib_doStuff_locally_cassandraYaml_json(){
 ## cassandra.yaml - set node specific settings from json
 
 # file to edit
-file="${tmp_build_file_folder}resources/cassandra/conf/cassandra.yaml"
+file="${TMP_FOLDER_BUILDFILE}resources/cassandra/conf/cassandra.yaml"
 
 # select correct version of command based on OS
 IFS='%'
-dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
+dynamic_cmd="$(GENERIC_lib_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
 unset IFS
 
 # seeds
 ${dynamic_cmd} "s?\(-[[:space:]]seeds:\s*\).*\$?\1\"${seeds}\"?"  "${file}"
 # listen_address
-lib_generic_strings_sedStringManipulation "editAfterSubstring" "${file}" "listen_address:" "${listen_address}"
+GENERIC_lib_strings_sedStringManipulation "editAfterSubstring" "${file}" "listen_address:" "${listen_address}"
 # rpc_address
-lib_generic_strings_sedStringManipulation "editAfterSubstring" "${file}" "rpc_address:" "${rpc_address}"
+GENERIC_lib_strings_sedStringManipulation "editAfterSubstring" "${file}" "rpc_address:" "${rpc_address}"
 }
 
 # ---------------------------------------
@@ -176,11 +176,11 @@ function lib_doStuff_locally_dseYaml_dsefsData(){
 ## dse.yaml - configure for dsefs - required by spark
 
 # file to edit
-file="${tmp_build_file_folder}resources/dse/conf/dse.yaml"
+file="${TMP_FOLDER_BUILDFILE}resources/dse/conf/dse.yaml"
 
 # search for and remove any pre-canned blocks containing this label
 label="define_dsefs_options"
-lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
+GENERIC_lib_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
 
 # if spark is turned on, then dsefs must also be turned on
 if [[ ${mode_analytics} == "true" ]]; then
@@ -202,7 +202,7 @@ EOF
 # add data folder(s) for dsefs
 for i in "${arrayBuildSendData[@]}"
 do
-  lib_generic_strings_expansionDelimiter "$i" ";" "2"
+  GENERIC_lib_strings_expansionDelimiter "$i" ";" "2"
   cat << EOF >> $file
           - dir: ${_D1_}
             storage_weight: ${_D2_}
@@ -221,15 +221,15 @@ function lib_doStuff_locally_dseSparkEnv(){
 ## configure dse-spark-env.sh (sourced at end of spark-env.sh) to set paths for log/data files
 
 # file to edit
-file="${tmp_build_file_folder}resources/spark/conf/dse-spark-env.sh"
+file="${TMP_FOLDER_BUILDFILE}resources/spark/conf/dse-spark-env.sh"
 
 # search for and remove any pre-canned blocks containing this label:
 label="define_spark_folders"
-lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
+GENERIC_lib_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
 
 # select correct version of command based on OS
 IFS='%'
-dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
+dynamic_cmd="$(GENERIC_lib_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
 unset IFS
 
 # part [A]
@@ -240,12 +240,12 @@ lineNumber=3
 # part [B]
 # insert block on 3nd line to avoid hash-bang
 # using double quotes expands variables but overwrites rather than insert
-${dynamic_cmd} "${lineNumber}i#>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}"                                                             ${file};((lineNumber++))
-if [ -n "$SPARK_FOLDER_LOCALDATA" ];           then ${dynamic_cmd} "${lineNumber}iexport SPARK_LOCAL_DIRS=${SPARK_FOLDER_LOCALDATA}"               ${file};((lineNumber++));fi
-if [ -n "$SPARK_FOLDER_WORKERDATA" ];          then ${dynamic_cmd} "${lineNumber}iexport SPARK_WORKER_DIR=${SPARK_FOLDER_WORKERDATA}"              ${file};((lineNumber++));fi
-if [ -n "$SPARK_FOLDER_EXECUTOR" ];      then ${dynamic_cmd} "${lineNumber}iexport SPARK_EXECUTOR_DIRS=${SPARK_FOLDER_EXECUTOR}"       ${file};((lineNumber++));fi
-if [ -n "$SPARK_FOLDER_WORKERLOG" ];    then ${dynamic_cmd} "${lineNumber}iexport SPARK_WORKER_LOG_DIR=${SPARK_FOLDER_WORKERLOG}"    ${file};((lineNumber++));fi
-if [ -n "$SPARK_FOLDER_MASTERLOG" ];    then ${dynamic_cmd} "${lineNumber}iexport SPARK_MASTER_LOG_DIR=${SPARK_FOLDER_MASTERLOG}"    ${file};((lineNumber++));fi
+${dynamic_cmd} "${lineNumber}i#>>>>>BEGIN-ADDED-BY__${WHICH_POD}@${label}"                                                               ${file};((lineNumber++))
+if [ -n "$SPARK_FOLDER_LOCALDATA" ];      then ${dynamic_cmd} "${lineNumber}iexport SPARK_LOCAL_DIRS=${SPARK_FOLDER_LOCALDATA}"          ${file};((lineNumber++));fi
+if [ -n "$SPARK_FOLDER_WORKERDATA" ];     then ${dynamic_cmd} "${lineNumber}iexport SPARK_WORKER_DIR=${SPARK_FOLDER_WORKERDATA}"         ${file};((lineNumber++));fi
+if [ -n "$SPARK_FOLDER_EXECUTOR" ];       then ${dynamic_cmd} "${lineNumber}iexport SPARK_EXECUTOR_DIRS=${SPARK_FOLDER_EXECUTOR}"        ${file};((lineNumber++));fi
+if [ -n "$SPARK_FOLDER_WORKERLOG" ];      then ${dynamic_cmd} "${lineNumber}iexport SPARK_WORKER_LOG_DIR=${SPARK_FOLDER_WORKERLOG}"      ${file};((lineNumber++));fi
+if [ -n "$SPARK_FOLDER_MASTERLOG" ];      then ${dynamic_cmd} "${lineNumber}iexport SPARK_MASTER_LOG_DIR=${SPARK_FOLDER_MASTERLOG}"      ${file};((lineNumber++));fi
 if [ -n "$SPARK_FOLDER_ALWAYSONSQLLOG" ]; then ${dynamic_cmd} "${lineNumber}iexport ALWAYSON_SQL_LOG_DIR=${SPARK_FOLDER_ALWAYSONSQLLOG}" ${file};((lineNumber++));fi
-${dynamic_cmd} "${lineNumber}i#>>>>>END-ADDED-BY__${WHICH_POD}@${label}"                                                               ${file}
+${dynamic_cmd} "${lineNumber}i#>>>>>END-ADDED-BY__${WHICH_POD}@${label}"                                                                 ${file}
 }

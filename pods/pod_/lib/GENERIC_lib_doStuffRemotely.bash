@@ -2,16 +2,16 @@
 
 # ---------------------------------------
 
-function lib_generic_doStuff_remotely_identifyOs(){
+function GENERIC_lib_doStuffRemotely_identifyOs(){
 
-## determine remote server os
+## determine remote os by running a pod script on the remote server
 
-remote_os=$(ssh -q -o Forwardx11=no ${user}@${pub_ip} 'bash -s'  < ${podHomePath}/pods/pod_/scripts/scripts_generic_identifyOs.sh)
+remote_os=$(ssh -q -o Forwardx11=no ${user}@${pub_ip} 'bash -s'  < ${podHomePath}/pods/pod_/scripts/GENERIC_scripts_identifyOs.sh)
 }
 
 # ---------------------------------------
 
-function lib_generic_doStuff_remotely_bashrc(){
+function GENERIC_lib_doStuffRemotely_bashrc(){
 
 ## configure bashrc to source bash_profile everytime a new terminal is started (on ubuntu)
 
@@ -21,7 +21,7 @@ touch ${file}
 
 # search for and remove any pre-canned blocks containing a label:
 label="source_bash_rc"
-lib_generic_strings_removePodBlockAndEmptyLines ${file} "pod_SETUP@${label}"
+GENERIC_lib_strings_removePodBlockAndEmptyLines ${file} "pod_SETUP@${label}"
 
 # add line sourcing .bashrc
 cat << EOF >> ${file}
@@ -34,7 +34,7 @@ EOF
 
 # ---------------------------------------
 
-function lib_generic_doStuff_remotely_updateAppBashProfile(){
+function GENERIC_lib_doStuffRemotely_updateAppBashProfile(){
 
 ## configure bash_profile to set paths in an idempotent 'manner'
 
@@ -46,13 +46,13 @@ file="${HOME}/.bash_profile"
 touch "${file}"
 
 # search for and remove any lines starting with:
-lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" "${file}" "export ${program_home}=" "dummy"
-lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" "${file}" "export PATH=\$${program_home}:\$PATH" "dummy"
-lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" "${file}" "export PATH=\$PATH:\$${program_home}" "dummy"
+GENERIC_lib_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" "${file}" "export ${program_home}=" "dummy"
+GENERIC_lib_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" "${file}" "export PATH=\$${program_home}:\$PATH" "dummy"
+GENERIC_lib_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" "${file}" "export PATH=\$PATH:\$${program_home}" "dummy"
 
 # search for and remove any pre-canned blocks containing a label:
 label="${program_home}_bash_profile"
-lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
+GENERIC_lib_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
 
 # append to end of files
 cat << EOF >> ${file}
@@ -66,7 +66,7 @@ EOF
 
 # ---------------------------------------
 
-function lib_generic_doStuff_remotely_updatePodBashProfile(){
+function GENERIC_lib_doStuffRemotely_updatePodBashProfile(){
 
 ## configure bash_profile to set paths in an idempotent 'manner'
 
@@ -78,13 +78,13 @@ file="${HOME}/.bash_profile"
 touch "${file}"
 
 # search for and remove any lines starting with:
-lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" "${file}" "export ${program_home}=" "dummy"
-lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" "${file}" "export PATH=\$${program_home}:\$PATH" "dummy"
-lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" "${file}" "export PATH=\$PATH:\$${program_home}" "dummy"
+GENERIC_lib_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" "${file}" "export ${program_home}=" "dummy"
+GENERIC_lib_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" "${file}" "export PATH=\$${program_home}:\$PATH" "dummy"
+GENERIC_lib_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" "${file}" "export PATH=\$PATH:\$${program_home}" "dummy"
 
 # search for and remove any pre-canned blocks containing a label:
 label="${program_home}_bash_profile"
-lib_generic_strings_removePodBlockAndEmptyLines ${file} "pod_SETUP@${label}"
+GENERIC_lib_strings_removePodBlockAndEmptyLines ${file} "pod_SETUP@${label}"
 
 ## allow pod to be run on this server from any folder and create an alias too
 cat << EOF >> "${file}"
@@ -99,13 +99,13 @@ EOF
 
 # ---------------------------------------
 
-function lib_generic_doStuff_remotely_createFolders(){
+function GENERIC_lib_doStuffRemotely_createFolders(){
 
 ## create required folders
 
 foldersToMake="${1}"
 
-lib_generic_strings_ifsStringDelimeter ";" "${foldersToMake}"
+GENERIC_lib_strings_ifsStringDelimeter ";" "${foldersToMake}"
 
 for i in "${!array[@]}"
 do
@@ -116,7 +116,7 @@ done
 
 # ---------------------------------------
 
-function lib_generic_doStuff_remotely_unpackTar(){
+function GENERIC_lib_doStuffRemotely_unpackTar(){
 
 ## unpack tar to the designated folder
 

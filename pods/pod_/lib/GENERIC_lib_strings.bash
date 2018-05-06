@@ -2,7 +2,7 @@
 
 # ---------------------------------------
 
-function lib_generic_strings_ifsStringDelimeter(){
+function GENERIC_lib_strings_ifsStringDelimeter(){
 
 ## split a string by any number of delimiters and insert into an array
 
@@ -22,10 +22,10 @@ arraySize=${#array[@]}
 
 # ---------------------------------------
 
-function lib_generic_strings_expansionDelimiter(){
+function GENERIC_lib_strings_expansionDelimiter(){
 
 ## split a string by delimeter (limited to 2 delimiters !)
-## e.g. pod_generic_strings_expansionDelimiter "this;that;other" ";" "2"
+## e.g. pod_strings_expansionDelimiter "this;that;other" ";" "2"
 ##      ---> _D1_="this" and _D2_="that" and _D3_="other"
 
 string=${1}
@@ -41,14 +41,14 @@ elif [[ "${noOfDelims}" == "2" ]]; then
   _a_=${string#*;}
   _D2_=${_a_%${delim}*}
 else
-  prepare_generic_display_msgColourSimple "ERROR-->" "functions_generic.sh | pod_generic_strings_expansionDelimiter --> 'Unsupported no. of delimeted values'"
+  GENERIC_prepare_display_msgColourSimple "ERROR-->" "functions.sh | pod_strings_expansionDelimiter --> 'Unsupported no. of delimeted values'"
   exit 1;
 fi
 }
 
 # ---------------------------------------
 
-function lib_generic_strings_sedStringManipulation(){
+function GENERIC_lib_strings_sedStringManipulation(){
 
 ## search on substrings in order to add/remove/edit strings in files using sed
 
@@ -91,11 +91,11 @@ esac
 
 # ---------------------------------------
 
-function lib_generic_strings_removePodBlockAndEmptyLines(){
+function GENERIC_lib_strings_removePodBlockAndEmptyLines(){
 
 ## cleanly remove an existing pod insertion block, leaving no following blank line gaps
 ## usage:
-## lib_generic_strings_removePodBlockAndEmptyLines "thisFile" "pod_XYZ@<label>"
+## GENERIC_lib_strings_removePodBlockAndEmptyLines "thisFile" "pod_XYZ@<label>"
 
 # file to search and the pod block label
 file="${1}"
@@ -136,7 +136,7 @@ if [[ ${beginMatch} != "" ]] && [[ ${endMatch} != "" ]]; then
   done
 
   IFS='%'
-  dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
+  dynamic_cmd="$(GENERIC_lib_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
   unset IFS
 
   # delete any existing block and unneccessary empty lines
@@ -149,7 +149,7 @@ fi
 
 # ---------------------------------------
 
-function lib_generic_strings_addTrailingSlash(){
+function GENERIC_lib_strings_addTrailingSlash(){
 
 ## add trailing slash if needed
 
@@ -165,7 +165,7 @@ printf "%s" "$STR"
 
 # ---------------------------------------
 
-function lib_generic_strings_removeTrailingSlash(){
+function GENERIC_lib_strings_removeTrailingSlash(){
 
 ## remove trailing slash if needed
 

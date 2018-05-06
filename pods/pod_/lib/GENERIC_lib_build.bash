@@ -1,43 +1,43 @@
-function lib_generic_build_sourceTarget(){
+function GENERIC_lib_build_sourceTarget(){
 
 ## assign build settings per the TARGET_FOLDER specified for this server
 
 # write the target folder for this server to the temp file 'pod/misc/.suitcase'
-printf "%s\n" "TARGET_FOLDER=${target_folder}"  > "${suitcase_file_path}"
+printf "%s\n" "TARGET_FOLDER=${target_folder}"  > "${SUITCASE_FILE_PATH}"
 # source the copied build_settings file in the tmp folder - that file will itself source the above file 'pod/misc/.suitcase'
-source "${tmp_build_settings_file_path}"
+source "${TMP_FILE_BUILDSETTINGS}"
 }
 
 # ------------------------------------------
 
-function lib_generic_build_suitcase(){
+function GENERIC_lib_build_suitcase(){
 
 ## pack the suitcase !!
 ## append (in order) server specific variables used by remotely run functions
 
 # [1] LOCAL_TARGET_FOLDER - clear any existing values with first entry (i.e. '>')
-printf "%s\n" "LOCAL_TARGET_FOLDER=${LOCAL_TARGET_FOLDER}"       > "${tmp_suitcase_file_path}"
+printf "%s\n" "LOCAL_TARGET_FOLDER=${LOCAL_TARGET_FOLDER}"       > "${TMP_FILE_SUITCASE}"
 # [2] TARGET_FOLDER
-printf "%s\n" "TARGET_FOLDER=${target_folder}"                  >> "${tmp_suitcase_file_path}"
+printf "%s\n" "TARGET_FOLDER=${target_folder}"                  >> "${TMP_FILE_SUITCASE}"
 # [3] WHICH_POD
-printf "%s\n" "WHICH_POD=${WHICH_POD}"                          >> "${tmp_suitcase_file_path}"
+printf "%s\n" "WHICH_POD=${WHICH_POD}"                          >> "${TMP_FILE_SUITCASE}"
 # [4] SERVERS_JSON
-printf "%s\n" "server_id=${id}"                                 >> "${tmp_suitcase_file_path}"
+printf "%s\n" "server_id=${id}"                                 >> "${TMP_FILE_SUITCASE}"
 servers_json_path_string="${target_folder}POD_SOFTWARE/POD/pod/servers/${SERVERS_JSON}"
-printf "%s\n" "serversJsonPath=${servers_json_path_string}"   >> "${tmp_suitcase_file_path}"
+printf "%s\n" "serversJsonPath=${servers_json_path_string}"   >> "${TMP_FILE_SUITCASE}"
 # [5] BUILD_FOLDER
-printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}"                    >> "${tmp_suitcase_file_path}"
+printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}"                    >> "${TMP_FILE_SUITCASE}"
 build_folder_path_string="${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"
-printf "%s\n" "build_folder_path=${build_folder_path_string}"   >> "${tmp_suitcase_file_path}"
+printf "%s\n" "build_folder_path=${build_folder_path_string}"   >> "${TMP_FILE_SUITCASE}"
 }
 
 # ------------------------------------------
 
-function lib_generic_build_jqListToArray(){
+function GENERIC_lib_build_jqListToArray(){
 
 ## read the cassandra data path(s) specified in the json into a bash array
 ## usage:
-## lib_generic_build_jqListToArray "cass_data"
+## GENERIC_lib_build_jqListToArray "cass_data"
 
 # the name of the json key with the path(s)
 jqlist="${1}"
@@ -54,7 +54,7 @@ done
 
 # ------------------------------------------
 
-function lib_generic_build_sendPod(){
+function GENERIC_lib_build_sendPod(){
 
 ## send pod build to server
 
@@ -63,7 +63,7 @@ printf "%s" "${red}"
 
 # check if server is local server
 localServer="false"
-localServer=$(lib_generic_checks_localIpMatch "${pub_ip}")
+localServer=$(GENERIC_lib_checks_localIpMatch "${pub_ip}")
 
 # if not local server or installing elsewhere locally - delete any existing pod folder
 if [[ "${localServer}" != "true" ]] || [[ "${LOCAL_TARGET_FOLDER}" != "${target_folder}" ]]; then
@@ -75,7 +75,7 @@ if [[ "${localServer}" == "true" ]]; then
   # this will subsequently be copied back to the local copy of misc/.suitcase, once all servers have been looped through
   # this will then be referenced when/if the launch remote script is run for the local machine (after it is then deleted)
   # this 'suitcase' file ensures each server gets variables relevant to it (paths,ips etc)
-  cp "${tmp_suitcase_file_path}" ${podHomePath}/.suitcase.tmp
+  cp "${TMP_FILE_SUITCASE}" ${podHomePath}/.suitcase.tmp
 fi
 
 # (re)create folder and send over updated pod software
@@ -90,12 +90,12 @@ printf "%s" "${reset}"
 
 # ------------------------------------------
 
-function lib_generic_build_finishUp(){
+function GENERIC_lib_build_finishUp(){
 
 ## tasks to finish up the build stage
 
 # assign the local target_folder value back to the local copy of the misc/.suitcase
-mv ${podHomePath}/.suitcase.tmp "${suitcase_file_path}"
+mv ${podHomePath}/.suitcase.tmp "${SUITCASE_FILE_PATH}"
 
 # delete the temporary work folder
 rm -rf "${tmp_folder}"

@@ -17,13 +17,13 @@ do
   arrayBuildLocalFunctions[3]="lib_doStuff_locally_dseSparkEnv"
   arrayBuildLocalFunctions[4]="lib_doStuff_locally_cassandraRackDcProperties"
   arrayBuildLocalFunctions[5]="lib_doStuff_locally_cassandraYaml_json"
-  arrayBuildLocalFunctions[6]="lib_generic_build_jqListToArray \"cass_data\""
+  arrayBuildLocalFunctions[6]="GENERIC_lib_build_jqListToArray \"cass_data\""
   arrayBuildLocalFunctions[7]="lib_doStuff_locally_cassandraYaml_cassData"
-  arrayBuildLocalFunctions[8]="lib_generic_build_jqListToArray \"dsefs_data\""
+  arrayBuildLocalFunctions[8]="GENERIC_lib_build_jqListToArray \"dsefs_data\""
   arrayBuildLocalFunctions[9]="lib_doStuff_locally_dseYaml_dsefsData"
 
   # [2] call the generic buildSend task
-  task_generic_buildSend
+  GENERIC_task_buildSend
 
 done
 }

@@ -4,7 +4,7 @@
 
 # ---------------------------------------
 
-function scripts_generic_identifyOs(){
+function GENERIC_scripts_identifyOs(){
 
 ## determine OS of computer
 
@@ -22,5 +22,5 @@ else
 fi
 }
 
-scripts_generic_identifyOs
+GENERIC_scripts_identifyOs
 printf "%s\n" "${os}"

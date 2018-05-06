@@ -1,4 +1,4 @@
-function lib_doStuff_remotely_pod_DSE(){
+function lib_doStuffRemotely_pod_DSE(){
 
 ## this function is run on the remote machine and calls other remote functions in order
 
@@ -6,29 +6,29 @@ function lib_doStuff_remotely_pod_DSE(){
 rm -rf ${INSTALL_FOLDER_POD}${BUILD_FOLDER}
 
 # [2] make folders
-lib_generic_doStuff_remotely_createFolders "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
+lib_doStuffRemotely_GENERIC_createFolders "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
 
 # [3] un-compress software
-lib_generic_doStuff_remotely_unpackTar "${DSE_FILE_TAR}" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
-lib_generic_doStuff_remotely_unpackTar "${AGENT_FILE_TAR}" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
+lib_doStuffRemotely_GENERIC_unpackTar "${DSE_FILE_TAR}" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
+lib_doStuffRemotely_GENERIC_unpackTar "${AGENT_FILE_TAR}" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
 
 # [4] merge the copied over 'resources' folder to the untarred one
 cp -R "${build_folder_path}resources" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}/${dse_version}"
 
 # [5] update the datastax-agent address.yaml to point to opscenter
-lib_doStuff_remotely_agentAddressYaml
+lib_doStuffRemotely_agentAddressYaml
 
 # [6] rename this redundant and meddlesome file !!
-lib_doStuff_remotely_cassandraTopologyProperties
+lib_doStuffRemotely_cassandraTopologyProperties
 
 # [7] configure local environment
-lib_generic_doStuff_remotely_updateAppBashProfile "CASSANDRA_HOME" "${DSE_FOLDER_UNTAR_BIN}"
-lib_generic_doStuff_remotely_updatePodBashProfile "POD_HOME" "${bash_path_string}"
+lib_doStuffRemotely_GENERIC_updateAppBashProfile "CASSANDRA_HOME" "${DSE_FOLDER_UNTAR_BIN}"
+lib_doStuffRemotely_GENERIC_updatePodBashProfile "POD_HOME" "${bash_path_string}"
 }
 
 # ---------------------------------------
 
-function lib_doStuff_remotely_cassandraTopologyProperties(){
+function lib_doStuffRemotely_cassandraTopologyProperties(){
 
 ## rename the deprecated cassandra-topology.properties to stop it interfering !!
 
@@ -39,7 +39,7 @@ mv "${topology_file_path}" "${topology_file_path}_old" 2>/dev/null
 
 # ---------------------------------------
 
-function lib_doStuff_remotely_agentAddressYaml(){
+function lib_doStuffRemotely_agentAddressYaml(){
 
 ## configure agent address.yaml to use ssl and point to the opscenter ip
 
@@ -47,12 +47,12 @@ function lib_doStuff_remotely_agentAddressYaml(){
 file="${AGENT_FOLDER_UNTAR_CONFIG}address.yaml"
 touch ${file}
 
-lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "stomp_interface:" "dummy"
-lib_generic_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "use_ssl:" "dummy"
+GENERIC_lib_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "stomp_interface:" "dummy"
+GENERIC_lib_strings_sedStringManipulation "searchFromLineStartAndRemoveEntireLine" ${file} "use_ssl:" "dummy"
 
 # search for and remove any pre-canned blocks containing a label:
 label="set_stomp_opscenter"
-lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
+GENERIC_lib_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${label}"
 
 # get stomp_interface value for this server
 STOMP_INTERFACE=$(jq -r '.server_'${server_id}'.stomp_interface' "${serversJsonPath}")
@@ -69,7 +69,7 @@ EOF
 
 # ---------------------------------------
 
-function lib_doStuff_remotely_stopDse(){
+function lib_doStuffRemotely_stopDse(){
 
 ## run a command remotely to stop DSE gracefully and kill datastax-agent pid
 ## record result of commands in array for later reporting
@@ -80,27 +80,27 @@ stop_cmd="dse cassandra-stop"
 retry=1
 until [[ "${retry}" == "3" ]]
 do
-  prepare_generic_display_msgColourSimple "INFO-->"   "stopping dse:          gracefully"
+  GENERIC_prepare_display_msgColourSimple "INFO-->"   "stopping dse:          gracefully"
   ssh -q -i ${ssh_key} ${user}@${pub_ip} "source ~/.bash_profile && ${stop_cmd}"
   if [[ -z "${output}" ]]; then
-    prepare_generic_display_msgColourSimple "INFO-->" "dse return code:       ${green}0${white}"
+    GENERIC_prepare_display_msgColourSimple "INFO-->" "dse return code:       ${green}0${white}"
     retry=2
   elif [[ "${output}" == *"Unable to find DSE process"* ]]; then
-    prepare_generic_display_msgColourSimple "INFO-->" "dse return code:       ${green}n/a${white}"
+    GENERIC_prepare_display_msgColourSimple "INFO-->" "dse return code:       ${green}n/a${white}"
     retry=2
   else
-    prepare_generic_display_msgColourSimple "INFO-->" "dse-stop fail:         ${white}(retry ${retry}/2)"
-    prepare_generic_display_msgColourSimple "INFO-->" "killing dse:           ungracefully"
+    GENERIC_prepare_display_msgColourSimple "INFO-->" "dse-stop fail:         ${white}(retry ${retry}/2)"
+    GENERIC_prepare_display_msgColourSimple "INFO-->" "killing dse:           ungracefully"
     ssh -q -i ${ssh_key} ${user}@${pub_ip} "ps aux | grep cassandra | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
   fi
-  stop_dse_error_array["${tag}"]="${status};${pub_ip}"
+  arrayStopDse["${tag}"]="${status};${pub_ip}"
   ((retry++))
 done
 }
 
 # ---------------------------------------
 
-function lib_doStuff_remotely_stopAgent(){
+function lib_doStuffRemotely_stopAgent(){
 
 ## run a command remotely to stop DSE gracefully and kill datastax-agent pid
 ## record result of commands in array for later reporting
@@ -109,20 +109,20 @@ function lib_doStuff_remotely_stopAgent(){
 status="999"
 if [[ "${status}" != "0" ]]; then
   retry=1
-  prepare_generic_display_msgColourSimple "INFO-->" "stopping agent:        ungracefully"
+  GENERIC_prepare_display_msgColourSimple "INFO-->" "stopping agent:        ungracefully"
   ssh -q -i ${ssh_key} ${user}@${pub_ip} "ps aux | grep datastax-agent | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
   status=${?}
   until [[ "${retry}" == "3" ]]
   do
     if [[ "${status}" == "0" ]]; then
-      prepare_generic_display_msgColourSimple "INFO-->" "agent return code:     ${green}${status}"
+      GENERIC_prepare_display_msgColourSimple "INFO-->" "agent return code:     ${green}${status}"
       retry=2
     else
-      prepare_generic_display_msgColourSimple "INFO-->" "stopping agent:        ${red}${status} ${white}(retry ${retry}/2)"
+      GENERIC_prepare_display_msgColourSimple "INFO-->" "stopping agent:        ${red}${status} ${white}(retry ${retry}/2)"
       ssh -q -i ${ssh_key} ${user}@${pub_ip} "ps aux | grep datastax-agent | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
       status=${?}
     fi
-    stop_agent_error_array["${tag}"]="${status};${pub_ip}"
+    arrayStopAgent["${tag}"]="${status};${pub_ip}"
     ((retry++))
   done
 fi
@@ -130,7 +130,7 @@ fi
 
 # ---------------------------------------
 
-function lib_doStuff_remotely_checkJava(){
+function lib_doStuffRemotely_checkJava(){
 
 ## run a command remotely to check Java is installed
 
@@ -146,14 +146,14 @@ if [[ "${status}" != "0" ]]; then
     status=$?
     printf "%s" "${reset}"
     if [[ "${status}" != "0" ]]; then
-      prepare_generic_display_msgColourSimple "INFO-->" "java return code:      ${red}${status}"
+      GENERIC_prepare_display_msgColourSimple "INFO-->" "java return code:      ${red}${status}"
       if [[ "${STRICT_START}" ==  "true" ]]; then
-        prepare_generic_display_msgColourSimple "ERROR-->" "Exiting pod: ${yellow}${task_file}${red} with ${yellow}--strict true${red} - java unavailable"
+        GENERIC_prepare_display_msgColourSimple "ERROR-->" "Exiting pod: ${yellow}${task_file}${red} with ${yellow}--strict true${red} - java unavailable"
         exit 1;
       fi
       break;
     else
-      prepare_generic_display_msgColourSimple "INFO-->" "java return code:      ${green}${status}"
+      GENERIC_prepare_display_msgColourSimple "INFO-->" "java return code:      ${green}${status}"
       ((retry++))
     fi
   done
@@ -162,7 +162,7 @@ fi
 
 # ---------------------------------------
 
-function lib_doStuff_remotely_startDse(){
+function lib_doStuffRemotely_startDse(){
 
 ## run a command remotely to start DSE
 ## record result of commands in array for later reporting
@@ -180,11 +180,11 @@ if [[ "${status}" != "0" ]]; then
     output=$(ssh -i ${ssh_key} ${user}@${pub_ip} "${start_dse}" | grep 'Wait for nodes completed' )
     status=$?
     if [[ "${status}" != "0" ]] || [[ "${output}" != *"Wait for nodes completed"* ]]; then
-      prepare_generic_display_msgColourSimple "INFO-->" "dse return code:       ${red}${status}${white}"
+      GENERIC_prepare_display_msgColourSimple "INFO-->" "dse return code:       ${red}${status}${white}"
     else
-      prepare_generic_display_msgColourSimple "INFO-->" "dse return code:       ${green}${status}"
+      GENERIC_prepare_display_msgColourSimple "INFO-->" "dse return code:       ${green}${status}"
     fi
-    start_dse_error_array["${tag}"]="${status};${pub_ip}"
+    arrayStartDse["${tag}"]="${status};${pub_ip}"
     ((retry++))
   done
 fi
@@ -192,12 +192,12 @@ fi
 
 # ---------------------------------------
 
-function lib_doStuff_remotely_startAgent(){
+function lib_doStuffRemotely_startAgent(){
 
 ## run a command remotely to start datastax-agent
 ## record result of commands in array for later reporting
 
-prepare_generic_display_msgColourSimple "INFO-->" "starting agent:        ~15s"
+GENERIC_prepare_display_msgColourSimple "INFO-->" "starting agent:        ~15s"
 cmd="source ~/.bash_profile && ${AGENT_FOLDER_UNTAR_BIN}datastax-agent"                         # start command + source bash_profile to ensure correct java version is used
 log_to_check="${AGENT_FOLDER_UNTAR_LOG}agent.log"                                               # log folder to check for keyphrase
 keyphrase="Starting StompComponent"                                                             # if this appears in logs - then assume success!
@@ -217,22 +217,22 @@ do
   sleep ${pauseTime}                                                                            # take a break - have a kitkat
   output=$(ssh -q -i ${ssh_key} ${user}@${pub_ip}  "tail -n ${tailCount} ${log_to_check} | tr '\0' '\n'")   # grab opscenter log and handle null point warning
   if [[ "${output}" == *"${keyphrase}"* ]]; then
-    prepare_generic_display_msgColourSimple "INFO-->" "${response_label}     ${green}0${white}"
+    GENERIC_prepare_display_msgColourSimple "INFO-->" "${response_label}     ${green}0${white}"
     retry=10
     success="true"
   fi
   if [[ "${retry}" == "10" ]] && [[ "${success}" != "true" ]]; then                             # failure messages
-    prepare_generic_display_msgColourSimple "INFO-->" "${response_label} ${red}1 - You may ned to kill any existing agent process as root !!${reset}"
-    prepare_generic_display_msgColourSimple "INFO-->" "${response_label} ${red}1 - Is the right Java version installed [ ${cmdOutput} ] !!${reset}"
+    GENERIC_prepare_display_msgColourSimple "INFO-->" "${response_label} ${red}1 - You may ned to kill any existing agent process as root !!${reset}"
+    GENERIC_prepare_display_msgColourSimple "INFO-->" "${response_label} ${red}1 - Is the right Java version installed [ ${cmdOutput} ] !!${reset}"
   fi
-  start_opscenter_error_array["${tag}"]="${status};${pub_ip}"
+  arrayStartOpscenter["${tag}"]="${status};${pub_ip}"
   ((retry++))
 done
 }
 
 # ---------------------------------------
 
-function lib_doStuff_remotely_getAgentVersion(){
+function lib_doStuffRemotely_getAgentVersion(){
 
 ## try 2 approaches to identify running agent version
 
@@ -262,18 +262,18 @@ if [[ -z $runningAgentVersion ]]; then
   runningAgentVersion=$(ssh -q -i ${ssh_key} ${user}@${pub_ip} "ps -ef | grep -v grep")
   runningAgentVersion=$(echo $runningAgentVersion | grep -o 'datastax-agent-[^ ]*' | sed 's/^\(datastax-agent\-\)*//' | sed -e 's/\(-standalone.jar\)*$//g' )
   if [[ -z ${runningAgentVersion} ]]; then
-    prepare_generic_display_msgColourSimple "INFO-->" "agent version:         n/a"
+    GENERIC_prepare_display_msgColourSimple "INFO-->" "agent version:         n/a"
   else
-    prepare_generic_display_msgColourSimple "INFO-->" "agent jar version:     ${runningAgentVersion}"
+    GENERIC_prepare_display_msgColourSimple "INFO-->" "agent jar version:     ${runningAgentVersion}"
   fi
 else
-  prepare_generic_display_msgColourSimple "INFO-->" "agent version:         ${runningAgentVersion}"
+  GENERIC_prepare_display_msgColourSimple "INFO-->" "agent version:         ${runningAgentVersion}"
 fi
 }
 
 # ---------------------------------------
 
-function lib_doStuff_remotely_getDseVersion(){
+function lib_doStuffRemotely_getDseVersion(){
 
 ## try to identify opscenter version from running pid
 
@@ -284,5 +284,5 @@ runningDseVersion=$(echo ${runningDseVersion%\.jar:})
 if [[ -z ${runningDseVersion} ]]; then
   runningDseVersion="n/a"
 fi
-prepare_generic_display_msgColourSimple "INFO-->" "dse version:           ${runningDseVersion}"
+GENERIC_prepare_display_msgColourSimple "INFO-->" "dse version:           ${runningDseVersion}"
 }

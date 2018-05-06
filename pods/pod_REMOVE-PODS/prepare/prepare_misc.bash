@@ -4,7 +4,7 @@ function prepare_misc_checkFileFolderExist(){
 
 # if software tarball is used - then check it exists
 #if [[ "${SOFTWARE_TARBALL}" != "" ]]; then
-#  prepare_generic_misc_checkSoftwareExists
+#  GENERIC_prepare_misc_checkSoftwareExists
 #fi
 :
 # add below any other pod specific file and folder checks

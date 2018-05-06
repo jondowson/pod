@@ -12,10 +12,10 @@ for id in $(seq 1 ${numberOfServers});
 do
 
   # [1] determine remote server os
-  lib_generic_doStuff_remotely_identifyOs
+  GENERIC_lib_doStuffRemotely_identifyOs
 
   # [2] for this server, loop through its json block and assign values to bash variables
-  lib_generic_json_assignValue
+  GENERIC_lib_json_assignValue
   for key in "${!arrayJson[@]}"
   do
     declare $key=${arrayJson[$key]} &>/dev/null
@@ -24,12 +24,12 @@ do
   target_folder="$(lib_generic_strings_addTrailingSlash ${target_folder})"
 
   # [3] display message
-  prepare_generic_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}${pub_ip} ${reset} on os ${yellow}${remote_os}${reset}"
-  prepare_generic_display_msgColourSimple "INFO-->" "dse version:           ${dse_version}"
-  prepare_generic_display_msgColourSimple "INFO-->" "agent version:         ${agent_version}"
+  GENERIC_prepare_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}${pub_ip} ${reset} on os ${yellow}${remote_os}${reset}"
+  GENERIC_prepare_display_msgColourSimple "INFO-->" "dse version:           ${dse_version}"
+  GENERIC_prepare_display_msgColourSimple "INFO-->" "agent version:         ${agent_version}"
 
   # [4] source the build_settings file based on this server's target_folder
-  lib_generic_build_sourceTarget
+  GENERIC_lib_build_sourceTarget
 
   # [5] handle the flags used to start dse in the correct mode
   flags=""
@@ -41,18 +41,18 @@ do
   if [[ "${CLUSTER_STATE}" == "restart" ]]; then
 
     if [[ "${flags}" == "" ]]; then
-      prepare_generic_display_msgColourSimple "INFO-->" "starting dse in mode:  storage only"
+      GENERIC_prepare_display_msgColourSimple "INFO-->" "starting dse in mode:  storage only"
     else
-      prepare_generic_display_msgColourSimple "INFO-->" "starting dse in mode:  storage + flags ${flags}"
+      GENERIC_prepare_display_msgColourSimple "INFO-->" "starting dse in mode:  storage + flags ${flags}"
     fi
 
-    lib_doStuff_remotely_checkJava
-    lib_doStuff_remotely_startDse
-    lib_doStuff_remotely_startAgent
+    lib_doStuffRemotely_checkJava
+    lib_doStuffRemotely_startDse
+    lib_doStuffRemotely_startAgent
 
   elif [[ "${CLUSTER_STATE}" == *"agent"* ]]; then
-    lib_doStuff_remotely_checkJava
-    lib_doStuff_remotely_startAgent
+    lib_doStuffRemotely_checkJava
+    lib_doStuffRemotely_startAgent
   fi
 
 done
@@ -66,9 +66,9 @@ function task_rollingStart_report(){
 
 declare -a start_dse_report_array
 count=0
-for k in "${!start_dse_error_array[@]}"
+for k in "${!arrayStartDse[@]}"
 do
-  lib_generic_strings_expansionDelimiter ${start_dse_error_array[$k]} ";" "1"
+  GENERIC_lib_strings_expansionDelimiter ${arrayStartDse[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
     start_dse_fail="true"
     start_dse_report_array["${count}"]="${yellow}${k}${white} at address ${yellow}${_D2_}${white} with code ${red}${_D1_}${reset}"
@@ -80,11 +80,11 @@ if [[ "${start_dse_fail}" == "true" ]]; then
   printf "%s\n"
   for k in "${start_dse_report_array[@]}"
   do
-    prepare_generic_display_msgColourSimple "INFO" "${cross} ${k}"
+    GENERIC_prepare_display_msgColourSimple "INFO" "${cross} ${k}"
   done
 else
   if [[ "${CLUSTER_STATE}" == "restart" ]]; then
-    prepare_generic_display_msgColourSimple "SUCCESS" "Each server:  dse started"
+    GENERIC_prepare_display_msgColourSimple "SUCCESS" "Each server:  dse started"
   fi
 fi
 
@@ -92,9 +92,9 @@ fi
 
 declare -a start_agent_report_array
 count=0
-for k in "${!start_agent_error_array[@]}"
+for k in "${!arrayStartAgent[@]}"
 do
-  lib_generic_strings_expansionDelimiter ${start_agent_error_array[$k]} ";" "1"
+  GENERIC_lib_strings_expansionDelimiter ${arrayStartAgent[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
     start_agent_fail="true"
     start_agent_report_array["${count}"]="${yellow}${k}${white} at address ${yellow}${_D2_}${white} with code ${red}${_D1_}${reset}"
@@ -106,11 +106,11 @@ if [[ "${start_agent_fail}" == "true" ]]; then
   printf "%s\n"
   for k in "${start_agent_report_array[@]}"
   do
-    prepare_generic_display_msgColourSimple "INFO" "${cross} ${k}"
+    GENERIC_prepare_display_msgColourSimple "INFO" "${cross} ${k}"
   done
 else
   if [[ "${CLUSTER_STATE}" == *"agent"* ]] || [[ "${CLUSTER_STATE}" == "restart" ]]; then
-    prepare_generic_display_msgColourSimple "SUCCESS" "Each server:  agent started"
+    GENERIC_prepare_display_msgColourSimple "SUCCESS" "Each server:  agent started"
   fi
 fi
 }

@@ -1,4 +1,4 @@
-function lib_doStuff_remotely_pod_DSE-OPSCENTER(){
+function lib_doStuffRemotely_pod_DSE-OPSCENTER(){
 
 # [1] delete any previous build folder with the same version
 rm -rf ${UNTAR_FOLDER}
@@ -15,13 +15,13 @@ lib_generic_doStuff_remotely_updateAppBashProfile "OPSC_HOME" "${UNTAR_EXEC_FOLD
 
 # [5] configure cluster_config file
 if [[ "${apply_storage_cluster}" == "true" ]]; then
-  lib_doStuff_remotely_clusterConf
+  lib_doStuffRemotely_clusterConf
 fi
 }
 
 # ---------------------------------------
 
-function lib_doStuff_remotely_clusterConf(){
+function lib_doStuffRemotely_clusterConf(){
 
 ## configure the cluster config file for this cluster to use opscenter to store its metric data (rather than storing in its own cluster)
 ## adds a [storage_cassandra] block (specified in the jsonfile) to a cluster config file of the same name as the cluster to manage
@@ -103,12 +103,12 @@ do
 
   # [a] select right command for os
   IFS='%'
-  dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -n' 'sed -n' 'sed -n' 'sed -n')"
+  dynamic_cmd="$(GENERIC_lib_misc_chooseOsCommand 'gsed -n' 'sed -n' 'sed -n' 'sed -n')"
   unset IFS
   # [b] find line number of any existing pod block with this label
   matchA=$(${dynamic_cmd} /\#\>\>\>\>\>BEGIN-ADDED-BY__${WHICH_POD}@${cassandraLabelSafe}/= "${file}")
   # [c] remove any existing block
-  lib_generic_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${cassandraLabelSafe}"
+  GENERIC_lib_strings_removePodBlockAndEmptyLines ${file} "${WHICH_POD}@${cassandraLabelSafe}"
   # [d] search again for line number of setting - this time for setting not added by pod
   matchB=$(${dynamic_cmd} '/${label}/=' "${file}")
 
@@ -118,7 +118,7 @@ do
 
   # select right command for os
   IFS='%'
-  dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
+  dynamic_cmd="$(GENERIC_lib_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
   unset IFS
 
   matchC=1
@@ -135,7 +135,7 @@ do
 
   # select right command for os
   IFS='%'
-  dynamic_cmd="$(lib_generic_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
+  dynamic_cmd="$(GENERIC_lib_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
   unset IFS
 
   matchC=5
@@ -175,12 +175,12 @@ done
 
 # ---------------------------------------
 
-function lib_doStuff_remotely_startOpscenter(){
+function lib_doStuffRemotely_startOpscenter(){
 
 ## run a command remotely to start opscenter
 ## record result of commands in array for later reporting
 
-prepare_generic_display_msgColourSimple "INFO-->" "starting opscenter:    ~30s"
+GENERIC_prepare_display_msgColourSimple "INFO-->" "starting opscenter:    ~30s"
 cmd="source ~/.bash_profile && ${opscenter_untar_bin_folder}opscenter"                          # start command + source bash_profile to ensure correct java version is used
 log_to_check="${opscenter_untar_log_folder}opscenterd.log"                                      # log folder to check for keyphrase
 keyphrase="StompFactory starting"                                                               # if this appears in logs - then assume success!
@@ -199,22 +199,22 @@ do
   sleep ${pauseTime}                                                                            # take a break - have a kitkat
   output=$(ssh -q -i ${ssh_key} ${user}@${pub_ip}  "tail -n ${tailCount} ${log_to_check} | tr '\0' '\n'")   # grab opscenter log and handle null point warning
   if [[ "${output}" == *"${keyphrase}"* ]]; then
-    prepare_generic_display_msgColourSimple "INFO-->" "${response_label} ${green}0${white}"
+    GENERIC_prepare_display_msgColourSimple "INFO-->" "${response_label} ${green}0${white}"
     retry=10
     success="true"
   fi
   if [[ "${retry}" == "10" ]] && [[ "${success}" != "true" ]]; then                             # failure messages
-  prepare_generic_display_msgColourSimple "INFO-->" "${response_label} ${red}1 - You may ned to kill any existing opscenter process as root !!${reset}"
-  prepare_generic_display_msgColourSimple "INFO-->" "${response_label} ${red}1 - Is the right Java version installed [ ${cmdOutput} ] !!${reset}"
+  GENERIC_prepare_display_msgColourSimple "INFO-->" "${response_label} ${red}1 - You may ned to kill any existing opscenter process as root !!${reset}"
+  GENERIC_prepare_display_msgColourSimple "INFO-->" "${response_label} ${red}1 - Is the right Java version installed [ ${cmdOutput} ] !!${reset}"
   fi
-  start_opscenter_error_array["${tag}"]="${status};${pub_ip}"
+  arrayStartOpscenter["${tag}"]="${status};${pub_ip}"
   ((retry++))
 done
 }
 
 # ---------------------------------------
 
-function lib_doStuff_remotely_stopOpscenter(){
+function lib_doStuffRemotely_stopOpscenter(){
 
 ## kill opscenter pid
 
@@ -225,7 +225,7 @@ if [[ "${status}" != "0" ]]; then
   do
     ssh -q -i ${ssh_key} ${user}@${pub_ip} "ps aux | grep start_opscenter.py | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
     status=${?}
-    stop_opscenter_error_array["${tag}"]="${status};${pub_ip}"
+    arrayStopOpscenter["${tag}"]="${status};${pub_ip}"
     ((retry++))
   done
 fi
@@ -233,7 +233,7 @@ fi
 
 # ---------------------------------------
 
-function lib_doStuff_remotely_checkJava(){
+function lib_doStuffRemotely_checkJava(){
 
 ## run a command remotely to check Java is installed
 
@@ -249,14 +249,14 @@ if [[ "${status}" != "0" ]]; then
     status=$?
     printf "%s" "${reset}"
     if [[ "${status}" != "0" ]]; then
-      prepare_generic_display_msgColourSimple "INFO-->" "java return code:      ${red}${status}"
+      GENERIC_prepare_display_msgColourSimple "INFO-->" "java return code:      ${red}${status}"
       if [[ "${STRICT_START}" ==  "true" ]]; then
-        prepare_generic_display_msgColourSimple "ERROR-->" "Exiting pod: ${yellow}${task_file}${red} with ${yellow}--strict true${red} - java unavailable"
+        GENERIC_prepare_display_msgColourSimple "ERROR-->" "Exiting pod: ${yellow}${task_file}${red} with ${yellow}--strict true${red} - java unavailable"
         exit 1;
       fi
       break;
     else
-      prepare_generic_display_msgColourSimple "INFO-->" "java return code:      ${green}${status}"
+      GENERIC_prepare_display_msgColourSimple "INFO-->" "java return code:      ${green}${status}"
       ((retry++))
     fi
   done
@@ -265,7 +265,7 @@ fi
 
 # ---------------------------------------
 
-function lib_doStuff_remotely_getAgentVersion(){
+function lib_doStuffRemotely_getAgentVersion(){
 
 ## try 2 approaches to identify running agent version
 
@@ -295,18 +295,18 @@ if [[ -z $runningAgentVersion ]]; then
   runningAgentVersion=$(ssh -q -i ${ssh_key} ${user}@${pub_ip} "ps -ef | grep -v grep")
   runningAgentVersion=$(echo $runningAgentVersion | grep -o 'datastax-agent-[^ ]*' | sed 's/^\(datastax-agent\-\)*//' | sed -e 's/\(-standalone.jar\)*$//g' )
   if [[ -z ${runningAgentVersion} ]]; then
-    prepare_generic_display_msgColourSimple "INFO-->" "agent version:         n/a"
+    GENERIC_prepare_display_msgColourSimple "INFO-->" "agent version:         n/a"
   else
-    prepare_generic_display_msgColourSimple "INFO-->" "agent jar version:     ${runningAgentVersion} (fyi)"
+    GENERIC_prepare_display_msgColourSimple "INFO-->" "agent jar version:     ${runningAgentVersion} (fyi)"
   fi
 else
-  prepare_generic_display_msgColourSimple "INFO-->" "agent version:         ${runningAgentVersion} (fyi)"
+  GENERIC_prepare_display_msgColourSimple "INFO-->" "agent version:         ${runningAgentVersion} (fyi)"
 fi
 }
 
 # ---------------------------------------
 
-function lib_doStuff_remotely_getOpscenterVersion(){
+function lib_doStuffRemotely_getOpscenterVersion(){
 
 ## try to identify opscenter version from running pid
 
@@ -317,5 +317,5 @@ runningOpsVersion=$(echo ${runningOpsVersion%\_*})
 if [[ -z ${runningOpsVersion} ]]; then
   runningOpsVersion="n/a"
 fi
-prepare_generic_display_msgColourSimple "INFO-->" "opscenter version:     ${runningOpsVersion}"
+GENERIC_prepare_display_msgColourSimple "INFO-->" "opscenter version:     ${runningOpsVersion}"
 }
