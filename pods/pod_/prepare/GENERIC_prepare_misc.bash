@@ -71,7 +71,7 @@ function GENERIC_prepare_misc_sourceGeneric(){
 
 ## source generic reusable pod scripts
 
-files="$(find ${podHomePath}/pods/pod_/ -name "*.bash*" -not -path "*scripts/*" | grep -v  "template_*" | grep -v  "GENERIC_lib_prepare.bash")"
+files="$(find ${podHomePath}/pods/pod_/ -name "*.bash*" -not -path "*scripts/*" -not -path "*templates/*")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done
@@ -86,7 +86,7 @@ function GENERIC_prepare_misc_sourceThisPod(){
 # check pod exists
 GENERIC_lib_checks_fileFolderExists "pod does not exist" "true" "${podHomePath}/pods/" "folder" "${WHICH_POD}"
 
-files="$(find ${podHomePath}/pods/${WHICH_POD}/ -name "*.bash" -not -path "*builds/*" -not -path "*scripts/*")"
+files="$(find ${podHomePath}/pods/${WHICH_POD}/ -name "*.bash" -not -path "*builds/*" -not -path "*scripts/*" -not -path "*templates/*")"
 for file in $(printf "%s\n" "$files"); do
     [ -f $file ] && . $file
 done

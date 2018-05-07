@@ -95,7 +95,7 @@ while test $# -gt 0; do
         WHICH_POD=$1
         shift
         GENERIC_prepare_misc_sourceThisPod
-        prepare_misc_setDefaults
+        prepare_defaults_set
         GENERIC_prepare_misc_clearTheDecks
         podFlag="true"
         ;;
