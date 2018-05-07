@@ -200,7 +200,7 @@ function lib_doStuffRemotely_startAgent(){
 GENERIC_prepare_display_msgColourSimple "INFO-->" "starting agent:        ~15s"
 cmd="source ~/.bash_profile && ${AGENT_FOLDER_UNTAR_BIN}datastax-agent"                         # start command + source bash_profile to ensure correct java version is used
 log_to_check="${AGENT_FOLDER_UNTAR_LOG}agent.log"                                               # log folder to check for keyphrase
-keyphrase="Starting StompComponent"                                                             # if this appears in logs - then assume success!
+keyphrase="Finished starting system"                                                               # if this appears in logs - then assume success!
 response_label="agent return code:"                                                             # label for response codes
 retryTimes="11"                                                                                 # try x times to inspect logs for success
 pauseTime="2"                                                                                   # pause between log look ups
@@ -208,22 +208,23 @@ tailCount="30"                                                                  
 
 
 ssh -q -i ${ssh_key} ${user}@${pub_ip} "${cmd} &>~/.cmdOutput"                                  # run opscenter for the specified build
-sleep 5                                                                                         # give the chance for script to run + logs to fill up
+sleep 10                                                                                        # give the chance for script to run + logs to fill up
 cmdOutput=$(ssh -q -i ${ssh_key} ${user}@${pub_ip} "cat ~/.cmdOutput && rm -rf ~/.cmdOutput" )  # grab any command output - could be a clue to a failure
 
 retry=1
 until [[ "${retry}" == "${retryTimes}" ]]                                                       # try x times with a sleep pause between attempts
 do
   sleep ${pauseTime}                                                                            # take a break - have a kitkat
-  output=$(ssh -q -i ${ssh_key} ${user}@${pub_ip}  "tail -n ${tailCount} ${log_to_check} | tr '\0' '\n'")   # grab opscenter log and handle null point warning
+  # grab agent log and handle null point warning
+  output=$(ssh -q -i ${ssh_key} ${user}@${pub_ip} "tail -n ${tailCount} ${log_to_check} | tr '\0' '\n'")
   if [[ "${output}" == *"${keyphrase}"* ]]; then
     GENERIC_prepare_display_msgColourSimple "INFO-->" "${response_label}     ${green}0${white}"
     retry=10
     success="true"
   fi
   if [[ "${retry}" == "10" ]] && [[ "${success}" != "true" ]]; then                             # failure messages
-    GENERIC_prepare_display_msgColourSimple "INFO-->" "${response_label} ${red}1 - You may ned to kill any existing agent process as root !!${reset}"
-    GENERIC_prepare_display_msgColourSimple "INFO-->" "${response_label} ${red}1 - Is the right Java version installed [ ${cmdOutput} ] !!${reset}"
+    GENERIC_prepare_display_msgColourSimple "INFO-->" "${response_label}     ${red}You may ned to kill any existing agent process as root !!${reset}"
+    GENERIC_prepare_display_msgColourSimple "INFO-->" "${response_label}     ${red}Is the right Java version installed [ ${cmdOutput} ] !!${reset}"
   fi
   arrayStartOpscenter["${tag}"]="${status};${pub_ip}"
   ((retry++))
@@ -237,7 +238,7 @@ function lib_doStuffRemotely_getAgentVersion(){
 ## try 2 approaches to identify running agent version
 
 # [1] use agent api to discover version (first check curl is available)
-ssh -q -i ${ssh_key} ${user}@${pub_ip} "curl &>/dev/null"
+ssh -q -i ${ssh_key} ${user}@${pub_ip} "curl --help &>/dev/null"
 if [[ $? == "0" ]]; then
   url=http://${pub_ip}:61621/v1/connection-status
   head=true
