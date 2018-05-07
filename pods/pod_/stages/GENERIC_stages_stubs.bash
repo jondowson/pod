@@ -3,8 +3,8 @@ function GENERIC_stages_stubs_testConnectivity(){
 stageNumber="${1}"
 stageTotal="${2}"
 
-GENERIC_prepare_display_stageCount              "Test Connectivity" "${stageNumber}" "${stageTotal}"
-GENERIC_prepare_display_msgColourSimple         "GENERIC_task==>"    "GENERIC_task: Testing ssh call"
+GENERIC_prepare_display_stageCount         "Test Connectivity" "${stageNumber}" "${stageTotal}"
+GENERIC_prepare_display_msgColourSimple    "TASK==>"    "Task: Testing ssh call"
 GENERIC_task_testConnectivity
 GENERIC_prepare_display_stageTimeCount
 }
@@ -23,7 +23,7 @@ jsonPaths="${4}"         # from server json
 # in the json file, for paths to be specified here, they must be put in nested [] brackets.
 # this format supports multiple paths but is required here even if only one path exists.
 GENERIC_prepare_display_stageCount        "Test Write-Paths" "${stageNumber}" "${stageTotal}"
-GENERIC_prepare_display_msgColourSimple   "GENERIC_task==>"  "GENERIC_task: Making remote folders"
+GENERIC_prepare_display_msgColourSimple   "TASK==>"  "Task: Making remote folders"
 GENERIC_task_testWritePaths               "${buildFolderPaths}" "${jsonPaths}"
 GENERIC_prepare_display_stageTimeCount
 }
@@ -36,7 +36,7 @@ stageNumber="${1}"
 stageTotal="${2}"
 
 GENERIC_prepare_display_stageCount        "Send POD_SOFTWARE" "${stageNumber}" "${stageTotal}"
-GENERIC_prepare_display_msgColourSimple   "GENERIC_task==>"    "GENERIC_task: Sending software in parallel"
+GENERIC_prepare_display_msgColourSimple   "TASK==>"    "Task: Sending software in parallel"
 
 if [[ "${SEND_POD_SOFTWARE}" == "true" ]]; then
   GENERIC_task_sendPodSoftware
@@ -55,7 +55,7 @@ stageNumber="${1}"
 stageTotal="${2}"
 
 GENERIC_prepare_display_stageCount        "Launch Pod Build" "${stageNumber}" "${stageTotal}"
-GENERIC_prepare_display_msgColourSimple   "GENERIC_task==>"  "GENERIC_task: Running launch script in parallel"
+GENERIC_prepare_display_msgColourSimple   "TASK==>"  "Task: Running launch script in parallel"
 GENERIC_task_launchPodRemotely
 GENERIC_prepare_display_stageTimeCount
 }

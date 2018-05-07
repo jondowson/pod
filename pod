@@ -158,14 +158,14 @@ else
 ## [8] globally declare arrays used by generic stages
 
   declare -A arrayJson                  # all stages - assign json key values to bash variables
-  declare -A arrayTestConnect           # stage_generic_test_sshConnectivity - test passwordless connectivity
-  declare -A arrayTestWrite1            # stage_generic_test_writePaths      - test writeTest_array paths
-  declare -A arrayTestWrite2            # stage_generic_test_writePaths      - test paths specified in json
-  declare -A arraySendPodPids           # stage_generic_send_POD_SOFTWARE    - send POD_SOFTWARE folder to server(s)
-  declare -a arrayBuildLocalFunctions   # stage_generic_buildSend            - functions performed locally (not on remote server)
-  declare -A arrayBuildSend             # stage_generic_buildSend            - did pod build get successfully sent?
-  declare -a arrayBuildSendData         # stage_generic_buildSend            - handle data paths specified in json
-  declare -A arrayLaunchPodPids         # stage_generic_launch_podRemotely   - did script launch successfully on remote server?
+  declare -A arrayTestConnect           # GENERIC_stages_testConnectivity   - for passwordless connectivity
+  declare -A arrayTestWrite1            # GENERIC_stages_testWritePaths     - for paths specified in build_settings
+  declare -A arrayTestWrite2            # GENERIC_stages_testWritePaths     - for paths specified in json
+  declare -A arraySendPodPids           # GENERIC_stages_sendPodSoftware    - for send POD_SOFTWARE folder to server(s)
+  declare -a arrayBuildLocalFunctions   # GENERIC_stages_buildSend          - for functions performed locally (not on remote server)
+  declare -A arrayBuildSend             # GENERIC_stages_buildSend          - for send bespoke pod to server(s)
+  declare -a arrayBuildSendData         # GENERIC_stages_buildSend          - for handle data paths specified in json
+  declare -A arrayLaunchPodPids         # GENERIC_stages_launchPodRemotely  - for launching script on remote server(s)
 
 # ==========
 

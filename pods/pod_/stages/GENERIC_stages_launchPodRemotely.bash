@@ -17,7 +17,7 @@ do
   GENERIC_lib_doStuffRemotely_identifyOs
 
   # [4] display message
-  GENERIC_prepare_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pub_ip${white} on os ${yellow}${remote_os}${reset}" #&& printf "\n%s"
+  GENERIC_prepare_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pub_ip${white} on os ${yellow}${remote_os}${reset}"
   GENERIC_prepare_display_msgColourSimple "INFO-->" "launch pod remotely:      ${target_folder}POD_SOFTWARE/POD/pod/pods/pod_/scripts/GENERIC_scripts_launchPod.sh"
 
   # [5] call remote launch script

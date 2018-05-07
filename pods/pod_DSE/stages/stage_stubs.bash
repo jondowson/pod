@@ -8,7 +8,7 @@ destResourcesFolderPath="${destBuildFolderPath}resources/"
 newResourcesFolder="false" # becomes true if stage is run
 
 GENERIC_prepare_display_stageCount        "Prepare 'resources' Folder" "${stageNumber}" "${stageTotal}"
-GENERIC_prepare_display_msgColourSimple   "TASK==>"  "TASK: Strip out all non config files"
+GENERIC_prepare_display_msgColourSimple   "TASK==>"  "Task: Strip out all non config files"
 
 if [[ "${REGENERATE_RESOURCES}" == "true" ]] || [[ "${REGENERATE_RESOURCES}" == "edit" ]] || [[ ! -d ${destResourcesFolderPath} ]]; then
   task_makeResourcesFolder
@@ -32,26 +32,26 @@ stageTotal="${2}"
 
 if [[ "${CLUSTER_STATE}" == "restart" ]]; then
   GENERIC_prepare_display_stageCount        "DSE Cluster Restart" "${stageNumber}" "${stageTotal}"
-  GENERIC_prepare_display_msgColourSimple   "TASK==>"  "TASK: Stopping dse + agent"
+  GENERIC_prepare_display_msgColourSimple   "TASK==>"  "Task: Stopping dse + agent"
   task_rollingStop
-  GENERIC_prepare_display_msgColourSimple   "TASK==>"  "TASK: Starting dse + agent"
+  GENERIC_prepare_display_msgColourSimple   "TASK==>"  "Task: Starting dse + agent"
   task_rollingStart
   GENERIC_prepare_display_stageTimeCount
 elif [[ "${CLUSTER_STATE}" == "agent-restart" ]]; then
   GENERIC_prepare_display_stageCount        "DSE Cluster Restart" "${stageNumber}" "${stageTotal}"
-  GENERIC_prepare_display_msgColourSimple   "TASK==>"  "TASK: Stopping agent"
+  GENERIC_prepare_display_msgColourSimple   "TASK==>"  "Task: Stopping agent"
   task_rollingStop
-  GENERIC_prepare_display_msgColourSimple   "TASK==>"  "TASK: Starting agent"
+  GENERIC_prepare_display_msgColourSimple   "TASK==>"  "Task: Starting agent"
   task_rollingStart
   GENERIC_prepare_display_stageTimeCount
 elif [[ "${CLUSTER_STATE}" == "agent-stop" ]]; then
   GENERIC_prepare_display_stageCount        "DSE Cluster Stop" "${stageNumber}" "${stageTotal}"
-  GENERIC_prepare_display_msgColourSimple   "TASK==>"  "TASK: Stopping agent"
+  GENERIC_prepare_display_msgColourSimple   "TASK==>"  "Task: Stopping agent"
   task_rollingStop
   GENERIC_prepare_display_stageTimeCount
 else
   GENERIC_prepare_display_stageCount        "DSE Cluster Stop" "${stageNumber}" "${stageTotal}"
-  GENERIC_prepare_display_msgColourSimple   "TASK==>"  "TASK: Stopping dse + agent"
+  GENERIC_prepare_display_msgColourSimple   "TASK==>"  "Task: Stopping dse + agent"
   task_rollingStop
   GENERIC_prepare_display_stageTimeCount
 fi
@@ -65,7 +65,7 @@ stageNumber="${1}"
 stageTotal="${2}"
 
 GENERIC_prepare_display_stageCount        "Build and send bespoke pod" "${stageNumber}" "${stageTotal}"
-GENERIC_prepare_display_msgColourSimple   "TASK==>"    "TASK: Configuring pod locally and distributing"
+GENERIC_prepare_display_msgColourSimple   "TASK==>"    "Task: Configuring pod locally and distributing"
 # this will call the pod specific version of this task - that in a loop finishes by calling the generic version of this function (task_buildSend_GENERIC)
 task_buildSend
 GENERIC_prepare_display_stageTimeCount
@@ -81,7 +81,7 @@ stageTotal="${2}"
 GENERIC_prepare_display_stageCount        "Summary" "${stageNumber}" "${stageTotal}"
 GENERIC_prepare_display_msgColourSimple   "REPORT" "STAGE REPORT:${reset}"
 if [[ "${clusterstateFlag}" == "true" ]]; then
-  task_generic_testConnectivity_report
+  GENERIC_task_testConnectivity_report
   if [[ "${CLUSTER_STATE}" == *"restart"* ]]; then
     task_rollingStart_report
   else

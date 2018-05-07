@@ -24,7 +24,7 @@ printf "%s\n" "WHICH_POD=${WHICH_POD}"                          >> "${TMP_FILE_S
 # [4] SERVERS_JSON
 printf "%s\n" "server_id=${id}"                                 >> "${TMP_FILE_SUITCASE}"
 servers_json_path_string="${target_folder}POD_SOFTWARE/POD/pod/servers/${SERVERS_JSON}"
-printf "%s\n" "serversJsonPath=${servers_json_path_string}"   >> "${TMP_FILE_SUITCASE}"
+printf "%s\n" "serversJsonPath=${servers_json_path_string}"     >> "${TMP_FILE_SUITCASE}"
 # [5] BUILD_FOLDER
 printf "%s\n" "BUILD_FOLDER=${BUILD_FOLDER}"                    >> "${TMP_FILE_SUITCASE}"
 build_folder_path_string="${target_folder}POD_SOFTWARE/POD/pod/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"

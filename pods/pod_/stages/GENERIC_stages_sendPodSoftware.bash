@@ -36,7 +36,7 @@ do
     scp -q -o LogLevel=QUIET -i ${ssh_key} -r "${PACKAGES}" "${user}@${pub_ip}:${target_folder}POD_SOFTWARE" &    # run in parallel
     # out pid response status in array
     pid=${!}
-    GENERIC_prepare_display_msgColourSimple "INFO-->" "pid id:        ${yellow}${pid}${reset}"
+    GENERIC_prepare_display_msgColourSimple "INFO-->" "pid id:         ${yellow}${pid}${reset}"
     arraySendPodPids["${pid}"]="${tag};${pub_ip}"
     DSE_pids+=" $pid"
   fi

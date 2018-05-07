@@ -1,4 +1,4 @@
-function lib_doStuff_locally_cassandraYaml_cassData(){
+function lib_doStuffLocally_cassandraYaml_cassData(){
 
 ## replace existing data directory/directories with new paths
 
@@ -38,7 +38,7 @@ done
 
 # ---------------------------------------
 
-function lib_doStuff_locally_cassandraEnv(){
+function lib_doStuffLocally_cassandraEnv(){
 
 ## utilise if default logging folder does not have access permissions !!
 
@@ -72,7 +72,7 @@ GENERIC_lib_strings_sedStringManipulation "editAfterSubstring"                  
 
 # ---------------------------------------
 
-function lib_doStuff_locally_jvmOptions(){
+function lib_doStuffLocally_jvmOptions(){
 
 ## jvm.options - set temp folder that has write permissions
 
@@ -97,7 +97,7 @@ EOF
 
 # ---------------------------------------
 
-function lib_doStuff_locally_cassandraRackDcProperties(){
+function lib_doStuffLocally_cassandraRackDcProperties(){
 
 ## cassandra-rackdc.properties - configure the rack and data center for this node
 
@@ -111,7 +111,7 @@ GENERIC_lib_strings_sedStringManipulation "editAfterSubstring" "${file}" "rack="
 
 # ---------------------------------------
 
-function lib_doStuff_locally_cassandraYaml_buildSettings(){
+function lib_doStuffLocally_cassandraYaml_buildSettings(){
 
 ## cassandra.yaml - configure the 'main' settings set in the build_settings file
 
@@ -136,20 +136,20 @@ if [[ "${vnodes}" == "false" ]]; then
 fi
 
 # CASSANDRA_FOLDER_HINTS
-GENERIC_lib_strings_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "CASSANDRA_FOLDER_HINTS:"        "${CASSANDRA_FOLDER_HINTS}"
+GENERIC_lib_strings_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "hints_directory:"        "${CASSANDRA_FOLDER_HINTS}"
 # CASSANDRA_FOLDER_COMMITLOG
-GENERIC_lib_strings_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "CASSANDRA_FOLDER_COMMITLOG:"    "${CASSANDRA_FOLDER_COMMITLOG}"
+GENERIC_lib_strings_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "commitlog_directory:"    "${CASSANDRA_FOLDER_COMMITLOG}"
 # CASSANDRA_FOLDER_CDCRAW
-GENERIC_lib_strings_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "CASSANDRA_FOLDER_CDCRAW:"       "${CASSANDRA_FOLDER_CDCRAW}"
+GENERIC_lib_strings_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "cdc_raw_directory:"       "${CASSANDRA_FOLDER_CDCRAW}"
 # CASSANDRA_FOLDER_SAVEDCACHES
-GENERIC_lib_strings_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "CASSANDRA_FOLDER_SAVEDCACHES:"  "${CASSANDRA_FOLDER_SAVEDCACHES}"
+GENERIC_lib_strings_sedStringManipulation "editAfterSubstringPathFriendly" "${file}" "saved_caches_directory:"  "${CASSANDRA_FOLDER_SAVEDCACHES}"
 # endpoint_snitch: (nearly always 'GossipingPropertyFileSnitch')
 GENERIC_lib_strings_sedStringManipulation "editAfterSubstring" "${file}" "endpoint_snitch:" "${endpoint_snitch}"
 }
 
 # ---------------------------------------
 
-function lib_doStuff_locally_cassandraYaml_json(){
+function lib_doStuffLocally_cassandraYaml_json(){
 
 ## cassandra.yaml - set node specific settings from json
 
@@ -171,7 +171,7 @@ GENERIC_lib_strings_sedStringManipulation "editAfterSubstring" "${file}" "rpc_ad
 
 # ---------------------------------------
 
-function lib_doStuff_locally_dseYaml_dsefsData(){
+function lib_doStuffLocally_dseYaml_dsefsData(){
 
 ## dse.yaml - configure for dsefs - required by spark
 
@@ -216,7 +216,7 @@ EOF
 
 # ---------------------------------------
 
-function lib_doStuff_locally_dseSparkEnv(){
+function lib_doStuffLocally_dseSparkEnv(){
 
 ## configure dse-spark-env.sh (sourced at end of spark-env.sh) to set paths for log/data files
 

@@ -24,7 +24,7 @@ GENERIC_lib_build_sourceTarget
 
 # [6] build a 'suitcase' of server specific variables for remotely run functions
 GENERIC_lib_build_suitcase
-GENERIC_lib_build_suitcase
+lib_build_suitcase
 
 # [7] perform locally run functions for this pod (this array may be empty!)
 for func in "${!arrayBuildLocalFunctions[@]}"

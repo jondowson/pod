@@ -3,7 +3,7 @@
 # user defined settings are all lowercase. leave alone UPPERCASE variables!!
 
 PACKAGE="DATASTAX"                                    # empty if pod does not involve tarball
-source ${podHomePath}/misc/.suitcase                # file used to access server specific variables on remote machines
+source ${podHomePath}/misc/.suitcase                  # file used to access server specific variables on remote machines
 POD_SOFTWARE="${TARGET_FOLDER}POD_SOFTWARE/"          # the parent folder with all the tarballs and the pod software
 PACKAGES="${POD_SOFTWARE}${PACKAGE}/"                 # the relevant tarball folders for this pod
 INSTALL_FOLDER="${TARGET_FOLDER}POD_INSTALLS/"        # the parent folder where tarball software is unpacked to
@@ -16,14 +16,14 @@ INSTALL_FOLDER_POD="${INSTALL_FOLDER}${WHICH_POD}/"   # the pod specific folder 
 # EDIT-THIS-BLOCK !!
 
 # [1] BASIC CASSANDRA SETTINGS
-cluster_name="Cluster1"                               # avoid special characters !!
+cluster_name="dse_6.0.x"                              # avoid special characters !!
 endpoint_snitch="GossipingPropertyFileSnitch"         # 'GossipingPropertyFileSnitch' should be the default !!
 vnodes="8"                                            # specify a value (8,16) for vnodes or "false" to pick up assigned token from json definition file
 
 # [2] DSE + AGENT VERSIONS
 
-dse_version="dse-6.0.0"                               # the dse tarball version to unpack
-agent_version="datastax-agent-6.5.0"                  # the datastax agent tarball version to unpack
+dse_version="dse-6.0.x"                               # the dse tarball version to unpack
+agent_version="datastax-agent-6.5.x"                  # the datastax agent tarball version to unpack
 
 # [3] DATA + LOG + TMP FOLDER LOCATIONS
 
