@@ -29,15 +29,15 @@ TARGET_FOLDER="${LOCAL_TARGET_FOLDER}"
 ## [2] generic pod_ preparation
 
 # [2.1] source generic pod_ preperation script
-source pods/pod_/prepare/prepare_generic_misc.bash
+source pods/pod_/prepare/GENERIC_prepare_misc.bash
 # [2.2] remove any existing temp files
 GENERIC_prepare_misc_clearTheDecks
 # [2.3] identify local os
-prepare_generic_misc_identifyOs
+GENERIC_prepare_misc_identifyOs
 # [2.4] source all generic pod_ scripts
 GENERIC_prepare_misc_sourceGeneric
 # [2.5] set all generic pod_ default settings
-GENERIC_prepare_misc_setDefaults
+GENERIC_prepare_defaults_set
 # [2.6] change local permissions to assist later pod folder copy
 chmod -R 777 ${podHomePath}/.git
 # [2.7] declare global arrays used by generic pod_ stages / functions

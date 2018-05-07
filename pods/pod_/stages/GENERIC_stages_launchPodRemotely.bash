@@ -18,10 +18,10 @@ do
 
   # [4] display message
   GENERIC_prepare_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pub_ip${white} on os ${yellow}${remote_os}${reset}" #&& printf "\n%s"
-  GENERIC_prepare_display_msgColourSimple "INFO-->" "launch pod remotely:      ${target_folder}POD_SOFTWARE/POD/pod/pods/pod_/scripts/scripts_launch_pod.sh"
+  GENERIC_prepare_display_msgColourSimple "INFO-->" "launch pod remotely:      ${target_folder}POD_SOFTWARE/POD/pod/pods/pod_/scripts/GENERIC_scripts_launchPod.sh"
 
   # [5] call remote launch script
-  ssh -ttq -o "BatchMode yes" -o "ForwardX11=no" ${user}@${pub_ip} "chmod -R 777 ${target_folder}POD_SOFTWARE/POD && ${target_folder}POD_SOFTWARE/POD/pod/pods/pod_/scripts/scripts_launch_pod.sh" > /dev/null 2>&1 &                # run in parallel
+  ssh -ttq -o "BatchMode yes" -o "ForwardX11=no" ${user}@${pub_ip} "chmod -R 777 ${target_folder}POD_SOFTWARE/POD && ${target_folder}POD_SOFTWARE/POD/pod/pods/pod_/scripts/GENERIC_scripts_launchPod.sh" > /dev/null 2>&1 &   # run in parallel
   # grab pid and capture owner in array
   pid=$!
   GENERIC_prepare_display_msgColourSimple "INFO-->"  "pid id:                   ${yellow}${pid}${reset}"
@@ -66,7 +66,7 @@ if [[ ! -z $runBuild_pid_failures ]]; then
   for k in "${!arrayLaunchPodPids[@]}"
   do
     if [[ "${runBuild_pid_failures}" == *"$k"* ]]; then
-      lib_strings_expansionDelimiter "${arrayLaunchPodPids[$k]}" ";" "1"
+      GENERIC_lib_strings_expansionDelimiter "${arrayLaunchPodPids[$k]}" ";" "1"
       server="$_D1_"
       ip=$_D2_
       GENERIC_prepare_display_msgColourSimple "ERROR-TIGHT" "pid ${yellow}${k}${red} failed for ${yellow}${server}@${ip}${red}"

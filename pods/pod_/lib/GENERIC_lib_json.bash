@@ -1,7 +1,3 @@
-# about:  json processing functions
-
-# ---------------------------------------
-
 function GENERIC_lib_json_writePathTest(){
 
 ## for a given element in a json block, grab its paths and write a dummy test folder

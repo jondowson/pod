@@ -1,7 +1,3 @@
-# about: generic bash string manipulation functions
-
-# ---------------------------------------
-
 function GENERIC_lib_strings_ifsStringDelimeter(){
 
 ## split a string by any number of delimiters and insert into an array

@@ -1,7 +1,3 @@
-# about:    test connectivity and write-paths for all servers in servers json definition
-
-#-------------------------------------------
-
 function GENERIC_task_testConnectivity(){
 
 ## for each server test ssh connectivity + authorisation
@@ -28,7 +24,7 @@ do
     retry=1
     until [[ "${retry}" == "6" ]] || [[ "${status}" == "0" ]]
     do
-      GENERIC_lib_checks_fileExists "stage_test_sshConnectivity.sh#1" "true" "${ssh_key}"
+      GENERIC_lib_checks_fileExists "stages_testConnectivity.sh#1" "true" "${ssh_key}"
       # determine remote server os as test
       GENERIC_lib_doStuffRemotely_identifyOs
       status=${?}
@@ -54,7 +50,7 @@ declare -a pod_test_connect_report_array
 count=0
 for k in "${!arrayTestConnect[@]}"
 do
-  lib_strings_expansionDelimiter ${arrayTestConnect[$k]} ";" "1"
+  GENERIC_lib_strings_expansionDelimiter ${arrayTestConnect[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
     pod_test_connect_fail="true"
     pod_test_connect_report_array["${count}"]="${yellow}${k}${white} at address ${yellow}${_D2_}${white} with error code ${red}${_D1_}${reset}"

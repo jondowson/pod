@@ -1,7 +1,3 @@
-# about:    send POD_SOFTWARE/$PACKAGE folder to each server on its specified target folder
-
-# ------------------------------------------
-
 function GENERIC_task_sendPodSoftware(){
 
 for id in $(seq 1 ${numberOfServers});
@@ -85,7 +81,7 @@ if [[ ! -z $POD_SOFTWARE_pid_failures ]]; then
   for k in "${!POD_SOFTWARE_server_pid_array[@]}"
   do
     if [[ "${POD_SOFTWARE_pid_failures}" == *"$k"* ]]; then
-      lib_strings_expansionDelimiter "${arraySendPodPids[$k]}" ";" "1"
+      GENERIC_lib_strings_expansionDelimiter "${arraySendPodPids[$k]}" ";" "1"
       server="$_D1_"
       ip=$_D2_
       GENERIC_prepare_display_msgColourSimple "ERROR-TIGHT" "pid ${yellow}${k}${red} failed for ${yellow}${server}@${ip}${red}"

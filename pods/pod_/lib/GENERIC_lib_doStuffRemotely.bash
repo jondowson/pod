@@ -1,7 +1,3 @@
-# about:    generic functions executed on remote server
-
-# ---------------------------------------
-
 function GENERIC_lib_doStuffRemotely_identifyOs(){
 
 ## determine remote os by running a pod script on the remote server

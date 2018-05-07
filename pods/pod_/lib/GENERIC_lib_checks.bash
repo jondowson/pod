@@ -1,7 +1,3 @@
-# about:  variety of checks and error handling functions
-
-# ---------------------------------------
-
 function catchError(){  # short name allowed to break naming convention as it will be utilised heavily
 
 ## catch return code of any command and if failure exit with code

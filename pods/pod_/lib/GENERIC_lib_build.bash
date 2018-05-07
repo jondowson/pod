@@ -81,7 +81,7 @@ fi
 # (re)create folder and send over updated pod software
 # this will be merged locally
 ssh -q -i ${ssh_key} ${user}@${pub_ip} "mkdir -p ${target_folder}POD_SOFTWARE/POD/pod/"
-scp -q -o LogLevel=QUIET -i ${ssh_key} -r "${tmp_working_folder}" "${user}@${pub_ip}:${target_folder}POD_SOFTWARE/POD/"
+scp -q -o LogLevel=QUIET -i ${ssh_key} -r "${TMP_FOLDER_POD}" "${user}@${pub_ip}:${target_folder}POD_SOFTWARE/POD/"
 status=${?}
 arrayBuildSend["${tag}"]="${status};${pub_ip}"
 # turn off red error highlighting

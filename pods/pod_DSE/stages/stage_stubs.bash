@@ -96,8 +96,8 @@ else
     GENERIC_prepare_display_msgColourSimple "SUCCESS" "This server:  existing resources folder utilised"
   fi
   GENERIC_task_testConnectivity_report
-  task_testWritePaths__GENERIC_report
-  if [[ "${SEND_POD_SOFTWARE}" == true ]]; then task_generic_sendPodSoftware_report; fi
+  GENERIC_task_testWritePaths_report
+  if [[ "${SEND_POD_SOFTWARE}" == true ]]; then GENERIC_task_sendPodSoftware_report; fi
   GENERIC_task_buildSend_report
   GENERIC_task_launchPodRemotely_report
 fi

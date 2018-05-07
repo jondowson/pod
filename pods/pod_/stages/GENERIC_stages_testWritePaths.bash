@@ -1,7 +1,3 @@
-# about:    test write-paths for all servers in servers json definition
-
-# -------------------------------------------
-
 function GENERIC_task_testWritePaths(){
 
 ## for each server test ability to write to all required dse paths (data, logs etc)
@@ -35,7 +31,7 @@ do
   # delimit the buildFolderPaths string into an array
   # prepend the target_folder for this server and append the build_settings specific paths to test
   buildFolderPaths="target_folder;${BUILDPATHS_WRITETEST}"
-  lib_strings_ifsStringDelimeter ";" "${buildFolderPaths}"
+  GENERIC_lib_strings_ifsStringDelimeter ";" "${buildFolderPaths}"
 
   # for each element in the array
   for folder in "${array[@]}"
@@ -58,12 +54,12 @@ do
   # e.g. "cass_data;dsefs_data"
   if [[ ${JSONPATHS_WRITETEST} != "" ]]; then
     # delimit the json element(s) into an array
-    lib_strings_ifsStringDelimeter ";" "${JSONPATHS_WRITETEST}"
+    GENERIC_lib_strings_ifsStringDelimeter ";" "${JSONPATHS_WRITETEST}"
     # for each element in the array e.g. cass_data
     for element in "${array[@]}"
     do
       # write test this element's nested path(s)
-      lib_json_writePathTest ";" "${element}"
+      GENERIC_lib_json_writePathTest ";" "${element}"
     done
   fi
 done
@@ -78,7 +74,7 @@ declare -a test_send_report_array_1
 count=0
 for k in "${!test_send_error_array_1[@]}"
 do
-  lib_strings_expansionDelimiter ${test_send_error_array_1[$k]} ";" "1"
+  GENERIC_lib_strings_expansionDelimiter ${test_send_error_array_1[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
     test_write_fail="true"
     test_write_report_array_1["${count}"]="could not make folder: ${yellow}${k} ${white}on server ${yellow}${_D2_}${reset}"
@@ -92,7 +88,7 @@ declare -a test_send_report_array_2
 count=0
 for k in "${!test_send_error_array_2[@]}"
 do
-  lib_strings_expansionDelimiter ${test_send_error_array_2[$k]} ";" "1"
+  GENERIC_lib_strings_expansionDelimiter ${test_send_error_array_2[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
     test_write_fail="true"
     test_write_report_array_2["${count}"]="could not make folder: ${yellow}${k} ${white}on server ${yellow}${_D2_}${reset}"

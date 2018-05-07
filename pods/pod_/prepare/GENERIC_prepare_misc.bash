@@ -1,7 +1,3 @@
-# about:         functions required prior to running pod
-
-# ------------------------------------------
-
 function GENERIC_prepare_misc_podBuildTempFolder(){
 
 ## GENERIC_prepare duplicate version of 'pod' project

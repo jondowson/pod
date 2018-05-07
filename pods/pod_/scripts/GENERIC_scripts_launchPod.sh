@@ -34,7 +34,7 @@ source "${podHomePath}/misc/.suitcase"
 if [[ "${os}" == "Mac" ]]; then
 
   chmod +x ${podHomePath}/pods/pod_/scripts/*.sh
-  . ${podHomePath}/pods/pod_/scripts/scripts_launch_pod_mac.sh
+  . ${podHomePath}/pods/pod_/scripts/GENERIC_scripts_launchPodMac.sh
 
 else
 

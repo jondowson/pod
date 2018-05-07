@@ -1,7 +1,3 @@
-# about:        formatting for screen output
-
-# ---------------------------------------
-
 ## Setup colors and text effects
 
 black=`tput setaf 0`

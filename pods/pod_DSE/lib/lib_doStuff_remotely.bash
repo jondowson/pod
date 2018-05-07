@@ -6,11 +6,11 @@ function lib_doStuffRemotely_pod_DSE(){
 rm -rf ${INSTALL_FOLDER_POD}${BUILD_FOLDER}
 
 # [2] make folders
-lib_doStuffRemotely_GENERIC_createFolders "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
+GENERIC_lib_doStuffRemotely_createFolders "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
 
 # [3] un-compress software
-lib_doStuffRemotely_GENERIC_unpackTar "${DSE_FILE_TAR}" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
-lib_doStuffRemotely_GENERIC_unpackTar "${AGENT_FILE_TAR}" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
+GENERIC_lib_doStuffRemotely_unpackTar     "${DSE_FILE_TAR}"   "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
+GENERIC_lib_doStuffRemotely_unpackTar     "${AGENT_FILE_TAR}" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}"
 
 # [4] merge the copied over 'resources' folder to the untarred one
 cp -R "${build_folder_path}resources" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}/${dse_version}"
@@ -18,12 +18,12 @@ cp -R "${build_folder_path}resources" "${INSTALL_FOLDER_POD}${BUILD_FOLDER}/${ds
 # [5] update the datastax-agent address.yaml to point to opscenter
 lib_doStuffRemotely_agentAddressYaml
 
-# [6] rename this redundant and meddlesome file !!
+# [6] rename this redundant and meddlesome file!!
 lib_doStuffRemotely_cassandraTopologyProperties
 
 # [7] configure local environment
-lib_doStuffRemotely_GENERIC_updateAppBashProfile "CASSANDRA_HOME" "${DSE_FOLDER_UNTAR_BIN}"
-lib_doStuffRemotely_GENERIC_updatePodBashProfile "POD_HOME" "${bash_path_string}"
+GENERIC_lib_doStuffRemotely_updateAppBashProfile "CASSANDRA_HOME" "${DSE_FOLDER_UNTAR_BIN}"
+GENERIC_lib_doStuffRemotely_updatePodBashProfile "POD_HOME"       "${bash_path_string}"
 }
 
 # ---------------------------------------
@@ -146,14 +146,14 @@ if [[ "${status}" != "0" ]]; then
     status=$?
     printf "%s" "${reset}"
     if [[ "${status}" != "0" ]]; then
-      GENERIC_prepare_display_msgColourSimple "INFO-->" "java return code:      ${red}${status}"
+      GENERIC_prepare_display_msgColourSimple "INFO-->"    "java return code:      ${red}${status}"
       if [[ "${STRICT_START}" ==  "true" ]]; then
         GENERIC_prepare_display_msgColourSimple "ERROR-->" "Exiting pod: ${yellow}${task_file}${red} with ${yellow}--strict true${red} - java unavailable"
         exit 1;
       fi
       break;
     else
-      GENERIC_prepare_display_msgColourSimple "INFO-->" "java return code:      ${green}${status}"
+      GENERIC_prepare_display_msgColourSimple "INFO-->"    "java return code:      ${green}${status}"
       ((retry++))
     fi
   done
@@ -207,9 +207,9 @@ pauseTime="2"                                                                   
 tailCount="30"                                                                                  # how many lines to grab from end of log - relationship with pause time + speed logs are written
 
 
-ssh -q -i ${ssh_key} ${user}@${pub_ip} "${cmd} &>~/.cmdOutput"                                    # run opscenter for the specified build
+ssh -q -i ${ssh_key} ${user}@${pub_ip} "${cmd} &>~/.cmdOutput"                                  # run opscenter for the specified build
 sleep 5                                                                                         # give the chance for script to run + logs to fill up
-cmdOutput=$(ssh -q -i ${ssh_key} ${user}@${pub_ip} "cat ~/.cmdOutput && rm -rf ~/.cmdOutput" )    # grab any command output - could be a clue to a failure
+cmdOutput=$(ssh -q -i ${ssh_key} ${user}@${pub_ip} "cat ~/.cmdOutput && rm -rf ~/.cmdOutput" )  # grab any command output - could be a clue to a failure
 
 retry=1
 until [[ "${retry}" == "${retryTimes}" ]]                                                       # try x times with a sleep pause between attempts
