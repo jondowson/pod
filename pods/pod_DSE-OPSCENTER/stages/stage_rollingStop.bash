@@ -36,7 +36,7 @@ function task_rollingStop_report(){
 
 declare -a stop_opscenter_report_array
 count=0
-for k in "${!arrayStopDse[@]}"
+for k in "${!arrayStopOpscenter[@]}"
 do
   GENERIC_lib_strings_expansionDelimiter ${arrayStopOpscenter[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then

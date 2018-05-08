@@ -16,9 +16,9 @@ INSTALL_FOLDER_POD="${INSTALL_FOLDER}${WHICH_POD}/"   # the pod specific folder 
 
 # this needs to match the name of folder in the POD_SOFTWARE folder holding the java tarball
 
-SOFTWARE_NAME="oracle"
-SOFTWARE_VERSION="jre1.8.0_152"
-SOFTWARE_TARBALL="jre-8u152-linux-x64.tar.gz"
+software_name="oracle"
+software_version="jre1.8.0_152"
+software_tarball="jre-8u152-linux-x64.tar.gz"
 
 JAVA_SECURITY_DISTRIBUTION="oracle"
 JAVA_SECURITY_ZIP="jce_policy-x.zip"
@@ -32,8 +32,8 @@ temp_folder="${INSTALL_FOLDER}TEMP/"
 
 # //////////////////////////////////////////
 # DO-NOT-EDIT-THIS-BLOCK !!
-TAR_FOLDER="${PACKAGES}${SOFTWARE_NAME}/"
-TAR_FILE="${TAR_FOLDER}${SOFTWARE_TARBALL}"
+TAR_FOLDER="${PACKAGES}${software_name}/"
+TAR_FILE="${TAR_FOLDER}${software_tarball}"
 UNTAR_FOLDER="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/"
 UNTAR_EXEC_FOLDER="${UNTAR_FOLDER}bin"
 java_security_folder="${PACKAGES}${JAVA_SECURITY_DISTRIBUTION}/"

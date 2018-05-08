@@ -9,15 +9,15 @@ rm -rf ${UNTAR_FOLDER}
 if [[ ${os} != *"Mac"* ]]; then
 
   # [2] make folders
-  lib_generic_doStuff_remotely_createFolders "${UNTAR_FOLDER}${SOFTWARE_VERSION}"
-  lib_generic_doStuff_remotely_createFolders "${UNTAR_FOLDER}${SOFTWARE_VERSION}/lib/security"
+  lib_generic_doStuff_remotely_createFolders "${UNTAR_FOLDER}${software_version}"
+  lib_generic_doStuff_remotely_createFolders "${UNTAR_FOLDER}${software_version}/lib/security"
 
   # [3] un-compress software
   lib_generic_doStuff_remotely_unpackTar "${TAR_FILE}" "${UNTAR_FOLDER}"
   lib_doStuffRemotely_installJavaSecurity
 
   # [4] configure local environment
-  lib_doStuffRemotely_updateJavaPathBashProfile "JAVA_HOME" "${UNTAR_FOLDER}${SOFTWARE_VERSION}"
+  lib_doStuffRemotely_updateJavaPathBashProfile "JAVA_HOME" "${UNTAR_FOLDER}${software_version}"
 
 fi
 }
@@ -29,8 +29,8 @@ function lib_doStuffRemotely_installJavaSecurity(){
 ## install from local tar to the designated java folder
 
 unzip ${java_security_zip_file} &>/dev/null
-mv UnlimitedJCEPolicyJDK8/*.jar  ${UNTAR_FOLDER}${SOFTWARE_VERSION}/lib/security/
-chmod 0644 ${UNTAR_FOLDER}${SOFTWARE_VERSION}/lib/security/*.jar
+mv UnlimitedJCEPolicyJDK8/*.jar  ${UNTAR_FOLDER}${software_version}/lib/security/
+chmod 0644 ${UNTAR_FOLDER}${software_version}/lib/security/*.jar
 rm -rf UnlimitedJCEPolicyJDK8/
 }
 

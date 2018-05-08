@@ -21,7 +21,6 @@ declare -A arrayStopOpscenter   # stage_rollingStop.bash
 # --> generic functions:       pod_ 'lib' folder
 # --> pod specific functions:  this pod's 'lib' folder
 
-##
 
 # stopping/starting opscenter nodes
 if [[ "${clusterstateFlag}" == "true" ]]; then
@@ -33,11 +32,11 @@ if [[ "${clusterstateFlag}" == "true" ]]; then
 # installing pod_DSE-OPSCENTER
 else
 
-  stage_generic_stubs_testConnectivity      "1" "6"
-  stage_generic_stubs_testWritePaths    "2" "6" "${BUILDPATHS_WRITETEST}" "${JSONPATHS_WRITETEST}"   # set in build_settings.bash
-  stage_generic_stubs_sendPodSoftware   "3" "6"
-  stage_stubs_buildSendPod              "4" "6"
-  stage_generic_stubs_launchPod         "5" "6"
-  stage_stubs_finish                    "6" "6"
+  GENERIC_stage_stubs_testConnectivity      "1" "6"
+  GENERIC_stage_stubs_testWritePaths        "2" "6" "${BUILDPATHS_WRITETEST}" "${JSONPATHS_WRITETEST}"   # set in build_settings.bash
+  GENERIC_stage_stubs_sendPodSoftware       "3" "6"
+  stage_stubs_buildSendPod                  "4" "6"
+  GENERIC_stage_stubs_launchPodRemotely     "5" "6"
+  stage_stubs_finish                        "6" "6"
 fi
 }

@@ -39,9 +39,9 @@ function stage_stubs_finish(){
 stageNumber="${1}"
 stageTotal="${2}"
 
-GENERIC_prepare_display_stageCount        "Summary" "${stageNumber}" "${stageTotal}"
-GENERIC_prepare_display_msgColourSimple   "REPORT" "STAGE REPORT:${reset}"
-task_generic_testConnectivity_report
+GENERIC_prepare_display_stageCount          "Summary" "${stageNumber}" "${stageTotal}"
+GENERIC_prepare_display_msgColourSimple     "REPORT" "STAGE REPORT:${reset}"
+GENERIC_task_testConnectivity_report
 if [[ "${clusterstateFlag}" == "true" ]]; then
   if [[ "${CLUSTER_STATE}" == "restart" ]]; then
     task_rollingStart_report
@@ -53,9 +53,9 @@ if [[ "${clusterstateFlag}" == "true" ]]; then
     WHICH_POD=${WHICH_POD}-rollingStop
   fi
 else
-  task_generic_testWritePaths_report
-  if [[ "${SEND_POD_SOFTWARE}" == true ]]; then task_generic_sendPodSoftware_report; fi
-  task_generic_buildSend_report
-  task_generic_launchPodRemotely_report
+  GENERIC_task_testWritePaths_report
+  if [[ "${SEND_POD_SOFTWARE}" == true ]]; then GENERIC_task_sendPodSoftware_report; fi
+  GENERIC_task_buildSend_report
+  GENERIC_tasks_launchPodRemotely_report
 fi
 }

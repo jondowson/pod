@@ -4,14 +4,14 @@ function lib_doStuffRemotely_pod_DSE-OPSCENTER(){
 rm -rf ${UNTAR_FOLDER}
 
 # [2] make folders
-lib_generic_doStuff_remotely_createFolders "${UNTAR_FOLDER}${SOFTWARE_VERSION}"
+GENERIC_lib_doStuffRemotely_createFolders "${UNTAR_FOLDER}${software_version}"
 
 # [3] un-compress software
-lib_generic_doStuff_remotely_unpackTar "${TAR_FILE}" "${UNTAR_FOLDER}"
+GENERIC_lib_doStuffRemotely_unpackTar     "${TAR_FILE}" "${UNTAR_FOLDER}"
 
 # [4] configure local environment
 
-lib_generic_doStuff_remotely_updateAppBashProfile "OPSC_HOME" "${UNTAR_EXEC_FOLDER}"
+GENERIC_lib_doStuffRemotely_updateAppBashProfile "OPSC_HOME" "${UNTAR_EXEC_FOLDER}"
 
 # [5] configure cluster_config file
 if [[ "${apply_storage_cluster}" == "true" ]]; then
@@ -52,8 +52,8 @@ do
 
   ## [2] edit/create conf file for this cluster
 
-  file="${opscenter_untar_config_folder}clusters/${clustername}.conf"
-  mkdir -p "${opscenter_untar_config_folder}clusters/" && touch ${file}
+  file="${OPSCENTER_FOLDER_UNTAR_CONFIG}clusters/${clustername}.conf"
+  mkdir -p "${OPSCENTER_FOLDER_UNTAR_CONFIG}clusters/" && touch ${file}
 
   # -----
 
@@ -181,17 +181,17 @@ function lib_doStuffRemotely_startOpscenter(){
 ## record result of commands in array for later reporting
 
 GENERIC_prepare_display_msgColourSimple "INFO-->" "starting opscenter:    ~30s"
-cmd="source ~/.bash_profile && ${opscenter_untar_bin_folder}opscenter"                          # start command + source bash_profile to ensure correct java version is used
-log_to_check="${opscenter_untar_log_folder}opscenterd.log"                                      # log folder to check for keyphrase
+cmd="source ~/.bash_profile && ${OPSCENTER_FOLDER_UNTAR_BIN}opscenter"                          # start command + source bash_profile to ensure correct java version is used
+log_to_check="${OPSCENTER_FOLDER_UNTAR_LOG}opscenterd.log"                                      # log folder to check for keyphrase
 keyphrase="StompFactory starting"                                                               # if this appears in logs - then assume success!
 response_label="opscenter return code:"                                                         # label for response codes
 retryTimes="11"                                                                                 # try x times to inspect logs for success
 pauseTime="3"                                                                                   # pause between log look ups
 tailCount="50"                                                                                  # how many lines to grab from end of log - relationship with pause time + speed logs are written
 
-ssh -q -i ${ssh_key} ${user}@${pub_ip} "${cmd} &>~/.cmdOutput"                                    # run opscenter for the specified build
+ssh -q -i ${ssh_key} ${user}@${pub_ip} "${cmd} &>~/.cmdOutput"                                  # run opscenter for the specified build
 sleep 5                                                                                         # give the chance for script to run + logs to fill up
-cmdOutput=$(ssh -q -i ${ssh_key} ${user}@${pub_ip} "cat ~/.cmdOutput && rm -rf ~/.cmdOutput" )    # grab any command output - could be a clue to a failure
+cmdOutput=$(ssh -q -i ${ssh_key} ${user}@${pub_ip} "cat ~/.cmdOutput && rm -rf ~/.cmdOutput" )  # grab any command output - could be a clue to a failure
 
 retry=1
 until [[ "${retry}" == "${retryTimes}" ]]                                                       # try x times with a sleep pause between attempts

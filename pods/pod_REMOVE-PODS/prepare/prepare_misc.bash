@@ -3,7 +3,7 @@ function prepare_misc_checkFileFolderExist(){
 ## test specified files exist
 
 # if software tarball is used - then check it exists
-#if [[ "${SOFTWARE_TARBALL}" != "" ]]; then
+#if [[ "${software_tarball}" != "" ]]; then
 #  GENERIC_prepare_misc_checkSoftwareExists
 #fi
 :
