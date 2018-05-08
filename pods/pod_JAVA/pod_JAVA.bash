@@ -20,10 +20,10 @@ function pod_JAVA(){
 # --> generic functions:       pod_ 'lib' folder
 # --> pod specific functions:  this pod's 'lib' folder
 
-stages_generic_stubs_testConnectivity  "1" "6"
-stages_generic_stubs_testWritePaths    "2" "6" "${BUILDPATHS_WRITETEST}" "${JSONPATHS_WRITETEST}"   # set in build_settings.bash
-stages_generic_stubs_sendPodSoftware   "3" "6"
-stages_stubs_buildSendPod              "4" "6"
-stages_generic_stubs_launchPod         "5" "6"
-stages_stubs_finish                    "6" "6"
+GENERIC_stages_stubs_testConnectivity   "1" "6"
+GENERIC_stages_stubs_testWritePaths     "2" "6" "${BUILDPATHS_WRITETEST}" "${JSONPATHS_WRITETEST}"   # set in build_settings.bash
+GENERIC_stages_stubs_sendPodSoftware    "3" "6"
+stages_stubs_buildSendPod               "4" "6"
+GENERIC_stages_stubs_launchPodRemotely  "5" "6"
+stages_stubs_finish                     "6" "6"
 }

@@ -9,12 +9,3 @@ function prepare_misc_checkFileFolderExist(){
 :
 # add below any other pod specific file and folder checks
 }
-
-# ------------------------------------------
-
-function prepare_misc_setDefaults(){
-
-## pod specific default settings
-
-:
-}

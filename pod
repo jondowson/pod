@@ -193,7 +193,7 @@ else
   GENERIC_prepare_misc_clearTheDecks
 
   # [10.3] calculate and display script timings
-  lib_generic_misc_timePod
+  GENERIC_lib_misc_timePod
   printf "%s\n"
   GENERIC_prepare_display_msgColourSimple "INFO" "pod took: ${diff}[s]"
   printf "%s\n"

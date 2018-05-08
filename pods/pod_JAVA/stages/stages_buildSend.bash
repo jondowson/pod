@@ -14,7 +14,7 @@ do
   # build_functions_array[0]=""
 
   # [2] call the generic buildSend task
-  task_generic_buildSend
+  GENERIC_task_buildSend
 
 done
 }
