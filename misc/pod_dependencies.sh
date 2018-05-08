@@ -158,14 +158,27 @@ if [[ "${os}" == "Mac" ]]; then
   # -----
 
   if [[ $brewList == *"grep"* ]]; then
-    GENERIC_prepare_display_msgColourSimple "ALERT-->" "Fetching latest grep (takes ~2mins)"
+    GENERIC_prepare_display_msgColourSimple "ALERT-->" "Fetching latest grep"
     printf "%s\t" "$ brew uninstall grep && brew install grep --with-default-names"
     brew uninstall grep > /dev/null 2>&1
     brew install grep --with-default-names > /dev/null 2>&1
   else
-    GENERIC_prepare_display_msgColourSimple "ALERT-->" "Installing grep (takes ~1mins)"
+    GENERIC_prepare_display_msgColourSimple "ALERT-->" "Installing grep"
     printf "%s\t" "$ brew install grep --with-default-names"
     brew install grep --with-default-names > /dev/null 2>&1
+    printf "%s\n" "${tick}"
+  fi
+
+  # -----
+
+  if [[ $brewList == *"grep"* ]]; then
+    GENERIC_prepare_display_msgColourSimple "ALERT-->" "Fetching latest curl"
+    printf "%s\t" "$ brew install curl"
+    brew install curl > /dev/null 2>&1
+  else
+    GENERIC_prepare_display_msgColourSimple "ALERT-->" "Installing curl"
+    printf "%s\t" "$ brew install curl"
+    brew install curl > /dev/null 2>&1
     printf "%s\n" "${tick}"
   fi
 
