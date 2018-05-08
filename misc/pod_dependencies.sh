@@ -171,7 +171,7 @@ if [[ "${os}" == "Mac" ]]; then
 
   # -----
 
-  if [[ $brewList == *"grep"* ]]; then
+  if [[ $brewList == *"curl"* ]]; then
     GENERIC_prepare_display_msgColourSimple "ALERT-->" "Fetching latest curl"
     printf "%s\t" "$ brew install curl"
     brew install curl > /dev/null 2>&1
