@@ -28,7 +28,7 @@ function lib_doStuffRemotely_installJavaSecurity(){
 
 ## install from local tar to the designated java folder
 
-unzip ${java_security_zip_file} &>/dev/null
+unzip ${JAVA_FILE_SECURITY_ZIP} &>/dev/null
 mv UnlimitedJCEPolicyJDK8/*.jar  ${UNTAR_FOLDER}${software_version}/lib/security/
 chmod 0644 ${UNTAR_FOLDER}${software_version}/lib/security/*.jar
 rm -rf UnlimitedJCEPolicyJDK8/
