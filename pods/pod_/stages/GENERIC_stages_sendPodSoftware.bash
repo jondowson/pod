@@ -24,7 +24,7 @@ do
   GENERIC_prepare_display_msgColourSimple "INFO-->" "sending:        POD_SOFTWARE/${PACKAGE}"
 
   # [5] check target_folder can be used on target machine !!
-  catchError "stage_POD_SOFTWARE#1" "cannot make target folder" "true" "true" "ssh -o ForwardX11=no ${user}@${pub_ip} mkdir -p ${target_folder}POD_SOFTWARE"
+  catchError "stages_POD_SOFTWARE#1" "cannot make target folder" "true" "true" "ssh -o ForwardX11=no ${user}@${pub_ip} mkdir -p ${target_folder}POD_SOFTWARE"
 
   # [6] check if server is local server - no point sending software if local +  no delete locally of existing pod folder
   localServer="false"

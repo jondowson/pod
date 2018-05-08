@@ -1,4 +1,4 @@
-function stage_stubs_buildSendPod(){
+function stages_stubs_buildSendPod(){
 
 stageNumber="${1}"
 stageTotal="${2}"
@@ -12,7 +12,7 @@ GENERIC_prepare_display_stageTimeCount
 
 # ------------------------------------------
 
-function stage_stubs_stopStartCluster(){
+function stages_stubs_stopStartCluster(){
 
 stageNumber="${1}"
 stageTotal="${2}"
@@ -34,7 +34,7 @@ fi
 
 # ------------------------------------------
 
-function stage_stubs_finish(){
+function stages_stubs_finish(){
 
 stageNumber="${1}"
 stageTotal="${2}"
@@ -56,6 +56,6 @@ else
   GENERIC_task_testWritePaths_report
   if [[ "${SEND_POD_SOFTWARE}" == true ]]; then GENERIC_task_sendPodSoftware_report; fi
   GENERIC_task_buildSend_report
-  GENERIC_tasks_launchPodRemotely_report
+  GENERIC_task_launchPodRemotely_report
 fi
 }

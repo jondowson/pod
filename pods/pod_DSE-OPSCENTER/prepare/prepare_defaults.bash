@@ -1,4 +1,4 @@
-function prepare_misc_setDefaults(){
+function prepare_defaults_set(){
 
 ## pod specific default settings
 

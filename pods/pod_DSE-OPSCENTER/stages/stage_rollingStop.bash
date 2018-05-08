@@ -15,7 +15,7 @@ do
     declare $key=${arrayJson[$key]} &>/dev/null
   done
   # add trailing '/' to target_folder path if not present
-  target_folder="$(lib_generic_strings_addTrailingSlash ${target_folder})"
+  target_folder="$(GENERIC_lib_strings_addTrailingSlash ${target_folder})"
 
   # [3] display messages
   GENERIC_prepare_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pub_ip${white} on os ${yellow}${remote_os}${reset}"

@@ -1,4 +1,4 @@
-function stage_stubs_buildSendPod(){
+function stages_stubs_buildSendPod(){
 
 stageNumber="${1}"
 stageTotal="${2}"
@@ -12,7 +12,7 @@ GENERIC_prepare_display_stageTimeCount
 
 # ------------------------------------------
 
-function stage_stubs_finish(){
+function stages_stubs_finish(){
 
 stageNumber="${1}"
 stageTotal="${2}"

@@ -270,7 +270,7 @@ function lib_doStuffRemotely_getAgentVersion(){
 ## try 2 approaches to identify running agent version
 
 # [1] use agent api to discover version (first check curl is available)
-ssh -q -i ~/.ssh/id_rsa jd@127.0.0.1 "curl &>/dev/null"
+ssh -q -i ${ssh_key} ${user}@${pub_ip} "curl --help &>/dev/null"
 if [[ $? == "0" ]]; then
   url=http://${pub_ip}:61621/v1/connection-status
   head=true
