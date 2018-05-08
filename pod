@@ -47,11 +47,7 @@ else
   GENERIC_prepare_defaults_set
   # [2.7] change local permissions to assist later pod folder copy
   chmod -R 777 ${podHomePath}/.git
-  # [2.8] declare global arrays used by generic pod_ stages / functions
-  declare -A ifsDelimArray
-  declare -A pod_arrayTestConnect
-  declare -A pod_software_send_pid_array
-  # [2.9] set some handy generic flags
+  # [2.8] set some handy generic flags
   flagOne="false"
   flagTwo="false"
 
