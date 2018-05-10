@@ -3,7 +3,7 @@ function task_rollingStart(){
 ## for each server start dse + agent based on its json defined mode
 
 # used in error message
-task_file="task_rollingStart.bash"
+taskFile="task_rollingStart.bash"
 
 # identify all keys for this json file from the first server block
 keys=$(jq -r '.server_1 | keys[]' ${serversJsonPath})
@@ -23,13 +23,13 @@ do
   # add trailing '/' to target_folder path if not present
   target_folder="$(GENERIC_lib_strings_addTrailingSlash ${target_folder})"
 
-  # [3] display message
+  # [3] source the build_settings file based on this server's target_folder
+  GENERIC_lib_build_sourceTarget
+
+  # [4] display messages
   GENERIC_prepare_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}${pub_ip} ${reset} on os ${yellow}${remote_os}${reset}"
   GENERIC_prepare_display_msgColourSimple "INFO-->" "dse version:           ${dse_version}"
   GENERIC_prepare_display_msgColourSimple "INFO-->" "agent version:         ${agent_version}"
-
-  # [4] source the build_settings file based on this server's target_folder
-  GENERIC_lib_build_sourceTarget
 
   # [5] handle the flags used to start dse in the correct mode
   flags=""
@@ -40,18 +40,25 @@ do
   # [6] start dse + agent running on server
   if [[ "${CLUSTER_STATE}" == "restart" ]]; then
 
+    GENERIC_prepare_display_msgColourSimple   "INFO-->" "checking java:"
+    GENERIC_lib_doStuffRemotely_checkSoftwareAvailability "1" "true" "java -version" "java unavailable" "java return code:" "full"
+
     if [[ "${flags}" == "" ]]; then
       GENERIC_prepare_display_msgColourSimple "INFO-->" "starting dse in mode:  storage only"
     else
       GENERIC_prepare_display_msgColourSimple "INFO-->" "starting dse in mode:  storage + flags ${flags}"
     fi
-
-    lib_doStuffRemotely_checkJava
     lib_doStuffRemotely_startDse
+
+    GENERIC_prepare_display_msgColourSimple   "INFO-->" "starting agent:        ~15s"
     lib_doStuffRemotely_startAgent
 
   elif [[ "${CLUSTER_STATE}" == *"agent"* ]]; then
-    lib_doStuffRemotely_checkJava
+
+    GENERIC_prepare_display_msgColourSimple   "INFO-->" "checking java:"
+    GENERIC_lib_doStuffRemotely_checkSoftwareAvailability "1" "true" "java -version" "java unavailable" "java return code:" "full"
+
+    GENERIC_prepare_display_msgColourSimple   "INFO-->" "starting agent:        ~15s"
     lib_doStuffRemotely_startAgent
   fi
 

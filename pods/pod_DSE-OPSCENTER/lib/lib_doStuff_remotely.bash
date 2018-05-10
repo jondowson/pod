@@ -251,7 +251,7 @@ if [[ "${status}" != "0" ]]; then
     if [[ "${status}" != "0" ]]; then
       GENERIC_prepare_display_msgColourSimple "INFO-->" "java return code:      ${red}${status}"
       if [[ "${STRICT_START}" ==  "true" ]]; then
-        GENERIC_prepare_display_msgColourSimple "ERROR-->" "Exiting pod: ${yellow}${task_file}${red} with ${yellow}--strict true${red} - java unavailable"
+        GENERIC_prepare_display_msgColourSimple "ERROR-->" "Exiting pod: ${yellow}${taskFile}${red} with ${yellow}--strict true${red} - java unavailable"
         exit 1;
       fi
       break;

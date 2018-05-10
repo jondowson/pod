@@ -121,3 +121,82 @@ folder="${2}"
 
 tar -xvf "${file}" -C "${folder}"
 }
+
+# ---------------------------------------
+
+function GENERIC_lib_doStuffRemotely_getVersionFromPid(){
+
+## try to identify version of running software from its pid
+
+grepString=${1}                 # examples: 'dse-' or 'datastax-agent-' or ...
+grepDeleteAfter=${2}            # examples: '-' or '_' or ...
+
+runningVersion=$(ssh -q -i ${ssh_key} ${user}@${pub_ip} 'ps -ef | grep -v grep')
+runningVersion=$(echo $runningVersion | grep -o "${grepString}[^ ]*" | sed "s/^\(${grepString}\)*//" | sed "s/${grepDeleteAfter}.*//" | head -1 )
+
+if [[ -z ${runningVersion} ]]; then
+  runningVersion="n/a"
+fi
+printf "%s\n" "${runningVersion}"
+}
+
+# ---------------------------------------
+
+function GENERIC_lib_doStuffRemotely_checkSoftwareAvailability(){
+
+## run remotely to check if a given software is available
+
+retries=${1}
+retries=$((retries+1))        # number of times to retry (1 is added as count starts from 1)
+sourceBashProfile=${2}        # whether or not to source bash_profile before running test command ('true' or 'false')
+testCommand=${3}              # the command to run to test availability - e.g. 'java -version' or 'curl --help' or ...
+errMsg=${4}                   # error message to diplay on failure - e.g. 'java unavailable'
+displayMsg=${5}               # screen message to accompany return code / message
+displayStatus=${6}            # whether or not to handle screen messages as well - 'full' or 'code' ('0' or other)
+
+# [1] build test command to run
+if [[ ${sourceBashProfile} == "true" ]]; then
+  testCommand="source ~/.bash_profile && ${testCommand}"
+fi
+
+# [2] attempt test x times
+status="999"
+if [[ "${status}" != "0" ]]; then
+  retry=1
+  until [[ "${retry}" == "${retries}" ]] || [[ "${status}" == "0" ]]
+  do
+    # display any output in different color
+    output=$(ssh -q -i ${ssh_key} ${user}@${pub_ip} "${testCommand}" &>/dev/null)
+    status=$?
+    if [[ "${status}" == "0" ]]; then
+      result="${status}"
+      break;
+    elif [[ "${STRICT_START}" ==  "true" ]] && [[ "${retry}" == $((retries-1)) ]]; then
+        result="[${errMsg}]"
+        break;
+    else
+        result="[${status}]"
+        ((retry++))
+    fi
+  done
+fi
+
+# [3] handle result in specified manner
+# 'full' detailed screen messages
+if [[ "${displayStatus}" == "full" ]]; then
+  if [[ "${result}" != "0" ]]; then
+    if [[ "${STRICT_START}" ==  "true" ]]; then
+      GENERIC_prepare_display_msgColourSimple   "ERROR-->"   "Exiting pod:       ${yellow}${taskFile}${red} with ${yellow}--strict true"
+      GENERIC_prepare_display_msgColourSimple   "ERROR-->"   "error message:     ${red}${result}${reset}"
+      exit 1;
+    else
+      GENERIC_prepare_display_msgColourSimple   "INFO-->"    "${displayMsg}      ${red}${status}"
+    fi
+  else
+    GENERIC_prepare_display_msgColourSimple     "INFO-->"    "${displayMsg}      ${green}${status}"
+  fi
+# return just the error 'code'
+else
+  printf "%s\n" "${result}"
+fi
+}

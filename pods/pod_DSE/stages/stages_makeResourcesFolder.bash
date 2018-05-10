@@ -1,29 +1,24 @@
 function task_makeResourcesFolder(){
 
-thisFunction="task_makeResourcesFolder"
-errNo=0
+## create a stripped resources folder containing all + only dse config files
 
-## assign paths to variables
+# used by error message
+taskFile="task_makeResourcesFolder"
 
+# [1] assign paths to variables
 destBuildFolderPath="${podHomePath}/pods/${WHICH_POD}/builds/${BUILD_FOLDER}/"
 destResourcesFolderPath="${destBuildFolderPath}resources/"
 sourceResourcesFolderPath="${podHomePath}/tmp/${dse_version}/resources/"
 
-# -----
+# [2] check to see folder paths exist
+GENERIC_lib_checks_folderExists "${taskFile}#1" "true" "${destBuildFolderPath}"
 
-## check to see folder paths exist
-
-GENERIC_lib_checks_folderExists "${thisFunction}#1" "true" "${destBuildFolderPath}"
-
-# -----
-
-## copy resources folder from dse package to dse-setup
-
+# [3] copy resources folder from dse package to dse-setup
 if [ -d "${destResourcesFolderPath}" ]; then
 
   GENERIC_prepare_display_msgColourSimple "INFO-->" "Existing ${yellow}'${BUILD_FOLDER}/resources'${white} will be deleted"
   printf "%s\n"
-  GENERIC_prepare_display_msgColourSimple "ALERT" "Are you sure ?"
+  GENERIC_prepare_display_msgColourSimple "ALERT"   "Are you sure ?"
   printf "%s\n"
   GENERIC_lib_misc_timeCount "${STAGE_PAUSE}" "<ctrl-c> to abort now.."
   rm -rf ${destResourcesFolderPath}
@@ -31,16 +26,16 @@ if [ -d "${destResourcesFolderPath}" ]; then
   GENERIC_prepare_display_msgColourSimple "TASK==>"  "TASK: Strip out all non config files"
 fi
 
+# [4] copy resources folder from dse package to pod_dse build folder
 GENERIC_prepare_display_msgColourSimple "INFO" "Unpack from:   ${red}${DSE_FILE_TAR}${reset}"
 GENERIC_prepare_display_msgColourSimple "INFO" "Unpack to:     ${yellow}${destResourcesFolderPath}${reset}"
 
+# [5] make a tmp folder to store the full unzipped dse folder
 mkdir -p "${podHomePath}/tmp"
 tar -xf "${DSE_FILE_TAR}" -C "${podHomePath}/tmp/"
 
-# -----
 
-## declare file extensions to remove in an array
-
+# [6] declare file extensions to remove into an array
 declare -a array_file_extensions_to_strip
 array_file_extensions_to_strip[0]="zip"
 array_file_extensions_to_strip[1]="gz"
@@ -73,10 +68,7 @@ array_file_extensions_to_strip[27]="kryo"
 array_file_extensions_to_strip[28]="ico"
 array_file_extensions_to_strip[29]="war"
 
-# -----
-
-## display stats on removed files
-
+# [7] display stats on removed files
 printf "%s\n"
 printf "%s\t%s\t%s\t\t%s\t%s\n" "${b}Extension" "|" "No." "|" "Bytes${reset}"
 printf "%s\n" "--------------------------------------------------"
@@ -95,15 +87,15 @@ printf "%s\n" "--------------------------------------------------"
 printf "%s\t\t\t\t%s\n"   "${b}Folder size before:" "${before_size}"
 printf "%s\t\t\t\t%s\n\n" "${b}Folder size after:"  "$(du -sh ${sourceResourcesFolderPath} | awk '{ print $1 }')${reset}"
 
-# -----
-
-## copy source folder to destination folder
+# [8] copy source folder to destination folder
 GENERIC_prepare_display_msgColourSimple "ALERT" "Move stripped 'resources' folder into the pod_DSE 'build' folder"
 printf "%s\n"
 GENERIC_prepare_display_msgColourSimple "INFO" "move from:    ${yellow}${sourceResourcesFolderPath}${reset}"
 GENERIC_prepare_display_msgColourSimple "INFO" "move to:      ${green}${destResourcesFolderPath}${reset}"
 printf "%s\n"
 cp -rp ${sourceResourcesFolderPath} ${destResourcesFolderPath}
+
+# [9] remove tmp file and recreate pod tmp folder
 rm -rf "${podHomePath}tmp/"
 GENERIC_prepare_misc_podBuildTempFolder
 flagOne="true" # record that this stage was run

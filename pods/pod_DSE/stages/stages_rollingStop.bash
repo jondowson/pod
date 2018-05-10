@@ -25,8 +25,10 @@ do
 
   # [4] display messages
   GENERIC_prepare_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pub_ip${white} on os ${yellow}${remote_os}${reset}" #&& printf "\n%s"
-  lib_doStuffRemotely_getDseVersion
-  lib_doStuffRemotely_getAgentVersion
+  result=$(GENERIC_lib_doStuffRemotely_getVersionFromPid "dse-" "_")
+  GENERIC_prepare_display_msgColourSimple "INFO-->" "dse version:           ${result}"
+  result=$(lib_doStuffRemotely_getAgentVersion)
+  GENERIC_prepare_display_msgColourSimple "INFO-->" "agent version:         ${result}"
 
   # [5] stop dse + agent running on server
   if [[ "${CLUSTER_STATE}" == "restart" ]] || [[ "${CLUSTER_STATE}" == "stop" ]]; then

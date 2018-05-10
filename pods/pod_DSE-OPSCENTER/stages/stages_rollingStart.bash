@@ -3,7 +3,7 @@ function task_rollingStart(){
 ## for each server start dse + agent based on its json defined mode
 
 # used in error message
-task_file="task_rollingStart.bash"
+taskFile="task_rollingStart.bash"
 
 # identify all keys for this json file from the first server block
 keys=$(jq -r '.server_1 | keys[]' ${serversJsonPath})
@@ -31,7 +31,8 @@ do
   GENERIC_lib_build_sourceTarget
 
   # [5] start opscenter
-  lib_doStuffRemotely_checkJava
+  GENERIC_prepare_display_msgColourSimple   "INFO-->" "checking java:"
+  GENERIC_lib_doStuffRemotely_checkSoftwareAvailability "1" "true" "java -version" "java unavailable" "java return code:" "full"
   lib_doStuffRemotely_startOpscenter
 
 done

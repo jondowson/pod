@@ -27,18 +27,18 @@ declare -A arrayStopAgent     # populated in stages_rollingStop.bash
 if [[ "${clusterstateFlag}" == "true" ]]; then
 
   GENERIC_stages_stubs_testConnectivity       "1" "3"
-  stages_stubs_stopStartCluster                "2" "3"
-  stages_stubs_finish                          "3" "3"
+  stages_stubs_stopStartCluster               "2" "3"
+  stages_stubs_finish                         "3" "3"
 
 # installing pod_DSE
 else
 
-  stages_stubs_createResourcesFolder           "1" "7"
+  stages_stubs_createResourcesFolder          "1" "7"
   GENERIC_stages_stubs_testConnectivity       "2" "7"
   GENERIC_stages_stubs_testWritePaths         "3" "7"   "${BUILDPATHS_WRITETEST}" "${JSONPATHS_WRITETEST}"   # set in build_settings.bash
   GENERIC_stages_stubs_sendPodSoftware        "4" "7"
-  stages_stubs_buildSendPod                    "5" "7"
+  stages_stubs_buildSendPod                   "5" "7"
   GENERIC_stages_stubs_launchPodRemotely      "6" "7"   # this will execute non-generic functions on remote server (lib_doStuffRemotely.bash)
-  stages_stubs_finish                          "7" "7"
+  stages_stubs_finish                         "7" "7"
 fi
 }
