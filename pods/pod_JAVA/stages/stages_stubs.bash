@@ -20,7 +20,7 @@ stageTotal="${2}"
 GENERIC_prepare_display_stageCount        "Summary" "${stageNumber}" "${stageTotal}"
 GENERIC_prepare_display_msgColourSimple   "REPORT" "STAGE REPORT:${reset}"
 GENERIC_task_testConnectivity_report
-task_generic_testWritePaths_report
+GENERIC_task_testWritePaths_report
 if [[ "${SEND_POD_SOFTWARE}" == true ]]; then GENERIC_task_sendPodSoftware_report; fi
 GENERIC_task_buildSend_report
 GENERIC_task_launchPodRemotely_report

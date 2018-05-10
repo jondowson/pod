@@ -80,17 +80,17 @@ stop_cmd="dse cassandra-stop"
 retry=1
 until [[ "${retry}" == "3" ]]
 do
-  GENERIC_prepare_display_msgColourSimple "INFO-->"   "stopping dse:          gracefully"
-  ssh -q -i ${ssh_key} ${user}@${pub_ip} "source ~/.bash_profile && ${stop_cmd}"
+  GENERIC_prepare_display_msgColourSimple "INFO-->"   "stopping dse:              gracefully"
+  output=$(ssh -q -i ${ssh_key} ${user}@${pub_ip} "source ~/.bash_profile && ${stop_cmd}")
   if [[ -z "${output}" ]]; then
-    GENERIC_prepare_display_msgColourSimple "INFO-->" "dse return code:       ${green}0${white}"
+    GENERIC_prepare_display_msgColourSimple "INFO-->" "${green}0${white}"
     retry=2
   elif [[ "${output}" == *"Unable to find DSE process"* ]]; then
-    GENERIC_prepare_display_msgColourSimple "INFO-->" "dse return code:       ${green}n/a${white}"
+    GENERIC_prepare_display_msgColourSimple "INFO-->" "${green}n/a${white}"
     retry=2
   else
-    GENERIC_prepare_display_msgColourSimple "INFO-->" "dse-stop fail:         ${white}(retry ${retry}/2)"
-    GENERIC_prepare_display_msgColourSimple "INFO-->" "killing dse:           ungracefully"
+    GENERIC_prepare_display_msgColourSimple "INFO-->" "${white}(retry ${retry}/2)"
+    GENERIC_prepare_display_msgColourSimple "INFO-->" "killing dse:               ungracefully"
     ssh -q -i ${ssh_key} ${user}@${pub_ip} "ps aux | grep cassandra | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
   fi
   arrayStopDse["${tag}"]="${status};${pub_ip}"
@@ -109,16 +109,16 @@ function lib_doStuffRemotely_stopAgent(){
 status="999"
 if [[ "${status}" != "0" ]]; then
   retry=1
-  GENERIC_prepare_display_msgColourSimple "INFO-->" "stopping agent:        ungracefully"
+  GENERIC_prepare_display_msgColourSimple     "INFO-->" "stopping agent:            ungracefully"
   ssh -q -i ${ssh_key} ${user}@${pub_ip} "ps aux | grep datastax-agent | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
   status=${?}
   until [[ "${retry}" == "3" ]]
   do
     if [[ "${status}" == "0" ]]; then
-      GENERIC_prepare_display_msgColourSimple "INFO-->" "agent return code:     ${green}${status}"
+      GENERIC_prepare_display_msgColourSimple "INFO-->" "${green}${status}"
       retry=2
     else
-      GENERIC_prepare_display_msgColourSimple "INFO-->" "stopping agent:        ${red}${status} ${white}(retry ${retry}/2)"
+      GENERIC_prepare_display_msgColourSimple "INFO-->" "${red}${status} ${white}(retry ${retry}/2)"
       ssh -q -i ${ssh_key} ${user}@${pub_ip} "ps aux | grep datastax-agent | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
       status=${?}
     fi
@@ -145,12 +145,12 @@ if [[ "${status}" != "0" ]]; then
   until [[ "${retry}" == "3" ]] || [[ "${status}" == "0" ]]
   do
     # leave space before last closing brace )
-    output=$(ssh -i ${ssh_key} ${user}@${pub_ip} "${start_dse}" | grep 'Wait for nodes completed' )
+    output=$(ssh -x -i ${ssh_key} ${user}@${pub_ip} "${start_dse}" | grep 'Wait for nodes completed' )
     status=$?
     if [[ "${status}" != "0" ]] || [[ "${output}" != *"Wait for nodes completed"* ]]; then
-      GENERIC_prepare_display_msgColourSimple "INFO-->" "dse return code:       ${red}${status}${white}"
+      GENERIC_prepare_display_msgColourSimple "INFO-->" "${red}${status}${white}"
     else
-      GENERIC_prepare_display_msgColourSimple "INFO-->" "dse return code:       ${green}${status}"
+      GENERIC_prepare_display_msgColourSimple "INFO-->" "${green}${status}"
     fi
     arrayStartDse["${tag}"]="${status};${pub_ip}"
     ((retry++))
@@ -168,7 +168,7 @@ function lib_doStuffRemotely_startAgent(){
 cmd="source ~/.bash_profile && ${AGENT_FOLDER_UNTAR_BIN}datastax-agent"                         # start command + source bash_profile to ensure correct java version is used
 log_to_check="${AGENT_FOLDER_UNTAR_LOG}agent.log"                                               # log folder to check for keyphrase
 keyphrase="Finished starting system"                                                            # if this appears in logs - then assume success!
-response_label="agent return code:"                                                             # label for response codes
+response_label="agent:"                                                                         # label for response codes
 retries="11"                                                                                    # try x times to inspect logs for success
 pauseTime="2"                                                                                   # pause between log look ups
 tailCount="30"                                                                                  # how many lines to grab from end of log - relationship with pause time + speed logs are written
@@ -184,12 +184,12 @@ do
   # grab agent log and handle null point warning
   output=$(ssh -q -i ${ssh_key} ${user}@${pub_ip} "tail -n ${tailCount} ${log_to_check} | tr '\0' '\n'")
   if [[ "${output}" == *"${keyphrase}"* ]]; then
-    GENERIC_prepare_display_msgColourSimple "INFO-->" "${response_label}     ${green}0${white}"
+    GENERIC_prepare_display_msgColourSimple "INFO-->" "${green}0${white}"
     success="true"
     break;
   elif [[ "${retry}" == "$((retries-1))" ]] && [[ "${success}" != "true" ]]; then                             # failure messages
-    GENERIC_prepare_display_msgColourSimple "INFO-->" "${response_label}     ${red}You may ned to kill any existing agent process as root !!${reset}"
-    GENERIC_prepare_display_msgColourSimple "INFO-->" "${response_label}     ${red}Is the right Java version installed [ ${cmdOutput} ] !!${reset}"
+    GENERIC_prepare_display_msgColourSimple "INFO-->" "${response_label}          ${red}You may ned to kill any existing agent process as root !!${reset}"
+    GENERIC_prepare_display_msgColourSimple "INFO-->" "${response_label}          ${red}Is the right Java version installed [ ${cmdOutput} ] ??${reset}"
   fi
   arrayStartOpscenter["${tag}"]="${status};${pub_ip}"
   ((retry++))
@@ -203,24 +203,9 @@ function lib_doStuffRemotely_getAgentVersion(){
 ## try 2 approaches to identify running agent version
 
 # [1] first use agent api to discover version (first check curl is available)
-ssh -q -i ${ssh_key} ${user}@${pub_ip} "curl --help &>/dev/null"
+output=$(ssh -x -q -i ${ssh_key} ${user}@${pub_ip} "source ~/.bash_profile && curl --help &>/dev/null")
 if [[ $? == "0" ]]; then
-  url=http://${pub_ip}:61621/v1/connection-status
-  head=true
-  while IFS= read -r line; do
-    if $head; then
-      if [[ -z $line ]]; then
-        head=false
-      else
-        headers+=("$line")
-      fi
-    else
-      body+=("$line")
-    fi
-  done < <(curl -sD - "$url" | sed 's/\r$//')
-  unset IFS
-  runningVersion=$(printf "%s\n" "${headers[@]}" | grep X-Datastax-Agent-Version)
-  runningVersion=$(echo "${runningVersion#*:}" | tr -d [:space:])
+  runningVersion=$(ssh -x -q -i ${ssh_key} ${user}@${pub_ip} "chmod -R 777 ${target_folder}POD_SOFTWARE/POD && ${target_folder}POD_SOFTWARE/POD/pod/pods/pod_DSE/scripts/scripts_curlAgent.sh ${pub_ip}") > /dev/null 2>&1 &
 fi
 
 # [2] if first approach failed - find .jar version from its pid - this should be the same branch if not exact version number

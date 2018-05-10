@@ -13,7 +13,7 @@ done
 target_folder="$(GENERIC_lib_strings_addTrailingSlash ${target_folder})"
 
 # [3] determine remote server os
-GENERIC_lib_doStuffRemotely_identifyOs
+#GENERIC_lib_doStuffRemotely_identifyOs
 
 # [4] display message
 GENERIC_prepare_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pub_ip${white} on os ${yellow}${remote_os}${reset}" #&& printf "\n%s"
@@ -37,9 +37,6 @@ GENERIC_prepare_display_msgColourSimple "INFO-->" "send build to:     ${target_f
 
 # [9] send the bespoke pod build to the server
 GENERIC_lib_build_sendPod
-
-# [10] assign the local target_folder value to the suitcase and delete tmp folder
-GENERIC_lib_build_finishUp
 }
 
 # ------------------------------------------

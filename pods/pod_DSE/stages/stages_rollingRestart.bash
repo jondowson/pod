@@ -1,20 +1,17 @@
-function task_rollingStart(){
+function task_rollingRestart(){
 
 ## for each server start dse + agent based on its json defined mode
 
 # used in error message
-taskFile="task_rollingStart.bash"
+taskFile="task_rollingRestart.bash"
 
 # identify all keys for this json file from the first server block
 keys=$(jq -r '.server_1 | keys[]' ${serversJsonPath})
 
 for id in $(seq 1 ${numberOfServers});
 do
-
-  # [1] determine remote server os
-  GENERIC_lib_doStuffRemotely_identifyOs
-
-  # [2] for this server, loop through its json block and assign values to bash variables
+  
+  # [1] for this server, loop through its json block and assign values to bash variables
   GENERIC_lib_json_assignValue
   for key in "${!arrayJson[@]}"
   do
@@ -23,42 +20,53 @@ do
   # add trailing '/' to target_folder path if not present
   target_folder="$(GENERIC_lib_strings_addTrailingSlash ${target_folder})"
 
-  # [3] source the build_settings file based on this server's target_folder
+  # [2] source the build_settings file based on this server's target_folder
   GENERIC_lib_build_sourceTarget
 
-  # [4] display messages
-  GENERIC_prepare_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}${pub_ip} ${reset} on os ${yellow}${remote_os}${reset}"
-  GENERIC_prepare_display_msgColourSimple "INFO-->" "dse version:           ${dse_version}"
-  GENERIC_prepare_display_msgColourSimple "INFO-->" "agent version:         ${agent_version}"
+  # [3] determine remote server os
+  GENERIC_lib_doStuffRemotely_identifyOs
 
-  # [5] handle the flags used to start dse in the correct mode
+  # [4] display messages
+  GENERIC_prepare_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pub_ip${white} on os ${yellow}${remote_os}${reset}"
+  result=$(GENERIC_lib_doStuffRemotely_getVersionFromPid "dse-" "_")
+  GENERIC_prepare_display_msgColourSimple "INFO-->" "current dse version:       ${result}"
+  result=$(lib_doStuffRemotely_getAgentVersion)
+  GENERIC_prepare_display_msgColourSimple "INFO-->" "current agent version:     ${result}"
+  
+  # [5] stop dse + agent running on server
+  if [[ "${CLUSTER_STATE}" == "restart" ]]; then
+    lib_doStuffRemotely_stopAgent
+    lib_doStuffRemotely_stopDse
+  elif [[ "${CLUSTER_STATE}" == *"agent"* ]]; then
+    lib_doStuffRemotely_stopAgent
+  fi
+
+  # [6] display version messages
+  GENERIC_prepare_display_msgColourSimple "INFO-->" "new dse version:           ${dse_version}"
+  GENERIC_prepare_display_msgColourSimple "INFO-->" "new agent version:         ${agent_version}"
+
+  # [7] display version messages
+  GENERIC_prepare_display_msgColourSimple "INFO-->" "checking java:"
+  GENERIC_lib_doStuffRemotely_checkSoftwareAvailability "1" "true" "java -version" "java unavailable" "" "full"
+
+  # [8] handle the flags used to start dse in the correct mode
   flags=""
   if [[ "${mode_search}"    == "true" ]];  then flags="${flags} -s"; fi
   if [[ "${mode_analytics}" == "true" ]];  then flags="${flags} -k"; fi
   if [[ "${mode_graph}"     == "true" ]];  then flags="${flags} -g"; fi
 
-  # [6] start dse + agent running on server
+  # [9] start dse + agent running on server
   if [[ "${CLUSTER_STATE}" == "restart" ]]; then
-
-    GENERIC_prepare_display_msgColourSimple   "INFO-->" "checking java:"
-    GENERIC_lib_doStuffRemotely_checkSoftwareAvailability "1" "true" "java -version" "java unavailable" "java return code:" "full"
-
     if [[ "${flags}" == "" ]]; then
-      GENERIC_prepare_display_msgColourSimple "INFO-->" "starting dse in mode:  storage only"
+      GENERIC_prepare_display_msgColourSimple "INFO-->" "starting dse in mode:      storage only"
     else
-      GENERIC_prepare_display_msgColourSimple "INFO-->" "starting dse in mode:  storage + flags ${flags}"
+      GENERIC_prepare_display_msgColourSimple "INFO-->" "starting dse in mode:      storage + flags ${flags}"
     fi
     lib_doStuffRemotely_startDse
-
-    GENERIC_prepare_display_msgColourSimple   "INFO-->" "starting agent:        ~15s"
+    GENERIC_prepare_display_msgColourSimple   "INFO-->" "starting agent:            ~15s"
     lib_doStuffRemotely_startAgent
-
   elif [[ "${CLUSTER_STATE}" == *"agent"* ]]; then
-
-    GENERIC_prepare_display_msgColourSimple   "INFO-->" "checking java:"
-    GENERIC_lib_doStuffRemotely_checkSoftwareAvailability "1" "true" "java -version" "java unavailable" "java return code:" "full"
-
-    GENERIC_prepare_display_msgColourSimple   "INFO-->" "starting agent:        ~15s"
+    GENERIC_prepare_display_msgColourSimple   "INFO-->" "starting agent:            ~15s"
     lib_doStuffRemotely_startAgent
   fi
 

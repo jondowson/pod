@@ -190,10 +190,10 @@ if [[ "${displayStatus}" == "full" ]]; then
       GENERIC_prepare_display_msgColourSimple   "ERROR-->"   "error message:     ${red}${result}${reset}"
       exit 1;
     else
-      GENERIC_prepare_display_msgColourSimple   "INFO-->"    "${displayMsg}      ${red}${status}"
+      GENERIC_prepare_display_msgColourSimple   "INFO-->"    "${displayMsg}${red}${status}"
     fi
   else
-    GENERIC_prepare_display_msgColourSimple     "INFO-->"    "${displayMsg}      ${green}${status}"
+    GENERIC_prepare_display_msgColourSimple     "INFO-->"    "${displayMsg}${green}${status}"
   fi
 # return just the error 'code'
 else

@@ -9,11 +9,11 @@ rm -rf ${UNTAR_FOLDER}
 if [[ ${os} != *"Mac"* ]]; then
 
   # [2] make folders
-  GENERIC_lib_doStuff_remotely_createFolders "${UNTAR_FOLDER}${software_version}"
-  GENERIC_lib_doStuff_remotely_createFolders "${UNTAR_FOLDER}${software_version}/lib/security"
+  GENERIC_lib_doStuffRemotely_createFolders "${UNTAR_FOLDER}${software_version}"
+  GENERIC_lib_doStuffRemotely_createFolders "${UNTAR_FOLDER}${software_version}/lib/security"
 
   # [3] un-compress software
-  GENERIC_lib_doStuff_remotely_unpackTar "${TAR_FILE}" "${UNTAR_FOLDER}"
+  GENERIC_lib_doStuffRemotely_unpackTar "${TAR_FILE}" "${UNTAR_FOLDER}"
   lib_doStuffRemotely_installJavaSecurity
 
   # [4] configure local environment
