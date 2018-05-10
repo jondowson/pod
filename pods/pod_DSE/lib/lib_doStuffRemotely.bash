@@ -80,7 +80,7 @@ stop_cmd="dse cassandra-stop"
 retry=1
 until [[ "${retry}" == "3" ]]
 do
-  GENERIC_prepare_display_msgColourSimple "INFO-->"   "stopping dse:              gracefully"
+  GENERIC_prepare_display_msgColourSimple   "INFO-->"   "stopping dse:              gracefully"
   output=$(ssh -q -i ${ssh_key} ${user}@${pub_ip} "source ~/.bash_profile && ${stop_cmd}")
   if [[ -z "${output}" ]]; then
     GENERIC_prepare_display_msgColourSimple "INFO-->" "${green}0${white}"
@@ -90,10 +90,10 @@ do
     retry=2
   else
     GENERIC_prepare_display_msgColourSimple "INFO-->" "${white}(retry ${retry}/2)"
-    GENERIC_prepare_display_msgColourSimple "INFO-->" "killing dse:               ungracefully"
+    GENERIC_prepare_display_msgColourSimple "INFO-->" "killing dse:                 ungracefully"
     ssh -q -i ${ssh_key} ${user}@${pub_ip} "ps aux | grep cassandra | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
   fi
-  arrayStopDse["${tag}"]="${status};${pub_ip}"
+  arrayStopDse["stop_dse at ${tag}"]="${status};${pub_ip}"
   ((retry++))
 done
 }
@@ -122,7 +122,7 @@ if [[ "${status}" != "0" ]]; then
       ssh -q -i ${ssh_key} ${user}@${pub_ip} "ps aux | grep datastax-agent | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
       status=${?}
     fi
-    arrayStopAgent["${tag}"]="${status};${pub_ip}"
+    arrayStopAgent["stop_agent at ${tag}"]="${status};${pub_ip}"
     ((retry++))
   done
 fi
@@ -152,7 +152,7 @@ if [[ "${status}" != "0" ]]; then
     else
       GENERIC_prepare_display_msgColourSimple "INFO-->" "${green}${status}"
     fi
-    arrayStartDse["${tag}"]="${status};${pub_ip}"
+    arrayStartDse["start_dse at ${tag}"]="${status};${pub_ip}"
     ((retry++))
   done
 fi
@@ -191,7 +191,7 @@ do
     GENERIC_prepare_display_msgColourSimple "INFO-->" "${response_label}          ${red}You may ned to kill any existing agent process as root !!${reset}"
     GENERIC_prepare_display_msgColourSimple "INFO-->" "${response_label}          ${red}Is the right Java version installed [ ${cmdOutput} ] ??${reset}"
   fi
-  arrayStartOpscenter["${tag}"]="${status};${pub_ip}"
+  arrayStartAgent["start_agent at ${tag}"]="${status};${pub_ip}"
   ((retry++))
 done
 }

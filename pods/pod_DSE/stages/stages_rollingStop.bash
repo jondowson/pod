@@ -58,6 +58,22 @@ do
   fi
 done
 
+# -----
+
+declare -a stop_agent_report_array
+count=0
+for k in "${!arrayStopAgent[@]}"
+do
+  GENERIC_lib_strings_expansionDelimiter ${arrayStopAgent[$k]} ";" "1"
+  if [[ "${_D1_}" != "0" ]]; then
+    stop_agent_fail="true"
+    stop_agent_report_array["${count}"]="${yellow}${k}${white} at address ${yellow}${_D2_}${white} with error code ${red}${_D1_}${reset}"
+    (( count++ ))
+  fi
+done
+
+# -----
+
 if [[ "${stop_dse_fail}" == "true" ]]; then
   printf "%s\n"
   for k in "${stop_dse_report_array[@]}"
@@ -65,11 +81,18 @@ if [[ "${stop_dse_fail}" == "true" ]]; then
     GENERIC_prepare_display_msgColourSimple "INFO" "${cross} ${k}"
   done
 else
-  if [[ "${CLUSTER_STATE}" == "restart" ]] || [[ "${CLUSTER_STATE}" == "stop" ]]; then
     GENERIC_prepare_display_msgColourSimple "SUCCESS" "Each server:  dse stopped"
+fi
+
+# -----
+
+if [[ "${stop_agent_fail}" == "true" ]]; then
+  printf "%s\n"
+  for k in "${stop_agent_report_array[@]}"
+  do
+    GENERIC_prepare_display_msgColourSimple "INFO" "${cross} ${k}"
+  done
+else
     GENERIC_prepare_display_msgColourSimple "SUCCESS" "Each server:  agent stopped"
-  elif [[ "${CLUSTER_STATE}" == *"agent"* ]]; then
-    GENERIC_prepare_display_msgColourSimple "SUCCESS" "Each server:  agent stopped"
-  fi
 fi
 }

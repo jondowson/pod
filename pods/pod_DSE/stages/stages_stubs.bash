@@ -38,11 +38,9 @@ if [[ "${CLUSTER_STATE}" == "restart" ]]; then
   task_rollingRestart
   GENERIC_prepare_display_stageTimeCount
 elif [[ "${CLUSTER_STATE}" == "agent-restart" ]]; then
-  GENERIC_prepare_display_stageCount        "DSE Cluster Restart" "${stageNumber}" "${stageTotal}"
-  GENERIC_prepare_display_msgColourSimple   "TASK==>"  "Task: Stopping agent"
-  task_rollingStop
-  GENERIC_prepare_display_msgColourSimple   "TASK==>"  "Task: Starting agent"
-  task_rollingStart
+  GENERIC_prepare_display_stageCount        "Rolling DSE Cluster Restart" "${stageNumber}" "${stageTotal}"
+  GENERIC_prepare_display_msgColourSimple   "TASK==>"  "Task: Restarting agent"
+  task_rollingRestart
   GENERIC_prepare_display_stageTimeCount
 elif [[ "${CLUSTER_STATE}" == "agent-stop" ]]; then
   GENERIC_prepare_display_stageCount        "DSE Cluster Stop" "${stageNumber}" "${stageTotal}"
