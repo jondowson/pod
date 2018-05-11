@@ -32,8 +32,6 @@ stageTotal="${2}"
 
 if [[ "${CLUSTER_STATE}" == "restart" ]]; then
   GENERIC_prepare_display_stageCount        "Rolling DSE Cluster Restart" "${stageNumber}" "${stageTotal}"
-  #GENERIC_prepare_display_msgColourSimple   "TASK==>"  "Task: Stopping dse + agent"
-  #task_rollingStop
   GENERIC_prepare_display_msgColourSimple   "TASK==>"  "Task: Restarting dse + agent"
   task_rollingRestart
   GENERIC_prepare_display_stageTimeCount

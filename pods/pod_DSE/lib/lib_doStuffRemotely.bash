@@ -91,9 +91,9 @@ do
   else
     GENERIC_prepare_display_msgColourSimple "INFO-->" "${white}(retry ${retry}/2)"
     GENERIC_prepare_display_msgColourSimple "INFO-->" "killing dse:                 ungracefully"
-    ssh -q -i ${ssh_key} ${user}@${pub_ip} "ps aux | grep cassandra | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
+    ssh -q -i ${ssh_key} ${user}@${pub_ip} "ps aux | grep -v grep | grep -v '\-p\ pod_DSE' | grep -v '\--pod\ pod_DSE' | grep cassandra | awk {'print \$2'} | xargs kill -9 &>/dev/null"
   fi
-  arrayStopDse["stop_dse at ${tag}"]="${status};${pub_ip}"
+  arrayStopDse["stop_dse_at_${tag}"]="${status};${pub_ip}"
   ((retry++))
 done
 }
@@ -110,7 +110,7 @@ status="999"
 if [[ "${status}" != "0" ]]; then
   retry=1
   GENERIC_prepare_display_msgColourSimple     "INFO-->" "stopping agent:            ungracefully"
-  ssh -q -i ${ssh_key} ${user}@${pub_ip} "ps aux | grep datastax-agent | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
+  ssh -q -i ${ssh_key} ${user}@${pub_ip} "ps aux | grep -v grep | grep -v '\-p\ pod_DSE' | grep -v '\--pod\ pod_DSE' | grep datastax-agent | awk {'print \$2'} | xargs kill -9 &>/dev/null"
   status=${?}
   until [[ "${retry}" == "3" ]]
   do
@@ -119,10 +119,10 @@ if [[ "${status}" != "0" ]]; then
       retry=2
     else
       GENERIC_prepare_display_msgColourSimple "INFO-->" "${red}${status} ${white}(retry ${retry}/2)"
-      ssh -q -i ${ssh_key} ${user}@${pub_ip} "ps aux | grep datastax-agent | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
+      ssh -q -i ${ssh_key} ${user}@${pub_ip} "ps aux | grep -v grep | grep -v '\-p\ pod_DSE' | grep -v '\--pod\ pod_DSE' | grep datastax-agent | awk {'print \$2'} | xargs kill -9 &>/dev/null"
       status=${?}
     fi
-    arrayStopAgent["stop_agent at ${tag}"]="${status};${pub_ip}"
+    arrayStopAgent["stop_agent_at_${tag}"]="${status};${pub_ip}"
     ((retry++))
   done
 fi
@@ -152,7 +152,7 @@ if [[ "${status}" != "0" ]]; then
     else
       GENERIC_prepare_display_msgColourSimple "INFO-->" "${green}${status}"
     fi
-    arrayStartDse["start_dse at ${tag}"]="${status};${pub_ip}"
+    arrayStartDse["start_dse_at_${tag}"]="${status};${pub_ip}"
     ((retry++))
   done
 fi
@@ -191,7 +191,7 @@ do
     GENERIC_prepare_display_msgColourSimple "INFO-->" "${response_label}          ${red}You may ned to kill any existing agent process as root !!${reset}"
     GENERIC_prepare_display_msgColourSimple "INFO-->" "${response_label}          ${red}Is the right Java version installed [ ${cmdOutput} ] ??${reset}"
   fi
-  arrayStartAgent["start_agent at ${tag}"]="${status};${pub_ip}"
+  arrayStartAgent["start_agent_at_${tag}"]="${status};${pub_ip}"
   ((retry++))
 done
 }

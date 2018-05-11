@@ -18,14 +18,12 @@ stageNumber="${1}"
 stageTotal="${2}"
 
 if [[ "${CLUSTER_STATE}" == "restart" ]]; then
-  GENERIC_prepare_display_stageCount        "Opscenter Restart" "${stageNumber}" "${stageTotal}"
-  GENERIC_prepare_display_msgColourSimple   "TASK==>"  "TASK: Stopping opscenter daemon"
-  task_rollingStop
-  GENERIC_prepare_display_msgColourSimple   "TASK==>"  "TASK: Starting opscenter daemon"
-  task_rollingStart
+  GENERIC_prepare_display_stageCount        "Rolling Opscenter Restart" "${stageNumber}" "${stageTotal}"
+  GENERIC_prepare_display_msgColourSimple   "TASK==>"  "TASK: Restarting opscenter daemon"
+  task_rollingRestart
   GENERIC_prepare_display_stageTimeCount
 else
-  GENERIC_prepare_display_stageCount        "Opscenter Stop" "${stageNumber}" "${stageTotal}"
+  GENERIC_prepare_display_stageCount        "Rolling Opscenter Stop" "${stageNumber}" "${stageTotal}"
   GENERIC_prepare_display_msgColourSimple   "TASK==>"  "TASK: Stopping opscenter daemon"
   task_rollingStop
   GENERIC_prepare_display_stageTimeCount
@@ -44,7 +42,7 @@ GENERIC_prepare_display_msgColourSimple     "REPORT" "STAGE REPORT:${reset}"
 GENERIC_task_testConnectivity_report
 if [[ "${clusterstateFlag}" == "true" ]]; then
   if [[ "${CLUSTER_STATE}" == "restart" ]]; then
-    task_rollingStart_report
+    task_rollingRestart_report
     # change WHICH_POD to alter final message
     WHICH_POD=${WHICH_POD}-rollingStart
   else

@@ -180,11 +180,11 @@ function lib_doStuffRemotely_startOpscenter(){
 ## run a command remotely to start opscenter
 ## record result of commands in array for later reporting
 
-GENERIC_prepare_display_msgColourSimple "INFO-->" "starting opscenter:    ~30s"
+GENERIC_prepare_display_msgColourSimple "INFO-->" "starting opscenter:              ~30s"
 cmd="source ~/.bash_profile && ${OPSCENTER_FOLDER_UNTAR_BIN}opscenter"                          # start command + source bash_profile to ensure correct java version is used
 log_to_check="${OPSCENTER_FOLDER_UNTAR_LOG}opscenterd.log"                                      # log folder to check for keyphrase
 keyphrase="StompFactory starting"                                                               # if this appears in logs - then assume success!
-response_label="opscenter return code:"                                                         # label for response codes
+response_label=""                                                                               # label for response codes
 retryTimes="11"                                                                                 # try x times to inspect logs for success
 pauseTime="3"                                                                                   # pause between log look ups
 tailCount="50"                                                                                  # how many lines to grab from end of log - relationship with pause time + speed logs are written
@@ -199,7 +199,7 @@ do
   sleep ${pauseTime}                                                                            # take a break - have a kitkat
   output=$(ssh -q -i ${ssh_key} ${user}@${pub_ip}  "tail -n ${tailCount} ${log_to_check} | tr '\0' '\n'")   # grab opscenter log and handle null point warning
   if [[ "${output}" == *"${keyphrase}"* ]]; then
-    GENERIC_prepare_display_msgColourSimple "INFO-->" "${response_label} ${green}0${white}"
+    GENERIC_prepare_display_msgColourSimple "INFO-->" "${response_label}${green}0${white}"
     retry=10
     success="true"
   fi
@@ -207,7 +207,7 @@ do
   GENERIC_prepare_display_msgColourSimple "INFO-->" "${response_label} ${red}1 - You may ned to kill any existing opscenter process as root !!${reset}"
   GENERIC_prepare_display_msgColourSimple "INFO-->" "${response_label} ${red}1 - Is the right Java version installed [ ${cmdOutput} ] !!${reset}"
   fi
-  arrayStartOpscenter["${tag}"]="${status};${pub_ip}"
+  arrayStartOpscenter["start_opscenter_at_${tag}"]="${status};${pub_ip}"
   ((retry++))
 done
 }
@@ -216,106 +216,28 @@ done
 
 function lib_doStuffRemotely_stopOpscenter(){
 
-## kill opscenter pid
+## run a command remotely to stop DSE gracefully and kill datastax-agent pid
+## record result of commands in array for later reporting
 
+# try twice to stop opscenter
 status="999"
 if [[ "${status}" != "0" ]]; then
   retry=1
-  until [[ "${retry}" == "3" ]] || [[ "${status}" == "0" ]]
+  GENERIC_prepare_display_msgColourSimple     "INFO-->" "stopping opscenter:              ungracefully"
+  ssh -q -i ${ssh_key} ${user}@${pub_ip} "ps aux | grep -v grep | grep -v '\-p\ pod_DSE-OPSCENTER' | grep -v '\--pod\ pod_DSE-OPSCENTER' | grep opscenter | awk {'print \$2'} | xargs kill -9 &>/dev/null"
+  status=${?}
+  until [[ "${retry}" == "3" ]]
   do
-    ssh -q -i ${ssh_key} ${user}@${pub_ip} "ps aux | grep start_opscenter.py | grep -v grep | awk {'print \$2'} | xargs kill -9 &>/dev/null"
-    status=${?}
-    arrayStopOpscenter["${tag}"]="${status};${pub_ip}"
+    if [[ "${status}" == "0" ]]; then
+      GENERIC_prepare_display_msgColourSimple "INFO-->" "${green}${status}"
+      retry=2
+    else
+      GENERIC_prepare_display_msgColourSimple "INFO-->" "${red}${status} ${white}(retry ${retry}/2)"
+      ssh -q -i ${ssh_key} ${user}@${pub_ip} "ps aux | grep -v grep | grep -v '\-p\ pod_DSE-OPSCENTER' | grep -v '\--pod\ pod_DSE-OPSCENTER' | grep opscenter | awk {'print \$2'} | xargs kill -9 &>/dev/null"
+      status=${?}
+    fi
+    arrayStopAgent["stop_opscenter_at_${tag}"]="${status};${pub_ip}"
     ((retry++))
   done
 fi
-}
-
-# ---------------------------------------
-
-function lib_doStuffRemotely_checkJava(){
-
-## run a command remotely to check Java is installed
-
-# try once to check java is installed
-status="999"
-if [[ "${status}" != "0" ]]; then
-  retry=1
-  until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
-  do
-    # display java output in different color
-    printf "%s" "${yellow}"
-    output=$(ssh -q -i ${ssh_key} ${user}@${pub_ip} "source ~/.bash_profile && java -version" )
-    status=$?
-    printf "%s" "${reset}"
-    if [[ "${status}" != "0" ]]; then
-      GENERIC_prepare_display_msgColourSimple "INFO-->" "java return code:      ${red}${status}"
-      if [[ "${STRICT_START}" ==  "true" ]]; then
-        GENERIC_prepare_display_msgColourSimple "ERROR-->" "Exiting pod: ${yellow}${taskFile}${red} with ${yellow}--strict true${red} - java unavailable"
-        exit 1;
-      fi
-      break;
-    else
-      GENERIC_prepare_display_msgColourSimple "INFO-->" "java return code:      ${green}${status}"
-      ((retry++))
-    fi
-  done
-fi
-}
-
-# ---------------------------------------
-
-function lib_doStuffRemotely_getAgentVersion(){
-
-## try 2 approaches to identify running agent version
-
-# [1] use agent api to discover version (first check curl is available)
-ssh -q -i ${ssh_key} ${user}@${pub_ip} "curl --help &>/dev/null"
-if [[ $? == "0" ]]; then
-  url=http://${pub_ip}:61621/v1/connection-status
-  head=true
-  while IFS= read -r line; do
-    if $head; then
-      if [[ -z $line ]]; then
-        head=false
-      else
-        headers+=("$line")
-      fi
-    else
-      body+=("$line")
-    fi
-  done < <(curl -sD - "$url" | sed 's/\r$//')
-  unset IFS
-  runningAgentVersion=$(printf "%s\n" "${headers[@]}" | grep X-Datastax-Agent-Version)
-  runningAgentVersion=$(echo "${runningAgentVersion#*:}" | tr -d [:space:])
-fi
-
-# [2] find out the jar from running processes (this gets the version branch rather than necessarily the exact version)
-if [[ -z $runningAgentVersion ]]; then
-  runningAgentVersion=$(ssh -q -i ${ssh_key} ${user}@${pub_ip} "ps -ef | grep -v grep")
-  runningAgentVersion=$(echo $runningAgentVersion | grep -o 'datastax-agent-[^ ]*' | sed 's/^\(datastax-agent\-\)*//' | sed -e 's/\(-standalone.jar\)*$//g' )
-  if [[ -z ${runningAgentVersion} ]]; then
-    GENERIC_prepare_display_msgColourSimple "INFO-->" "agent version:         n/a"
-  else
-    GENERIC_prepare_display_msgColourSimple "INFO-->" "agent jar version:     ${runningAgentVersion} (fyi)"
-  fi
-else
-  GENERIC_prepare_display_msgColourSimple "INFO-->" "agent version:         ${runningAgentVersion} (fyi)"
-fi
-}
-
-# ---------------------------------------
-
-function lib_doStuffRemotely_getOpscenterVersion(){
-
-## try to identify opscenter version from running pid
-
-runningOpsVersion=$(ssh -q -i ${ssh_key} ${user}@${pub_ip} "ps -ef | grep -v grep | grep -v -e '--pod pod_DSE-OPSCENTER' | grep -v -e '-p pod_DSE-OPSCENTER' | grep opscenter")
-runningOpsVersion=$(echo $runningOpsVersion | grep -Po '(?<=opscenter-)[^/lib/]+' | head -n1 )
-runningOpsVersion=$(echo ${runningOpsVersion%\_*})
-
-if [[ -z ${runningOpsVersion} ]]; then
-  runningOpsVersion="n/a"
-fi
-GENERIC_prepare_display_msgColourSimple "INFO-->" "opscenter version:     ${runningOpsVersion}"
 }
