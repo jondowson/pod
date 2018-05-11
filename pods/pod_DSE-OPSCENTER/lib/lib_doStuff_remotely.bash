@@ -236,8 +236,29 @@ if [[ "${status}" != "0" ]]; then
       ssh -q -i ${ssh_key} ${user}@${pub_ip} "ps aux | grep -v grep | grep -v '\-p\ pod_DSE-OPSCENTER' | grep -v '\--pod\ pod_DSE-OPSCENTER' | grep opscenter | awk {'print \$2'} | xargs kill -9 &>/dev/null"
       status=${?}
     fi
-    arrayStopAgent["stop_opscenter_at_${tag}"]="${status};${pub_ip}"
+    arrayStopOpscenter["stop_opscenter_at_${tag}"]="${status};${pub_ip}"
     ((retry++))
   done
 fi
+}
+
+# ---------------------------------------
+
+function lib_doStuffRemotely_getAgentVersion(){
+
+## try 2 approaches to identify running agent version
+
+# [1] first use agent api to discover version (first check curl is available)
+output=$(ssh -x -q -i ${ssh_key} ${user}@${pub_ip} "source ~/.bash_profile && curl --help &>/dev/null")
+if [[ $? == "0" ]]; then
+  runningVersion=$(ssh -x -q -i ${ssh_key} ${user}@${pub_ip} "chmod -R 777 ${target_folder}POD_SOFTWARE/POD && ${target_folder}POD_SOFTWARE/POD/pod/pods/pod_DSE/scripts/scripts_curlAgent.sh ${pub_ip}") > /dev/null 2>&1 &
+fi
+
+# [2] if first approach failed - find .jar version from its pid - this should be the same branch if not exact version number
+if [[ -z $runningVersion ]]; then
+  runningVersion=$(GENERIC_lib_doStuffRemotely_getVersionFromPid "datastax-agent-" "-")
+fi
+
+# [3] return version
+printf "%s\n" "${runningVersion}"
 }

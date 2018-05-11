@@ -19,8 +19,10 @@ do
 
   # [3] display messages
   GENERIC_prepare_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip ${yellow}$pub_ip${white} on os ${yellow}${remote_os}${reset}"
-  lib_doStuffRemotely_getOpscenterVersion
-  lib_doStuffRemotely_getAgentVersion
+  result=$(GENERIC_lib_doStuffRemotely_getVersionFromPid "opscenter-" "_")
+  GENERIC_prepare_display_msgColourSimple "INFO-->" "current opscenter version:       ${result}"
+  result=$(lib_doStuffRemotely_getAgentVersion)
+  GENERIC_prepare_display_msgColourSimple "INFO-->" "agent version:                   ${result}"
 
   # [4] stop opscenter
   lib_doStuffRemotely_stopOpscenter
@@ -40,7 +42,7 @@ for k in "${!arrayStopOpscenter[@]}"
 do
   GENERIC_lib_strings_expansionDelimiter ${arrayStopOpscenter[$k]} ";" "1"
   if [[ "${_D1_}" != "0" ]]; then
-    stop_dse_fail="true"
+    stop_opscenter_fail="true"
     stop_opscenter_report_array["${count}"]="${yellow}${k}${white} at address ${yellow}${_D2_}${white} with error code ${red}${_D1_}${reset}"
     (( count++ ))
   fi

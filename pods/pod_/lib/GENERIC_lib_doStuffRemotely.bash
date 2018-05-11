@@ -131,8 +131,8 @@ function GENERIC_lib_doStuffRemotely_getVersionFromPid(){
 grepString=${1}                 # examples: 'dse-' or 'datastax-agent-' or ...
 grepDeleteAfter=${2}            # examples: '-' or '_' or ...
 
-runningVersion=$(ssh -q -i ${ssh_key} ${user}@${pub_ip} 'ps -ef | grep -v grep')
-runningVersion=$(echo $runningVersion | grep -o "${grepString}[^ ]*" | sed "s/^\(${grepString}\)*//" | sed "s/${grepDeleteAfter}.*//" | head -1 )
+runningVersion=$(ssh -x -q -i ${ssh_key} ${user}@${pub_ip} "ps aux | grep -v grep | grep -v '\-p\ ${WHICH_POD}' | grep -v '\--pod\ ${WHICH_POD}'")
+runningVersion=$(echo $runningVersion | grep -o "${grepString}[^ ]*" | sed "s/^\(${grepString}\)*//" | sed "s/${grepDeleteAfter}.*//" | grep -v 'java-[^ ]*' | head -1 )
 
 if [[ -z ${runningVersion} ]]; then
   runningVersion="n/a"
