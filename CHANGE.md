@@ -1,18 +1,13 @@
 
-### Changes in pod-version-1.5.5
+### Changes in pod-version-1.6.0
 
 **1) pod_**    
 
 + pushed more functionality into the generic pod_ framework   
-+ defined rules for varaible declaration:    
-  + all user defined variables in json + build_settings are lower case, seperated by underscore     
-  + all non user defined variables are upper case (paths)    
-  + all other funtion variables are lowerCamelCase
 
 **2) pod_DSE**        
 
-+ updated status messages when running pod to be more accurate   
-+ now works with dse 5.0, 5.1 + 6.0            
++ updated status messages when running pod to be more accurate             
 
 **3) pod_DSE-OPSCENTER**
 
