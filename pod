@@ -5,7 +5,7 @@ script_name="pod"
 script_author="JRD"
 script_about="launch a chosen pod with passed flags"
 script_start=$(date +%s)
-podInput=$@
+podInput="$@"
 
 # ////////////////////////////////////////// DISCOVER PATHS
 

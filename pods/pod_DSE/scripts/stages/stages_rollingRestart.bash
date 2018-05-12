@@ -50,26 +50,22 @@ do
   GENERIC_lib_doStuffRemotely_checkSoftwareAvailability "1" "true" "java -version" "java unavailable" "" "full"
 
   # [8] handle the flags used to start dse in the correct mode
-  flags=""
-  if [[ "${mode_search}"    == "true" ]];  then flags="${flags} -s"; fi
-  if [[ "${mode_analytics}" == "true" ]];  then flags="${flags} -k"; fi
-  if [[ "${mode_graph}"     == "true" ]];  then flags="${flags} -g"; fi
-
+  lib_doStuffRemotely_bashProfileAgentStartFlags
+  
   # [9] start dse + agent running on server
   if [[ "${CLUSTER_STATE}" == "restart" ]]; then
-    if [[ "${flags}" == "" ]]; then
+    if [[ "${dseFlags}" == "" ]]; then
       GENERIC_prepare_display_msgColourSimple "INFO-->" "starting dse in mode:      storage only"
     else
       GENERIC_prepare_display_msgColourSimple "INFO-->" "starting dse in mode:      storage + flags ${flags}"
     fi
     lib_doStuffRemotely_startDse
     GENERIC_prepare_display_msgColourSimple   "INFO-->" "starting agent:            ~15s"
-    lib_doStuffRemotely_startAgent
   elif [[ "${CLUSTER_STATE}" == *"agent"* ]]; then
     GENERIC_prepare_display_msgColourSimple   "INFO-->" "starting agent:            ~15s"
-    lib_doStuffRemotely_startAgent
   fi
-
+  lib_doStuffRemotely_startAgent
+  
 done
 }
 

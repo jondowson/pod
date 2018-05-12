@@ -21,7 +21,11 @@ lib_doStuffRemotely_agentAddressYaml
 # [6] rename this redundant and meddlesome file!!
 lib_doStuffRemotely_cassandraTopologyProperties
 
-# [7] configure local environment
+# [7] create stop and start scripts that can be called from opscenter gui 
+lib_doStuffRemotely_agentStopCassandra
+lib_doStuffRemotely_agentStartCassandra
+
+# [8] configure local environment
 GENERIC_lib_doStuffRemotely_updateAppBashProfile "CASSANDRA_HOME" "${DSE_FOLDER_UNTAR_BIN}"
 GENERIC_lib_doStuffRemotely_updatePodBashProfile "POD_HOME"       "${bash_path_string}"
 }
@@ -136,7 +140,7 @@ function lib_doStuffRemotely_startDse(){
 ## record result of commands in array for later reporting
 
 # source bash_profile to ensure correct java version is used
-start_dse="source ~/.bash_profile && ${DSE_FOLDER_UNTAR_BIN}dse cassandra${flags}"
+start_dse="source ~/.bash_profile && ${DSE_FOLDER_UNTAR_BIN}dse cassandra ${dseFlags}"
 
 # try twice to start dse
 status="999"
@@ -215,4 +219,93 @@ fi
 
 # [3] return version
 printf "%s\n" "${runningVersion}"
+}
+
+# ---------------------------------------
+
+function lib_doStuffRemotely_agentStartCassandra(){
+
+## writes a dse start script in agent bin folder that can be used directly from opscenter 
+
+file="${AGENT_FOLDER_UNTAR_BIN}start-cassandra"
+rm -rf ${file}
+touch ${file}
+chmod 755 ${file}
+
+# add block with space to end of file
+cat << EOF >> ${file}
+#!/bin/bash
+
+source ~/.bash_profile
+\$CASSANDRA_HOME/dse cassandra \${dseFlags}
+ret=\$?
+# accept exit status of 0 or 1
+if [ "\$ret" -eq "0" -o "\$ret" -eq "1" ]; then
+    exit 0
+else
+    exit \$ret
+fi
+EOF
+}
+
+# ---------------------------------------
+
+function lib_doStuffRemotely_agentStopCassandra(){
+
+## writes a dse start script in agent bin folder that can be used directly from opscenter 
+
+file="${AGENT_FOLDER_UNTAR_BIN}stop-cassandra"
+rm -rf ${file}
+touch ${file}
+chmod 755 ${file}
+
+# add block with space to end of file
+cat << EOF >> ${file}
+#!/bin/bash
+
+source ~/.bash_profile
+\$CASSANDRA_HOME/dse cassandra-stop
+ret=\$?
+# accept exit status of 0 or 1
+if [ "\$ret" -eq "0" -o "\$ret" -eq "1" ]; then
+    exit 0
+else
+    ps -ef | grep -v grep | grep cassandra | awk {'print \$2'} | xargs kill -9
+    if [ "\$ret" -eq "0" -o "\$ret" -eq "1" ]; then
+        exit 0
+    else
+      exit \$ret
+    fi
+fi
+EOF
+}
+
+# ---------------------------------------
+
+function lib_doStuffRemotely_bashProfileAgentStartFlags(){
+
+## write flags to a bash_profile variable for use by opscenter + pod_DSE restart commands
+
+# [1] handle the flags used to start dse in the correct mode
+dseFlags=""
+if [[ "${mode_search}"    == "true" ]];  then dseFlags="${dseFlags} -s"; fi
+if [[ "${mode_analytics}" == "true" ]];  then dseFlags="${dseFlags} -k"; fi
+if [[ "${mode_graph}"     == "true" ]];  then dseFlags="${dseFlags} -g"; fi
+
+if [[ ${os} == "Mac" ]]; then
+  bashProfilePath="/Users/${user}/.bash_profile"
+else
+  bashProfilePath="/home/${user}/.bash_profile"
+fi
+
+# [2] prepare payload of variables
+file="${bashProfilePath}"
+label="dseFlags_bash_profile"
+block=$(printf %q "export dseFlags=\"${dseFlags}\"")
+payload1="${file} ${label} ${block} ${WHICH_POD}"
+payload2="${file} ${label} ${block}"
+
+# [3] call launch script
+remoteScript="${target_folder}POD_SOFTWARE/POD/pod/pods/pod_/scripts/GENERIC_scripts_fileUpdateBlock.sh"
+ssh -ttq -o "BatchMode yes" -o "ForwardX11=no" ${user}@${pub_ip} "chmod 755 ${remoteScript} && ${remoteScript} ${payload1}" > /dev/null 2>&1
 }

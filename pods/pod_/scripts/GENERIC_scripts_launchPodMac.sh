@@ -30,6 +30,7 @@ cd ${parentPath}
 cd ../../../
 podHomePath="$(pwd)"
 source "${podHomePath}/misc/.suitcase"
+target_folder=${TARGET_FOLDER}
 
 # -----
 

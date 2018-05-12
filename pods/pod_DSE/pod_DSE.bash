@@ -5,6 +5,7 @@ declare -A arrayStartDse      # populated in stages_rollingStart.bash
 declare -A arrayStartAgent    # populated in stages_rollingStart.bash
 declare -A arrayStopDse       # populated in stages_rollingStop.bash
 declare -A arrayStopAgent     # populated in stages_rollingStop.bash
+dseFlags=""                   # which flags to use when starting a dse server
 
 # ------------------------------------------
 

@@ -13,4 +13,9 @@ if [[ "${localServer}" == "true" ]] && [[ "${LOCAL_TARGET_FOLDER}" != "${target_
 else
   printf "%s\n" "bash_path_string=${target_folder}POD_SOFTWARE/POD/pod" >> "${TMP_FILE_SUITCASE}"
 fi
+
+# start mode flags
+printf "%s\n" "mode_search=${mode_search}"        >> "${TMP_FILE_SUITCASE}"
+printf "%s\n" "mode_analytics=${mode_analytics}"  >> "${TMP_FILE_SUITCASE}"
+printf "%s\n" "mode_graph=${mode_graph}"          >> "${TMP_FILE_SUITCASE}"
 }

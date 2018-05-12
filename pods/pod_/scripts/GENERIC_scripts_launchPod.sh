@@ -17,7 +17,7 @@ elif [[ "$(cat /etc/system-release-cpe)" == *"redhat"* ]]; then
   os="Redhat"
 else
   os="Bad"
-  GENERIC_prepare_display_msgColourSimple "ERROR-->" "OS Not Supported"
+  printf "%s\n" "ERROR: OS Not Supported"
   exit 1;
 fi
 
@@ -30,6 +30,7 @@ cd ${parentPath}
 cd ../../../
 podHomePath="$(pwd)"
 source "${podHomePath}/misc/.suitcase"
+target_folder=${TARGET_FOLDER}
 
 if [[ "${os}" == "Mac" ]]; then
 
@@ -99,7 +100,7 @@ else
   # -----
 
   # [2] run the remote functions for this pod
-
+  
   lib_doStuffRemotely_${WHICH_POD}
 
   # -----
