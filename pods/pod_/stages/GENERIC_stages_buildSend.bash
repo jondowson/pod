@@ -20,7 +20,7 @@ GENERIC_prepare_display_msgColourSimple "INFO"    "${yellow}$tag${white} at ip $
 GENERIC_prepare_display_msgColourSimple "INFO-->" "make build:        ${BUILD_FOLDER}"
 
 # [5] build a 'suitcase' of server specific variables for remotely run functions
-set -x
+
 GENERIC_lib_build_suitcase
 lib_build_suitcase
 
