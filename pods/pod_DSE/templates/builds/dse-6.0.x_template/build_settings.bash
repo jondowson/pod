@@ -37,7 +37,7 @@ temp_folder="${INSTALL_FOLDER}TEMP/"
 # the 'parent_data_folder' is where the supporting persistence files will go such as commitlogs and hinted-handoffs
 # on spinning disks it is recommended to locate these on seperate mount points to sstable data folders
 # by default DATA and LOGS folders are created inside the POD_INSTALLS desktop folder
-# this seperation means that pod_REMOVE-PODS will not be default delete existing data associated with a build
+# this seperation means that pod_REMOVE-PODS will NOT by default delete existing data associated with a build
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
@@ -75,7 +75,7 @@ SPARK_FOLDER_WORKERLOG="${parent_log_folder}spark/worker/"
 SPARK_FOLDER_ALWAYSONSQLLOG="${parent_log_folder}spark/alwayson_sql/"
 # dsefs path
 DSEFS_FOLDER_UNTAR="${INSTALL_FOLDER_POD}${BUILD_FOLDER}/${dse_version}/resources/dsefs/"
-DSEFS_FOLDER_DATA="${parent_data_folder}dsefs/"
+DSEFS_FOLDER_WORK="${parent_data_folder}dsefs_work/"
 # gremlin log path
 GREMLIN_FOLDER_LOG="${parent_log_folder}gremlin/"
 # tomcat log path
@@ -90,7 +90,7 @@ TOMCAT_FOLDER_LOG="${parent_log_folder}tomcat/"
 ## folders to be write tested !!
 
 # build_settings paths to write test
-BUILDPATHS_WRITETEST="temp_folder;parent_data_folder;parent_log_folder;SPARK_FOLDER_LOCALDATA;SPARK_FOLDER_WORKERDATA;SPARK_FOLDER_EXECUTOR;SPARK_FOLDER_ALWAYSONSQLLOG;SPARK_FOLDER_MASTERLOG;SPARK_FOLDER_WORKERLOG"
+BUILDPATHS_WRITETEST="temp_folder;parent_data_folder;parent_log_folder;SPARK_FOLDER_LOCALDATA;SPARK_FOLDER_WORKERDATA;SPARK_FOLDER_EXECUTOR;SPARK_FOLDER_ALWAYSONSQLLOG;SPARK_FOLDER_MASTERLOG;SPARK_FOLDER_WORKERLOG;SPARK_FOLDER_ALWAYSONSQLLOG;DSEFS_FOLDER_WORK"
 # json server paths to write test
 JSONPATHS_WRITETEST="cass_data;dsefs_data"
 

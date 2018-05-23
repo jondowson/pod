@@ -167,6 +167,8 @@ ${dynamic_cmd} "s?\(-[[:space:]]seeds:\s*\).*\$?\1\"${seeds}\"?"  "${file}"
 GENERIC_lib_strings_sedStringManipulation "editAfterSubstring" "${file}" "listen_address:" "${listen_address}"
 # rpc_address
 GENERIC_lib_strings_sedStringManipulation "editAfterSubstring" "${file}" "rpc_address:" "${rpc_address}"
+# for version dse-6.0 onwards
+GENERIC_lib_strings_sedStringManipulation "editAfterSubstring" "${file}" "native_transport_address:" "${rpc_address}"
 }
 
 # ---------------------------------------
@@ -194,7 +196,7 @@ cat << EOF >> $file
 dsefs_options:
       enabled: ${mode_dsefs}
       keyspace_name: dsefs
-      work_dir: ${DSEFS_FOLDER_DATA}
+      work_dir: ${DSEFS_FOLDER_WORK}
       public_port: 5598
       private_port: 5599
       data_directories:

@@ -29,7 +29,7 @@ function lib_doStuffRemotely_clusterConf(){
 # the server_id  for this server from the json file - i.e. server_1
 id="${server_id}"
 # the number of clusters this opscenter cluster will store metrics for
-numberOfClusters=$($jqCmd -r '.server_'${id}'.cluster_conf' ${serversJsonPath} | grep 'cluster_' | wc -l)
+numberOfClusters=$(jq -r '.server_'${id}'.cluster_conf' ${serversJsonPath} | grep 'cluster_' | wc -l)
 
 # add [storage_cluster] block for each managed cluster
 for count in $(seq 1 ${numberOfClusters});
@@ -37,16 +37,16 @@ do
 
   ## [1] assign json values to bash variables
 
-  clustername=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.clustername'                    "${serversJsonPath}")
-  username=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.username'                          "${serversJsonPath}")
-  password=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.password'                          "${serversJsonPath}")
-  api_port=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.apiport'                           "${serversJsonPath}")
-  cql_port=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.cqlport'                           "${serversJsonPath}")
-  keyspace=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.keyspace'                          "${serversJsonPath}")
-  keystore=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.keystore'                          "${serversJsonPath}")
-  keystore_password=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.keystore_password'        "${serversJsonPath}")
-  truststore=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.truststore'                      "${serversJsonPath}")
-  truststore_password=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'$count'.truststore_password'    "${serversJsonPath}")
+  clustername=$(jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.clustername'                    "${serversJsonPath}")
+  username=$(jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.username'                          "${serversJsonPath}")
+  password=$(jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.password'                          "${serversJsonPath}")
+  api_port=$(jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.apiport'                           "${serversJsonPath}")
+  cql_port=$(jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.cqlport'                           "${serversJsonPath}")
+  keyspace=$(jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.keyspace'                          "${serversJsonPath}")
+  keystore=$(jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.keystore'                          "${serversJsonPath}")
+  keystore_password=$(jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.keystore_password'        "${serversJsonPath}")
+  truststore=$(jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.truststore'                      "${serversJsonPath}")
+  truststore_password=$(jq -r '.server_'${id}'.cluster_conf.cluster_'$count'.truststore_password'    "${serversJsonPath}")
 
   # -----
 
@@ -70,7 +70,7 @@ do
   ## [4] for list of [cassandra] seed_hosts, make a comma seperated string from a json list
 
   seed_hosts=""
-  seed_hosts=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'${count}'.seedhosts_cassandra[]' "${serversJsonPath}" |
+  seed_hosts=$(jq -r '.server_'${id}'.cluster_conf.cluster_'${count}'.seedhosts_cassandra[]' "${serversJsonPath}" |
   while read -r seed
   do
     seed_hosts="${seed_hosts}, ${seed}"
@@ -85,7 +85,7 @@ do
   ## [5] for list of [storage_cassandra] seed_hosts, make a comma seperated string from a json list
 
   seed_hosts=""
-  seed_hosts=$($jqCmd -r '.server_'${id}'.cluster_conf.cluster_'${count}'.seedhosts_storage_cassandra[]' "${serversJsonPath}" |
+  seed_hosts=$(jq -r '.server_'${id}'.cluster_conf.cluster_'${count}'.seedhosts_storage_cassandra[]' "${serversJsonPath}" |
   while read -r seed
   do
     seed_hosts="${seed_hosts}, ${seed}"

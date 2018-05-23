@@ -10,7 +10,7 @@ keys=$(jq -r '.server_1 | keys[]' ${serversJsonPath})
 
 for id in $(seq 1 ${numberOfServers});
 do
-  
+
   # [1] for this server, loop through its json block and assign values to bash variables
   GENERIC_lib_json_assignValue
   for key in "${!arrayJson[@]}"
@@ -32,7 +32,7 @@ do
   GENERIC_prepare_display_msgColourSimple "INFO-->" "current dse version:       ${result}"
   result=$(lib_doStuffRemotely_getAgentVersion)
   GENERIC_prepare_display_msgColourSimple "INFO-->" "current agent version:     ${result}"
-  
+
   # [5] stop dse + agent running on server
   if [[ "${CLUSTER_STATE}" == "restart" ]]; then
     lib_doStuffRemotely_stopAgent
@@ -50,14 +50,14 @@ do
   GENERIC_lib_doStuffRemotely_checkSoftwareAvailability "1" "true" "java -version" "java unavailable" "" "full"
 
   # [8] handle the flags used to start dse in the correct mode
-  lib_doStuffRemotely_bashProfileAgentStartFlags
-  
+  dseFlags="" && lib_doStuffRemotely_bashProfileAgentStartFlags
+
   # [9] start dse + agent running on server
   if [[ "${CLUSTER_STATE}" == "restart" ]]; then
     if [[ "${dseFlags}" == "" ]]; then
       GENERIC_prepare_display_msgColourSimple "INFO-->" "starting dse in mode:      storage only"
     else
-      GENERIC_prepare_display_msgColourSimple "INFO-->" "starting dse in mode:      storage + flags ${flags}"
+      GENERIC_prepare_display_msgColourSimple "INFO-->" "starting dse in mode:      storage + flags ${dseFlags}"
     fi
     lib_doStuffRemotely_startDse
     GENERIC_prepare_display_msgColourSimple   "INFO-->" "starting agent:            ~15s"
@@ -65,7 +65,7 @@ do
     GENERIC_prepare_display_msgColourSimple   "INFO-->" "starting agent:            ~15s"
   fi
   lib_doStuffRemotely_startAgent
-  
+
 done
 }
 

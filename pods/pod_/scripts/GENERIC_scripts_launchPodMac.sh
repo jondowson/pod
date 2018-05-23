@@ -34,12 +34,13 @@ target_folder=${TARGET_FOLDER}
 
 # -----
 
-# running jq within remote script requires full path
-if [[ "${os}" == "Mac" ]]; then
-  jqCmd="/usr/local/Cellar/jq/1.5_3/bin/jq"
-else
-  jqCmd-"${jqFilePath}"
-fi
+# [3.1] jq - bash jason parser
+jqFolderPath="/usr/local/Cellar/jq/1.5_3/bin/"
+jqFilePath="${jqFolderPath}jq"
+GENERIC_lib_checks_fileExists "launch-pod#3.1.1" "true" "${jqFilePath}"
+# [3.2] ensure third party packages are executable
+chmod -R 777 "${podHomePath}/third_party/"
+PATH=${jqFolderPath}:$PATH
 
 # -----
 

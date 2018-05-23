@@ -21,7 +21,7 @@ do
   GENERIC_prepare_display_msgColourSimple "INFO-->" "launch pod remotely:      ${target_folder}POD_SOFTWARE/POD/pod/pods/pod_/scripts/GENERIC_scripts_launchPod.sh"
 
   # [5] call remote launch script
-  ssh -ttq -o "BatchMode yes" -o "ForwardX11=no" ${user}@${pub_ip} "chmod -R 777 ${target_folder}POD_SOFTWARE/POD && ${target_folder}POD_SOFTWARE/POD/pod/pods/pod_/scripts/GENERIC_scripts_launchPod.sh" #> /dev/null 2>&1 &   # run in parallel
+  ssh -ttq -o "BatchMode yes" -o "ForwardX11=no" ${user}@${pub_ip} "chmod -R 777 ${target_folder}POD_SOFTWARE/POD && ${target_folder}POD_SOFTWARE/POD/pod/pods/pod_/scripts/GENERIC_scripts_launchPod.sh" > /dev/null 2>&1 &   # run in parallel
   # grab pid and capture owner in array
   pid=$!
   GENERIC_prepare_display_msgColourSimple "INFO-->"  "pid id:                   ${yellow}${pid}${reset}"

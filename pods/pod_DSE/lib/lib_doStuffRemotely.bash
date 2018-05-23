@@ -21,7 +21,7 @@ lib_doStuffRemotely_agentAddressYaml
 # [6] rename this redundant and meddlesome file!!
 lib_doStuffRemotely_cassandraTopologyProperties
 
-# [7] create stop and start scripts that can be called from opscenter gui 
+# [7] create stop and start scripts that can be called from opscenter gui
 lib_doStuffRemotely_agentStopCassandra
 lib_doStuffRemotely_agentStartCassandra
 
@@ -79,14 +79,17 @@ function lib_doStuffRemotely_stopDse(){
 ## record result of commands in array for later reporting
 
 stop_cmd="dse cassandra-stop"
+tmpStatusFile=${podHomePath}.cmdOutput
 
 # try twice to stop dse
 retry=1
 until [[ "${retry}" == "3" ]]
 do
-  GENERIC_prepare_display_msgColourSimple   "INFO-->"   "stopping dse:              gracefully"
-  output=$(ssh -q -i ${ssh_key} ${user}@${pub_ip} "source ~/.bash_profile && ${stop_cmd}")
-  if [[ -z "${output}" ]]; then
+  GENERIC_prepare_display_msgColourSimple   "INFO-->"  "stopping dse:              gracefully"
+  command=$(ssh -q -i ${ssh_key} ${user}@${pub_ip} "source ~/.bash_profile && ${stop_cmd}" &> ${tmpStatusFile})
+  status=$?
+  output=$(cat ${tmpStatusFile} && rm -rf ${tmpStatusFile})
+  if [[ "${status}" == "0" ]] && [[ "${output}" == "" ]]; then
     GENERIC_prepare_display_msgColourSimple "INFO-->" "${green}0${white}"
     retry=2
   elif [[ "${output}" == *"Unable to find DSE process"* ]]; then
@@ -94,7 +97,7 @@ do
     retry=2
   else
     GENERIC_prepare_display_msgColourSimple "INFO-->" "${white}(retry ${retry}/2)"
-    GENERIC_prepare_display_msgColourSimple "INFO-->" "killing dse:                 ungracefully"
+    GENERIC_prepare_display_msgColourSimple "INFO-->" "killing dse:                ungracefully"
     ssh -q -i ${ssh_key} ${user}@${pub_ip} "ps aux | grep -v grep | grep -v '\-p\ pod_DSE' | grep -v '\--pod\ pod_DSE' | grep cassandra | awk {'print \$2'} | xargs kill -9 &>/dev/null"
   fi
   arrayStopDse["stop_dse_at_${tag}"]="${status};${pub_ip}"
@@ -225,7 +228,7 @@ printf "%s\n" "${runningVersion}"
 
 function lib_doStuffRemotely_agentStartCassandra(){
 
-## writes a dse start script in agent bin folder that can be used directly from opscenter 
+## writes a dse start script in agent bin folder that can be used directly from opscenter
 
 file="${AGENT_FOLDER_UNTAR_BIN}start-cassandra"
 rm -rf ${file}
@@ -252,7 +255,7 @@ EOF
 
 function lib_doStuffRemotely_agentStopCassandra(){
 
-## writes a dse start script in agent bin folder that can be used directly from opscenter 
+## writes a dse start script in agent bin folder that can be used directly from opscenter
 
 file="${AGENT_FOLDER_UNTAR_BIN}stop-cassandra"
 rm -rf ${file}

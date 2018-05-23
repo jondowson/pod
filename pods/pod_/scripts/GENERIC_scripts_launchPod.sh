@@ -42,18 +42,16 @@ else
   # -----
 
   # [3.1] jq - bash jason parser
-  jqFolderPath="${podHomePath}/third_party/jq-linux64/"
-  jqFilePath="${jqFolderPath}jq"
+  if [[ "${os}" == "Mac" ]]; then
+    jqFolderPath="/usr/local/Cellar/jq/1.5_3/bin/"
+    jqFilePath="${jqFolderPath}jq"
+  else
+    jqFolderPath="${podHomePath}/third_party/jq-linux64/"
+    jqFilePath="${jqFolderPath}jq"
+  fi
   # [3.2] ensure third party packages are executable
   chmod -R 777 "${podHomePath}/third_party/"
   PATH=${jqFolderPath}:$PATH
-
-  # running jq within remote script requires full path
-  if [[ "${os}" == "Mac" ]]; then
-    jqCmd="/usr/local/Cellar/jq/1.5_3/bin/jq"
-  else
-    jqCmd="${jqFilePath}"
-  fi
 
   # -----
 
@@ -100,7 +98,7 @@ else
   # -----
 
   # [2] run the remote functions for this pod
-  
+
   lib_doStuffRemotely_${WHICH_POD}
 
   # -----
