@@ -31,7 +31,7 @@ temp_folder="${INSTALL_FOLDER}TEMP/"
 
 # set to true to apply the [storage_cassandra] block defined in the server json, to Opscenter's /conf/clusters/cluster_name.conf config file
 # to use ssl - add keystore/truststore paths to the json file, otherwise leave all empty!
-apply_storage_cluster="true"
+apply_storage_cluster="false"
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 

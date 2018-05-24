@@ -251,3 +251,37 @@ if [ -n "$SPARK_FOLDER_MASTERLOG" ];      then ${dynamic_cmd} "${lineNumber}iexp
 if [ -n "$SPARK_FOLDER_ALWAYSONSQLLOG" ]; then ${dynamic_cmd} "${lineNumber}iexport ALWAYSON_SQL_LOG_DIR=${SPARK_FOLDER_ALWAYSONSQLLOG}" ${file};((lineNumber++));fi
 ${dynamic_cmd} "${lineNumber}i#>>>>>END-ADDED-BY__${WHICH_POD}@${label}"                                                                 ${file}
 }
+
+# ---------------------------------------
+
+function lib_doStuffLocally_dseGremlinRemoteYaml(){
+
+## add graph ips to remote.yaml to allow gremlin-console to connect
+
+# for each server that has 'true' for graph in json - add its pub_ip to a list 
+graphNodesList=""
+for id in $(seq 1 ${numberOfServers});
+do
+  serverModeGraph=$(jq -r '.server_'${id}'.'mode.graph ${serversJsonPath})
+  serverPubIp=$(jq -r '.server_'${id}'.'pub_ip ${serversJsonPath})
+  if [[ "${serverModeGraph}" == "true" ]]; then
+    if [[ "${graphNodesList}" == "" ]]; then
+      graphNodesList=${serverPubIp}
+    else
+      graphNodesList=${graphNodesList},${serverPubIp}
+    fi
+  fi
+done
+
+if [[ "${graphNodesList}" == "" ]]; then 
+  graphNodesList="$(printf %q [localhost])"
+else
+  graphNodesList="$(printf %q [${graphNodesList}])"
+fi
+
+# edit the graph config file with the list of graph nodes that can be connected to
+file="${TMP_FOLDER_BUILDFILE}resources/graph/gremlin-console/conf/remote.yaml"
+
+# edit hosts entry
+GENERIC_lib_strings_sedStringManipulation "editAfterSubstring" "${file}" "hosts:" "${graphNodesList}"
+}

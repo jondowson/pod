@@ -7,12 +7,12 @@
     "pub_ip": "192.168.1.83",
     "cluster_conf":{
       "cluster_1":{
-        "clustername": "dse-5.0.12_practice",
+        "clustername": "dse-6.0.0_practice",
         "username": "cassandra",
         "password": "cassandra",
         "apiport": "9160",
         "cqlport": "9042",
-        "keyspace": "Opscenter_dse-5.0.12_practice",
+        "keyspace": "Opscenter_dse-6.0.0_practice",
         "keystore": "",
         "keystore_password": "",
         "truststore": "",

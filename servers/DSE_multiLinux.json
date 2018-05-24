@@ -13,9 +13,9 @@
       "dc": "dc1",
       "rack": "rack1",
       "mode": {
-        "search": "false",
+        "search": "true",
         "analytics": "true",
-        "graph": "false",
+        "graph": "true",
         "dsefs": "true"
       },
       "cass_data": [
@@ -41,10 +41,10 @@
       "dc": "dc1",
       "rack": "rack1",
       "mode": {
-        "search": "false",
+        "search": "true",
         "analytics": "true",
-        "graph": "false",
-        "dsefs": "false"
+        "graph": "true",
+        "dsefs": "true"
       },
       "cass_data": [
         "/home/greta/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/sstables/",
@@ -69,10 +69,10 @@
       "dc": "dc1",
       "rack": "rack1",
       "mode": {
-        "search": "false",
+        "search": "true",
         "analytics": "true",
-        "graph": "false",
-        "dsefs": "false"
+        "graph": "true",
+        "dsefs": "true"
       },
       "cass_data": [
         "/home/frieda/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/sstables/",

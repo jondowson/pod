@@ -21,7 +21,8 @@ do
   arrayBuildLocalFunctions[7]="lib_doStuffLocally_cassandraYaml_cassData"
   arrayBuildLocalFunctions[8]="GENERIC_lib_build_jqListToArray \"dsefs_data\""
   arrayBuildLocalFunctions[9]="lib_doStuffLocally_dseYaml_dsefsData"
-  arrayBuildLocalFunctions[10]="lib_doStuffRemotely_bashProfileAgentStartFlags"
+  arrayBuildLocalFunctions[10]="lib_doStuffLocally_dseGremlinRemoteYaml"
+  arrayBuildLocalFunctions[11]="lib_doStuffRemotely_bashProfileAgentStartFlags"
 
   # [2] call the generic buildSend task
   GENERIC_task_buildSend
