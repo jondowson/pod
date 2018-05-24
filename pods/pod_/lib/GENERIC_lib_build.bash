@@ -94,8 +94,10 @@ function GENERIC_lib_build_finishUp(){
 
 ## tasks to finish up the build stage
 
-# assign the local target_folder value back to the local copy of the misc/.suitcase
-mv ${podHomePath}/.suitcase.tmp "${SUITCASE_FILE_PATH}"
+# assign if exists the local target_folder value back to the local copy of the misc/.suitcase
+if [[ -f ${podHomePath}/.suitcase.tmp ]]; then 
+  mv ${podHomePath}/.suitcase.tmp "${SUITCASE_FILE_PATH}"
+fi
 
 # delete the temporary work folder
 rm -rf "${tmp_folder}"
