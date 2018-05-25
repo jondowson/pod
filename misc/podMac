@@ -38,9 +38,11 @@ GENERIC_prepare_misc_identifyOs;
 GENERIC_prepare_misc_sourceGeneric;
 # [2.5] set all generic pod_ default settings
 GENERIC_prepare_defaults_set;
-# [2.6] change local permissions to assist later pod folder copy
+# [2.6] define tags for formatting display messages
+GENERIC_prepare_display_formatting
+# [2.7] change local permissions to assist later pod folder copy
 chmod -R 777 ${podHomePath}/.git;
-# [2.7] set some handy generic flags
+# [2.8] set some handy generic flags
 flagOne="false";
 flagTwo="false";
 

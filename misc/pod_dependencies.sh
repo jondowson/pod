@@ -29,6 +29,9 @@ GENERIC_prepare_misc_identifyOs;
 GENERIC_prepare_misc_sourceGeneric;
 # set all generic pod_ default settings
 GENERIC_prepare_defaults_set;
+# define tags for formatting display messages
+GENERIC_prepare_display_formatting
+# pod name for display and tags
 WHICH_POD="pod_SETUP";
 
 # ////////////////////////////////////////// INSTALL MAC DEPENDENCY MANAGER

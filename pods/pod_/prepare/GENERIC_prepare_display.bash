@@ -1,5 +1,7 @@
 ## Setup colors and text effects
 
+function GENERIC_prepare_display_formatting(){
+
 black=`tput setaf 0`;
 red=`tput setaf 1`;
 green=`tput setaf 2`;
@@ -20,6 +22,7 @@ italic=$(tput sitm);
 tick="${b}${green}$(printf '\xE2\x9C\x94')${reset}";
 cross="${b}${red}$(printf '\xE2\x9C\x99')${reset}";
 u="_";
+}
 
 # ---------------------------------------
 
