@@ -8,13 +8,13 @@ function GENERIC_lib_strings_ifsStringDelimeter(){
 #  echo ${!whatever}
 # done
 
-delim=$1
-string=$2
+delim=$1;
+string=$2;
 
-IFS=${delim} read -r -a array <<< "${string}"
-unset IFS
-arraySize=${#array[@]}
-}
+IFS=${delim} read -r -a array <<< "${string}";
+unset IFS;
+arraySize=${#array[@]};
+};
 
 # ---------------------------------------
 
@@ -24,23 +24,23 @@ function GENERIC_lib_strings_expansionDelimiter(){
 ## e.g. pod_strings_expansionDelimiter "this;that;other" ";" "2"
 ##      ---> _D1_="this" and _D2_="that" and _D3_="other"
 
-string=${1}
-delim=${2}
-noOfDelims=${3}
+string=${1};
+delim=${2};
+noOfDelims=${3};
 
 if [[ "${noOfDelims}" == "1" ]]; then
-  _D1_=${string%;*}
-  _D2_=${string#*;}
+  _D1_=${string%;*};
+  _D2_=${string#*;};
 elif [[ "${noOfDelims}" == "2" ]]; then
-  _D1_=${string%%${delim}*}
-  _D3_=${string##*${delim}}
-  _a_=${string#*;}
-  _D2_=${_a_%${delim}*}
+  _D1_=${string%%${delim}*};
+  _D3_=${string##*${delim}};
+  _a_=${string#*;};
+  _D2_=${_a_%${delim}*};
 else
-  GENERIC_prepare_display_msgColourSimple "ERROR-->" "functions.sh | pod_strings_expansionDelimiter --> 'Unsupported no. of delimeted values'"
+  GENERIC_prepare_display_msgColourSimple "ERROR-->" "functions.sh | pod_strings_expansionDelimiter --> 'Unsupported no. of delimeted values'";
   exit 1;
-fi
-}
+fi;
+};
 
 # ---------------------------------------
 
@@ -48,16 +48,16 @@ function GENERIC_lib_strings_sedStringManipulation(){
 
 ## search on substrings in order to add/remove/edit strings in files using sed
 
-sedFunction="${1}"
-file="${2}"
-searchString="${3}"
-newValue="${4}"
+sedFunction="${1}";
+file="${2}";
+searchString="${3}";
+newValue="${4}";
 
 if [[ "${os}" == "Mac" ]];then
-  cmd=$(printf "%s" "/usr/local/bin/gsed -i")
+  cmd=$(printf "%s" "/usr/local/bin/gsed -i");
 else
-  cmd=$(printf "%s" "sed -i")
-fi
+  cmd=$(printf "%s" "sed -i");
+fi;
 
 case "${1}" in
   "editAfterSubstring" )
@@ -82,8 +82,8 @@ case "${1}" in
       ${cmd} -e "s,${searchString}.*,${newValue}," -i ${file} ;;
   "removeLastLineFromFile" )
       ${cmd} "$ d" ${file} ;;
-esac
-}
+esac;
+};
 
 # ---------------------------------------
 
@@ -94,26 +94,26 @@ function GENERIC_lib_strings_removePodBlockAndEmptyLines(){
 ## GENERIC_lib_strings_removePodBlockAndEmptyLines "thisFile" "pod_XYZ@<label>"
 
 # file to search and the pod block label
-file="${1}"
-blockLabel="${2}"
+file="${1}";
+blockLabel="${2}";
 
 # define block to remove from file
-beginBlockTag="#>>>>>BEGIN-ADDED-BY__${blockLabel}"
-endBlockTag="#>>>>>END-ADDED-BY__${blockLabel}"
+beginBlockTag="#>>>>>BEGIN-ADDED-BY__${blockLabel}";
+endBlockTag="#>>>>>END-ADDED-BY__${blockLabel}";
 
 # remove any empty blank lines at end of file
-a=$(<$file); printf "%s\n" "$a" > $file
+a=$(<$file); printf "%s\n" "$a" > $file;
 
 # find line numbers of begin and end of block
-beginMatch=$(sed -n /"${beginBlockTag}"/= "${file}")
-endMatch=$(sed -n /"${endBlockTag}"/= "${file}")
+beginMatch=$(sed -n /"${beginBlockTag}"/= "${file}");
+endMatch=$(sed -n /"${endBlockTag}"/= "${file}");
 
 # if the block already exists - determine its position and also delete any blank lines following it (leave one blank line if any exist)
 if [[ ${beginMatch} != "" ]] && [[ ${endMatch} != "" ]]; then
 
   # identify continous blank lines after inserted block and delete all but one
-  start=$(($endMatch+1))
-  finish=$(($start+20)) # unlikely to be close to 20 blank lines but increase number if necessary !!
+  start=$(($endMatch+1));
+  finish=$(($start+20));    # unlikely to be close to 20 blank lines but increase number if necessary !!
 
   for i in `seq $start $finish`
   do
@@ -121,27 +121,27 @@ if [[ ${beginMatch} != "" ]] && [[ ${endMatch} != "" ]]; then
     if [[ ! $(sed "${i}q;d" "${file}") == "" ]]; then
 
       if [[ "${i}" == "${start}" ]]; then
-        lastEntry=${endMatch}
+        lastEntry=${endMatch};
       else
-        lastEntry=$(($i-1))
+        lastEntry=$(($i-1));
       fi
       break;
     else
-      lastEntry=${endMatch}
-    fi
-  done
+      lastEntry=${endMatch};
+    fi;
+  done;
 
-  IFS='%'
-  dynamic_cmd="$(GENERIC_lib_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')"
-  unset IFS
+  IFS='%';
+  dynamic_cmd="$(GENERIC_lib_misc_chooseOsCommand 'gsed -i' 'sed -i' 'sed -i' 'sed -i')";
+  unset IFS;
 
   # delete any existing block and unneccessary empty lines
-  ${dynamic_cmd} "${beginMatch},${lastEntry}d" ${file}
+  ${dynamic_cmd} "${beginMatch},${lastEntry}d" ${file};
 
   # remove any empty blank lines at end of file
-  a=$(<$file); printf "%s\n" "$a" > $file
-fi
-}
+  a=$(<$file); printf "%s\n" "$a" > $file;
+fi;
+};
 
 # ---------------------------------------
 
@@ -149,15 +149,15 @@ function GENERIC_lib_strings_addTrailingSlash(){
 
 ## add trailing slash if needed
 
-STR="${1}"
+STR="${1}";
 
-length=${#STR}
-last_char=${STR:length-1:1}
+length=${#STR};
+last_char=${STR:length-1:1};
 
-[[ $last_char != "/" ]] && STR="$STR/"; :
+[[ $last_char != "/" ]] && STR="$STR/";
 
-printf "%s" "$STR"
-}
+printf "%s" "$STR";
+};
 
 # ---------------------------------------
 
@@ -165,12 +165,12 @@ function GENERIC_lib_strings_removeTrailingSlash(){
 
 ## remove trailing slash if needed
 
-STR="${1}"
+STR="${1}";
 
-length=${#STR}
-last_char=${STR:length-1:1}
+length=${#STR};
+last_char=${STR:length-1:1};
 
-[[ $last_char == "/" ]] && STR=${STR:0:length-1}; :
+[[ $last_char == "/" ]] && STR=${STR:0:length-1};
 
-printf "%s" "$STR"
-}
+printf "%s" "$STR";
+};

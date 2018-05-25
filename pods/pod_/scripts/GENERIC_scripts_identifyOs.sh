@@ -8,19 +8,19 @@ function GENERIC_scripts_identifyOs(){
 
 ## determine OS of computer
 
-os=$(uname -a)
+os=$(uname -a);
 if [[ ${os} == *"Darwin"* ]]; then
-  os="Mac"
+  os="Mac";
 elif [[ ${os} == *"Ubuntu"* ]]; then
-  os="Ubuntu"
+  os="Ubuntu";
 elif [[ "$(cat /etc/system-release-cpe)" == *"centos"* ]]; then
-  os="Centos"
+  os="Centos";
 elif [[ "$(cat /etc/system-release-cpe)" == *"redhat"* ]]; then
-  os="Redhat"
+  os="Redhat";
 else
-  os="Unrecognised"
-fi
-}
+  os="Unrecognised";
+fi;
+};
 
-GENERIC_scripts_identifyOs
-printf "%s\n" "${os}"
+GENERIC_scripts_identifyOs;
+printf "%s\n" "${os}";

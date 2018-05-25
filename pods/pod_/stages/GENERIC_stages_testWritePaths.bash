@@ -8,14 +8,15 @@ JSONPATHS_WRITETEST="${2}"
 
 for id in $(seq 1 ${numberOfServers});
 do
-  # [1] assign json variable to bash variables
-  tag=$(jq             -r '.server_'${id}'.tag'             "${serversJsonPath}")
-  user=$(jq            -r '.server_'${id}'.user'            "${serversJsonPath}")
-  ssh_key=$(jq          -r '.server_'${id}'.ssh_key'          "${serversJsonPath}")
-  target_folder=$(jq   -r '.server_'${id}'.target_folder'   "${serversJsonPath}")
-  pub_ip=$(jq           -r '.server_'${id}'.pub_ip'           "${serversJsonPath}")
-  # add trailing '/' to path if not present
-  target_folder=$(GENERIC_lib_strings_addTrailingSlash "${target_folder}")
+
+  # [1] for this server, loop through its json block and assign values to bash variables
+  GENERIC_lib_json_assignValue;
+  for key in "${!arrayJson[@]}"
+  do
+    declare $key=${arrayJson[$key]} &>/dev/null;
+  done;
+  # add trailing '/' to target_folder path if not present
+  target_folder="$(GENERIC_lib_strings_addTrailingSlash ${target_folder})";
 
   # [2] source the build_settings file after assigning the target_folder for the current server in the loop
   TARGET_FOLDER="${target_folder}"

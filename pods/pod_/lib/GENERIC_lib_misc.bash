@@ -3,24 +3,24 @@ function GENERIC_lib_misc_chooseOsCommand(){
 ## dynamically choose command based on the OS
 ## e.g. generic_dynamic_os_command "gsed -i" "sed -i" "sed -i" "sed -i"
 
-mac_cmd=${1}
-ubuntu_cmd=${2}
-centos_cmd=${3}
-redhat_cmd=${4}
+mac_cmd=${1};
+ubuntu_cmd=${2};
+centos_cmd=${3};
+redhat_cmd=${4};
 
 if [[ "${os}" == "Mac" ]];then
-  printf "%s" /usr/local/bin/${mac_cmd}
+  printf "%s" /usr/local/bin/${mac_cmd};
 elif [[ "${os}" == "Ubuntu" ]];then
-  printf "%s" ${ubuntu_cmd}
+  printf "%s" ${ubuntu_cmd};
 elif [[ "${os}" == "Centos" ]];then
-  printf "%s" ${centos_cmd}
+  printf "%s" ${centos_cmd};
 elif [[ "${os}" == "Redhat" ]];then
-  printf "%s" ${redhat_cmd}
+  printf "%s" ${redhat_cmd};
 else
-  GENERIC_prepare_display_msgColourSimple "ERROR-->" "GENERIC_lib_misc.bash | generic_dynamic_os_command --> 'Unsupported OS'"
+  GENERIC_prepare_display_msgColourSimple "ERROR-->" "GENERIC_lib_misc.bash | generic_dynamic_os_command --> 'Unsupported OS'";
   exit 1;
-fi
-}
+fi;
+};
 
 # ---------------------------------------
 
@@ -28,8 +28,8 @@ function GENERIC_lib_misc_timestamp(){
 
 ## generate a timestamp
 
-date +%F_%T
-}
+date +%F_%T;
+};
 
 # ---------------------------------------
 
@@ -37,20 +37,20 @@ function GENERIC_lib_misc_timecount(){
 
 ## display a timecount on screen
 
-min=0
-sec=${1}
-message=${2}
-printf "%s\n" "${2}"
+min=0;
+sec=${1};
+message=${2};
+printf "%s\n" "${2}";
 while [ $min -ge 0 ]; do
       while [[ $sec -ge 0 ]]; do
-          echo -ne "00:0$min:$sec\033[0K\r"
-          sec=$((sec-1))
-          sleep 1
-      done
-      sec=59
-      min=$((min-1))
-done
-}
+          echo -ne "00:0$min:$sec\033[0K\r";
+          sec=$((sec-1));
+          sleep 1;
+      done;
+      sec=59;
+      min=$((min-1));
+done;
+};
 
 # ---------------------------------------
 
@@ -58,6 +58,6 @@ function GENERIC_lib_misc_timePod(){
 
 ## calculate pod runtime
 
-pod_end=$(date +%s)
-diff=$((pod_end - script_start))
-}
+pod_end=$(date +%s);
+diff=$((pod_end - script_start));
+};

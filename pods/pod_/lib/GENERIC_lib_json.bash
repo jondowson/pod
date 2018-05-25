@@ -5,44 +5,44 @@ function GENERIC_lib_json_writePathTest(){
 ## e.g. "/path/to/here;10;100"
 
 # the json element to find
-delim="${1}"
-element="${2}"
+delim="${1}";
+element="${2}";
 
 # if path contains ${BUILD_FOLDER} variable then substitute in the user supplied value
-folders=$(jq -r --arg bf "${BUILD_FOLDER}" '.server_'${id}'.'${element}'[] | sub("\\${BUILD_FOLDER}";$bf)' "${serversJsonPath}")
+folders=$(jq -r --arg bf "${BUILD_FOLDER}" '.server_'${id}'.'${element}'[] | sub("\\${BUILD_FOLDER}";$bf)' "${serversJsonPath}");
 # for each path nested within this element
 for folder in ${folders}
 do
   # check if nested path is itself a delimited string
-  GENERIC_lib_strings_ifsStringDelimeter "${delim}" "$folder"
+  GENERIC_lib_strings_ifsStringDelimeter "${delim}" "$folder";
   if [[ ${arraySize} -gt "1" ]]; then
     path=${array[0]} # grab the path which should be the first part of the delimited string
-    status="999"
+    status="999";
     if [[ "${status}" != "0" ]]; then
-      retry=0
+      retry=0;
       until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
       do
-        ssh -q -o ForwardX11=no -i ${ssh_key} ${user}@${pub_ip} "mkdir -p ${path}dummyFolder && rm -rf ${path}dummyFolder" exit
-        status=${?}
-        arrayTestWrite2[${path}]="${status};${tag}"
-        ((retry++))
-      done
-    fi
+        ssh -q -o ForwardX11=no -i ${ssh_key} ${user}@${pub_ip} "mkdir -p ${path}dummyFolder && rm -rf ${path}dummyFolder" exit;
+        status=${?};
+        arrayTestWrite2[${path}]="${status};${tag}";
+        ((retry++));
+      done;
+    fi;
   else
-    status="999"
+    status="999";
     if [[ "${status}" != "0" ]]; then
-      retry=0
+      retry=0;
       until [[ "${retry}" == "2" ]] || [[ "${status}" == "0" ]]
       do
-        ssh -q -o ForwardX11=no -i ${ssh_key} ${user}@${pub_ip} "mkdir -p ${folder}dummyFolder && rm -rf ${folder}dummyFolder" exit
-        status=${?}
-        arrayTestWrite2[${folder}]="${status};${tag}"
-        ((retry++))
-      done
-    fi
-  fi
-done
-}
+        ssh -q -o ForwardX11=no -i ${ssh_key} ${user}@${pub_ip} "mkdir -p ${folder}dummyFolder && rm -rf ${folder}dummyFolder" exit;
+        status=${?};
+        arrayTestWrite2[${folder}]="${status};${tag}";
+        ((retry++));
+      done;
+    fi;
+  fi;
+done;
+};
 
 # ---------------------------------------
 
@@ -72,61 +72,62 @@ function GENERIC_lib_json_assignValue(){
 # -----
 
 # dynamically select the correct command for the OS
-IFS='%'
-dynamic_cmd="$(GENERIC_lib_misc_chooseOsCommand 'gsed -r' 'sed -r' 'sed -r' 'sed -r')"
-unset IFS
+IFS='%';
+dynamic_cmd="$(GENERIC_lib_misc_chooseOsCommand 'gsed -r' 'sed -r' 'sed -r' 'sed -r')";
+unset IFS;
 
 # -----
-
+# identify all keys for this json file from the first server block
+keys=$(jq -r '.server_1 | keys[]' ${serversJsonPath})
 for k in $keys
 do
   # declare a variable of the same name and assign its value to it
-  arrayJson[$k]="$(jq -r '.server_'${id}'.'$k ${serversJsonPath})"
+  arrayJson[$k]="$(jq -r '.server_'${id}'.'$k ${serversJsonPath})";
 
   # check if key has nested key value pairs - ignore if it is empty or if it is a list (then it will contain [0])
-  nestedCheck=$(jq -r '.server_'${id}'.'$k' | paths' ${serversJsonPath})
+  nestedCheck=$(jq -r '.server_'${id}'.'$k' | paths' ${serversJsonPath});
   if [[ $nestedCheck != *[0]* ]] && [[ $nestedCheck != "" ]]; then
 
     # remove brackets, quotes and spaces + then deduplicate in preparation to loop through each nested key
-    nestedKeys=$(echo $nestedCheck | tr -d '[' | tr -d ']' | tr -d '"' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
-    nestedKeys=$(echo $nestedKeys  | sed 's/, *.[[:alnum:]]*//g' | ${dynamic_cmd} ':a; s/\b([[:alnum:]]+)\b(.*)\b\1\b/\1\2/g; ta; s/(, )+/, /g; s/, *$//')
+    nestedKeys=$(echo $nestedCheck | tr -d '[' | tr -d ']' | tr -d '"' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//');
+    nestedKeys=$(echo $nestedKeys  | sed 's/, *.[[:alnum:]]*//g' | ${dynamic_cmd} ':a; s/\b([[:alnum:]]+)\b(.*)\b\1\b/\1\2/g; ta; s/(, )+/, /g; s/, *$//');
 
     # for each level two key
     for nk in $nestedKeys
     do
       # declare a variable of the same name and assign its value to it - using underscore between nested levels for variable name
-      arrayJson[$k$u$nk]="$(jq -r '.server_'${id}'.'$k'.'$nk ${serversJsonPath})"
+      arrayJson[$k$u$nk]="$(jq -r '.server_'${id}'.'$k'.'$nk ${serversJsonPath})";
 
       # check if key has nested key value pairs - ignore if it is empty or if it is a list (then it will contain [0])
-      nestedCheckTwo=$(jq -r '.server_'${id}'.'$k'.'$nk' | paths' ${serversJsonPath})
+      nestedCheckTwo=$(jq -r '.server_'${id}'.'$k'.'$nk' | paths' ${serversJsonPath});
       if [[ $nestedCheckTwo != *[0]* ]] && [[ $nestedCheckTwo != "" ]]; then
 
         # remove brackets, quotes and spaces + then deduplicate in preparation to loop through each nested key
-        nestedKeysTwo=$(echo $nestedCheckTwo |  tr -d '[' | tr -d ']' | tr -d '"' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
-        nestedKeysTwo=$(echo $nestedKeysTwo  | sed 's/, *.[[:alnum:]]*//g' | ${dynamic_cmd} ':a; s/\b([[:alnum:]]+)\b(.*)\b\1\b/\1\2/g; ta; s/(, )+/, /g; s/, *$//')
+        nestedKeysTwo=$(echo $nestedCheckTwo |  tr -d '[' | tr -d ']' | tr -d '"' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//');
+        nestedKeysTwo=$(echo $nestedKeysTwo  | sed 's/, *.[[:alnum:]]*//g' | ${dynamic_cmd} ':a; s/\b([[:alnum:]]+)\b(.*)\b\1\b/\1\2/g; ta; s/(, )+/, /g; s/, *$//');
 
         # for each level three key
         for nnk in $nestedKeysTwo
         do
           # declare a variable of the same name and assign its value to it - using underscore between nested levels for variable name
-          arrayJson[$k$u$nk$u$nnk]="$(jq -r '.server_'${id}'.'$k'.'$nk'.'$nnk ${serversJsonPath})"
+          arrayJson[$k$u$nk$u$nnk]="$(jq -r '.server_'${id}'.'$k'.'$nk'.'$nnk ${serversJsonPath})";
           # check if key has nested key value pairs - ignore if it is empty or if it is a list (then it will contain [0])
-          nestedCheckThree=$(jq -r '.server_'${id}'.'$k'.'$nk'.'$nnk' | paths' ${serversJsonPath})
+          nestedCheckThree=$(jq -r '.server_'${id}'.'$k'.'$nk'.'$nnk' | paths' ${serversJsonPath});
           if [[ $nestedCheckThree != *[0]* ]] && [[ $nestedCheckThree != "" ]]; then
 
             # remove brackets, quotes and spaces + then deduplicate in preparation to loop through each nested key
-            nestedKeysThree=$(echo $nestedCheckThree |  tr -d '[' | tr -d ']' | tr -d '"' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
-            nestedKeysThree=$(echo $nestedKeysThree  | sed 's/, *.[[:alnum:]]*//g' | ${dynamic_cmd} ':a; s/\b([[:alnum:]]+)\b(.*)\b\1\b/\1\2/g; ta; s/(, )+/, /g; s/, *$//')
+            nestedKeysThree=$(echo $nestedCheckThree |  tr -d '[' | tr -d ']' | tr -d '"' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//');
+            nestedKeysThree=$(echo $nestedKeysThree  | sed 's/, *.[[:alnum:]]*//g' | ${dynamic_cmd} ':a; s/\b([[:alnum:]]+)\b(.*)\b\1\b/\1\2/g; ta; s/(, )+/, /g; s/, *$//');
 
             # for each level four key
             for nnnk in $nestedKeysThree
             do
-              arrayJson[$k$u$nk$u$nnk$u$nnnk]="$(jq -r '.server_'${id}'.'$k'.'$nk'.'$nnk'.'$nnnk ${serversJsonPath})"
-            done
-          fi
-        done
-      fi
-    done
-  fi
-done
-}
+              arrayJson[$k$u$nk$u$nnk$u$nnnk]="$(jq -r '.server_'${id}'.'$k'.'$nk'.'$nnk'.'$nnnk ${serversJsonPath})";
+            done;
+          fi;
+        done;
+      fi;
+    done;
+  fi;
+done;
+};
