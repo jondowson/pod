@@ -1,11 +1,11 @@
 #!/bin/bash
 
-POD_VERSION="1.6.1"
-script_name="pod"
-script_author="JRD"
-script_about="launch a chosen pod with passed flags"
-script_start=$(date +%s)
-podInput="$@"
+POD_VERSION="1.6.1";
+script_name="pod";
+script_author="JRD";
+script_about="launch a chosen pod with passed flags";
+script_start=$(date +%s);
+podInput="$@";
 
 # ////////////////////////////////////////// DISCOVER PATHS
 
@@ -13,14 +13,14 @@ podInput="$@"
 ## [1] discover pod path and assign TARGET_FOLDER
 
 # [1.1] discover pod path
-parentPath=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
-cd "${parentPath}"
-podHomePath="$(pwd)"
+parentPath=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P );
+cd "${parentPath}";
+podHomePath="$(pwd)";
 
 # [1.2] establish TARGET_FOLDER on this machine running pod (parent folder to POD_SOFTWARE)
 
-LOCAL_TARGET_FOLDER=$(printf $parentPath | sed 's,POD_SOFTWARE.*,,')
-TARGET_FOLDER="${LOCAL_TARGET_FOLDER}"
+LOCAL_TARGET_FOLDER=$(printf $parentPath | sed 's,POD_SOFTWARE.*,,');
+TARGET_FOLDER="${LOCAL_TARGET_FOLDER}";
 
 
 # ////////////////////////////////////////// GENERIC PREPERATION (pod_)
@@ -29,39 +29,39 @@ TARGET_FOLDER="${LOCAL_TARGET_FOLDER}"
 ## [2] generic pod_ preparation
 
 # [2.1] source generic pod_ preperation script
-source pods/pod_/prepare/GENERIC_prepare_misc.bash
+source pods/pod_/prepare/GENERIC_prepare_misc.bash;
 # [2.2] remove any existing temp files
-GENERIC_prepare_misc_clearTheDecks
+GENERIC_prepare_misc_clearTheDecks;
 # [2.3] identify local os
-GENERIC_prepare_misc_identifyOs
+GENERIC_prepare_misc_identifyOs;
 # [2.4] if os is mac switch to mac version of this script
 if [[ "${os}" == "Mac" ]]; then
 
-  misc/podMac "$@"
+  misc/podMac "$@";
 
 else
 
   # [2.5] source all generic pod_ scripts
-  GENERIC_prepare_misc_sourceGeneric
+  GENERIC_prepare_misc_sourceGeneric;
   # [2.6] set all generic pod_ default settings
-  GENERIC_prepare_defaults_set
+  GENERIC_prepare_defaults_set;
   # [2.7] change local permissions to assist later pod folder copy
-  chmod -R 777 ${podHomePath}/.git
+  chmod -R 777 ${podHomePath}/.git;
   # [2.8] set some handy generic flags
-  flagOne="false"
-  flagTwo="false"
+  flagOne="false";
+  flagTwo="false";
 
 # ==========
 
 ## [3] check generic pod_ dependencies
 
   # [3.1] jq - bash jason parser
-  jqFolderPath="${podHomePath}/third_party/jq-linux64/"
-  jqFilePath="${jqFolderPath}jq"
-  GENERIC_lib_checks_fileExists "launch-pod#3.1.1" "true" "${jqFilePath}"
+  jqFolderPath="${podHomePath}/third_party/jq-linux64/";
+  jqFilePath="${jqFolderPath}jq";
+  GENERIC_lib_checks_fileExists "launch-pod#3.1.1" "true" "${jqFilePath}";
   # [3.2] ensure third party packages are executable
-  chmod -R 777 "${podHomePath}/third_party/"
-  PATH=${jqFolderPath}:$PATH
+  chmod -R 777 "${podHomePath}/third_party/";
+  PATH=${jqFolderPath}:$PATH;
 
 # ==========
 
@@ -69,11 +69,11 @@ else
 
   # [4.1] ensure --pod | -p flag is passed first (if not using help flag on its own)
   if [[ "${1}" != "-p" ]] && [[ "${1}" != "--pod" ]] && [[ "${1}" != "-h" ]] && [[ "${1}" != "--help" ]]; then
-    printf "%s\n"
-    GENERIC_prepare_display_msgColourSimple "ERROR-->" "always specify the pod flag first ${yellow}-p | --pod${red}"
-    printf "%s\n"
+    printf "%s\n";
+    GENERIC_prepare_display_msgColourSimple "ERROR-->" "always specify the pod flag first ${yellow}-p | --pod${red}";
+    printf "%s\n";
     exit 1;
-  fi
+  fi;
 
 
 # ////////////////////////////////////////// POD SPECIFIC PREPERATION (pod_XYZ)
@@ -84,39 +84,39 @@ else
     case "$1" in
       -h|--help)
           if [[ ${podFlag} == "true" ]]; then
-            GENERIC_prepare_display_banner
-            GENERIC_prepare_help
-            prepare_help
-            GENERIC_prepare_helpLists
+            GENERIC_prepare_display_banner;
+            GENERIC_prepare_help;
+            prepare_help;
+            GENERIC_prepare_helpLists;
           else
-            GENERIC_prepare_display_banner
-            GENERIC_prepare_help
-            GENERIC_prepare_helpLists
+            GENERIC_prepare_display_banner;
+            GENERIC_prepare_help;
+            GENERIC_prepare_helpLists;
           fi
           exit 0;
           ;;
       -p|--pod)
-          shift
-          WHICH_POD=$1
-          shift
-          GENERIC_prepare_misc_sourceThisPod
-          prepare_defaults_set
-          GENERIC_prepare_misc_clearTheDecks
-          podFlag="true"
+          shift;
+          WHICH_POD=$1;
+          shift;
+          GENERIC_prepare_misc_sourceThisPod;
+          prepare_defaults_set;
+          GENERIC_prepare_misc_clearTheDecks;
+          podFlag="true";
           ;;
       *)
-        thisFlag=${1}
-        flagValue=$(shift && echo $1)
-        prepare_flags_handle ${thisFlag} ${flagValue}
-        shift
-        shift
+        thisFlag=${1};
+        flagValue=$(shift && echo $1);
+        prepare_flags_handle ${thisFlag} ${flagValue};
+        shift;
+        shift;
           ;;
     esac
   done
 
   # [4.3] ensure flags have been passed correctly for this pod
   # this will call the version of this function for the chosen pod
-  prepare_flags_rules
+  prepare_flags_rules;
 
 # ==========
 
@@ -125,13 +125,13 @@ else
 # note: a server definition file must always be specified !
 
   # [5.1] check it is valid
-  serversJsonPath="${podHomePath}/servers/${SERVERS_JSON}"
-  GENERIC_lib_checks_fileExists "launch-pod#5.1.1" "true" "${serversJsonPath}"
-  catchError "launch-pod#5.1.2" "jq error on server json" "true" "false" "jq keys ${serversJsonPath}"
+  serversJsonPath="${podHomePath}/servers/${SERVERS_JSON}";
+  GENERIC_lib_checks_fileExists "launch-pod#5.1.1" "true" "${serversJsonPath}";
+  catchError "launch-pod#5.1.2" "jq error on server json" "true" "false" "jq keys ${serversJsonPath}";
 
   # [5.2] check at least one server is defined
-  numberOfServers=$(jq -r keys $serversJsonPath | grep 'server_' | wc -l)
-  GENERIC_lib_checks_freeTest "launch-pod#5.2.1" "zero number of servers" "$numberOfServers" "-eq" "0"
+  numberOfServers=$(jq -r keys $serversJsonPath | grep 'server_' | wc -l);
+  GENERIC_lib_checks_freeTest "launch-pod#5.2.1" "zero number of servers" "$numberOfServers" "-eq" "0";
 
 # ==========
 
@@ -140,41 +140,41 @@ else
 # note: a build definition file must always be specified !
 
   # [6.1] source the build settings for the named pod build folder
-  GENERIC_prepare_misc_sourceThisPodBuild
+  GENERIC_prepare_misc_sourceThisPodBuild;
 
 # ==========
 
 ## [7] create tmp folder - this holds a copy of pod that can be edited and distributed to the servers
 
   # [7.1] create configurable temporary version of pod
-  GENERIC_prepare_misc_podBuildTempFolder
+  GENERIC_prepare_misc_podBuildTempFolder;
 
 # ==========
 
 ## [8] globally declare arrays used by generic stages
 
-  declare -A arrayJson                  # all stages - assign json key values to bash variables
-  declare -A arrayTestConnect           # GENERIC_stages_testConnectivity   - for passwordless connectivity
-  declare -A arrayTestWrite1            # GENERIC_stages_testWritePaths     - for paths specified in build_settings
-  declare -A arrayTestWrite2            # GENERIC_stages_testWritePaths     - for paths specified in json
-  declare -A arraySendPodPids           # GENERIC_stages_sendPodSoftware    - for send POD_SOFTWARE folder to server(s)
-  declare -a arrayBuildLocalFunctions   # GENERIC_stages_buildSend          - for functions performed locally (not on remote server)
-  declare -A arrayBuildSend             # GENERIC_stages_buildSend          - for send bespoke pod to server(s)
-  declare -a arrayBuildSendData         # GENERIC_stages_buildSend          - for handle data paths specified in json
-  declare -A arrayLaunchPodPids         # GENERIC_stages_launchPodRemotely  - for launching script on remote server(s)
+  declare -A arrayJson;                  # all stages - assign json key values to bash variables
+  declare -A arrayTestConnect;           # GENERIC_stages_testConnectivity   - for passwordless connectivity
+  declare -A arrayTestWrite1;            # GENERIC_stages_testWritePaths     - for paths specified in build_settings
+  declare -A arrayTestWrite2;            # GENERIC_stages_testWritePaths     - for paths specified in json
+  declare -A arraySendPodPids;           # GENERIC_stages_sendPodSoftware    - for send POD_SOFTWARE folder to server(s)
+  declare -a arrayBuildLocalFunctions;   # GENERIC_stages_buildSend          - for functions performed locally (not on remote server)
+  declare -A arrayBuildSend;             # GENERIC_stages_buildSend          - for send bespoke pod to server(s)
+  declare -a arrayBuildSendData;         # GENERIC_stages_buildSend          - for handle data paths specified in json
+  declare -A arrayLaunchPodPids;         # GENERIC_stages_launchPodRemotely  - for launching script on remote server(s)
 
 # ==========
 
 ## [9] pod specific checks and call
 
   # [9.1] test pod specific required files/folders exist
-  prepare_misc_checkFileFolderExist
+  prepare_misc_checkFileFolderExist;
 
   # [9.2] source the pod's init script
-  source "pods/${WHICH_POD}/${WHICH_POD}.bash"
+  source "pods/${WHICH_POD}/${WHICH_POD}.bash";
 
   # [9.3] call the pod's init function
-  "${WHICH_POD}"
+  "${WHICH_POD}";
 
 
 # ////////////////////////////////////////// GENERIC POD FINISH
@@ -183,15 +183,15 @@ else
 ## [10] display generic pod_ + pod specific closing messages
 
   # [10.1] display final message for this pod
-  ${WHICH_POD}_finalMessage
+  ${WHICH_POD}_finalMessage;
 
   # [10.2] tidy up temporary files
-  GENERIC_prepare_misc_clearTheDecks
+  GENERIC_prepare_misc_clearTheDecks;
 
   # [10.3] calculate and display script timings
-  GENERIC_lib_misc_timePod
-  printf "%s\n"
-  GENERIC_prepare_display_msgColourSimple "INFO" "pod took: ${diff}[s]"
-  printf "%s\n"
+  GENERIC_lib_misc_timePod;
+  printf "%s\n";
+  GENERIC_prepare_display_msgColourSimple "INFO" "pod took: ${diff}[s]";
+  printf "%s\n";
 
-fi
+fi;
