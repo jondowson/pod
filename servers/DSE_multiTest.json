@@ -1,0 +1,86 @@
+{
+    "server_1":{
+      "tag": "storage_1",
+      "user": "ubuntu",
+      "ssh_key": "/Users/jondowson/.ssh/Tech.pem",
+      "target_folder": "/home/ubuntu/",
+      "pub_ip": "13.56.211.253",
+      "listen_address": "172.31.20.127",
+      "rpc_address": "172.31.20.127",
+      "stomp_interface": "",
+      "seeds": "172.31.20.127",
+      "token": "",
+      "dc": "dc1",
+      "rack": "rack1",
+      "mode": {
+        "search": "false",
+        "analytics": "false",
+        "graph": "false",
+        "dsefs": "false"
+      },
+      "cass_data": [
+        "/home/ubuntu/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/sstables/",
+        "/home/ubuntu/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/sstables2/"
+      ],
+      "dsefs_data": [
+        "/home/ubuntu/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/dsefs/;1.0;5368709",
+        "/home/ubuntu/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/dsefs2/;1.0;5368709"
+      ]
+    },
+    "server_2":{
+      "tag": "storage_2",
+      "user": "ubuntu",
+      "ssh_key": "/Users/jondowson/.ssh/Tech.pem",
+      "target_folder": "/home/ubuntu/",
+      "pub_ip": "18.144.16.110",
+      "listen_address": "172.31.28.250",
+      "rpc_address": "172.31.28.250",
+      "stomp_interface": "",
+      "seeds": "172.31.20.127",
+      "token": "",
+      "dc": "dc1",
+      "rack": "rack1",
+      "mode": {
+        "search": "false",
+        "analytics": "false",
+        "graph": "false",
+        "dsefs": "false"
+      },
+      "cass_data": [
+        "/home/ubuntu/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/sstables/",
+        "/home/ubuntu/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/sstables2/"
+      ],
+      "dsefs_data": [
+        "/home/ubuntu/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/dsefs/;1.0;5368709",
+        "/home/ubuntu/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/dsefs2/;1.0;5368709"
+      ]
+    },
+    "server_3":{
+      "tag": "storage_3",
+      "user": "ubuntu",
+      "ssh_key": "/Users/jondowson/.ssh/Tech.pem",
+      "target_folder": "/home/ubuntu/",
+      "pub_ip": "52.53.231.103",
+      "listen_address": "172.31.30.26",
+      "rpc_address": "172.31.30.26",
+      "stomp_interface": "",
+      "seeds": "172.31.20.127",
+      "token": "",
+      "dc": "dc1",
+      "rack": "rack1",
+      "mode": {
+        "search": "false",
+        "analytics": "false",
+        "graph": "false",
+        "dsefs": "false"
+      },
+      "cass_data": [
+        "/home/ubuntu/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/sstables/",
+        "/home/ubuntu/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/sstables2/"
+      ],
+      "dsefs_data": [
+        "/home/ubuntu/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/dsefs/;1.0;5368709",
+        "/home/ubuntu/POD_INSTALLS/pod_DSE/DATA/${BUILD_FOLDER}/dsefs2/;1.0;5368709"
+      ]
+    }
+}

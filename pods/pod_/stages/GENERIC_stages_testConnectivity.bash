@@ -7,7 +7,7 @@ function GENERIC_task_testConnectivity(){
 
 for id in $(seq 1 ${numberOfServers});
 do
-
+ 
   # [1] for this server, loop through its json block and assign values to bash variables
   GENERIC_lib_json_assignValue;
   for key in "${!arrayJson[@]}"

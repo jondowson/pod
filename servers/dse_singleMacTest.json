@@ -1,0 +1,52 @@
+{
+    "server_1":{
+      "connection_settings":{
+        "pub_ip":             "127.0.0.1",
+        "tag":                "storage_1",
+        "ssh_user":           "jd",
+        "ssh_key_local":      "/Users/jondowson/.ssh/id_rsa",
+        "target_folder":      "/Users/jondowson/Desktop/"
+      },
+      "universal_settings":{
+        "dse_version":        "dse-5.0.12",
+        "agent_version":      "datastax-agent-6.0.5",
+        "cluster_name":       "dse-5.0.12_practice",
+        "endpoint_snitch":    "GossipingPropertyFileSnitch",
+        "vnodes":             "8",
+        "stomp_interface":    "127.0.0.1",
+        "seeds":              "127.0.0.1"
+      },
+      "server_settings":{
+        "listen_address":     "127.0.0.1",
+        "rpc_address":        "127.0.0.1",
+        "token":              "",
+        "dc":                 "dc1",
+        "rack":               "rack1",
+        "mode": {
+          "search":           "true",
+          "analytics":        "true",
+          "graph":            "true",
+          "dsefs":            "true"
+        },
+        "data_folder":        "${target_folder}/bash-blocks/installed-blocks/${WHICH_BLOCK}/data/${SERVERS_JSON}/",
+        "logs_folder":        "${target_folder}/bash-blocks/installed-blocks/${WHICH_BLOCK}/logs/${SERVERS_JSON}/",
+        "temp_folder":        "${target_folder}/bash-blocks/installed-blocks/${WHICH_BLOCK}/temp/${SERVERS_JSON}/",
+        "sstable_folder": [
+          "/home/jd/Desktop/bash-blocks/installed-blocks/dse/data/${SERVERS_JSON}/sstables/",
+          "/home/jd/Desktop/bash-blocks/installed-blocks/dse/data/${SERVERS_JSON}/sstables2/"
+        ],
+        "dsefs_folder":{
+          "dsefs_1":{
+            "folder": "/home/jd/Desktop/bash-blocks/installed-blocks/${WHICH_BLOCK}/data/${SERVERS_JSON}/dsefs",
+            "metric1": "1.0",
+            "metric2": "5368709"
+          },
+          "dsefs_2":{
+            "folder": "/home/jd/Desktop/bash-blocks/installed-blocks/${WHICH_BLOCK}/data/${SERVERS_JSON}/dsefs2",
+            "metric1": "1.0",
+            "metric2": "5368709"
+          }
+      }
+    }
+  }
+}
