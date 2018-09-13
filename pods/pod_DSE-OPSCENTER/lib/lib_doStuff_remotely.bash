@@ -185,22 +185,23 @@ cmd="source ~/.bash_profile && ${OPSCENTER_FOLDER_UNTAR_BIN}opscenter"          
 log_to_check="${OPSCENTER_FOLDER_UNTAR_LOG}opscenterd.log"                                      # log folder to check for keyphrase
 keyphrase="StompFactory starting"                                                               # if this appears in logs - then assume success!
 response_label=""                                                                               # label for response codes
-retryTimes="11"                                                                                 # try x times to inspect logs for success
+retryTimes="10"                                                                                 # try x times to inspect logs for success
 pauseTime="3"                                                                                   # pause between log look ups
 tailCount="50"                                                                                  # how many lines to grab from end of log - relationship with pause time + speed logs are written
 
+> ${log_to_check} &>/dev/null                                                                   # clear previous contents of log file if it exists
 ssh -q -i ${ssh_key} ${user}@${pub_ip} "${cmd} &>~/.cmdOutput"                                  # run opscenter for the specified build
-sleep 5                                                                                         # give the chance for script to run + logs to fill up
+sleep 10                                                                                        # give the chance for script to run + logs to fill up
 cmdOutput=$(ssh -q -i ${ssh_key} ${user}@${pub_ip} "cat ~/.cmdOutput && rm -rf ~/.cmdOutput" )  # grab any command output - could be a clue to a failure
 
-retry=1
+retry=0
 until [[ "${retry}" == "${retryTimes}" ]]                                                       # try x times with a sleep pause between attempts
 do
   sleep ${pauseTime}                                                                            # take a break - have a kitkat
   output=$(ssh -q -i ${ssh_key} ${user}@${pub_ip}  "tail -n ${tailCount} ${log_to_check} | tr '\0' '\n'")   # grab opscenter log and handle null point warning
   if [[ "${output}" == *"${keyphrase}"* ]]; then
     GENERIC_prepare_display_msgColourSimple "INFO-->" "${response_label}${green}0${white}"
-    retry=10
+    retry=9
     success="true"
   fi
   if [[ "${retry}" == "10" ]] && [[ "${success}" != "true" ]]; then                             # failure messages

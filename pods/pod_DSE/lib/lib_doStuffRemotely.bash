@@ -180,7 +180,7 @@ retries="10"                                                                    
 pauseTime="2"                                                                                   # pause between log look ups
 tailCount="30"                                                                                  # how many lines to grab from end of log - relationship with pause time + speed logs are written
 
-> ${log_to_check}                                                                               # clear previous contents of log file
+> ${log_to_check} &>/dev/null                                                                   # clear previous contents of log file if it exists
 ssh -q -i ${ssh_key} ${user}@${pub_ip} "${cmd} &>~/.cmdOutput"                                  # run opscenter for the specified build and capture its output (java)
 sleep 10                                                                                        # give the chance for script to run + logs to fill up
 cmdOutput=$(ssh -q -i ${ssh_key} ${user}@${pub_ip} "cat ~/.cmdOutput && rm -rf ~/.cmdOutput" )  # grab any command output - could be a clue to a failure
