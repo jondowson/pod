@@ -86,10 +86,10 @@ retry=1
 until [[ "${retry}" == "3" ]]
 do
   GENERIC_prepare_display_msgColourSimple   "INFO-->"  "stopping dse:              gracefully"
-  command=$(ssh -q -i ${ssh_key} ${user}@${pub_ip} "source ~/.bash_profile && ${stop_cmd}" &> ${tmpStatusFile})
+  ssh -q -i ${ssh_key} ${user}@${pub_ip} "source ~/.bash_profile && ${stop_cmd}" &> ${tmpStatusFile}
   status=$?
   output=$(cat ${tmpStatusFile} && rm -rf ${tmpStatusFile})
-  if [[ "${status}" == "0" ]] && [[ "${output}" == "" ]]; then
+  if [[ "${status}" == "0" ]] && [[ "${output}" == *"error"* ]]; then
     GENERIC_prepare_display_msgColourSimple "INFO-->" "${green}0${white}"
     retry=2
   elif [[ "${output}" == *"Unable to find DSE process"* ]]; then
@@ -97,7 +97,7 @@ do
     retry=2
   else
     GENERIC_prepare_display_msgColourSimple "INFO-->" "${white}(retry ${retry}/2)"
-    GENERIC_prepare_display_msgColourSimple "INFO-->" "killing dse:                ungracefully"
+    GENERIC_prepare_display_msgColourSimple "INFO-->" "killing dse:               ungracefully"
     ssh -q -i ${ssh_key} ${user}@${pub_ip} "ps aux | grep -v grep | grep -v '\-p\ pod_DSE' | grep -v '\--pod\ pod_DSE' | grep cassandra | awk {'print \$2'} | xargs kill -9 &>/dev/null"
   fi
   arrayStopDse["stop_dse_at_${tag}"]="${status};${pub_ip}"
