@@ -89,7 +89,7 @@ do
   ssh -q -i ${ssh_key} ${user}@${pub_ip} "source ~/.bash_profile && ${stop_cmd}" &> ${tmpStatusFile}
   status=$?
   output=$(cat ${tmpStatusFile} && rm -rf ${tmpStatusFile})
-  if [[ "${status}" == "0" ]] && [[ "${output}" == *"error"* ]]; then
+  if [[ "${status}" == "0" ]] && [[ "${output}" == "" ]]; then
     GENERIC_prepare_display_msgColourSimple "INFO-->" "${green}0${white}"
     retry=2
   elif [[ "${output}" == *"Unable to find DSE process"* ]]; then
@@ -176,15 +176,16 @@ cmd="source ~/.bash_profile && ${AGENT_FOLDER_UNTAR_BIN}datastax-agent"         
 log_to_check="${AGENT_FOLDER_UNTAR_LOG}agent.log"                                               # log folder to check for keyphrase
 keyphrase="Finished starting system"                                                            # if this appears in logs - then assume success!
 response_label="agent:"                                                                         # label for response codes
-retries="11"                                                                                    # try x times to inspect logs for success
+retries="10"                                                                                    # try x times to inspect logs for success
 pauseTime="2"                                                                                   # pause between log look ups
 tailCount="30"                                                                                  # how many lines to grab from end of log - relationship with pause time + speed logs are written
 
+> ${log_to_check}                                                                               # clear previous contents of log file
 ssh -q -i ${ssh_key} ${user}@${pub_ip} "${cmd} &>~/.cmdOutput"                                  # run opscenter for the specified build and capture its output (java)
 sleep 10                                                                                        # give the chance for script to run + logs to fill up
 cmdOutput=$(ssh -q -i ${ssh_key} ${user}@${pub_ip} "cat ~/.cmdOutput && rm -rf ~/.cmdOutput" )  # grab any command output - could be a clue to a failure
 
-retry=1
+retry=0
 until [[ "${retry}" == "${retries}" ]]                                                          # try x times with a sleep pause between attempts
 do
   sleep ${pauseTime}                                                                            # take a break - have a kitkat
@@ -194,7 +195,7 @@ do
     GENERIC_prepare_display_msgColourSimple "INFO-->" "${green}0${white}"
     success="true"
     break;
-  elif [[ "${retry}" == "$((retries-1))" ]] && [[ "${success}" != "true" ]]; then                             # failure messages
+  elif [[ "${retry}" == "$((retries-1))" ]] && [[ "${success}" != "true" ]]; then               # failure messages
     GENERIC_prepare_display_msgColourSimple "INFO-->" "${response_label}          ${red}You may ned to kill any existing agent process as root !!${reset}"
     GENERIC_prepare_display_msgColourSimple "INFO-->" "${response_label}          ${red}Is the right Java version installed [ ${cmdOutput} ] ??${reset}"
   fi
