@@ -179,9 +179,10 @@ response_label="agent:"                                                         
 retries="10"                                                                                    # try x times to inspect logs for success
 pauseTime="2"                                                                                   # pause between log look ups
 tailCount="30"                                                                                  # how many lines to grab from end of log - relationship with pause time + speed logs are written
-
-> ${log_to_check} &>/dev/null                                                                   # clear previous contents of log file if it exists
-ssh -q -i ${ssh_key} ${user}@${pub_ip} "${cmd} &>~/.cmdOutput"                                  # run opscenter for the specified build and capture its output (java)
+if [ -f ${log_to_check} ]; then                                                                 # clear previous contents of log file if it exists
+    > ${log_to_check};
+fi;
+ssh -q -i ${ssh_key} ${user}@${pub_ip} "${cmd} &>~/.cmdOutput"                                  # run agent for the specified build and capture its output (java)
 sleep 10                                                                                        # give the chance for script to run + logs to fill up
 cmdOutput=$(ssh -q -i ${ssh_key} ${user}@${pub_ip} "cat ~/.cmdOutput && rm -rf ~/.cmdOutput" )  # grab any command output - could be a clue to a failure
 
