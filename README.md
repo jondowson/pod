@@ -1,4 +1,4 @@
-# pod
+# pod - now replaced by bash-blocks!!!
 
 ## pod intro
 
